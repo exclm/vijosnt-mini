@@ -6,8 +6,8 @@
     Private m_Name As String
 
     Public Sub New(ByVal Name As String)
-        m_hDesktop = CreateDesktop(Name, Nothing, 0, 0,
-            DESKTOP_READOBJECTS Or DESKTOP_CREATEWINDOW Or DESKTOP_WRITEOBJECTS Or READ_CONTROL Or WRITE_DAC, 0)
+        m_hDesktop = CreateDesktop(Name, Nothing, 0, 0, DesktopAccess.DESKTOP_READOBJECTS Or DesktopAccess.DESKTOP_CREATEWINDOW Or _
+            DesktopAccess.DESKTOP_WRITEOBJECTS Or DesktopAccess.READ_CONTROL Or DesktopAccess.WRITE_DAC, 0)
 
         If m_hDesktop = 0 Then
             Throw New Win32Exception()
@@ -28,24 +28,18 @@
     Private disposedValue As Boolean ' To detect redundant calls
 
     ' IDisposable
-    Protected Sub Dispose(ByVal disposing As Boolean)
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         If Not Me.disposedValue Then
             Win32True(CloseDesktop(m_hDesktop))
         End If
         Me.disposedValue = True
+        MyBase.Dispose(disposing)
     End Sub
 
     Protected Overrides Sub Finalize()
         ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
         Dispose(False)
         MyBase.Finalize()
-    End Sub
-
-    ' This code added by Visual Basic to correctly implement the disposable pattern.
-    Public Sub Dispose() Implements IDisposable.Dispose
-        ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
-        Dispose(True)
-        GC.SuppressFinalize(Me)
     End Sub
 #End Region
 End Class

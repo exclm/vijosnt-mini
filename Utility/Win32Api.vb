@@ -65,6 +65,13 @@
         ByVal pAceList As IntPtr, _
         ByVal nAceListLength As Int32) As Boolean
 
+    Public Declare Auto Function AddAccessAllowedAceEx Lib "advapi32.dll" (
+        ByVal pAcl As IntPtr, _
+        ByVal dwAceRevision As Int32, _
+        ByVal AceFlags As Int32, _
+        ByVal AccessMask As Int32, _
+        ByVal pSid As IntPtr) As Boolean
+
     Public Declare Auto Function GetUserObjectSecurity Lib "user32.dll" ( _
         ByVal hObj As IntPtr, _
         ByRef pSIRequested As SECURITY_INFORMATION, _
@@ -79,18 +86,19 @@
 
     Public Declare Auto Function GetUserObjectInformation Lib "user32.dll" ( _
         ByVal hObj As IntPtr, _
-        ByVal nIndex As Int32, _
+        ByVal nIndex As UserObjectInformation, _
         ByVal pvInfo As IntPtr, _
         ByVal nLength As Int32, _
         ByRef nLengthNeeded As Int32) As Boolean
 
     Public Declare Auto Function GetProcessWindowStation Lib "user32.dll" () As IntPtr
+
     Public Declare Auto Function CreateDesktop Lib "user32.dll" ( _
         ByVal szDesktop As String, _
         ByVal szDevice As String, _
         ByVal pDevmode As IntPtr, _
         ByVal dwFlags As Int32, _
-        ByVal dwDesiredAccess As Int32, _
+        ByVal dwDesiredAccess As DesktopAccess, _
         ByVal lpsa As IntPtr) As IntPtr
 
     Public Declare Auto Function CloseDesktop Lib "user32.dll" ( _
@@ -140,27 +148,22 @@
         VALID_INHERIT_FLAGS = &H1F
     End Enum
 
+    Public Enum DesktopAccess As Int32
+        DESKTOP_READOBJECTS = 1
+        DESKTOP_CREATEWINDOW = 2
+        DESKTOP_WRITEOBJECTS = &H80
+        READ_CONTROL = &H20000
+        WRITE_DAC = &H40000
+    End Enum
+
+    Public Enum UserObjectInformation As Int32
+        UOI_NAME = 2
+    End Enum
+
     Public Const ERROR_INSUFFICIENT_BUFFER As Int32 = 122
     Public Const SE_GROUP_LOGON_ID As Int32 = &HC0000000
     Public Const SECURITY_DESCRIPTOR_REVISION As Int32 = 1
     Public Const ACL_REVISION As Int32 = 2
-    Public Const ACCESS_ALLOWED_ACE_TYPE As Int32 = 0
-
-    Public Const GENERIC_READ As Int32 = &H80000000
-    Public Const GENERIC_WRITE As Int32 = &H40000000
-    Public Const GENERIC_EXECUTE As Int32 = &H20000000
-    Public Const GENERIC_ALL As Int32 = &H10000000
-
-    Public Const WINSTA_ALL As Int32 = &HF037F
-    Public Const DESKTOP_ALL As Int32 = &HF01FF
-
-    Public Const DESKTOP_READOBJECTS As Int32 = 1
-    Public Const DESKTOP_CREATEWINDOW As Int32 = 2
-    Public Const DESKTOP_WRITEOBJECTS As Int32 = &H80
-    Public Const READ_CONTROL As Int32 = &H20000
-    Public Const WRITE_DAC As Int32 = &H40000
-
-    Public Const UOI_NAME As Int32 = 2
 
     Public Sub Win32True(ByVal Value As Boolean)
         If Value = False Then
