@@ -10,8 +10,6 @@
         If m_hWinSta = 0 Then
             Throw New Win32Exception()
         End If
-
-        m_Name = MyBase.GetName()
     End Sub
 
     Protected Overrides Function GetHandle() As System.IntPtr
@@ -19,6 +17,10 @@
     End Function
 
     Public Overrides Function GetName() As String
+        If m_Name Is Nothing Then
+            m_Name = MyBase.GetName()
+        End If
+
         Return m_Name
     End Function
 End Class

@@ -107,6 +107,8 @@
     Public Declare Auto Function CloseHandle Lib "kernel32.dll" ( _
         ByVal hObject As IntPtr) As Boolean
 
+    Public Declare Auto Function GetTickCount Lib "kernel32.dll" () As Int32
+
     Public Structure ACL_SIZE_INFORMATION
         Dim AceCount As Int32
         Dim AclBytesInUse As Int32
