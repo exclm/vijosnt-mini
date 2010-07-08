@@ -63,7 +63,7 @@
         Dim Length As Int32
 
         If GetUserObjectSecurity(UserObject, InfoRequired, 0, 0, Length) = True Then
-            Throw New Win32Exception("AddAceToUserObject succeeded with no information")
+            Throw New Win32Exception("GetUserObjectSecurity succeeded with no information")
         End If
 
         Dim LastErr As Int32 = Marshal.GetLastWin32Error()
@@ -90,7 +90,6 @@
                 AclSizeNew += AclSizeInfo.AclBytesInUse
             End If
 
-            MsgBox(AclSizeNew)
             Dim AclNew As IntPtr = Marshal.AllocHGlobal(AclSizeNew)
             Try
                 Win32True(InitializeAcl(AclNew, AclSizeNew, ACL_REVISION))
@@ -127,7 +126,71 @@
         End Try
     End Sub
 
-    ' TODO: Implement RemoveAceBySid
+    Public Sub RemoveAceBySid(ByVal Sid As Byte())
+        Dim UserObject As IntPtr = GetHandle()
+        Dim InfoRequired As SECURITY_INFORMATION = SECURITY_INFORMATION.DACL_SECURITY_INFORMATION
+        Dim Length As Int32
+
+        If GetUserObjectSecurity(UserObject, InfoRequired, 0, 0, Length) = True Then
+            Throw New Win32Exception("GetUserObjectSecurity succeeded with no information")
+        End If
+
+        Dim LastErr As Int32 = Marshal.GetLastWin32Error()
+        If LastErr <> ERROR_INSUFFICIENT_BUFFER Then
+            Throw New Win32Exception(LastErr)
+        End If
+
+        Dim SecurityDescriptorOld As IntPtr = Marshal.AllocHGlobal(Length)
+
+        Try
+            Win32True(GetUserObjectSecurity(UserObject, InfoRequired, SecurityDescriptorOld, Length, Length))
+
+            Dim bDaclPresent As Boolean
+            Dim AclOld As IntPtr
+            Dim bDaclExist As Boolean
+
+            Win32True(GetSecurityDescriptorDacl(SecurityDescriptorOld, bDaclPresent, AclOld, bDaclExist))
+
+            ' SecurityDescriptorOld should not be freed because AclOld is a reference
+
+            If bDaclPresent Then
+                Dim AclSizeInfo As ACL_SIZE_INFORMATION
+                Win32True(GetAclInformation(AclOld, AclSizeInfo, Marshal.SizeOf(AclSizeInfo), ACL_INFORMATION_CLASS.AclSizeInformation))
+                Dim AclNew As IntPtr = Marshal.AllocHGlobal(AclSizeInfo.AclBytesInUse)
+                Try
+                    Win32True(InitializeAcl(AclNew, AclSizeInfo.AclBytesInUse, ACL_REVISION))
+                    Dim SidHandle As GCHandle = GCHandle.Alloc(Sid, GCHandleType.Pinned)
+                    Try
+                        For Index As Int32 = 0 To AclSizeInfo.AceCount - 1
+                            Dim TempAcePtr As IntPtr
+                            Win32True(GetAce(AclOld, Index, TempAcePtr))
+
+                            If EqualSid(CType(CType(TempAcePtr, Int32) + Marshal.SizeOf(GetType(ACE_HEADER)) + 4, IntPtr), _
+                                SidHandle.AddrOfPinnedObject()) = True Then _
+                                Continue For
+
+                            Win32True(AddAce(AclNew, ACL_REVISION, -1, TempAcePtr, Marshal.ReadInt16(TempAcePtr, 2)))
+                        Next
+                    Finally
+                        SidHandle.Free()
+                    End Try
+
+                    Dim SecurityDescriptorNew As IntPtr = Marshal.AllocHGlobal(Length)
+                    Try
+                        Win32True(InitializeSecurityDescriptor(SecurityDescriptorNew, SECURITY_DESCRIPTOR_REVISION))
+                        Win32True(SetSecurityDescriptorDacl(SecurityDescriptorNew, bDaclPresent, AclNew, False))
+                        Win32True(SetUserObjectSecurity(UserObject, InfoRequired, SecurityDescriptorNew))
+                    Finally
+                        Marshal.FreeHGlobal(SecurityDescriptorNew)
+                    End Try
+                Finally
+                    Marshal.FreeHGlobal(AclNew)
+                End Try
+            End If
+        Finally
+            Marshal.FreeHGlobal(SecurityDescriptorOld)
+        End Try
+    End Sub
 
 #Region "IDisposable Support"
     ' IDisposable
