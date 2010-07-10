@@ -101,6 +101,7 @@
     <Compile Include="Path\TempPath.vb" />
     <Compile Include="Path\TempPathServer.vb" />
     <Compile Include="Utility\RandomName.vb" />
+    <Compile Include="Utility\StreamPipe.vb" />
     <Compile Include="Utility\Win32Api.vb" />
   </ItemGroup>
   <ItemGroup>
