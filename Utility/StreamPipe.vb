@@ -4,7 +4,6 @@
     Private m_Source As Stream
     Private m_Target As Stream
     Private m_Buffer As Byte()
-    Private m_BufferSize As Int32
     Private m_Event As ManualResetEvent
 
     Public Sub New(ByVal Source As Stream, ByVal Target As Stream)
@@ -15,8 +14,7 @@
         m_Source = Source
         m_Target = Target
         m_Buffer = New Byte(0 To BufferSize - 1) {}
-        m_BufferSize = BufferSize
-        m_Source.BeginRead(m_Buffer, 0, m_BufferSize, AddressOf OnRead, Nothing)
+        m_Source.BeginRead(m_Buffer, 0, BufferSize, AddressOf OnRead, Nothing)
         m_Event = New ManualResetEvent(False)
 
         MyBase.SafeWaitHandle = m_Event.SafeWaitHandle
@@ -35,7 +33,7 @@
     Private Sub OnWrite(ByVal ar As IAsyncResult)
         Try
             m_Target.EndWrite(ar)
-            m_Source.BeginRead(m_Buffer, 0, m_BufferSize, AddressOf OnRead, Nothing)
+            m_Source.BeginRead(m_Buffer, 0, m_Buffer.Length, AddressOf OnRead, Nothing)
         Catch ex As Exception
             m_Event.Set()
         End Try
