@@ -79,8 +79,6 @@
     <Compile Include="Path\Path.vb" />
     <Compile Include="Runner\Desktop.vb" />
     <Compile Include="Runner\Logon.vb" />
-    <Compile Include="Runner\RunnerInterfaces.vb" />
-    <Compile Include="Runner\Runner.vb" />
     <Compile Include="Runner\UserObject.vb" />
     <Compile Include="Runner\WindowStation.vb" />
     <Compile Include="Service\Service.vb" />

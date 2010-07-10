@@ -4,7 +4,7 @@
 End Interface
 
 Public Interface ICompilerInstance
-    Inherits IRunnableObject
+
 End Interface
 
 Public Interface IExecutable
@@ -12,5 +12,5 @@ Public Interface IExecutable
 End Interface
 
 Public Interface IExecutableInstance
-    Inherits IRunnableObject
+
 End Interface
