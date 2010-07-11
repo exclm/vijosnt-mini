@@ -104,10 +104,244 @@
     Public Declare Auto Function CloseDesktop Lib "user32.dll" ( _
         ByVal hDesktop As IntPtr) As Boolean
 
+    Public Declare Auto Function GetTickCount Lib "kernel32.dll" () As Int32
+
+    Public Structure STARTUPINFO
+        Dim cb As Int32
+        Dim Reserved As IntPtr
+        <MarshalAs(UnmanagedType.LPTStr)> _
+        Dim Desktop As String
+        <MarshalAs(UnmanagedType.LPTStr)> _
+        Dim Title As String
+        Dim dwX As Int32
+        Dim dwY As Int32
+        Dim dwXSize As Int32
+        Dim dwYSize As Int32
+        Dim dwXCountChars As Int32
+        Dim dwYCountChars As Int32
+        Dim dwFillAttribute As Int32
+        Dim dwFlags As StartupFlags
+        Dim wShowWindow As Int16
+        Dim cbReserved2 As Int16
+        Dim lpReserved2 As IntPtr
+        Dim hStdInput As IntPtr
+        Dim hStdOutput As IntPtr
+        Dim hStdError As IntPtr
+    End Structure
+
+    Public Structure PROCESS_INFORMATION
+        Dim hProcess As IntPtr
+        Dim hThread As IntPtr
+        Dim dwProcessId As Int32
+        Dim dwThreadId As Int32
+    End Structure
+
+    Public Structure SECURITY_ATTRIBUTES
+        Dim nLength As Int32
+        Dim lpSecurityDescriptor As IntPtr
+        Dim bInheritHandle As Boolean
+    End Structure
+
+    Public Structure JOBOBJECT_BASIC_LIMIT_INFORMATION
+        Dim PerProcessUserTimeLimit As Int64
+        Dim PerJobUserTimeLimit As Int64
+        Dim LimitFlags As JobObjectLimitFlags
+        Dim MinimumWorkingSetSize As Int32
+        Dim MaximumWorkingSetSize As Int32
+        Dim ActiveProcessLimit As Int32
+        Dim Affinity As Int32
+        Dim PriorityClass As PriorityClass
+        Dim SchedulingClass As Int32
+    End Structure
+
+    Public Structure IO_COUNTERS
+        Dim ReadOperationCount As Int64
+        Dim WriteOperationCount As Int64
+        Dim OtherOperationCount As Int64
+        Dim ReadTransferCount As Int64
+        Dim WriteTransferCount As Int64
+        Dim OtherTransferCount As Int64
+    End Structure
+
+    Public Structure JOBOBJECT_EXTENDED_LIMIT_INFORMATION
+        Dim BasicLimitInformation As JOBOBJECT_BASIC_LIMIT_INFORMATION
+        Dim IoInfo As IO_COUNTERS
+        Dim ProcessMemoryLimit As Int32
+        Dim JobMemoryLimit As Int32
+        Dim PeakProcessMemoryUsed As Int32
+        Dim PeakJobMemoryUsed As Int32
+    End Structure
+
+    Public Enum PriorityClass As Int32
+        None = 0
+        Normal = &H20
+        Idle = &H40
+        High = &H80
+        RealTime = &H100
+        BelowNormal = &H4000
+        AboveNormal = &H8000
+    End Enum
+
+    Public Declare Auto Function CreateProcess Lib "kernel32.dll" ( _
+        ByVal ApplicationName As String, _
+        ByVal CommandLine As String, _
+        ByRef ProcessAttributes As SECURITY_ATTRIBUTES, _
+        ByRef ThreadAttributes As SECURITY_ATTRIBUTES, _
+        ByVal InheritHandles As Boolean, _
+        ByVal CreationFlags As CreationFlags, _
+        ByVal Environment As IntPtr, _
+        ByVal CurrentDirectory As String, _
+        ByRef StartupInfo As STARTUPINFO, _
+        ByRef ProcessInformation As PROCESS_INFORMATION _
+        ) As Boolean
+
+    Public Declare Auto Function CreateProcessAsUser Lib "advapi32.dll" ( _
+        ByVal TokenHandle As IntPtr, _
+        ByVal ApplicationName As String, _
+        ByVal CommandLine As String, _
+        ByRef ProcessAttributes As SECURITY_ATTRIBUTES, _
+        ByRef ThreadAttributes As SECURITY_ATTRIBUTES, _
+        ByVal InheritHandles As Boolean, _
+        ByVal CreationFlags As CreationFlags, _
+        ByVal Environment As IntPtr, _
+        ByVal CurrentDirectory As String, _
+        ByRef StartupInfo As STARTUPINFO, _
+        ByRef ProcessInformation As PROCESS_INFORMATION _
+        ) As Boolean
+
+    Public Declare Auto Function ImpersonateLoggedOnUser Lib "advapi32.dll" ( _
+        ByVal hToken As IntPtr _
+        ) As Boolean
+
+    Public Declare Auto Function RevertToSelf Lib "advapi32.dll" () As Boolean
+
     Public Declare Auto Function CloseHandle Lib "kernel32.dll" ( _
         ByVal hObject As IntPtr) As Boolean
 
-    Public Declare Auto Function GetTickCount Lib "kernel32.dll" () As Int32
+    Public Declare Auto Function WaitForSingleObject Lib "kernel32.dll" ( _
+        ByVal hHandle As IntPtr, _
+        ByVal Timeout As Int32) As WaitResult
+
+    Public Declare Auto Function TerminateProcess Lib "kernel32.dll" ( _
+        ByVal hProcess As IntPtr, _
+        ByVal ExitCode As Int32) As Boolean
+
+    Public Declare Auto Function GetExitCodeProcess Lib "kernel32.dll" ( _
+        ByVal hProcess As IntPtr, _
+        ByRef ExitCode As Int32) As Boolean
+
+    Public Declare Auto Function CreateJobObject Lib "kernel32.dll" ( _
+        ByRef JobAttributes As SECURITY_ATTRIBUTES, _
+        ByVal Name As String) As IntPtr
+
+    Public Declare Auto Function AssignProcessToJobObject Lib "kernel32.dll" ( _
+        ByVal hJob As IntPtr, _
+        ByVal hProcess As IntPtr) As Boolean
+
+    Public Declare Auto Function SetInformationJobObject Lib "kernel32.dll" ( _
+        ByVal hJob As IntPtr, _
+        ByVal JobObjectInfoClass As JobObjectInfoClass, _
+        ByRef lpJobObjectInfo As JOBOBJECT_EXTENDED_LIMIT_INFORMATION, _
+        ByVal cbJobObjectInfoLength As Int32) As Boolean
+
+    Public Declare Auto Function SetInformationJobObject Lib "kernel32.dll" ( _
+        ByVal hJob As IntPtr, _
+        ByVal JobObjectInfoClass As JobObjectInfoClass, _
+        ByRef lpJobObjectInfo As JOBOBJECT_BASIC_UI_RESTRICTIONS, _
+        ByVal cbJobObjectInfoLength As Int32) As Boolean
+
+    Public Declare Auto Function ResumeThread Lib "kernel32.dll" ( _
+        ByVal hThread As IntPtr) As Int32
+
+    Public Declare Auto Function GetProcessTimes Lib "kernel32.dll" ( _
+        ByVal hProcess As IntPtr, _
+        ByRef CreationTime As Int64, _
+        ByRef ExitTime As Int64, _
+        ByRef KernelTime As Int64, _
+        ByRef UserTime As Int64) As Boolean
+
+    Public Declare Auto Function ReadProcessMemory Lib "kernel32.dll" ( _
+        ByVal hProcess As IntPtr, _
+        ByVal lpBaseAddress As IntPtr, _
+        ByRef Buffer As Int32, _
+        ByVal nSize As Int32, _
+        ByRef NumberOfBytesRead As Int32) As Boolean
+
+    Public Declare Auto Function WriteProcessMemory Lib "kernel32.dll" ( _
+        ByVal hProcess As IntPtr, _
+        ByVal lpBaseAddress As IntPtr, _
+        ByRef Buffer As IntPtr, _
+        ByVal nSize As Int32, _
+        ByRef NumberOfBytesWritten As Int32) As Boolean
+
+    Public Declare Auto Function TerminateJobObject Lib "kernel32.dll" ( _
+        ByVal hJob As IntPtr, _
+        ByVal uExitCode As Int32) As Boolean
+
+    Public Declare Auto Function OpenProcess Lib "kernel32.dll" ( _
+        ByVal dwDesiredAccess As ProcessAccess, _
+        ByVal bInheritHandle As Boolean, _
+        ByVal dwProcessId As Int32) As IntPtr
+
+    Public Enum WaitResult As Int32
+        WAIT_OBJECT_0 = 0
+        WAIT_TIMEOUT = &H102
+        WAIT_FAILED = -1
+    End Enum
+
+    Public Enum CreationFlags As Int32
+        CREATE_NO_WINDOW = &H8000000
+        CREATE_SUSPENDED = &H4
+        CREATE_BREAKAWAY_FROM_JOB = &H1000000
+        CREATE_DEFAULT_ERROR_MODE = &H4000000
+    End Enum
+
+    Public Enum StartupFlags As Int32
+        STARTF_FORCEOFFFEEDBACK = &H80
+        STARTF_USESTDHANDLES = &H100
+    End Enum
+
+    Public Enum JobObjectLimitFlags As Int32
+        JOB_OBJECT_LIMIT_ACTIVE_PROCESS = &H8
+        JOB_OBJECT_LIMIT_AFFINITY = &H10
+        JOB_OBJECT_LIMIT_BREAKAWAY_OK = &H800
+        JOB_OBJECT_LIMIT_DIE_ON_UNHANDLED_EXCEPTION = &H400
+        JOB_OBJECT_LIMIT_JOB_MEMORY = &H200
+        JOB_OBJECT_LIMIT_JOB_TIME = &H4
+        JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE = &H2000
+        JOB_OBJECT_LIMIT_PRESERVE_JOB_TIME = &H40
+        JOB_OBJECT_LIMIT_PRIORITY_CLASS = &H20
+        JOB_OBJECT_LIMIT_PROCESS_MEMORY = &H100
+        JOB_OBJECT_LIMIT_PROCESS_TIME = &H2
+        JOB_OBJECT_LIMIT_SCHEDULING_CLASS = &H80
+        JOB_OBJECT_LIMIT_SILENT_BREAKAWAY_OK = &H1000
+        JOB_OBJECT_LIMIT_WORKINGSET = &H1
+    End Enum
+
+    Public Enum JobObjectInfoClass As Int32
+        JobObjectAssociateCompletionPortInformation = 7
+        JobObjectBasicLimitInformation = 2
+        JobObjectBasicUIRestrictions = 4
+        JobObjectEndOfJobTimeInformation = 6
+        JobObjectExtendedLimitInformation = 9
+        JobObjectSecurityLimitInformation = 5
+    End Enum
+
+    Public Structure JOBOBJECT_BASIC_UI_RESTRICTIONS
+        Dim UIRestrictionClass As UIRestrictionClass
+    End Structure
+
+    Public Enum UIRestrictionClass As Int32
+        JOB_OBJECT_UILIMIT_DESKTOP = &H40
+        JOB_OBJECT_UILIMIT_DISPLAYSETTINGS = &H10
+        JOB_OBJECT_UILIMIT_EXITWINDOWS = &H80
+        JOB_OBJECT_UILIMIT_GLOBALATOMS = &H20
+        JOB_OBJECT_UILIMIT_HANDLES = &H1
+        JOB_OBJECT_UILIMIT_READCLIPBOARD = &H2
+        JOB_OBJECT_UILIMIT_SYSTEMPARAMETERS = &H8
+        JOB_OBJECT_UILIMIT_WRITECLIPBOARD = &H4
+        FullUILimit = &HFF
+    End Enum
 
     Public Structure ACL_SIZE_INFORMATION
         Dim AceCount As Int32
@@ -162,7 +396,12 @@
         UOI_NAME = 2
     End Enum
 
+    Public Enum ProcessAccess As Int32
+        PROCESS_ALL_ACCESS = &H1F0FFF
+    End Enum
+
     Public Const ERROR_INSUFFICIENT_BUFFER As Int32 = 122
+    Public Const ERROR_NOT_ENOUGH_QUOTA As Int32 = 1816
     Public Const SE_GROUP_LOGON_ID As Int32 = &HC0000000
     Public Const SECURITY_DESCRIPTOR_REVISION As Int32 = 1
     Public Const ACL_REVISION As Int32 = 2

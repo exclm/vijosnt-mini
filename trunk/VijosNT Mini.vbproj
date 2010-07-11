@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />
+    <Import Include="Microsoft.Win32.SafeHandles" />
     <Import Include="System" />
     <Import Include="System.Collections" />
     <Import Include="System.Collections.Generic" />
@@ -79,6 +80,7 @@
     <Compile Include="Path\Path.vb" />
     <Compile Include="Runner\Desktop.vb" />
     <Compile Include="Runner\Logon.vb" />
+    <Compile Include="Runner\ProcessEx.vb" />
     <Compile Include="Runner\UserObject.vb" />
     <Compile Include="Runner\WindowStation.vb" />
     <Compile Include="Service\Service.vb" />
@@ -100,6 +102,7 @@
     </Compile>
     <Compile Include="Path\TempPath.vb" />
     <Compile Include="Path\TempPathServer.vb" />
+    <Compile Include="Utility\NativeApi.vb" />
     <Compile Include="Utility\RandomName.vb" />
     <Compile Include="Utility\StreamPipe.vb" />
     <Compile Include="Utility\Win32Api.vb" />

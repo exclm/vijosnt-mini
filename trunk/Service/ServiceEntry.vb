@@ -7,7 +7,6 @@
     Private Shared Ace2 As UserObject.AllowedAce = New UserObject.AllowedAce(0, UserObject.AceMask.DesktopAll)
 
     Public Shared Sub Main()
-        Dim sp As New StreamPipe(New FileStream("d:\a.txt", FileMode.Open), Console.OpenStandardOutput())
-        sp.WaitOne()
+
     End Sub
 End Class
