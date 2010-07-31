@@ -7,6 +7,6 @@
     Private Shared Ace2 As UserObject.AllowedAce = New UserObject.AllowedAce(0, UserObject.AceMask.DesktopAll)
 
     Public Shared Sub Main()
-
+        ProcessEx.Create("c:\windows\notepad.exe", Nothing, Nothing, Nothing, 0, 0, 0, Nothing).Resume().WaitOne()
     End Sub
 End Class

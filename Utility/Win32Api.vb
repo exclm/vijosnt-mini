@@ -1,4 +1,26 @@
 ﻿Friend Module Win32Api
+
+#Region "advapi32.dll"
+    Public Declare Auto Function CreateProcessAsUser Lib "advapi32.dll" ( _
+        ByVal TokenHandle As IntPtr, _
+        ByVal ApplicationName As String, _
+        ByVal CommandLine As String, _
+        ByRef ProcessAttributes As SECURITY_ATTRIBUTES, _
+        ByRef ThreadAttributes As SECURITY_ATTRIBUTES, _
+        ByVal InheritHandles As Boolean, _
+        ByVal CreationFlags As CreationFlags, _
+        ByVal Environment As IntPtr, _
+        ByVal CurrentDirectory As String, _
+        ByRef StartupInfo As STARTUPINFO, _
+        ByRef ProcessInformation As PROCESS_INFORMATION _
+        ) As Boolean
+
+    Public Declare Auto Function ImpersonateLoggedOnUser Lib "advapi32.dll" ( _
+        ByVal hToken As IntPtr _
+        ) As Boolean
+
+    Public Declare Auto Function RevertToSelf Lib "advapi32.dll" () As Boolean
+
     Public Declare Auto Function LogonUser Lib "advapi32.dll" ( _
         ByVal UserName As String, _
         ByVal Domain As String, _
@@ -72,6 +94,61 @@
         ByVal AccessMask As Int32, _
         ByVal pSid As IntPtr) As Boolean
 
+    Public Structure ACL_SIZE_INFORMATION
+        Dim AceCount As Int32
+        Dim AclBytesInUse As Int32
+        Dim AclBytesFree As Int32
+    End Structure
+
+    Public Structure ACE_HEADER
+        Dim AceType As Byte
+        Dim AceFlags As AceFlags
+        Dim AceSize As Int16
+    End Structure
+
+    Public Enum LogonType As Int32
+        LOGON32_LOGON_INTERACTIVE = 2
+    End Enum
+
+    Public Enum LogonProvider As Int32
+        LOGON32_PROVIDER_DEFAULT = 0
+    End Enum
+
+    Public Enum TOKEN_INFORMATION_CLASS As Int32
+        TokenGroups = 2
+    End Enum
+
+    Public Enum SECURITY_INFORMATION As Int32
+        DACL_SECURITY_INFORMATION = 4
+    End Enum
+
+    Public Enum ACL_INFORMATION_CLASS As Int32
+        AclSizeInformation = 2
+    End Enum
+
+    Public Enum AceFlags As Byte
+        OBJECT_INHERIT_ACE = &H1
+        CONTAINER_INHERIT_ACE = &H2
+        NO_PROPAGATE_INHERIT_ACE = &H4
+        INHERIT_ONLY_ACE = &H8
+        INHERITED_ACE = &H10
+        VALID_INHERIT_FLAGS = &H1F
+    End Enum
+
+    Public Enum DesktopAccess As Int32
+        DESKTOP_READOBJECTS = 1
+        DESKTOP_CREATEWINDOW = 2
+        DESKTOP_WRITEOBJECTS = &H80
+        READ_CONTROL = &H20000
+        WRITE_DAC = &H40000
+    End Enum
+
+    Public Enum UserObjectInformation As Int32
+        UOI_NAME = 2
+    End Enum
+#End Region
+
+#Region "user32.dll"
     Public Declare Auto Function GetUserObjectSecurity Lib "user32.dll" ( _
         ByVal hObj As IntPtr, _
         ByRef pSIRequested As SECURITY_INFORMATION, _
@@ -103,8 +180,95 @@
 
     Public Declare Auto Function CloseDesktop Lib "user32.dll" ( _
         ByVal hDesktop As IntPtr) As Boolean
+#End Region
 
+#Region "kernel32.dll"
     Public Declare Auto Function GetTickCount Lib "kernel32.dll" () As Int32
+
+    Public Declare Auto Function CreateProcess Lib "kernel32.dll" ( _
+        ByVal ApplicationName As String, _
+        ByVal CommandLine As String, _
+        ByRef ProcessAttributes As SECURITY_ATTRIBUTES, _
+        ByRef ThreadAttributes As SECURITY_ATTRIBUTES, _
+        ByVal InheritHandles As Boolean, _
+        ByVal CreationFlags As CreationFlags, _
+        ByVal Environment As IntPtr, _
+        ByVal CurrentDirectory As String, _
+        ByRef StartupInfo As STARTUPINFO, _
+        ByRef ProcessInformation As PROCESS_INFORMATION _
+        ) As Boolean
+
+    Public Declare Auto Function CloseHandle Lib "kernel32.dll" ( _
+        ByVal hObject As IntPtr) As Boolean
+
+    Public Declare Auto Function WaitForSingleObject Lib "kernel32.dll" ( _
+        ByVal hHandle As IntPtr, _
+        ByVal Timeout As Int32) As WaitResult
+
+    Public Declare Auto Function TerminateProcess Lib "kernel32.dll" ( _
+        ByVal hProcess As IntPtr, _
+        ByVal ExitCode As Int32) As Boolean
+
+    Public Declare Auto Function TerminateThread Lib "kernel32.dll" ( _
+        ByVal hThread As IntPtr, _
+        ByVal ExitCode As Int32) As Boolean
+
+    Public Declare Auto Function GetExitCodeProcess Lib "kernel32.dll" ( _
+        ByVal hProcess As IntPtr, _
+        ByRef ExitCode As Int32) As Boolean
+
+    Public Declare Auto Function CreateJobObject Lib "kernel32.dll" ( _
+        ByRef JobAttributes As SECURITY_ATTRIBUTES, _
+        ByVal Name As String) As IntPtr
+
+    Public Declare Auto Function AssignProcessToJobObject Lib "kernel32.dll" ( _
+        ByVal hJob As IntPtr, _
+        ByVal hProcess As IntPtr) As Boolean
+
+    Public Declare Auto Function SetInformationJobObject Lib "kernel32.dll" ( _
+        ByVal hJob As IntPtr, _
+        ByVal JobObjectInfoClass As JobObjectInfoClass, _
+        ByRef lpJobObjectInfo As JOBOBJECT_EXTENDED_LIMIT_INFORMATION, _
+        ByVal cbJobObjectInfoLength As Int32) As Boolean
+
+    Public Declare Auto Function SetInformationJobObject Lib "kernel32.dll" ( _
+        ByVal hJob As IntPtr, _
+        ByVal JobObjectInfoClass As JobObjectInfoClass, _
+        ByRef lpJobObjectInfo As JOBOBJECT_BASIC_UI_RESTRICTIONS, _
+        ByVal cbJobObjectInfoLength As Int32) As Boolean
+
+    Public Declare Auto Function ResumeThread Lib "kernel32.dll" ( _
+        ByVal hThread As IntPtr) As Int32
+
+    Public Declare Auto Function GetProcessTimes Lib "kernel32.dll" ( _
+        ByVal hProcess As IntPtr, _
+        ByRef CreationTime As Int64, _
+        ByRef ExitTime As Int64, _
+        ByRef KernelTime As Int64, _
+        ByRef UserTime As Int64) As Boolean
+
+    Public Declare Auto Function ReadProcessMemory Lib "kernel32.dll" ( _
+        ByVal hProcess As IntPtr, _
+        ByVal lpBaseAddress As IntPtr, _
+        ByRef Buffer As Int32, _
+        ByVal nSize As Int32, _
+        ByRef NumberOfBytesRead As Int32) As Boolean
+
+    Public Declare Auto Function WriteProcessMemory Lib "kernel32.dll" ( _
+        ByVal hProcess As IntPtr, _
+        ByVal lpBaseAddress As IntPtr, _
+        ByRef Buffer As IntPtr, _
+        ByVal nSize As Int32, _
+        ByRef NumberOfBytesWritten As Int32) As Boolean
+
+    Public Declare Auto Function TerminateJobObject Lib "kernel32.dll" ( _
+        ByVal hJob As IntPtr, _
+        ByVal uExitCode As Int32) As Boolean
+
+    Public Declare Auto Function OpenProcess Lib "kernel32.dll" ( _
+        ByVal dwDesiredAccess As ProcessAccess, _
+        ByVal bInheritHandle As Boolean, _
+        ByVal dwProcessId As Int32) As IntPtr
 
     Public Structure STARTUPINFO
         Dim cb As Int32
@@ -182,122 +346,46 @@
         AboveNormal = &H8000
     End Enum
 
-    Public Declare Auto Function CreateProcess Lib "kernel32.dll" ( _
-        ByVal ApplicationName As String, _
-        ByVal CommandLine As String, _
-        ByRef ProcessAttributes As SECURITY_ATTRIBUTES, _
-        ByRef ThreadAttributes As SECURITY_ATTRIBUTES, _
-        ByVal InheritHandles As Boolean, _
-        ByVal CreationFlags As CreationFlags, _
-        ByVal Environment As IntPtr, _
-        ByVal CurrentDirectory As String, _
-        ByRef StartupInfo As STARTUPINFO, _
-        ByRef ProcessInformation As PROCESS_INFORMATION _
-        ) As Boolean
-
-    Public Declare Auto Function CreateProcessAsUser Lib "advapi32.dll" ( _
-        ByVal TokenHandle As IntPtr, _
-        ByVal ApplicationName As String, _
-        ByVal CommandLine As String, _
-        ByRef ProcessAttributes As SECURITY_ATTRIBUTES, _
-        ByRef ThreadAttributes As SECURITY_ATTRIBUTES, _
-        ByVal InheritHandles As Boolean, _
-        ByVal CreationFlags As CreationFlags, _
-        ByVal Environment As IntPtr, _
-        ByVal CurrentDirectory As String, _
-        ByRef StartupInfo As STARTUPINFO, _
-        ByRef ProcessInformation As PROCESS_INFORMATION _
-        ) As Boolean
-
-    Public Declare Auto Function ImpersonateLoggedOnUser Lib "advapi32.dll" ( _
-        ByVal hToken As IntPtr _
-        ) As Boolean
-
-    Public Declare Auto Function RevertToSelf Lib "advapi32.dll" () As Boolean
-
-    Public Declare Auto Function CloseHandle Lib "kernel32.dll" ( _
-        ByVal hObject As IntPtr) As Boolean
-
-    Public Declare Auto Function WaitForSingleObject Lib "kernel32.dll" ( _
-        ByVal hHandle As IntPtr, _
-        ByVal Timeout As Int32) As WaitResult
-
-    Public Declare Auto Function TerminateProcess Lib "kernel32.dll" ( _
-        ByVal hProcess As IntPtr, _
-        ByVal ExitCode As Int32) As Boolean
-
-    Public Declare Auto Function GetExitCodeProcess Lib "kernel32.dll" ( _
-        ByVal hProcess As IntPtr, _
-        ByRef ExitCode As Int32) As Boolean
-
-    Public Declare Auto Function CreateJobObject Lib "kernel32.dll" ( _
-        ByRef JobAttributes As SECURITY_ATTRIBUTES, _
-        ByVal Name As String) As IntPtr
-
-    Public Declare Auto Function AssignProcessToJobObject Lib "kernel32.dll" ( _
-        ByVal hJob As IntPtr, _
-        ByVal hProcess As IntPtr) As Boolean
-
-    Public Declare Auto Function SetInformationJobObject Lib "kernel32.dll" ( _
-        ByVal hJob As IntPtr, _
-        ByVal JobObjectInfoClass As JobObjectInfoClass, _
-        ByRef lpJobObjectInfo As JOBOBJECT_EXTENDED_LIMIT_INFORMATION, _
-        ByVal cbJobObjectInfoLength As Int32) As Boolean
-
-    Public Declare Auto Function SetInformationJobObject Lib "kernel32.dll" ( _
-        ByVal hJob As IntPtr, _
-        ByVal JobObjectInfoClass As JobObjectInfoClass, _
-        ByRef lpJobObjectInfo As JOBOBJECT_BASIC_UI_RESTRICTIONS, _
-        ByVal cbJobObjectInfoLength As Int32) As Boolean
-
-    Public Declare Auto Function ResumeThread Lib "kernel32.dll" ( _
-        ByVal hThread As IntPtr) As Int32
-
-    Public Declare Auto Function GetProcessTimes Lib "kernel32.dll" ( _
-        ByVal hProcess As IntPtr, _
-        ByRef CreationTime As Int64, _
-        ByRef ExitTime As Int64, _
-        ByRef KernelTime As Int64, _
-        ByRef UserTime As Int64) As Boolean
-
-    Public Declare Auto Function ReadProcessMemory Lib "kernel32.dll" ( _
-        ByVal hProcess As IntPtr, _
-        ByVal lpBaseAddress As IntPtr, _
-        ByRef Buffer As Int32, _
-        ByVal nSize As Int32, _
-        ByRef NumberOfBytesRead As Int32) As Boolean
-
-    Public Declare Auto Function WriteProcessMemory Lib "kernel32.dll" ( _
-        ByVal hProcess As IntPtr, _
-        ByVal lpBaseAddress As IntPtr, _
-        ByRef Buffer As IntPtr, _
-        ByVal nSize As Int32, _
-        ByRef NumberOfBytesWritten As Int32) As Boolean
-
-    Public Declare Auto Function TerminateJobObject Lib "kernel32.dll" ( _
-        ByVal hJob As IntPtr, _
-        ByVal uExitCode As Int32) As Boolean
-
-    Public Declare Auto Function OpenProcess Lib "kernel32.dll" ( _
-        ByVal dwDesiredAccess As ProcessAccess, _
-        ByVal bInheritHandle As Boolean, _
-        ByVal dwProcessId As Int32) As IntPtr
-
     Public Enum WaitResult As Int32
         WAIT_OBJECT_0 = 0
         WAIT_TIMEOUT = &H102
         WAIT_FAILED = -1
     End Enum
 
+    ' http://msdn.microsoft.com/en-us/library/ms684863(v=VS.85).aspx
     Public Enum CreationFlags As Int32
-        CREATE_NO_WINDOW = &H8000000
-        CREATE_SUSPENDED = &H4
         CREATE_BREAKAWAY_FROM_JOB = &H1000000
         CREATE_DEFAULT_ERROR_MODE = &H4000000
+        CREATE_NEW_CONSOLE = &H10
+        CREATE_NEW_PROCESS_GROUP = &H200
+        CREATE_NO_WINDOW = &H8000000
+        CREATE_PROTECTED_PROCESS = &H40000
+        CREATE_PRESERVE_CODE_AUTHZ_LEVEL = &H2000000
+        CREATE_SEPARATE_WOW_VDM = &H800
+        CREATE_SHARED_WOW_VDM = &H1000
+        CREATE_SUSPENDED = &H4
+        CREATE_UNICODE_ENVIRONMENT = &H400
+        DEBUG_ONLY_THIS_PROCESS = &H2
+        DEBUG_PROCESS = &H1
+        DETACHED_PROCESS = &H8
+        EXTENDED_STARTUPINFO_PRESENT = &H80000
+        INHERIT_PARENT_AFFINITY = &H10000
     End Enum
 
+    ' http://msdn.microsoft.com/en-us/library/ms686331(v=VS.85).aspx
     Public Enum StartupFlags As Int32
+        STARTF_FORCEONFEEDBACK = &H40
         STARTF_FORCEOFFFEEDBACK = &H80
+        STARTF_PREVENTPINNING = &H2000
+        STARTF_RUNFULLSCREEN = &H20
+        STARTF_TITLEISAPPID = &H1000
+        STARTF_TITLEISLINKNAME = &H800
+        STARTF_USECOUNTCHARS = &H8
+        STARTF_USEFILLATTRIBUTE = &H10
+        STARTF_USEHOTKEY = &H200
+        STARTF_USEPOSITION = &H4
+        STARTF_USESHOWWINDOW = &H1
+        STARTF_USESIZE = &H2
         STARTF_USESTDHANDLES = &H100
     End Enum
 
@@ -343,62 +431,10 @@
         FullUILimit = &HFF
     End Enum
 
-    Public Structure ACL_SIZE_INFORMATION
-        Dim AceCount As Int32
-        Dim AclBytesInUse As Int32
-        Dim AclBytesFree As Int32
-    End Structure
-
-    Public Structure ACE_HEADER
-        Dim AceType As Byte
-        Dim AceFlags As AceFlags
-        Dim AceSize As Int16
-    End Structure
-
-    Public Enum LogonType As Int32
-        LOGON32_LOGON_INTERACTIVE = 2
-    End Enum
-
-    Public Enum LogonProvider As Int32
-        LOGON32_PROVIDER_DEFAULT = 0
-    End Enum
-
-    Public Enum TOKEN_INFORMATION_CLASS As Int32
-        TokenGroups = 2
-    End Enum
-
-    Public Enum SECURITY_INFORMATION As Int32
-        DACL_SECURITY_INFORMATION = 4
-    End Enum
-
-    Public Enum ACL_INFORMATION_CLASS As Int32
-        AclSizeInformation = 2
-    End Enum
-
-    Public Enum AceFlags As Byte
-        OBJECT_INHERIT_ACE = &H1
-        CONTAINER_INHERIT_ACE = &H2
-        NO_PROPAGATE_INHERIT_ACE = &H4
-        INHERIT_ONLY_ACE = &H8
-        INHERITED_ACE = &H10
-        VALID_INHERIT_FLAGS = &H1F
-    End Enum
-
-    Public Enum DesktopAccess As Int32
-        DESKTOP_READOBJECTS = 1
-        DESKTOP_CREATEWINDOW = 2
-        DESKTOP_WRITEOBJECTS = &H80
-        READ_CONTROL = &H20000
-        WRITE_DAC = &H40000
-    End Enum
-
-    Public Enum UserObjectInformation As Int32
-        UOI_NAME = 2
-    End Enum
-
     Public Enum ProcessAccess As Int32
         PROCESS_ALL_ACCESS = &H1F0FFF
     End Enum
+#End Region
 
     Public Const ERROR_INSUFFICIENT_BUFFER As Int32 = 122
     Public Const ERROR_NOT_ENOUGH_QUOTA As Int32 = 1816
