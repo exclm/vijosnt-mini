@@ -25,6 +25,8 @@
         StartupInfo.Desktop = Desktop
         StartupInfo.Title = Nothing
         StartupInfo.dwFlags = StartupFlags.STARTF_FORCEOFFFEEDBACK Or StartupFlags.STARTF_USESTDHANDLES
+
+        ' TODO: Duplicate handles, set PEB, work on the x64 issue
         StartupInfo.hStdInput = StdInputHandle
         StartupInfo.hStdOutput = StdOutputHandle
         StartupInfo.hStdError = StdErrorHandle
@@ -65,9 +67,9 @@
     Public Class Suspended
         Implements IDisposable
 
+        Protected m_Resumed As Boolean
         Protected m_ProcessHandle As IntPtr
         Protected m_ThreadHandle As IntPtr
-        Protected m_Resumed As Boolean
 
         Public Sub New(ByVal ProcessHandle As IntPtr, ByVal ThreadHandle As IntPtr)
             m_Resumed = False
@@ -88,8 +90,6 @@
                 Return New ProcessEx(m_ProcessHandle)
             Finally
                 m_Resumed = True
-                m_ProcessHandle = 0
-                m_ThreadHandle = 0
             End Try
         End Function
 
@@ -102,8 +102,6 @@
                 Win32True(TerminateThread(m_ThreadHandle, ExitCode))
             Finally
                 m_Resumed = True
-                m_ProcessHandle = 0
-                m_ThreadHandle = 0
             End Try
         End Sub
 
