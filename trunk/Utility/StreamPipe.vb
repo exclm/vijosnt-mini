@@ -1,10 +1,10 @@
-﻿Public NotInheritable Class StreamPipe
+﻿Friend Class StreamPipe
     Inherits WaitHandle
 
-    Private m_Source As Stream
-    Private m_Target As Stream
-    Private m_Buffer As Byte()
-    Private m_Event As ManualResetEvent
+    Protected m_Source As Stream
+    Protected m_Target As Stream
+    Protected m_Buffer As Byte()
+    Protected m_Event As ManualResetEvent
 
     Public Sub New(ByVal Source As Stream, ByVal Target As Stream)
         Me.New(Source, Target, 4096)

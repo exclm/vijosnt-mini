@@ -1,6 +1,6 @@
-﻿Public NotInheritable Class RandomString
-    Private Const m_ValidChars As String = "abcdefghijklmnopqrstuvwxyz0123456789"
-    Private m_Random As Random
+﻿Friend Class RandomString
+    Protected Const m_ValidChars As String = "abcdefghijklmnopqrstuvwxyz0123456789"
+    Protected m_Random As Random
 
     Public Sub New()
         m_Random = New Random()

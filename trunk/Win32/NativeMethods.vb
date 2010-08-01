@@ -412,7 +412,6 @@
         JobObjectBasicUIRestrictions = 4
         JobObjectEndOfJobTimeInformation = 6
         JobObjectExtendedLimitInformation = 9
-        JobObjectSecurityLimitInformation = 5
     End Enum
 
     Public Structure JOBOBJECT_BASIC_UI_RESTRICTIONS

@@ -35,13 +35,13 @@
         Dim Handle As IntPtr = GetHandle()
         Dim Length As Int32
 
-        If GetUserObjectInformation(Handle, UserObjectInformation.UOI_NAME, 0, 0, Length) = True Then
+        If Not GetUserObjectInformation(Handle, UserObjectInformation.UOI_NAME, 0, 0, Length) Then
+            Dim LastErr As Int32 = Marshal.GetLastWin32Error()
+            If LastErr <> ERROR_INSUFFICIENT_BUFFER Then
+                Throw New Win32Exception(LastErr)
+            End If
+        Else
             Throw New Win32Exception("GetUserObjectInformation succeeded with no information")
-        End If
-
-        Dim LastErr As Int32 = Marshal.GetLastWin32Error()
-        If LastErr <> ERROR_INSUFFICIENT_BUFFER Then
-            Throw New Win32Exception(LastErr)
         End If
 
         Dim NamePtr As IntPtr = Marshal.AllocHGlobal(Length)
@@ -62,13 +62,13 @@
         Dim InfoRequired As SECURITY_INFORMATION = SECURITY_INFORMATION.DACL_SECURITY_INFORMATION
         Dim Length As Int32
 
-        If GetUserObjectSecurity(UserObject, InfoRequired, 0, 0, Length) = True Then
+        If Not GetUserObjectSecurity(UserObject, InfoRequired, 0, 0, Length) Then
+            Dim LastErr As Int32 = Marshal.GetLastWin32Error()
+            If LastErr <> ERROR_INSUFFICIENT_BUFFER Then
+                Throw New Win32Exception(LastErr)
+            End If
+        Else
             Throw New Win32Exception("GetUserObjectSecurity succeeded with no information")
-        End If
-
-        Dim LastErr As Int32 = Marshal.GetLastWin32Error()
-        If LastErr <> ERROR_INSUFFICIENT_BUFFER Then
-            Throw New Win32Exception(LastErr)
         End If
 
         Dim bDaclPresent As Boolean
@@ -131,13 +131,13 @@
         Dim InfoRequired As SECURITY_INFORMATION = SECURITY_INFORMATION.DACL_SECURITY_INFORMATION
         Dim Length As Int32
 
-        If GetUserObjectSecurity(UserObject, InfoRequired, 0, 0, Length) = True Then
+        If Not GetUserObjectSecurity(UserObject, InfoRequired, 0, 0, Length) Then
+            Dim LastErr As Int32 = Marshal.GetLastWin32Error()
+            If LastErr <> ERROR_INSUFFICIENT_BUFFER Then
+                Throw New Win32Exception(LastErr)
+            End If
+        Else
             Throw New Win32Exception("GetUserObjectSecurity succeeded with no information")
-        End If
-
-        Dim LastErr As Int32 = Marshal.GetLastWin32Error()
-        If LastErr <> ERROR_INSUFFICIENT_BUFFER Then
-            Throw New Win32Exception(LastErr)
         End If
 
         Dim SecurityDescriptorOld As IntPtr = Marshal.AllocHGlobal(Length)

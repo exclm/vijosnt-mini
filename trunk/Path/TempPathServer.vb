@@ -20,7 +20,7 @@
     End Sub
 
     Public Function CreateTempPath() As TempPath
-        SyncLock m_Root
+        SyncLock Me
             Dim Path As String = m_RandomString.Next(m_TempPathLength)
             Dim Dir As DirectoryInfo = m_Root.CreateSubdirectory(Path)
             Return New TempPath(Dir, Me)
