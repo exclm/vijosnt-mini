@@ -1,4 +1,4 @@
-﻿Friend Module Win32Api
+﻿Friend Module NativeMethods
 
 #Region "advapi32.dll"
     Public Declare Auto Function CreateProcessAsUser Lib "advapi32.dll" ( _
@@ -250,7 +250,7 @@
     Public Declare Auto Function ReadProcessMemory Lib "kernel32.dll" ( _
         ByVal hProcess As IntPtr, _
         ByVal lpBaseAddress As IntPtr, _
-        ByRef Buffer As Int32, _
+        ByRef Buffer As IntPtr, _
         ByVal nSize As Int32, _
         ByRef NumberOfBytesRead As Int32) As Boolean
 
@@ -436,6 +436,32 @@
     End Enum
 #End Region
 
+#Region "ntdll.dll"
+    Public Declare Function NtQueryInformationProcess Lib "ntdll.dll" ( _
+        ByVal ProcessHandle As IntPtr, _
+        ByVal ProcessInformationClass As PROCESSINFOCLASS, _
+        ByRef ProcessInformation As PROCESS_BASIC_INFORMATION, _
+        ByVal ProcessInformationLength As Int32, _
+        ByRef ReturnLength As Int32) As NTSTATUS
+
+    Public Structure PROCESS_BASIC_INFORMATION
+        Dim Reserved0 As IntPtr
+        Dim PebBaseAddress As IntPtr
+        Dim Reserved1 As IntPtr
+        Dim Reserved2 As IntPtr
+        Dim UniqueProcessId As IntPtr
+        Dim Reserved3 As IntPtr
+    End Structure
+
+    Public Enum PROCESSINFOCLASS
+        ProcessBasicInformation = 0
+    End Enum
+
+    Public Enum NTSTATUS As Int32
+        STATUS_SUCCESS = 0
+    End Enum
+#End Region
+
     Public Const ERROR_INSUFFICIENT_BUFFER As Int32 = 122
     Public Const ERROR_NOT_ENOUGH_QUOTA As Int32 = 1816
     Public Const SE_GROUP_LOGON_ID As Int32 = &HC0000000
@@ -447,4 +473,5 @@
             Throw New Win32Exception()
         End If
     End Sub
+
 End Module

@@ -103,10 +103,9 @@
     </Compile>
     <Compile Include="Path\TempPath.vb" />
     <Compile Include="Path\TempPathServer.vb" />
-    <Compile Include="Win32\NativeApi.vb" />
+    <Compile Include="Win32\NativeMethods.vb" />
     <Compile Include="Utility\RandomString.vb" />
     <Compile Include="Utility\StreamPipe.vb" />
-    <Compile Include="Win32\Win32Api.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

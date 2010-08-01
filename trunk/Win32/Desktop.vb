@@ -1,9 +1,9 @@
-﻿Public NotInheritable Class Desktop
+﻿Friend Class Desktop
     Inherits UserObject
     Implements IDisposable
 
-    Private m_Handle As IntPtr
-    Private m_Name As String
+    Protected m_Handle As IntPtr
+    Protected m_Name As String
 
     Public Sub New(ByVal Name As String)
         m_Handle = CreateDesktop(Name, Nothing, 0, 0, DesktopAccess.DESKTOP_READOBJECTS Or DesktopAccess.DESKTOP_CREATEWINDOW Or _

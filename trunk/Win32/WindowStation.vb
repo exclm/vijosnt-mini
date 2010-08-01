@@ -1,8 +1,8 @@
-﻿Public NotInheritable Class WindowStation
+﻿Friend Class WindowStation
     Inherits UserObject
 
-    Private m_Handle As IntPtr
-    Private m_Name As String
+    Protected m_Handle As IntPtr
+    Protected m_Name As String
 
     Public Sub New()
         m_Handle = GetProcessWindowStation()

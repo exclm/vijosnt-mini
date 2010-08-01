@@ -1,4 +1,4 @@
-﻿Public MustInherit Class UserObject
+﻿Friend MustInherit Class UserObject
     Implements IDisposable
 
     Public Enum AceFlags As Byte

@@ -1,7 +1,7 @@
-﻿Public NotInheritable Class Logon
+﻿Friend Class Logon
     Implements IDisposable
 
-    Private m_Handle As IntPtr
+    Protected m_Handle As IntPtr
 
     Public Sub New(ByVal UserName As String, ByVal Password As String)
         Win32True(LogonUser(UserName, ".", Password, _
