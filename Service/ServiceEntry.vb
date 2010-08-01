@@ -7,6 +7,9 @@
     Private Shared Ace2 As UserObject.AllowedAce = New UserObject.AllowedAce(0, UserObject.AceMask.DesktopAll)
 
     Public Shared Sub Main()
-        ProcessEx.Create("c:\windows\notepad.exe", Nothing, Nothing, Nothing, Nothing).Resume().WaitOne()
+        Using sp As ProcessEx.Suspended = ProcessEx.Create("c:\windows\system32\notepad.exe", Nothing, Nothing, Nothing, "my_desktop"),
+            p As ProcessEx = sp.Resume()
+            p.WaitOne()
+        End Using
     End Sub
 End Class

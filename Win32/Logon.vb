@@ -12,13 +12,13 @@
     Public Function GetSid() As Byte()
         Dim Length As Int32
 
-        If GetTokenInformation(m_Handle, TOKEN_INFORMATION_CLASS.TokenGroups, 0, 0, Length) = True Then
+        If Not GetTokenInformation(m_Handle, TOKEN_INFORMATION_CLASS.TokenGroups, 0, 0, Length) Then
+            Dim LastErr As Int32 = Marshal.GetLastWin32Error()
+            If LastErr <> ERROR_INSUFFICIENT_BUFFER Then
+                Throw New Win32Exception(LastErr)
+            End If
+        Else
             Throw New Win32Exception("GetTokenInformation succeeded with no information")
-        End If
-
-        Dim LastErr As Int32 = Marshal.GetLastWin32Error()
-        If LastErr <> ERROR_INSUFFICIENT_BUFFER Then
-            Throw New Win32Exception(LastErr)
         End If
 
         Dim TokenGroupsPtr As IntPtr = Marshal.AllocHGlobal(Length)

@@ -102,6 +102,14 @@
             m_ThreadHandle = ThreadHandle
         End Sub
 
+        Public Function GetHandleUnsafe() As IntPtr
+            If m_Resumed Then
+                Throw New Exception("The suspended process has already been resumed.")
+            End If
+
+            Return m_ProcessHandle
+        End Function
+
         Public Function [Resume]() As ProcessEx
             If m_Resumed Then
                 Throw New Exception("The suspended process has already been resumed.")
