@@ -1,18 +1,18 @@
 ﻿Public NotInheritable Class Logon
     Implements IDisposable
 
-    Private m_hToken As IntPtr
+    Private m_Handle As IntPtr
 
     Public Sub New(ByVal UserName As String, ByVal Password As String)
         Win32True(LogonUser(UserName, ".", Password, _
             LogonType.LOGON32_LOGON_INTERACTIVE, LogonProvider.LOGON32_PROVIDER_DEFAULT, _
-            m_hToken))
+            m_Handle))
     End Sub
 
     Public Function GetSid() As Byte()
         Dim Length As Int32
 
-        If GetTokenInformation(m_hToken, TOKEN_INFORMATION_CLASS.TokenGroups, 0, 0, Length) = True Then
+        If GetTokenInformation(m_Handle, TOKEN_INFORMATION_CLASS.TokenGroups, 0, 0, Length) = True Then
             Throw New Win32Exception("GetTokenInformation succeeded with no information")
         End If
 
@@ -23,7 +23,7 @@
 
         Dim TokenGroupsPtr As IntPtr = Marshal.AllocHGlobal(Length)
         Try
-            Win32True(GetTokenInformation(m_hToken, TOKEN_INFORMATION_CLASS.TokenGroups, TokenGroupsPtr, Length, Length))
+            Win32True(GetTokenInformation(m_Handle, TOKEN_INFORMATION_CLASS.TokenGroups, TokenGroupsPtr, Length, Length))
 
             Dim GroupCount As Int32 = Marshal.ReadInt32(TokenGroupsPtr, 0)
             For Index As Int32 = 0 To GroupCount - 1
@@ -55,7 +55,7 @@
     ' IDisposable
     Protected Sub Dispose(ByVal disposing As Boolean)
         If Not Me.disposedValue Then
-            Win32True(CloseHandle(m_hToken))
+            Win32True(CloseHandle(m_Handle))
         End If
         Me.disposedValue = True
     End Sub

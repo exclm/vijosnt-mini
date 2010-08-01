@@ -8,16 +8,9 @@
         Return New ProcessEx(hProcess)
     End Function
 
-    ' TODO: login token, attach debugger\job object (in the Suspended class)
-    Public Shared Function Create(
-        ByVal ApplicationName As String,
-        ByVal CommandLine As String,
-        ByVal Environment As IEnumerable(Of String),
-        ByVal CurrentDirectory As String,
-        ByVal StdInputHandle As IntPtr,
-        ByVal StdOutputHandle As IntPtr,
-        ByVal StdErrorHandle As IntPtr,
-        ByVal Desktop As String) As Suspended
+    ' TODO: login token
+    Public Shared Function Create(ByVal ApplicationName As String, ByVal CommandLine As String, _
+        ByVal Environment As IEnumerable(Of String), ByVal CurrentDirectory As String, ByVal Desktop As String) As Suspended
 
         Dim StartupInfo As STARTUPINFO
 
@@ -25,11 +18,6 @@
         StartupInfo.Desktop = Desktop
         StartupInfo.Title = Nothing
         StartupInfo.dwFlags = StartupFlags.STARTF_FORCEOFFFEEDBACK Or StartupFlags.STARTF_USESTDHANDLES
-
-        ' TODO: Duplicate handles, set PEB, work on the x64 issue
-        StartupInfo.hStdInput = StdInputHandle
-        StartupInfo.hStdOutput = StdOutputHandle
-        StartupInfo.hStdError = StdErrorHandle
 
         Dim EnvironmentPtr As IntPtr = IntPtr.Zero
 
@@ -100,6 +88,7 @@
         Win32True(TerminateProcess(m_Handle, ReturnCode))
     End Sub
 
+    ' TODO: attach debugger\job object, std handles
     Public Class Suspended
         Implements IDisposable
 
