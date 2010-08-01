@@ -33,9 +33,8 @@
 
         Dim EnvironmentPtr As IntPtr = IntPtr.Zero
 
-        If Environment IsNot Nothing Then
-            ' TODO: Allocate EnvironmentPtr and initialize with specified data
-        End If
+        If Environment IsNot Nothing _
+            Then EnvironmentPtr = AllocEnvironment(Environment)
 
         Dim ProcessInformation As New PROCESS_INFORMATION
 
@@ -44,12 +43,49 @@
                 CreationFlags.CREATE_BREAKAWAY_FROM_JOB Or CreationFlags.CREATE_DEFAULT_ERROR_MODE Or CreationFlags.CREATE_NO_WINDOW Or CreationFlags.CREATE_SUSPENDED Or CreationFlags.CREATE_UNICODE_ENVIRONMENT,
                 EnvironmentPtr, CurrentDirectory, StartupInfo, ProcessInformation)
         Finally
-            If EnvironmentPtr <> IntPtr.Zero Then
+            If EnvironmentPtr <> IntPtr.Zero Then _
                 Marshal.FreeHGlobal(EnvironmentPtr)
-            End If
         End Try
 
         Return New Suspended(ProcessInformation.hProcess, ProcessInformation.hThread)
+    End Function
+
+    Private Shared Function AllocEnvironment(ByVal Environment As IEnumerable(Of String)) As IntPtr
+        ' Calculate size
+        Dim Size As Int32 = 1
+        For Each s As String In Environment
+            Size += s.Length + 1
+        Next
+        Size <<= 1
+
+        ' Empty environment block must also be terminated by two null chars
+        If Size = 2 Then _
+            Size = 4
+
+        ' Allocate memory and fill data
+        Dim Result As IntPtr = Marshal.AllocHGlobal(Size)
+
+        Try
+            Dim Pointer As IntPtr = Result
+            For Each s As String In Environment
+                Marshal.Copy(s, 0, Pointer, s.Length)
+                Pointer = Pointer.ToInt32() + (s.Length << 1)
+                Marshal.WriteInt16(Pointer, 0)
+                Pointer = Pointer.ToInt32() + 2
+            Next
+            Marshal.WriteInt16(Pointer, 0)
+
+            If Pointer = Result Then
+                Pointer = Pointer.ToInt32() + 2
+                Marshal.WriteInt16(Pointer, 0)
+            End If
+
+            ' Return the pointer
+            Return Result
+        Catch ex As Exception
+            Marshal.FreeHGlobal(Result)
+            Throw ex
+        End Try
     End Function
 #End Region
 
