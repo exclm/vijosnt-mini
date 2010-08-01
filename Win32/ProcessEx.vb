@@ -1,4 +1,4 @@
-﻿Public NotInheritable Class ProcessEx
+﻿Friend Class ProcessEx
     Inherits WaitHandle
 
 #Region "Shared members"
@@ -77,7 +77,7 @@
     End Function
 #End Region
 
-    Private m_Handle As IntPtr
+    Protected m_Handle As IntPtr
 
     Public Sub New(ByVal OwnedHandle As IntPtr)
         m_Handle = OwnedHandle
