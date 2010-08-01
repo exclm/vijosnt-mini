@@ -78,11 +78,12 @@
     <Compile Include="Compiler\Compiler.vb" />
     <Compile Include="Path\AppPath.vb" />
     <Compile Include="Path\Path.vb" />
-    <Compile Include="Runner\Desktop.vb" />
-    <Compile Include="Runner\Logon.vb" />
-    <Compile Include="Runner\ProcessEx.vb" />
-    <Compile Include="Runner\UserObject.vb" />
-    <Compile Include="Runner\WindowStation.vb" />
+    <Compile Include="Win32\Desktop.vb" />
+    <Compile Include="Win32\JobObject.vb" />
+    <Compile Include="Win32\Logon.vb" />
+    <Compile Include="Win32\ProcessEx.vb" />
+    <Compile Include="Win32\UserObject.vb" />
+    <Compile Include="Win32\WindowStation.vb" />
     <Compile Include="Service\Service.vb" />
     <Compile Include="Service\ServiceEntry.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -102,10 +103,10 @@
     </Compile>
     <Compile Include="Path\TempPath.vb" />
     <Compile Include="Path\TempPathServer.vb" />
-    <Compile Include="Utility\NativeApi.vb" />
-    <Compile Include="Utility\RandomName.vb" />
+    <Compile Include="Win32\NativeApi.vb" />
+    <Compile Include="Utility\RandomString.vb" />
     <Compile Include="Utility\StreamPipe.vb" />
-    <Compile Include="Utility\Win32Api.vb" />
+    <Compile Include="Win32\Win32Api.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

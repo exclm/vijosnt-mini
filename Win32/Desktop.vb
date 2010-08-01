@@ -2,14 +2,14 @@
     Inherits UserObject
     Implements IDisposable
 
-    Private m_hDesktop As IntPtr
+    Private m_Handle As IntPtr
     Private m_Name As String
 
     Public Sub New(ByVal Name As String)
-        m_hDesktop = CreateDesktop(Name, Nothing, 0, 0, DesktopAccess.DESKTOP_READOBJECTS Or DesktopAccess.DESKTOP_CREATEWINDOW Or _
+        m_Handle = CreateDesktop(Name, Nothing, 0, 0, DesktopAccess.DESKTOP_READOBJECTS Or DesktopAccess.DESKTOP_CREATEWINDOW Or _
             DesktopAccess.DESKTOP_WRITEOBJECTS Or DesktopAccess.READ_CONTROL Or DesktopAccess.WRITE_DAC, 0)
 
-        If m_hDesktop = 0 Then
+        If m_Handle = 0 Then
             Throw New Win32Exception()
         End If
 
@@ -17,7 +17,7 @@
     End Sub
 
     Protected Overrides Function GetHandle() As System.IntPtr
-        Return m_hDesktop
+        Return m_Handle
     End Function
 
     Public Overrides Function GetName() As String
@@ -30,7 +30,7 @@
     ' IDisposable
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         If Not Me.disposedValue Then
-            Win32True(CloseDesktop(m_hDesktop))
+            Win32True(CloseDesktop(m_Handle))
         End If
         Me.disposedValue = True
         MyBase.Dispose(disposing)

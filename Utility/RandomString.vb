@@ -1,4 +1,4 @@
-﻿Public NotInheritable Class RandomName
+﻿Public NotInheritable Class RandomString
     Private Const m_ValidChars As String = "abcdefghijklmnopqrstuvwxyz0123456789"
     Private m_Random As Random
 

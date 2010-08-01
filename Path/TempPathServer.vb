@@ -7,21 +7,21 @@
     Private m_Root As DirectoryInfo
     Private m_Pendings As List(Of DirectoryInfo)
     Private m_CleanupThread As Thread
-    Private m_RandomName As RandomName
+    Private m_RandomString As RandomString
 
     Public Sub New()
         Dim AppPath As New AppPath()
         m_Root = AppPath.GetDirectoryInfo().CreateSubdirectory("Temp")
         m_Pendings = New List(Of DirectoryInfo)
         m_CleanupThread = New Thread(AddressOf CleanupThreadEntry)
-        m_RandomName = New RandomName()
+        m_RandomString = New RandomString()
         m_CleanupThread.Priority = ThreadPriority.Lowest
         m_CleanupThread.Start(m_Pendings)
     End Sub
 
     Public Function CreateTempPath() As TempPath
         SyncLock m_Root
-            Dim Path As String = m_RandomName.Next(m_TempPathLength)
+            Dim Path As String = m_RandomString.Next(m_TempPathLength)
             Dim Dir As DirectoryInfo = m_Root.CreateSubdirectory(Path)
             Return New TempPath(Dir, Me)
         End SyncLock
