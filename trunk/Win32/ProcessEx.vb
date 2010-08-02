@@ -72,7 +72,7 @@
             Return Result
         Catch ex As Exception
             Marshal.FreeHGlobal(Result)
-            Throw ex
+            Throw
         End Try
     End Function
 #End Region
