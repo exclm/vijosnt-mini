@@ -77,15 +77,16 @@
     End Function
 #End Region
 
-    Protected m_Handle As IntPtr
-
     Public Sub New(ByVal OwnedHandle As IntPtr)
-        m_Handle = OwnedHandle
-        MyBase.SafeWaitHandle = New SafeWaitHandle(m_Handle, True)
+        MyBase.SafeWaitHandle = New SafeWaitHandle(OwnedHandle, True)
     End Sub
 
+    Public Function GetHandleUnsafe() As IntPtr
+        Return MyBase.SafeWaitHandle.DangerousGetHandle()
+    End Function
+
     Public Sub Kill(ByVal ReturnCode As Int32)
-        Win32True(TerminateProcess(m_Handle, ReturnCode))
+        Win32True(TerminateProcess(GetHandleUnsafe(), ReturnCode))
     End Sub
 
     ' TODO: attach debugger\job object, std handles
@@ -133,6 +134,8 @@
 
             Try
                 Win32True(TerminateThread(m_ThreadHandle, ExitCode))
+                Win32True(CloseHandle(m_ThreadHandle))
+                Win32True(CloseHandle(m_ProcessHandle))
             Finally
                 m_Resumed = True
             End Try
@@ -166,4 +169,5 @@
 #End Region
 
     End Class
+
 End Class
