@@ -4,6 +4,13 @@
     Public Class Limits
         Protected m_Data As JOBOBJECT_EXTENDED_LIMIT_INFORMATION
 
+        Public Enum Limit
+            BreakawayOk = &H800
+            DieOnUnhandledException = &H400
+            KillOnJobClose = &H2000
+            SilentBreakawayOk = &H1000
+        End Enum
+
         Public Sub New()
             m_Data.BasicLimitInformation.PriorityClass = PriorityClass.Normal
             m_Data.BasicLimitInformation.SchedulingClass = 5
@@ -87,6 +94,19 @@
                 m_Data.BasicLimitInformation.LimitFlags = m_Data.BasicLimitInformation.LimitFlags And Not JobObjectLimitFlags.JOB_OBJECT_LIMIT_PROCESS_MEMORY
             End If
             Return Me
+        End Function
+
+        Public Function SetLimit(ByVal Limit As Limit, ByVal Value As Boolean) As Limits
+            If Value Then
+                m_Data.BasicLimitInformation.LimitFlags = m_Data.BasicLimitInformation.LimitFlags Or Limit
+            Else
+                m_Data.BasicLimitInformation.LimitFlags = m_Data.BasicLimitInformation.LimitFlags And Not Limit
+            End If
+            Return Me
+        End Function
+
+        Public Function GetLimit(ByVal Limit As Limit) As Boolean
+            Return (m_Data.BasicLimitInformation.LimitFlags And Limit) = Limit
         End Function
     End Class
 
