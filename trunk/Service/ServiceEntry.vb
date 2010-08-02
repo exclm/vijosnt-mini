@@ -9,8 +9,8 @@
     ' TODO: Figure out how to destroy a desktop
 
     Public Shared Sub Main()
-        Using JobObject As New JobObject()
-            JobObject.SetUIRestrictions(JobObject.GetUIRestrictions().SetLimit(VijosNT_Mini.JobObject.UIRestrictions.Limit.All, True)).GetUIRestrictions()
+        Using s As ProcessEx.Suspended = ProcessEx.CreateSuspended("c:\windows\system32\cmd.exe", Nothing, Nothing, Nothing, Nothing)
+            ' TODO: test stdin/out/err redirecting when pipe is implemented
         End Using
     End Sub
 End Class
