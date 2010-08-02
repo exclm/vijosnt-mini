@@ -225,6 +225,20 @@
         ByVal hJob As IntPtr, _
         ByVal hProcess As IntPtr) As Boolean
 
+    Public Declare Auto Function QueryInformationJobObject Lib "kernel32.dll" ( _
+        ByVal hJob As IntPtr, _
+        ByVal JobObjectInfoClass As JobObjectInfoClass, _
+        ByRef lpJobObjectInfo As JOBOBJECT_EXTENDED_LIMIT_INFORMATION, _
+        ByVal cbJobObjectInfoLength As Int32, _
+        ByRef lpReturnLength As Int32) As Boolean
+
+    Public Declare Auto Function QueryInformationJobObject Lib "kernel32.dll" ( _
+        ByVal hJob As IntPtr, _
+        ByVal JobObjectInfoClass As JobObjectInfoClass, _
+        ByRef lpJobObjectInfo As JOBOBJECT_BASIC_UI_RESTRICTIONS, _
+        ByVal cbJobObjectInfoLength As Int32, _
+        ByRef lpReturnLength As Int32) As Boolean
+
     Public Declare Auto Function SetInformationJobObject Lib "kernel32.dll" ( _
         ByVal hJob As IntPtr, _
         ByVal JobObjectInfoClass As JobObjectInfoClass, _

@@ -6,10 +6,16 @@
     Private Shared Ace1 As UserObject.AllowedAce = New UserObject.AllowedAce(UserObject.AceFlags.NoPropagateInheritAce, UserObject.AceMask.WinstaAll)
     Private Shared Ace2 As UserObject.AllowedAce = New UserObject.AllowedAce(0, UserObject.AceMask.DesktopAll)
 
+    ' TODO: Figure out how to destroy a desktop
+
     Public Shared Sub Main()
-        Using sp As ProcessEx.Suspended = ProcessEx.Create("c:\windows\system32\notepad.exe", Nothing, Nothing, Nothing, "my_desktop"),
-            p As ProcessEx = sp.Resume()
-            p.WaitOne()
+        Using JobObject As New JobObject()
+            JobObject.SetLimits(JobObject.GetLimits() _
+                .SetProcessMemoryLimit(64 * 1024 * 1024) _
+                .SetActiveProcessLimit(1) _
+                .SetPriorityClassLimit(PriorityClass.BelowNormal))
+
+            JobObject.GetLimits()
         End Using
     End Sub
 End Class
