@@ -251,15 +251,15 @@
         ByVal hProcess As IntPtr, _
         ByVal lpBaseAddress As IntPtr, _
         ByRef Buffer As IntPtr, _
-        ByVal nSize As Int32, _
-        ByRef NumberOfBytesRead As Int32) As Boolean
+        ByVal nSize As IntPtr, _
+        ByRef NumberOfBytesRead As IntPtr) As Boolean
 
     Public Declare Auto Function WriteProcessMemory Lib "kernel32.dll" ( _
         ByVal hProcess As IntPtr, _
         ByVal lpBaseAddress As IntPtr, _
         ByRef Buffer As IntPtr, _
-        ByVal nSize As Int32, _
-        ByRef NumberOfBytesWritten As Int32) As Boolean
+        ByVal nSize As IntPtr, _
+        ByRef NumberOfBytesWritten As IntPtr) As Boolean
 
     Public Declare Auto Function TerminateJobObject Lib "kernel32.dll" ( _
         ByVal hJob As IntPtr, _
@@ -310,10 +310,10 @@
         Dim PerProcessUserTimeLimit As Int64
         Dim PerJobUserTimeLimit As Int64
         Dim LimitFlags As JobObjectLimitFlags
-        Dim MinimumWorkingSetSize As Int32
-        Dim MaximumWorkingSetSize As Int32
+        Dim MinimumWorkingSetSize As IntPtr
+        Dim MaximumWorkingSetSize As IntPtr
         Dim ActiveProcessLimit As Int32
-        Dim Affinity As Int32
+        Dim Affinity As IntPtr
         Dim PriorityClass As PriorityClass
         Dim SchedulingClass As Int32
     End Structure
@@ -330,10 +330,10 @@
     Public Structure JOBOBJECT_EXTENDED_LIMIT_INFORMATION
         Dim BasicLimitInformation As JOBOBJECT_BASIC_LIMIT_INFORMATION
         Dim IoInfo As IO_COUNTERS
-        Dim ProcessMemoryLimit As Int32
-        Dim JobMemoryLimit As Int32
-        Dim PeakProcessMemoryUsed As Int32
-        Dim PeakJobMemoryUsed As Int32
+        Dim ProcessMemoryLimit As IntPtr
+        Dim JobMemoryLimit As IntPtr
+        Dim PeakProcessMemoryUsed As IntPtr
+        Dim PeakJobMemoryUsed As IntPtr
     End Structure
 
     Public Enum PriorityClass As Int32
