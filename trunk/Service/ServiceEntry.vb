@@ -10,12 +10,7 @@
 
     Public Shared Sub Main()
         Using JobObject As New JobObject()
-            JobObject.SetLimits(JobObject.GetLimits() _
-                .SetProcessMemoryLimit(64 * 1024 * 1024) _
-                .SetActiveProcessLimit(1) _
-                .SetPriorityClassLimit(PriorityClass.BelowNormal))
-
-            JobObject.GetLimits()
+            JobObject.SetUIRestrictions(JobObject.GetUIRestrictions().SetLimit(VijosNT_Mini.JobObject.UIRestrictions.Limit.All, True)).GetUIRestrictions()
         End Using
     End Sub
 End Class
