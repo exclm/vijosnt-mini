@@ -7,19 +7,19 @@
         ByVal CommandLine As String, _
         ByRef ProcessAttributes As SECURITY_ATTRIBUTES, _
         ByRef ThreadAttributes As SECURITY_ATTRIBUTES, _
-        ByVal InheritHandles As Boolean, _
+        <MarshalAs(UnmanagedType.Bool)> ByVal InheritHandles As Boolean, _
         ByVal CreationFlags As CreationFlags, _
         ByVal Environment As IntPtr, _
         ByVal CurrentDirectory As String, _
         ByRef StartupInfo As STARTUPINFO, _
         ByRef ProcessInformation As PROCESS_INFORMATION _
-        ) As Boolean
+        ) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Declare Auto Function ImpersonateLoggedOnUser Lib "advapi32.dll" ( _
         ByVal hToken As IntPtr _
-        ) As Boolean
+        ) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
-    Public Declare Auto Function RevertToSelf Lib "advapi32.dll" () As Boolean
+    Public Declare Auto Function RevertToSelf Lib "advapi32.dll" () As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Declare Auto Function LogonUser Lib "advapi32.dll" ( _
         ByVal UserName As String, _
@@ -27,14 +27,14 @@
         ByVal Password As String, _
         ByVal LogonType As LogonType, _
         ByVal LogonProvider As LogonProvider, _
-        ByRef hToken As IntPtr) As Boolean
+        ByRef hToken As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Declare Auto Function GetTokenInformation Lib "advapi32.dll" ( _
         ByVal TokenHandle As IntPtr, _
         ByVal TokenInformationClass As TOKEN_INFORMATION_CLASS, _
         ByVal TokenInformation As IntPtr, _
         ByVal TokenInformationLength As Int32, _
-        ByRef ReturnLength As Int32) As Boolean
+        ByRef ReturnLength As Int32) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Declare Auto Function GetLengthSid Lib "advapi32.dll" ( _
         ByVal Sid As IntPtr) As Int32
@@ -42,57 +42,57 @@
     Public Declare Auto Function CopySid Lib "advapi32.dll" ( _
         ByVal nDestinationSidLength As Int32, _
         ByVal pDestinationSid As IntPtr, _
-        ByVal pSourceSid As IntPtr) As Boolean
+        ByVal pSourceSid As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Declare Auto Function EqualSid Lib "advapi32.dll" ( _
         ByVal pSid1 As IntPtr, _
-        ByVal pSid2 As IntPtr) As Boolean
+        ByVal pSid2 As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Declare Auto Function InitializeSecurityDescriptor Lib "advapi32.dll" ( _
         ByVal pSecurityDescriptor As IntPtr, _
-        ByVal dwRevision As Int32) As Boolean
+        ByVal dwRevision As Int32) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Declare Auto Function GetSecurityDescriptorDacl Lib "advapi32.dll" ( _
         ByVal pSecurityDescriptor As IntPtr, _
-        ByRef bDaclPresent As Boolean, _
+        <MarshalAs(UnmanagedType.Bool)> ByRef bDaclPresent As Boolean, _
         ByRef pDacl As IntPtr, _
-        ByRef bDaclDefaulted As Boolean) As Boolean
+        <MarshalAs(UnmanagedType.Bool)> ByRef bDaclDefaulted As Boolean) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Declare Auto Function SetSecurityDescriptorDacl Lib "advapi32.dll" ( _
         ByVal pSecurityDescriptor As IntPtr, _
-        ByVal bDaclPresent As Boolean, _
+        <MarshalAs(UnmanagedType.Bool)> ByVal bDaclPresent As Boolean, _
         ByVal pDacl As IntPtr, _
-        ByVal bDaclDefaulted As Boolean) As Boolean
+        <MarshalAs(UnmanagedType.Bool)> ByVal bDaclDefaulted As Boolean) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Declare Auto Function GetAclInformation Lib "advapi32.dll" ( _
         ByVal pAcl As IntPtr, _
         ByRef pAclInformation As ACL_SIZE_INFORMATION, _
         ByVal nAclInformationLength As Int32, _
-        ByVal dwAclInformationClass As ACL_INFORMATION_CLASS) As Boolean
+        ByVal dwAclInformationClass As ACL_INFORMATION_CLASS) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Declare Auto Function InitializeAcl Lib "advapi32.dll" ( _
         ByVal pAcl As IntPtr, _
         ByVal nAclLength As Int32, _
-        ByVal dwAclRevision As Int32) As Boolean
+        ByVal dwAclRevision As Int32) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Declare Auto Function GetAce Lib "advapi32.dll" ( _
         ByVal pAcl As IntPtr, _
         ByVal dwAceIndex As Int32, _
-        ByRef pAce As IntPtr) As Boolean
+        ByRef pAce As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Declare Auto Function AddAce Lib "advapi32.dll" ( _
         ByVal pAcl As IntPtr, _
         ByVal dwAceRevision As Int32, _
         ByVal dwStartingAceIndex As Int32, _
         ByVal pAceList As IntPtr, _
-        ByVal nAceListLength As Int32) As Boolean
+        ByVal nAceListLength As Int32) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Declare Auto Function AddAccessAllowedAceEx Lib "advapi32.dll" (
         ByVal pAcl As IntPtr, _
         ByVal dwAceRevision As Int32, _
         ByVal AceFlags As Int32, _
         ByVal AccessMask As Int32, _
-        ByVal pSid As IntPtr) As Boolean
+        ByVal pSid As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Structure ACL_SIZE_INFORMATION
         Dim AceCount As Int32
@@ -154,19 +154,19 @@
         ByRef pSIRequested As SECURITY_INFORMATION, _
         ByVal pSD As IntPtr, _
         ByVal nLength As Int32, _
-        ByRef nLengthNeeded As Int32) As Boolean
+        ByRef nLengthNeeded As Int32) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Declare Auto Function SetUserObjectSecurity Lib "user32.dll" ( _
         ByVal hObj As IntPtr, _
         ByRef pSIRequested As SECURITY_INFORMATION, _
-        ByVal pSID As IntPtr) As Boolean
+        ByVal pSID As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Declare Auto Function GetUserObjectInformation Lib "user32.dll" ( _
         ByVal hObj As IntPtr, _
         ByVal nIndex As UserObjectInformation, _
         ByVal pvInfo As IntPtr, _
         ByVal nLength As Int32, _
-        ByRef nLengthNeeded As Int32) As Boolean
+        ByRef nLengthNeeded As Int32) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Declare Auto Function GetProcessWindowStation Lib "user32.dll" () As IntPtr
 
@@ -179,7 +179,7 @@
         ByVal lpsa As IntPtr) As IntPtr
 
     Public Declare Auto Function CloseDesktop Lib "user32.dll" ( _
-        ByVal hDesktop As IntPtr) As Boolean
+        ByVal hDesktop As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
 #End Region
 
 #Region "kernel32.dll"
@@ -190,16 +190,16 @@
         ByVal CommandLine As String, _
         ByRef ProcessAttributes As SECURITY_ATTRIBUTES, _
         ByRef ThreadAttributes As SECURITY_ATTRIBUTES, _
-        ByVal InheritHandles As Boolean, _
+        <MarshalAs(UnmanagedType.Bool)> ByVal InheritHandles As Boolean, _
         ByVal CreationFlags As CreationFlags, _
         ByVal Environment As IntPtr, _
         ByVal CurrentDirectory As String, _
         ByRef StartupInfo As STARTUPINFO, _
         ByRef ProcessInformation As PROCESS_INFORMATION _
-        ) As Boolean
+        ) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Declare Auto Function CloseHandle Lib "kernel32.dll" ( _
-        ByVal hObject As IntPtr) As Boolean
+        ByVal hObject As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Declare Auto Function WaitForSingleObject Lib "kernel32.dll" ( _
         ByVal hHandle As IntPtr, _
@@ -207,15 +207,15 @@
 
     Public Declare Auto Function TerminateProcess Lib "kernel32.dll" ( _
         ByVal hProcess As IntPtr, _
-        ByVal ExitCode As Int32) As Boolean
+        ByVal ExitCode As Int32) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Declare Auto Function TerminateThread Lib "kernel32.dll" ( _
         ByVal hThread As IntPtr, _
-        ByVal ExitCode As Int32) As Boolean
+        ByVal ExitCode As Int32) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Declare Auto Function GetExitCodeProcess Lib "kernel32.dll" ( _
         ByVal hProcess As IntPtr, _
-        ByRef ExitCode As Int32) As Boolean
+        ByRef ExitCode As Int32) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Declare Auto Function CreateJobObject Lib "kernel32.dll" ( _
         ByRef JobAttributes As SECURITY_ATTRIBUTES, _
@@ -223,33 +223,33 @@
 
     Public Declare Auto Function AssignProcessToJobObject Lib "kernel32.dll" ( _
         ByVal hJob As IntPtr, _
-        ByVal hProcess As IntPtr) As Boolean
+        ByVal hProcess As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Declare Auto Function QueryInformationJobObject Lib "kernel32.dll" ( _
         ByVal hJob As IntPtr, _
         ByVal JobObjectInfoClass As JobObjectInfoClass, _
         ByRef lpJobObjectInfo As JOBOBJECT_EXTENDED_LIMIT_INFORMATION, _
         ByVal cbJobObjectInfoLength As Int32, _
-        ByRef lpReturnLength As Int32) As Boolean
+        ByRef lpReturnLength As Int32) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Declare Auto Function QueryInformationJobObject Lib "kernel32.dll" ( _
         ByVal hJob As IntPtr, _
         ByVal JobObjectInfoClass As JobObjectInfoClass, _
         ByRef lpJobObjectInfo As JOBOBJECT_BASIC_UI_RESTRICTIONS, _
         ByVal cbJobObjectInfoLength As Int32, _
-        ByRef lpReturnLength As Int32) As Boolean
+        ByRef lpReturnLength As Int32) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Declare Auto Function SetInformationJobObject Lib "kernel32.dll" ( _
         ByVal hJob As IntPtr, _
         ByVal JobObjectInfoClass As JobObjectInfoClass, _
         ByRef lpJobObjectInfo As JOBOBJECT_EXTENDED_LIMIT_INFORMATION, _
-        ByVal cbJobObjectInfoLength As Int32) As Boolean
+        ByVal cbJobObjectInfoLength As Int32) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Declare Auto Function SetInformationJobObject Lib "kernel32.dll" ( _
         ByVal hJob As IntPtr, _
         ByVal JobObjectInfoClass As JobObjectInfoClass, _
         ByRef lpJobObjectInfo As JOBOBJECT_BASIC_UI_RESTRICTIONS, _
-        ByVal cbJobObjectInfoLength As Int32) As Boolean
+        ByVal cbJobObjectInfoLength As Int32) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Declare Auto Function ResumeThread Lib "kernel32.dll" ( _
         ByVal hThread As IntPtr) As Int32
@@ -259,30 +259,66 @@
         ByRef CreationTime As Int64, _
         ByRef ExitTime As Int64, _
         ByRef KernelTime As Int64, _
-        ByRef UserTime As Int64) As Boolean
+        ByRef UserTime As Int64) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Declare Auto Function ReadProcessMemory Lib "kernel32.dll" ( _
         ByVal hProcess As IntPtr, _
         ByVal lpBaseAddress As IntPtr, _
         ByRef Buffer As IntPtr, _
         ByVal nSize As IntPtr, _
-        ByRef NumberOfBytesRead As IntPtr) As Boolean
+        ByRef NumberOfBytesRead As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Declare Auto Function WriteProcessMemory Lib "kernel32.dll" ( _
         ByVal hProcess As IntPtr, _
         ByVal lpBaseAddress As IntPtr, _
         ByRef Buffer As IntPtr, _
         ByVal nSize As IntPtr, _
-        ByRef NumberOfBytesWritten As IntPtr) As Boolean
+        ByRef NumberOfBytesWritten As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Declare Auto Function TerminateJobObject Lib "kernel32.dll" ( _
         ByVal hJob As IntPtr, _
-        ByVal uExitCode As Int32) As Boolean
+        ByVal uExitCode As Int32) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Declare Auto Function OpenProcess Lib "kernel32.dll" ( _
         ByVal dwDesiredAccess As ProcessAccess, _
-        ByVal bInheritHandle As Boolean, _
+        <MarshalAs(UnmanagedType.Bool)> ByVal bInheritHandle As Boolean, _
         ByVal dwProcessId As Int32) As IntPtr
+
+    Public Declare Auto Function CreatePipe Lib "kernel32.dll" ( _
+        ByRef hReadPipe As IntPtr, _
+        ByRef hWritePipe As IntPtr, _
+        ByRef PipeAttributes As SECURITY_ATTRIBUTES, _
+        ByVal nSize As Int32) As <MarshalAs(UnmanagedType.Bool)> Boolean
+
+    Public Declare Auto Function ReadFile Lib "kernel32.dll" ( _
+        ByVal hFile As IntPtr, _
+        ByRef lpBuffer As Byte, _
+        ByVal NumberOfBytesToRead As Int32, _
+        ByRef NumberOfBytesRead As Int32, _
+        ByVal lpOverlapped As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
+
+    Public Declare Auto Function WriteFile Lib "kernel32.dll" ( _
+        ByVal hFile As IntPtr, _
+        ByRef lpBuffer As Byte, _
+        ByVal NumberOfBytesToWrite As Int32, _
+        ByRef NumberOfBytesWritten As Int32, _
+        ByVal lpOverlapped As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
+
+    Public Declare Auto Function DuplicateHandle Lib "kernel32.dll" ( _
+        ByVal hSourceProcessHandle As IntPtr, _
+        ByVal hSourceHandle As IntPtr, _
+        ByVal hTargetProcessHandle As IntPtr, _
+        ByRef hTargetHandle As IntPtr, _
+        ByVal dwDesiredAccess As Int32, _
+        <MarshalAs(UnmanagedType.Bool)> ByVal bInheritHandle As Boolean, _
+        ByVal dwOptions As DuplicateOption) As <MarshalAs(UnmanagedType.Bool)> Boolean
+
+    Public Declare Auto Function GetCurrentProcess Lib "kernel32.dll" () As IntPtr
+
+    Public Enum DuplicateOption As Int32
+        DUPLICATE_CLOSE_SOURCE = 1
+        DUPLICATE_SAME_ACCESS = 2
+    End Enum
 
     Public Structure STARTUPINFO
         Dim cb As Int32
@@ -317,7 +353,7 @@
     Public Structure SECURITY_ATTRIBUTES
         Dim nLength As Int32
         Dim lpSecurityDescriptor As IntPtr
-        Dim bInheritHandle As Boolean
+        <MarshalAs(UnmanagedType.Bool)> Dim bInheritHandle As Boolean
     End Structure
 
     Public Structure JOBOBJECT_BASIC_LIMIT_INFORMATION
@@ -449,12 +485,15 @@
 #End Region
 
 #Region "ntdll.dll"
-    Public Declare Function NtQueryInformationProcess Lib "ntdll.dll" ( _
+    Public Declare Auto Function NtQueryInformationProcess Lib "ntdll.dll" ( _
         ByVal ProcessHandle As IntPtr, _
         ByVal ProcessInformationClass As PROCESSINFOCLASS, _
         ByRef ProcessInformation As PROCESS_BASIC_INFORMATION, _
         ByVal ProcessInformationLength As Int32, _
         ByRef ReturnLength As Int32) As NTSTATUS
+
+    Public Declare Auto Function RtlNtStatusToDosError Lib "ntdll.dll" ( _
+        ByVal Status As NTSTATUS) As Int32
 
     Public Structure PROCESS_BASIC_INFORMATION
         Dim Reserved0 As IntPtr
@@ -472,6 +511,10 @@
     Public Enum NTSTATUS As Int32
         STATUS_SUCCESS = 0
     End Enum
+
+    Public Function NT_SUCCESS(ByVal Status As NTSTATUS) As Boolean
+        Return Status >= 0
+    End Function
 #End Region
 
     Public Const ERROR_INSUFFICIENT_BUFFER As Int32 = 122
@@ -481,9 +524,14 @@
     Public Const ACL_REVISION As Int32 = 2
 
     Public Sub Win32True(ByVal Value As Boolean)
-        If Value = False Then
+        If Not Value Then
             Throw New Win32Exception()
         End If
     End Sub
 
+    Public Sub NtSuccess(ByVal Status As NTSTATUS)
+        If Not NT_SUCCESS(Status) Then
+            Throw New Win32Exception(RtlNtStatusToDosError(NTSTATUS.STATUS_SUCCESS))
+        End If
+    End Sub
 End Module

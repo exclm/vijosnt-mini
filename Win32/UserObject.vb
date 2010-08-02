@@ -165,7 +165,7 @@
                             Dim TempAcePtr As IntPtr
                             Win32True(GetAce(AclOld, Index, TempAcePtr))
 
-                            If EqualSid(CType(CType(TempAcePtr, Int32) + Marshal.SizeOf(GetType(ACE_HEADER)) + 4, IntPtr), _
+                            If EqualSid(TempAcePtr.ToInt64() + Marshal.SizeOf(GetType(ACE_HEADER)) + 4, _
                                 SidHandle.AddrOfPinnedObject()) = True Then _
                                 Continue For
 
