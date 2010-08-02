@@ -20,21 +20,25 @@
         MyBase.SafeWaitHandle = m_Event.SafeWaitHandle
     End Sub
 
-    Private Sub OnRead(ByVal ar As IAsyncResult)
+    Protected Sub OnRead(ByVal ar As IAsyncResult)
         Try
             Dim Length As Int32 = m_Source.EndRead(ar)
             If Length = 0 Then Throw New EndOfStreamException()
             m_Target.BeginWrite(m_Buffer, 0, Length, AddressOf OnWrite, Nothing)
         Catch ex As Exception
+            m_Target.Close()
+            m_Source.Close()
             m_Event.Set()
         End Try
     End Sub
 
-    Private Sub OnWrite(ByVal ar As IAsyncResult)
+    Protected Sub OnWrite(ByVal ar As IAsyncResult)
         Try
             m_Target.EndWrite(ar)
             m_Source.BeginRead(m_Buffer, 0, m_Buffer.Length, AddressOf OnRead, Nothing)
         Catch ex As Exception
+            m_Target.Close()
+            m_Source.Close()
             m_Event.Set()
         End Try
     End Sub

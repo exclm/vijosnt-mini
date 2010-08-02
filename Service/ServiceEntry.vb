@@ -10,7 +10,21 @@
 
     Public Shared Sub Main()
         Using s As ProcessEx.Suspended = ProcessEx.CreateSuspended("c:\windows\system32\cmd.exe", Nothing, Nothing, Nothing, Nothing)
-            ' TODO: test stdin/out/err redirecting when pipe is implemented
+            Dim s0 As Stream, s1 As Stream, s2 As Stream
+            Using p0 As New Pipe, p1 As New Pipe, p2 As New Pipe
+                s.SetStdHandles(p0.GetReadHandleUnsafe(), p1.GetWriteHandleUnsafe(), p2.GetWriteHandleUnsafe())
+                s0 = p0.ConvertWritePipeToStream()
+                s1 = p1.ConvertReadPipeToStream()
+                s2 = p2.ConvertReadPipeToStream()
+            End Using
+
+            Using sp0 As New StreamPipe(Console.OpenStandardInput(), s0), _
+                sp1 As New StreamPipe(s1, Console.OpenStandardOutput()), _
+                sp2 As New StreamPipe(s2, Console.OpenStandardError()), _
+                p As ProcessEx = s.Resume()
+
+                p.WaitOne()
+            End Using
         End Using
     End Sub
 End Class
