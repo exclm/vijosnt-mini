@@ -93,7 +93,42 @@
     Public Class UIRestrictions
         Protected m_Data As JOBOBJECT_BASIC_UI_RESTRICTIONS
 
-        ' TODO: implement this class
+        Public Enum Limit As Int32
+            [Handles] = &H1
+            ReadClipboard = &H2
+            WriteClipboard = &H4
+            SystemParameters = &H8
+            DisplaySettings = &H10
+            GlobalAtoms = &H20
+            Desktop = &H40
+            ExitWindows = &H80
+            All = &HFF
+        End Enum
+
+        Public Sub New()
+            ' Do nothing
+        End Sub
+
+        Public Sub New(ByVal JobObjectHandle As IntPtr)
+            Win32True(QueryInformationJobObject(JobObjectHandle, JobObjectInfoClass.JobObjectBasicUIRestrictions, m_Data, Marshal.SizeOf(m_Data), Nothing))
+        End Sub
+
+        Public Sub SetInformation(ByVal JobObjectHandle As IntPtr)
+            Win32True(SetInformationJobObject(JobObjectHandle, JobObjectInfoClass.JobObjectBasicUIRestrictions, m_Data, Marshal.SizeOf(m_Data)))
+        End Sub
+
+        Public Function SetLimit(ByVal Limit As Limit, ByVal Value As Boolean) As UIRestrictions
+            If Value Then
+                m_Data.UIRestrictionClass = m_Data.UIRestrictionClass Or Limit
+            Else
+                m_Data.UIRestrictionClass = m_Data.UIRestrictionClass And Not Limit
+            End If
+            Return Me
+        End Function
+
+        Public Function GetLimit(ByVal Limit As Limit) As Boolean
+            Return (m_Data.UIRestrictionClass And Limit) = Limit
+        End Function
     End Class
 
     Protected m_Handle As IntPtr
@@ -114,11 +149,23 @@
         Return New Limits(m_Handle)
     End Function
 
-    Public Sub SetLimits(ByVal Limits As Limits)
+    Public Function SetLimits(ByVal Limits As Limits) As JobObject
         Limits.SetInformation(m_Handle)
-    End Sub
+        Return Me
+    End Function
 
-    ' TODO: implement UI restrictions
+    Public Function CreateUIRestrictions() As UIRestrictions
+        Return New UIRestrictions()
+    End Function
+
+    Public Function GetUIRestrictions() As UIRestrictions
+        Return New UIRestrictions(m_Handle)
+    End Function
+
+    Public Function SetUIRestrictions(ByVal UIRestrictions As UIRestrictions) As JobObject
+        UIRestrictions.SetInformation(m_Handle)
+        Return Me
+    End Function
 
     Public Sub Assign(ByVal ProcessHandle As IntPtr)
         Win32True(AssignProcessToJobObject(m_Handle, ProcessHandle))

@@ -441,7 +441,6 @@
         JOB_OBJECT_UILIMIT_READCLIPBOARD = &H2
         JOB_OBJECT_UILIMIT_SYSTEMPARAMETERS = &H8
         JOB_OBJECT_UILIMIT_WRITECLIPBOARD = &H4
-        FullUILimit = &HFF
     End Enum
 
     Public Enum ProcessAccess As Int32
