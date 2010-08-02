@@ -111,8 +111,6 @@
         End Sub
 
         Public Sub SetStdHandles(ByVal StdInputHandle As IntPtr, ByVal StdOutputHandle As IntPtr, ByVal StdErrorHandle As IntPtr)
-            ' TODO: Make this function work on x64 (probably need to implement SetPebStdHandles64)
-
             If m_Resumed Then
                 Throw New Exception("The suspended process has already been resumed.")
             End If
@@ -125,29 +123,69 @@
             Win32True(DuplicateHandle(GetCurrentProcess, StdOutputHandle, m_ProcessHandle, TargetStdOutputHandle, 0, True, DuplicateOption.DUPLICATE_SAME_ACCESS))
             Win32True(DuplicateHandle(GetCurrentProcess, StdErrorHandle, m_ProcessHandle, TargetStdErrorHandle, 0, True, DuplicateOption.DUPLICATE_SAME_ACCESS))
 
-            SetPebStdHandles(m_ProcessHandle, TargetStdInputHandle, TargetStdOutputHandle, TargetStdErrorHandle)
+            If IntPtr.Size = 4 Then
+                SetPebStdHandles32(m_ProcessHandle, TargetStdInputHandle, TargetStdOutputHandle, TargetStdErrorHandle)
+            Else
+                SetPebStdHandles64(m_ProcessHandle, TargetStdInputHandle, TargetStdOutputHandle, TargetStdErrorHandle)
+            End If
         End Sub
 
-        Private Shared Sub SetPebStdHandles(ByVal ProcessHandle As IntPtr, ByVal StdInputHandle As IntPtr, ByVal StdOutputHandle As IntPtr, ByVal StdErrorHandle As IntPtr)
+        Private Shared Sub SetPebStdHandles32(ByVal ProcessHandle As IntPtr, ByVal StdInputHandle As IntPtr, ByVal StdOutputHandle As IntPtr, ByVal StdErrorHandle As IntPtr)
             Dim ProcessInformation As PROCESS_BASIC_INFORMATION
             Dim ReturnLength As Int32
 
             NtSuccess(NtQueryInformationProcess(ProcessHandle, PROCESSINFOCLASS.ProcessBasicInformation, ProcessInformation, Marshal.SizeOf(ProcessInformation), ReturnLength))
 
             ' PEB +0x10: ProcessParameters
-            Dim ProcessParameters As IntPtr = _
-                CType(CType(ProcessInformation.PebBaseAddress, Int32) + &H10, IntPtr)
-            Dim ProcessParametersPtr As IntPtr
-            Dim NumberOfBytesRead As Int32
+            Dim ProcessParameters As IntPtr = ProcessInformation.PebBaseAddress
+            ProcessParameters = ProcessParameters.ToInt32() + &H10
+            Dim Buffer As IntPtr = Marshal.AllocHGlobal(&HC)
+            Try
+                Dim NumberOfBytesRead As Int32
+                Win32True(ReadProcessMemory(ProcessHandle, ProcessParameters, Buffer, &H4, NumberOfBytesRead))
 
-            Win32True(ReadProcessMemory(ProcessHandle, ProcessParameters, ProcessParametersPtr, &H4, NumberOfBytesRead))
+                ' ProcessParameters +0x18
+                Dim StdHandlesPtr As IntPtr = Marshal.ReadIntPtr(Buffer)
+                StdHandlesPtr = StdHandlesPtr.ToInt32() + &H18
 
-            ' ProcessParameters +0x18
-            Dim StdHandlesPtr As IntPtr = _
-                CType(CType(ProcessParametersPtr, Int32) + &H18, IntPtr)
-            Dim Data As IntPtr() = New IntPtr(0 To 2) {StdInputHandle, StdOutputHandle, StdErrorHandle}
-            Dim NumberOfBytesWritten As Int32
-            Win32True(WriteProcessMemory(ProcessHandle, StdHandlesPtr, Data(0), IntPtr.Size * 3, NumberOfBytesWritten))
+                Marshal.WriteIntPtr(Buffer, &H0, StdInputHandle)
+                Marshal.WriteIntPtr(Buffer, &H4, StdOutputHandle)
+                Marshal.WriteIntPtr(Buffer, &H8, StdErrorHandle)
+
+                Dim NumberOfBytesWritten As Int32
+                Win32True(WriteProcessMemory(ProcessHandle, StdHandlesPtr, Buffer, &HC, NumberOfBytesWritten))
+            Finally
+                Marshal.FreeHGlobal(Buffer)
+            End Try
+        End Sub
+
+        Private Shared Sub SetPebStdHandles64(ByVal ProcessHandle As IntPtr, ByVal StdInputHandle As IntPtr, ByVal StdOutputHandle As IntPtr, ByVal StdErrorHandle As IntPtr)
+            Dim ProcessInformation As PROCESS_BASIC_INFORMATION
+            Dim ReturnLength As Int32
+
+            NtSuccess(NtQueryInformationProcess(ProcessHandle, PROCESSINFOCLASS.ProcessBasicInformation, ProcessInformation, Marshal.SizeOf(ProcessInformation), ReturnLength))
+
+            ' PEB +0x20: ProcessParameters
+            Dim ProcessParameters As IntPtr = ProcessInformation.PebBaseAddress
+            ProcessParameters = ProcessParameters.ToInt64() + &H20
+            Dim Buffer As IntPtr = Marshal.AllocHGlobal(&H18)
+            Try
+                Dim NumberOfBytesRead As Int32
+                Win32True(ReadProcessMemory(ProcessHandle, ProcessParameters, Buffer, &H8, NumberOfBytesRead))
+
+                ' ProcessParameters +0x20
+                Dim StdHandlesPtr As IntPtr = Marshal.ReadIntPtr(Buffer)
+                StdHandlesPtr = StdHandlesPtr.ToInt64() + &H20
+
+                Marshal.WriteIntPtr(Buffer, &H0, StdInputHandle)
+                Marshal.WriteIntPtr(Buffer, &H8, StdOutputHandle)
+                Marshal.WriteIntPtr(Buffer, &H10, StdErrorHandle)
+
+                Dim NumberOfBytesWritten As Int32
+                Win32True(WriteProcessMemory(ProcessHandle, StdHandlesPtr, Buffer, &H18, NumberOfBytesWritten))
+            Finally
+                Marshal.FreeHGlobal(Buffer)
+            End Try
         End Sub
 
         Public Function GetHandleUnsafe() As IntPtr
