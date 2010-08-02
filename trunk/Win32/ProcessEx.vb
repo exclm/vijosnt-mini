@@ -123,6 +123,7 @@
             Win32True(DuplicateHandle(GetCurrentProcess, StdOutputHandle, m_ProcessHandle, TargetStdOutputHandle, 0, True, DuplicateOption.DUPLICATE_SAME_ACCESS))
             Win32True(DuplicateHandle(GetCurrentProcess, StdErrorHandle, m_ProcessHandle, TargetStdErrorHandle, 0, True, DuplicateOption.DUPLICATE_SAME_ACCESS))
 
+            ' TODO: Identify platform more strictly
             If IntPtr.Size = 4 Then
                 SetPebStdHandles32(m_ProcessHandle, TargetStdInputHandle, TargetStdOutputHandle, TargetStdErrorHandle)
             Else
