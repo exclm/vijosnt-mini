@@ -264,14 +264,14 @@
     Public Declare Auto Function ReadProcessMemory Lib "kernel32.dll" ( _
         ByVal hProcess As IntPtr, _
         ByVal lpBaseAddress As IntPtr, _
-        ByRef Buffer As IntPtr, _
+        ByVal Buffer As IntPtr, _
         ByVal nSize As IntPtr, _
         ByRef NumberOfBytesRead As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Declare Auto Function WriteProcessMemory Lib "kernel32.dll" ( _
         ByVal hProcess As IntPtr, _
         ByVal lpBaseAddress As IntPtr, _
-        ByRef Buffer As IntPtr, _
+        ByVal Buffer As IntPtr, _
         ByVal nSize As IntPtr, _
         ByRef NumberOfBytesWritten As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
@@ -492,6 +492,12 @@
         ByVal ProcessInformationLength As Int32, _
         ByRef ReturnLength As Int32) As NTSTATUS
 
+    Public Declare Auto Function NtSetInformationProcess Lib "ntdll.dll" ( _
+        ByVal ProcessHandle As IntPtr, _
+        ByVal ProcessInformationClass As PROCESSINFOCLASS, _
+        ByVal ProcessInformation As IntPtr, _
+        ByVal ProcessInformationLength As Int32) As NTSTATUS
+
     Public Declare Auto Function RtlNtStatusToDosError Lib "ntdll.dll" ( _
         ByVal Status As NTSTATUS) As Int32
 
@@ -506,6 +512,7 @@
 
     Public Enum PROCESSINFOCLASS
         ProcessBasicInformation = 0
+        ProcessAccessToken = 9
     End Enum
 
     Public Enum NTSTATUS As Int32
