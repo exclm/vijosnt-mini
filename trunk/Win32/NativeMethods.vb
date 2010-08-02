@@ -295,14 +295,14 @@
         ByRef lpBuffer As Byte, _
         ByVal NumberOfBytesToRead As Int32, _
         ByRef NumberOfBytesRead As Int32, _
-        ByVal lpOverlapped As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
+        ByRef lpOverlapped As NativeOverlapped) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Declare Auto Function WriteFile Lib "kernel32.dll" ( _
         ByVal hFile As IntPtr, _
         ByRef lpBuffer As Byte, _
         ByVal NumberOfBytesToWrite As Int32, _
         ByRef NumberOfBytesWritten As Int32, _
-        ByVal lpOverlapped As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
+        ByRef lpOverlapped As NativeOverlapped) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
     Public Declare Auto Function DuplicateHandle Lib "kernel32.dll" ( _
         ByVal hSourceProcessHandle As IntPtr, _

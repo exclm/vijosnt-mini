@@ -81,6 +81,7 @@
     <Compile Include="Win32\Desktop.vb" />
     <Compile Include="Win32\JobObject.vb" />
     <Compile Include="Win32\Logon.vb" />
+    <Compile Include="Win32\Pipe.vb" />
     <Compile Include="Win32\ProcessEx.vb" />
     <Compile Include="Win32\UserObject.vb" />
     <Compile Include="Win32\WindowStation.vb" />
