@@ -1,50 +1,29 @@
 ﻿Public Class Pipe
     Implements IDisposable
 
-    Protected m_ReadHandleOwned As Boolean
-    Private m_ReadHandle As IntPtr
-    Protected m_WriteHandleOwned As Boolean
-    Private m_WriteHandle As IntPtr
+    Protected m_ReadHandle As Handle
+    Protected m_WriteHandle As Handle
 
     Public Sub New()
-        Win32True(CreatePipe(m_ReadHandle, m_WriteHandle, Nothing, 1))
-        m_ReadHandleOwned = True
-        m_WriteHandleOwned = True
+        Dim ReadHandle As IntPtr, WriteHandle As IntPtr
+        Win32True(CreatePipe(ReadHandle, WriteHandle, Nothing, 0))
+        m_ReadHandle = New Handle(ReadHandle)
+        m_WriteHandle = New Handle(WriteHandle)
     End Sub
 
-    Public Function ConvertReadPipeToStream() As Stream
-        If Not m_ReadHandleOwned Then
-            Throw New Exception("The read pipe has already been converted to stream.")
-        End If
-
-        Dim SafeHandle As New SafeFileHandle(m_ReadHandle, True)
-        m_ReadHandleOwned = False
-        Return New FileStream(SafeHandle, FileAccess.Read)
+    Public Function GetReadStream() As Stream
+        Return New FileStream(New SafeFileHandle(m_ReadHandle.Duplicate(), True), FileAccess.Read)
     End Function
 
-    Public Function ConvertWritePipeToStream() As Stream
-        If Not m_WriteHandleOwned Then
-            Throw New Exception("The write pipe has already been converted to stream.")
-        End If
-
-        Dim SafeHandle As New SafeFileHandle(m_WriteHandle, True)
-        m_WriteHandleOwned = False
-        Return New FileStream(SafeHandle, FileAccess.Write)
+    Public Function GetWriteStream() As Stream
+        Return New FileStream(New SafeFileHandle(m_WriteHandle.Duplicate(), True), FileAccess.Write)
     End Function
 
-    Public Function GetReadHandleUnsafe() As IntPtr
-        If Not m_ReadHandleOwned Then
-            Throw New Exception("The read pipe has already been converted to stream.")
-        End If
-
+    Public Function GetReadHandle() As Handle
         Return m_ReadHandle
     End Function
 
-    Public Function GetWriteHandleUnsafe() As IntPtr
-        If Not m_WriteHandleOwned Then
-            Throw New Exception("The write pipe has already been converted to stream.")
-        End If
-
+    Public Function GetWriteHandle() As Handle
         Return m_WriteHandle
     End Function
 
@@ -54,12 +33,8 @@
     ' IDisposable
     Protected Overridable Sub Dispose(ByVal disposing As Boolean)
         If Not Me.disposedValue Then
-            If m_ReadHandleOwned Then
-                Win32True(CloseHandle(m_ReadHandle))
-            End If
-            If m_WriteHandleOwned Then
-                Win32True(CloseHandle(m_WriteHandle))
-            End If
+            m_ReadHandle.Dispose()
+            m_WriteHandle.Dispose()
         End If
         Me.disposedValue = True
     End Sub

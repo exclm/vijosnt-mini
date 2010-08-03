@@ -1,26 +1,29 @@
 ﻿Friend Class Token
     Implements IDisposable
 
-    Protected m_Handle As IntPtr
+    Protected m_Handle As Handle
 
     Public Sub New()
-        Win32True(OpenProcessToken(GetCurrentProcess(), TokenAccess.TOKEN_ALL_ACCESS, m_Handle))
+        Dim TokenHandle As IntPtr
+        Win32True(OpenProcessToken(GetCurrentProcess(), TokenAccess.TOKEN_ALL_ACCESS, TokenHandle))
+        m_Handle = New Handle(TokenHandle)
     End Sub
 
     Public Sub New(ByVal UserName As String, ByVal Password As String)
-        Win32True(LogonUser(UserName, ".", Password, _
-            LogonType.LOGON32_LOGON_INTERACTIVE, LogonProvider.LOGON32_PROVIDER_DEFAULT, _
-            m_Handle))
+        Dim TokenHandle As IntPtr
+        Win32True(LogonUser(UserName, ".", Password, LogonType.LOGON32_LOGON_INTERACTIVE, _
+            LogonProvider.LOGON32_PROVIDER_DEFAULT, TokenHandle))
+        m_Handle = New Handle(TokenHandle)
     End Sub
 
-    Public Function GetHandleUnsafe() As IntPtr
+    Public Function GetHandle() As Handle
         Return m_Handle
     End Function
 
     Public Function GetSid() As Byte()
         Dim Length As Int32
 
-        If Not GetTokenInformation(m_Handle, TOKEN_INFORMATION_CLASS.TokenGroups, 0, 0, Length) Then
+        If Not GetTokenInformation(m_Handle.GetHandleUnsafe(), TOKEN_INFORMATION_CLASS.TokenGroups, 0, 0, Length) Then
             Dim LastErr As Int32 = Marshal.GetLastWin32Error()
             If LastErr <> ERROR_INSUFFICIENT_BUFFER Then
                 Throw New Win32Exception(LastErr)
@@ -31,12 +34,12 @@
 
         Dim TokenGroupsPtr As IntPtr = Marshal.AllocHGlobal(Length)
         Try
-            Win32True(GetTokenInformation(m_Handle, TOKEN_INFORMATION_CLASS.TokenGroups, TokenGroupsPtr, Length, Length))
+            Win32True(GetTokenInformation(m_Handle.GetHandleUnsafe(), TOKEN_INFORMATION_CLASS.TokenGroups, TokenGroupsPtr, Length, Length))
 
             Dim GroupCount As Int32 = Marshal.ReadInt32(TokenGroupsPtr, 0)
             For Index As Int32 = 0 To GroupCount - 1
-                Dim Sid As IntPtr = Marshal.ReadInt32(TokenGroupsPtr, Index * 8 + 4)
-                Dim Attributes As Int32 = Marshal.ReadInt32(TokenGroupsPtr, Index * 8 + 8)
+                Dim Sid As IntPtr = Marshal.ReadIntPtr(TokenGroupsPtr, IntPtr.Size + Index * (IntPtr.Size * 2))
+                Dim Attributes As Int32 = Marshal.ReadInt32(TokenGroupsPtr, IntPtr.Size + Index * (IntPtr.Size * 2) + IntPtr.Size)
 
                 If (Attributes And SE_GROUP_LOGON_ID) = SE_GROUP_LOGON_ID Then
                     Dim SidLength As Int32 = GetLengthSid(Sid)
@@ -69,7 +72,7 @@
             TokenPrivileges.Privilege.Attributes = 0
         End If
 
-        Win32True(AdjustTokenPrivileges(m_Handle, False, TokenPrivileges, Marshal.SizeOf(TokenPrivileges), Nothing, Nothing))
+        Win32True(AdjustTokenPrivileges(m_Handle.GetHandleUnsafe(), False, TokenPrivileges, Marshal.SizeOf(TokenPrivileges), Nothing, Nothing))
     End Sub
 
 #Region "IDisposable Support"
@@ -78,7 +81,7 @@
     ' IDisposable
     Protected Sub Dispose(ByVal disposing As Boolean)
         If Not Me.disposedValue Then
-            Win32True(CloseHandle(m_Handle))
+            m_Handle.Dispose()
         End If
         Me.disposedValue = True
     End Sub

@@ -151,14 +151,12 @@
         End Function
     End Class
 
-    Protected m_Handle As IntPtr
+    Protected m_Handle As Handle
 
     Public Sub New()
-        m_Handle = CreateJobObject(Nothing, Nothing)
-
-        If m_Handle = 0 Then
-            Throw New Win32Exception()
-        End If
+        Dim JobHandle As IntPtr = CreateJobObject(Nothing, Nothing)
+        Win32True(JobHandle <> 0)
+        m_Handle = New Handle(JobHandle)
     End Sub
 
     Public Shared Function Create() As JobObject
@@ -170,11 +168,11 @@
     End Function
 
     Public Function GetLimits() As Limits
-        Return New Limits(m_Handle)
+        Return New Limits(m_Handle.GetHandleUnsafe())
     End Function
 
     Public Function SetLimits(ByVal Limits As Limits) As JobObject
-        Limits.SetInformation(m_Handle)
+        Limits.SetInformation(m_Handle.GetHandleUnsafe())
         Return Me
     End Function
 
@@ -183,20 +181,20 @@
     End Function
 
     Public Function GetUIRestrictions() As UIRestrictions
-        Return New UIRestrictions(m_Handle)
+        Return New UIRestrictions(m_Handle.GetHandleUnsafe())
     End Function
 
     Public Function SetUIRestrictions(ByVal UIRestrictions As UIRestrictions) As JobObject
-        UIRestrictions.SetInformation(m_Handle)
+        UIRestrictions.SetInformation(m_Handle.GetHandleUnsafe())
         Return Me
     End Function
 
-    Public Sub Assign(ByVal ProcessHandle As IntPtr)
-        Win32True(AssignProcessToJobObject(m_Handle, ProcessHandle))
+    Public Sub Assign(ByVal Process As Handle)
+        Win32True(AssignProcessToJobObject(m_Handle.GetHandleUnsafe(), Process.GetHandleUnsafe()))
     End Sub
 
     Public Sub Terminate(ByVal ExitCode As Int32)
-        Win32True(TerminateJobObject(m_Handle, ExitCode))
+        Win32True(TerminateJobObject(m_Handle.GetHandleUnsafe(), ExitCode))
     End Sub
 
 #Region "IDisposable Support"
@@ -205,7 +203,7 @@
     ' IDisposable
     Protected Overridable Sub Dispose(ByVal disposing As Boolean)
         If Not Me.disposedValue Then
-            Win32True(CloseHandle(m_Handle))
+            m_Handle.Dispose()
         End If
         Me.disposedValue = True
     End Sub
