@@ -1,22 +1,22 @@
 ﻿Friend Class ProcessEx
-    Inherits WaitHandle
+    Implements IDisposable
 
 #Region "Shared members"
+    Protected Shared m_InheritHandleSyncRoot As Object
+
+    Shared Sub New()
+        m_InheritHandleSyncRoot = New Object()
+    End Sub
+
     Public Shared Function Attach(ByVal ProcessID As Int32) As ProcessEx
         Dim hProcess As IntPtr
         hProcess = OpenProcess(ProcessAccess.PROCESS_ALL_ACCESS, False, ProcessID)
-        Return New ProcessEx(hProcess)
-    End Function
-
-    Public Shared Function Create(ByVal ApplicationName As String, ByVal CommandLine As String, _
-        ByVal Environment As IEnumerable(Of String), ByVal CurrentDirectory As String, ByVal Desktop As String) As ProcessEx
-        Using Suspended As Suspended = CreateSuspended(ApplicationName, CommandLine, Environment, CurrentDirectory, Desktop)
-            Return Suspended.Resume()
-        End Using
+        Return New ProcessEx(New Handle(hProcess))
     End Function
 
     Public Shared Function CreateSuspended(ByVal ApplicationName As String, ByVal CommandLine As String, _
-        ByVal Environment As IEnumerable(Of String), ByVal CurrentDirectory As String, ByVal Desktop As String) As Suspended
+        ByVal Environment As IEnumerable(Of String), ByVal CurrentDirectory As String, ByVal Desktop As String, _
+        ByVal StdInput As Handle, ByVal StdOutput As Handle, ByVal StdError As Handle) As Suspended
 
         Dim StartupInfo As STARTUPINFO
 
@@ -25,20 +25,33 @@
         StartupInfo.Title = Nothing
         StartupInfo.dwFlags = StartupFlags.STARTF_FORCEOFFFEEDBACK Or StartupFlags.STARTF_USESTDHANDLES
 
-        Dim EnvironmentPtr As IntPtr = IntPtr.Zero
-
-        If Environment IsNot Nothing _
-            Then EnvironmentPtr = AllocEnvironment(Environment)
-
         Dim ProcessInformation As New PROCESS_INFORMATION
 
+        Dim EnvironmentPtr As IntPtr = IntPtr.Zero
+        If Environment IsNot Nothing Then EnvironmentPtr = AllocEnvironment(Environment)
         Try
-            CreateProcess(ApplicationName, CommandLine, Nothing, Nothing, False,
-                CreationFlags.CREATE_BREAKAWAY_FROM_JOB Or CreationFlags.CREATE_DEFAULT_ERROR_MODE Or CreationFlags.CREATE_NO_WINDOW Or CreationFlags.CREATE_SUSPENDED Or CreationFlags.CREATE_UNICODE_ENVIRONMENT,
-                EnvironmentPtr, CurrentDirectory, StartupInfo, ProcessInformation)
+            SyncLock m_InheritHandleSyncRoot
+                StartupInfo.hStdInput = StdInput.Duplicate(True)
+                Try
+                    StartupInfo.hStdOutput = StdOutput.Duplicate(True)
+                    Try
+                        StartupInfo.hStdError = StdError.Duplicate(True)
+                        Try
+                            Win32True(CreateProcess(ApplicationName, CommandLine, Nothing, Nothing, True,
+                                        CreationFlags.CREATE_BREAKAWAY_FROM_JOB Or CreationFlags.CREATE_DEFAULT_ERROR_MODE Or CreationFlags.CREATE_NO_WINDOW Or CreationFlags.CREATE_SUSPENDED Or CreationFlags.CREATE_UNICODE_ENVIRONMENT,
+                                        EnvironmentPtr, CurrentDirectory, StartupInfo, ProcessInformation))
+                        Finally
+                            Win32True(CloseHandle(StartupInfo.hStdError))
+                        End Try
+                    Finally
+                        Win32True(CloseHandle(StartupInfo.hStdOutput))
+                    End Try
+                Finally
+                    Win32True(CloseHandle(StartupInfo.hStdInput))
+                End Try
+            End SyncLock
         Finally
-            If EnvironmentPtr <> IntPtr.Zero Then _
-                Marshal.FreeHGlobal(EnvironmentPtr)
+            If EnvironmentPtr <> IntPtr.Zero Then Marshal.FreeHGlobal(EnvironmentPtr)
         End Try
 
         Return New Suspended(ProcessInformation.hProcess, ProcessInformation.hThread)
@@ -83,16 +96,18 @@
     End Function
 #End Region
 
-    Public Sub New(ByVal OwnedHandle As IntPtr)
-        MyBase.SafeWaitHandle = New SafeWaitHandle(OwnedHandle, True)
+    Protected m_Handle As Handle
+
+    Public Sub New(ByVal Handle As Handle)
+        m_Handle = Handle
     End Sub
 
-    Public Function GetHandleUnsafe() As IntPtr
-        Return MyBase.SafeWaitHandle.DangerousGetHandle()
+    Public Function GetHandle() As Handle
+        Return m_Handle
     End Function
 
     Public Sub Kill(ByVal ReturnCode As Int32)
-        Win32True(TerminateProcess(GetHandleUnsafe(), ReturnCode))
+        Win32True(TerminateProcess(m_Handle.GetHandleUnsafe(), ReturnCode))
     End Sub
 
     ' TODO: attach debugger
@@ -100,113 +115,34 @@
         Implements IDisposable
 
         Protected m_Resumed As Boolean
-        Protected m_ProcessHandle As IntPtr
-        Protected m_ThreadHandle As IntPtr
+        Protected m_Process As Handle
+        Protected m_Thread As Handle
 
         Public Sub New(ByVal ProcessHandle As IntPtr, ByVal ThreadHandle As IntPtr)
             m_Resumed = False
-            m_ProcessHandle = ProcessHandle
-            m_ThreadHandle = ThreadHandle
+            m_Process = New Handle(ProcessHandle)
+            m_Thread = New Handle(ThreadHandle)
         End Sub
 
-        Public Sub SetToken(ByVal TokenHandle As IntPtr)
+        Public Sub SetToken(ByVal Token As Token)
             If m_Resumed Then
                 Throw New Exception("The suspended process has already been resumed.")
             End If
 
             Dim AccessToken As PROCESS_ACCESS_TOKEN
 
-            AccessToken.Token = TokenHandle
+            AccessToken.Token = Token.GetHandle().GetHandleUnsafe()
             AccessToken.Thread = IntPtr.Zero
 
-            NtSuccess(NtSetInformationProcess(m_ProcessHandle, PROCESSINFOCLASS.ProcessAccessToken, AccessToken, Marshal.SizeOf(AccessToken)))
+            NtSuccess(NtSetInformationProcess(m_Process.GetHandleUnsafe(), PROCESSINFOCLASS.ProcessAccessToken, AccessToken, Marshal.SizeOf(AccessToken)))
         End Sub
 
-        Public Sub SetStdHandles(ByVal StdInputHandle As IntPtr, ByVal StdOutputHandle As IntPtr, ByVal StdErrorHandle As IntPtr)
+        Public Function GetHandle() As Handle
             If m_Resumed Then
                 Throw New Exception("The suspended process has already been resumed.")
             End If
 
-            Dim TargetStdInputHandle As IntPtr
-            Dim TargetStdOutputHandle As IntPtr
-            Dim TargetStdErrorHandle As IntPtr
-
-            Win32True(DuplicateHandle(GetCurrentProcess, StdInputHandle, m_ProcessHandle, TargetStdInputHandle, 0, True, DuplicateOption.DUPLICATE_SAME_ACCESS))
-            Win32True(DuplicateHandle(GetCurrentProcess, StdOutputHandle, m_ProcessHandle, TargetStdOutputHandle, 0, True, DuplicateOption.DUPLICATE_SAME_ACCESS))
-            Win32True(DuplicateHandle(GetCurrentProcess, StdErrorHandle, m_ProcessHandle, TargetStdErrorHandle, 0, True, DuplicateOption.DUPLICATE_SAME_ACCESS))
-
-            ' TODO: Identify platform more strictly
-            If IntPtr.Size = 4 Then
-                SetPebStdHandles32(m_ProcessHandle, TargetStdInputHandle, TargetStdOutputHandle, TargetStdErrorHandle)
-            Else
-                SetPebStdHandles64(m_ProcessHandle, TargetStdInputHandle, TargetStdOutputHandle, TargetStdErrorHandle)
-            End If
-        End Sub
-
-        Private Shared Sub SetPebStdHandles32(ByVal ProcessHandle As IntPtr, ByVal StdInputHandle As IntPtr, ByVal StdOutputHandle As IntPtr, ByVal StdErrorHandle As IntPtr)
-            Dim ProcessInformation As PROCESS_BASIC_INFORMATION
-            Dim ReturnLength As Int32
-
-            NtSuccess(NtQueryInformationProcess(ProcessHandle, PROCESSINFOCLASS.ProcessBasicInformation, ProcessInformation, Marshal.SizeOf(ProcessInformation), ReturnLength))
-
-            ' PEB +0x10: ProcessParameters
-            Dim ProcessParameters As IntPtr = ProcessInformation.PebBaseAddress
-            ProcessParameters = ProcessParameters.ToInt32() + &H10
-            Dim Buffer As IntPtr = Marshal.AllocHGlobal(&HC)
-            Try
-                Dim NumberOfBytesRead As Int32
-                Win32True(ReadProcessMemory(ProcessHandle, ProcessParameters, Buffer, &H4, NumberOfBytesRead))
-
-                ' ProcessParameters +0x18
-                Dim StdHandlesPtr As IntPtr = Marshal.ReadIntPtr(Buffer)
-                StdHandlesPtr = StdHandlesPtr.ToInt32() + &H18
-
-                Marshal.WriteIntPtr(Buffer, &H0, StdInputHandle)
-                Marshal.WriteIntPtr(Buffer, &H4, StdOutputHandle)
-                Marshal.WriteIntPtr(Buffer, &H8, StdErrorHandle)
-
-                Dim NumberOfBytesWritten As Int32
-                Win32True(WriteProcessMemory(ProcessHandle, StdHandlesPtr, Buffer, &HC, NumberOfBytesWritten))
-            Finally
-                Marshal.FreeHGlobal(Buffer)
-            End Try
-        End Sub
-
-        Private Shared Sub SetPebStdHandles64(ByVal ProcessHandle As IntPtr, ByVal StdInputHandle As IntPtr, ByVal StdOutputHandle As IntPtr, ByVal StdErrorHandle As IntPtr)
-            Dim ProcessInformation As PROCESS_BASIC_INFORMATION
-            Dim ReturnLength As Int32
-
-            NtSuccess(NtQueryInformationProcess(ProcessHandle, PROCESSINFOCLASS.ProcessBasicInformation, ProcessInformation, Marshal.SizeOf(ProcessInformation), ReturnLength))
-
-            ' PEB +0x20: ProcessParameters
-            Dim ProcessParameters As IntPtr = ProcessInformation.PebBaseAddress
-            ProcessParameters = ProcessParameters.ToInt64() + &H20
-            Dim Buffer As IntPtr = Marshal.AllocHGlobal(&H18)
-            Try
-                Dim NumberOfBytesRead As Int32
-                Win32True(ReadProcessMemory(ProcessHandle, ProcessParameters, Buffer, &H8, NumberOfBytesRead))
-
-                ' ProcessParameters +0x20
-                Dim StdHandlesPtr As IntPtr = Marshal.ReadIntPtr(Buffer)
-                StdHandlesPtr = StdHandlesPtr.ToInt64() + &H20
-
-                Marshal.WriteIntPtr(Buffer, &H0, StdInputHandle)
-                Marshal.WriteIntPtr(Buffer, &H8, StdOutputHandle)
-                Marshal.WriteIntPtr(Buffer, &H10, StdErrorHandle)
-
-                Dim NumberOfBytesWritten As Int32
-                Win32True(WriteProcessMemory(ProcessHandle, StdHandlesPtr, Buffer, &H18, NumberOfBytesWritten))
-            Finally
-                Marshal.FreeHGlobal(Buffer)
-            End Try
-        End Sub
-
-        Public Function GetHandleUnsafe() As IntPtr
-            If m_Resumed Then
-                Throw New Exception("The suspended process has already been resumed.")
-            End If
-
-            Return m_ProcessHandle
+            Return m_Process
         End Function
 
         Public Function [Resume]() As ProcessEx
@@ -214,15 +150,9 @@
                 Throw New Exception("The suspended process has already been resumed.")
             End If
 
-            Try
-                If ResumeThread(m_ThreadHandle) = -1 Then _
-                    Throw New Win32Exception()
-
-                Win32True(CloseHandle(m_ThreadHandle))
-                Return New ProcessEx(m_ProcessHandle)
-            Finally
-                m_Resumed = True
-            End Try
+            m_Resumed = True
+            Win32True(ResumeThread(m_Thread.GetHandleUnsafe()) <> -1)
+            Return New ProcessEx(New Handle(m_Process.Duplicate()))
         End Function
 
         Public Sub Terminate(ByVal ExitCode As Int32)
@@ -230,13 +160,8 @@
                 Throw New Exception("The suspended process has already been resumed.")
             End If
 
-            Try
-                Win32True(TerminateThread(m_ThreadHandle, ExitCode))
-                Win32True(CloseHandle(m_ThreadHandle))
-                Win32True(CloseHandle(m_ProcessHandle))
-            Finally
-                m_Resumed = True
-            End Try
+            m_Resumed = True
+            Win32True(TerminateThread(m_Thread.GetHandleUnsafe(), ExitCode))
         End Sub
 
 #Region "IDisposable Support"
@@ -248,6 +173,8 @@
                 If Not m_Resumed Then
                     Me.Terminate(1)
                 End If
+                m_Process.Dispose()
+                m_Thread.Dispose()
             End If
             Me.disposedValue = True
         End Sub
@@ -266,4 +193,30 @@
         End Sub
 #End Region
     End Class
+
+#Region "IDisposable Support"
+    Private disposedValue As Boolean ' 检测冗余的调用
+
+    ' IDisposable
+    Protected Overridable Sub Dispose(ByVal disposing As Boolean)
+        If Not Me.disposedValue Then
+            m_Handle.Dispose()
+        End If
+        Me.disposedValue = True
+    End Sub
+
+    Protected Overrides Sub Finalize()
+        ' 不要更改此代码。请将清理代码放入上面的 Dispose(ByVal disposing As Boolean)中。
+        Dispose(False)
+        MyBase.Finalize()
+    End Sub
+
+    ' Visual Basic 添加此代码是为了正确实现可处置模式。
+    Public Sub Dispose() Implements IDisposable.Dispose
+        ' 不要更改此代码。请将清理代码放入上面的 Dispose(ByVal disposing As Boolean)中。
+        Dispose(True)
+        GC.SuppressFinalize(Me)
+    End Sub
+#End Region
+
 End Class

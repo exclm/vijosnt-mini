@@ -15,8 +15,12 @@
         GenericWrite = &H40000000
         GenericExecute = &H20000000
         GenericAll = &H10000000
+        ReadControl = &H20000
         WinstaAll = &HF037F
+        DesktopReadObjects = &H1
+        DesktopWriteObjects = &H80
         DesktopAll = &HF01FF
+        WinstaAccessGlobalAtoms = &H20
     End Enum
 
     Public Structure AllowedAce

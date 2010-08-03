@@ -6,10 +6,7 @@
 
     Public Sub New()
         m_Handle = GetProcessWindowStation()
-
-        If m_Handle = 0 Then
-            Throw New Win32Exception()
-        End If
+        Win32True(m_Handle <> 0)
     End Sub
 
     Protected Overrides Function GetHandle() As System.IntPtr
