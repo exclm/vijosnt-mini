@@ -183,6 +183,7 @@
         DESKTOP_READOBJECTS = 1
         DESKTOP_CREATEWINDOW = 2
         DESKTOP_WRITEOBJECTS = &H80
+        DESKTOP_SWITCHDESKTOP = &H100
         READ_CONTROL = &H20000
         WRITE_DAC = &H40000
     End Enum
@@ -223,6 +224,9 @@
         ByVal lpsa As IntPtr) As IntPtr
 
     Public Declare Auto Function CloseDesktop Lib "user32.dll" ( _
+        ByVal hDesktop As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
+
+    Public Declare Auto Function SwitchDesktop Lib "user32.dll" ( _
         ByVal hDesktop As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
 #End Region
 

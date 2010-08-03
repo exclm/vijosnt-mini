@@ -7,7 +7,7 @@
 
     Public Sub New(ByVal Name As String)
         m_Handle = CreateDesktop(Name, Nothing, 0, 0, DesktopAccess.DESKTOP_READOBJECTS Or DesktopAccess.DESKTOP_CREATEWINDOW Or _
-            DesktopAccess.DESKTOP_WRITEOBJECTS Or DesktopAccess.READ_CONTROL Or DesktopAccess.WRITE_DAC, 0)
+            DesktopAccess.DESKTOP_WRITEOBJECTS Or DesktopAccess.READ_CONTROL Or DesktopAccess.WRITE_DAC Or DesktopAccess.DESKTOP_SWITCHDESKTOP, 0)
 
         If m_Handle = 0 Then
             Throw New Win32Exception()
@@ -23,6 +23,10 @@
     Public Overrides Function GetName() As String
         Return m_Name
     End Function
+
+    Public Sub SwitchTo()
+        Win32True(SwitchDesktop(m_Handle))
+    End Sub
 
 #Region "IDisposable Support"
     Private disposedValue As Boolean ' To detect redundant calls
