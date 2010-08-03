@@ -16,7 +16,7 @@
 
     Public Shared Function CreateSuspended(ByVal ApplicationName As String, ByVal CommandLine As String, _
         ByVal Environment As IEnumerable(Of String), ByVal CurrentDirectory As String, ByVal Desktop As String, _
-        ByVal StdInput As Handle, ByVal StdOutput As Handle, ByVal StdError As Handle) As Suspended
+        ByVal StdInput As Handle, ByVal StdOutput As Handle, ByVal StdError As Handle, ByVal Token As Token) As Suspended
 
         Dim StartupInfo As STARTUPINFO
 
@@ -31,23 +31,29 @@
         If Environment IsNot Nothing Then EnvironmentPtr = AllocEnvironment(Environment)
         Try
             SyncLock m_InheritHandleSyncRoot
-                StartupInfo.hStdInput = StdInput.Duplicate(True)
-                Try
+                If StdInput IsNot Nothing Then _
+                    StartupInfo.hStdInput = StdInput.Duplicate(True)
+                If StdOutput IsNot Nothing Then _
                     StartupInfo.hStdOutput = StdOutput.Duplicate(True)
-                    Try
-                        StartupInfo.hStdError = StdError.Duplicate(True)
-                        Try
-                            Win32True(CreateProcess(ApplicationName, CommandLine, Nothing, Nothing, True,
-                                        CreationFlags.CREATE_BREAKAWAY_FROM_JOB Or CreationFlags.CREATE_DEFAULT_ERROR_MODE Or CreationFlags.CREATE_NO_WINDOW Or CreationFlags.CREATE_SUSPENDED Or CreationFlags.CREATE_UNICODE_ENVIRONMENT,
-                                        EnvironmentPtr, CurrentDirectory, StartupInfo, ProcessInformation))
-                        Finally
-                            Win32True(CloseHandle(StartupInfo.hStdError))
-                        End Try
-                    Finally
-                        Win32True(CloseHandle(StartupInfo.hStdOutput))
-                    End Try
+                If StdError IsNot Nothing Then _
+                    StartupInfo.hStdError = StdError.Duplicate(True)
+                Try
+                    If Token Is Nothing Then
+                        Win32True(CreateProcess(ApplicationName, CommandLine, Nothing, Nothing, True,
+                            CreationFlags.CREATE_BREAKAWAY_FROM_JOB Or CreationFlags.CREATE_DEFAULT_ERROR_MODE Or CreationFlags.CREATE_NO_WINDOW Or CreationFlags.CREATE_SUSPENDED Or CreationFlags.CREATE_UNICODE_ENVIRONMENT,
+                            EnvironmentPtr, CurrentDirectory, StartupInfo, ProcessInformation))
+                    Else
+                        Win32True(CreateProcessAsUser(Token.GetHandle().GetHandleUnsafe(), ApplicationName, CommandLine, Nothing, Nothing, True,
+                            CreationFlags.CREATE_BREAKAWAY_FROM_JOB Or CreationFlags.CREATE_DEFAULT_ERROR_MODE Or CreationFlags.CREATE_NO_WINDOW Or CreationFlags.CREATE_SUSPENDED Or CreationFlags.CREATE_UNICODE_ENVIRONMENT,
+                            EnvironmentPtr, CurrentDirectory, StartupInfo, ProcessInformation))
+                    End If
                 Finally
-                    Win32True(CloseHandle(StartupInfo.hStdInput))
+                    If StartupInfo.hStdInput <> IntPtr.Zero Then _
+                        Win32True(CloseHandle(StartupInfo.hStdInput))
+                    If StartupInfo.hStdOutput <> IntPtr.Zero Then _
+                        Win32True(CloseHandle(StartupInfo.hStdOutput))
+                    If StartupInfo.hStdError <> IntPtr.Zero Then _
+                        Win32True(CloseHandle(StartupInfo.hStdError))
                 End Try
             End SyncLock
         Finally
@@ -122,19 +128,6 @@
             m_Resumed = False
             m_Process = New Handle(ProcessHandle)
             m_Thread = New Handle(ThreadHandle)
-        End Sub
-
-        Public Sub SetToken(ByVal Token As Token)
-            If m_Resumed Then
-                Throw New Exception("The suspended process has already been resumed.")
-            End If
-
-            Dim AccessToken As PROCESS_ACCESS_TOKEN
-
-            AccessToken.Token = Token.GetHandle().GetHandleUnsafe()
-            AccessToken.Thread = IntPtr.Zero
-
-            NtSuccess(NtSetInformationProcess(m_Process.GetHandleUnsafe(), PROCESSINFOCLASS.ProcessAccessToken, AccessToken, Marshal.SizeOf(AccessToken)))
         End Sub
 
         Public Function GetHandle() As Handle
