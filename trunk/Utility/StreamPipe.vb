@@ -6,11 +6,15 @@
     Protected m_Buffer As Byte()
     Protected m_Event As ManualResetEvent
 
-    Public Sub New(ByVal Source As Stream, ByVal Target As Stream)
-        Me.New(Source, Target, 4096)
-    End Sub
+    Public Shared Function Create(ByVal Source As Stream, ByVal Target As Stream) As StreamPipe
+        Return New StreamPipe(Source, Target, 4096)
+    End Function
 
-    Public Sub New(ByVal Source As Stream, ByVal Target As Stream, ByVal BufferSize As Int32)
+    Public Shared Function Create(ByVal Source As Stream, ByVal Target As Stream, ByVal BufferSize As Int32) As StreamPipe
+        Return New StreamPipe(Source, Target, BufferSize)
+    End Function
+
+    Protected Sub New(ByVal Source As Stream, ByVal Target As Stream, ByVal BufferSize As Int32)
         m_Source = Source
         m_Target = Target
         m_Buffer = New Byte(0 To BufferSize - 1) {}

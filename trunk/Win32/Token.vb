@@ -1,4 +1,4 @@
-﻿Friend Class Logon
+﻿Friend Class Token
     Implements IDisposable
 
     Protected m_Handle As IntPtr
@@ -8,6 +8,10 @@
             LogonType.LOGON32_LOGON_INTERACTIVE, LogonProvider.LOGON32_PROVIDER_DEFAULT, _
             m_Handle))
     End Sub
+
+    Public Function GetHandleUnsafe() As IntPtr
+        Return m_Handle
+    End Function
 
     Public Function GetSid() As Byte()
         Dim Length As Int32

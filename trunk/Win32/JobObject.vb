@@ -161,7 +161,11 @@
         End If
     End Sub
 
-    Public Function CreateLimits() As Limits
+    Public Shared Function Create() As JobObject
+        Return New JobObject()
+    End Function
+
+    Public Shared Function CreateLimits() As Limits
         Return New Limits()
     End Function
 
@@ -174,7 +178,7 @@
         Return Me
     End Function
 
-    Public Function CreateUIRestrictions() As UIRestrictions
+    Public Shared Function CreateUIRestrictions() As UIRestrictions
         Return New UIRestrictions()
     End Function
 
@@ -187,13 +191,15 @@
         Return Me
     End Function
 
-    Public Sub Assign(ByVal ProcessHandle As IntPtr)
+    Public Function Assign(ByVal ProcessHandle As IntPtr) As JobObject
         Win32True(AssignProcessToJobObject(m_Handle, ProcessHandle))
-    End Sub
+        Return Me
+    End Function
 
-    Public Sub Terminate(ByVal ExitCode As Int32)
+    Public Function Terminate(ByVal ExitCode As Int32) As JobObject
         Win32True(TerminateJobObject(m_Handle, ExitCode))
-    End Sub
+        Return Me
+    End Function
 
 #Region "IDisposable Support"
     Private disposedValue As Boolean ' To detect redundant calls

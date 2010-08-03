@@ -9,21 +9,20 @@
     ' TODO: Figure out how to destroy a desktop
 
     Public Shared Sub Main()
-        Using s As ProcessEx.Suspended = ProcessEx.CreateSuspended("c:\windows\system32\cmd.exe", Nothing, Nothing, Nothing, Nothing)
-            Dim s0 As Stream, s1 As Stream, s2 As Stream
-            Using p0 As New Pipe, p1 As New Pipe, p2 As New Pipe
-                s.SetStdHandles(p0.GetReadHandleUnsafe(), p1.GetWriteHandleUnsafe(), p2.GetWriteHandleUnsafe())
-                s0 = p0.ConvertWritePipeToStream()
-                s1 = p1.ConvertReadPipeToStream()
-                s2 = p2.ConvertReadPipeToStream()
-            End Using
+        Using Logon As New Token("vjmini", "vjmini123")
+            Using Suspended As ProcessEx.Suspended = ProcessEx.CreateSuspended("c:\windows\system32\cmd.exe", Nothing, Nothing, Nothing, Nothing)
+                Suspended.SetToken(Logon.GetHandleUnsafe())
 
-            Using sp0 As New StreamPipe(Console.OpenStandardInput(), s0), _
-                sp1 As New StreamPipe(s1, Console.OpenStandardOutput()), _
-                sp2 As New StreamPipe(s2, Console.OpenStandardError()), _
-                p As ProcessEx = s.Resume()
+                Using StdinPipe As New Pipe, StdoutPipe As New Pipe
+                    Suspended.SetStdHandles(StdinPipe.GetReadHandleUnsafe(), StdoutPipe.GetWriteHandleUnsafe(), StdoutPipe.GetWriteHandleUnsafe())
+                    StreamPipe.Create(Console.OpenStandardInput(), StdinPipe.ConvertWritePipeToStream())
+                    StreamPipe.Create(StdoutPipe.ConvertReadPipeToStream(), Console.OpenStandardOutput())
+                End Using
 
-                p.WaitOne()
+                JobObject.Create().SetLimits(JobObject.CreateLimits().SetActiveProcessLimit(1)).Assign(Suspended.GetHandleUnsafe()).Dispose()
+                Using x As ProcessEx = Suspended.Resume()
+                    x.WaitOne()
+                End Using
             End Using
         End Using
     End Sub

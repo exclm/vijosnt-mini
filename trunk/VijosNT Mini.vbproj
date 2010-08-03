@@ -70,7 +70,7 @@
     <Compile Include="Path\Path.vb" />
     <Compile Include="Win32\Desktop.vb" />
     <Compile Include="Win32\JobObject.vb" />
-    <Compile Include="Win32\Logon.vb" />
+    <Compile Include="Win32\Token.vb" />
     <Compile Include="Win32\Pipe.vb" />
     <Compile Include="Win32\ProcessEx.vb" />
     <Compile Include="Win32\UserObject.vb" />
