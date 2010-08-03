@@ -191,15 +191,13 @@
         Return Me
     End Function
 
-    Public Function Assign(ByVal ProcessHandle As IntPtr) As JobObject
+    Public Sub Assign(ByVal ProcessHandle As IntPtr)
         Win32True(AssignProcessToJobObject(m_Handle, ProcessHandle))
-        Return Me
-    End Function
+    End Sub
 
-    Public Function Terminate(ByVal ExitCode As Int32) As JobObject
+    Public Sub Terminate(ByVal ExitCode As Int32)
         Win32True(TerminateJobObject(m_Handle, ExitCode))
-        Return Me
-    End Function
+    End Sub
 
 #Region "IDisposable Support"
     Private disposedValue As Boolean ' To detect redundant calls

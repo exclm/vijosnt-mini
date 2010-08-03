@@ -9,20 +9,26 @@
     ' TODO: Figure out how to destroy a desktop
 
     Public Shared Sub Main()
-        Using Logon As New Token("vjmini", "vjmini123")
-            Using Suspended As ProcessEx.Suspended = ProcessEx.CreateSuspended("c:\windows\system32\cmd.exe", Nothing, Nothing, Nothing, Nothing)
-                Suspended.SetToken(Logon.GetHandleUnsafe())
+        Using Token As New Token()
+            Token.SetPrivilege("SeAssignPrimaryTokenPrivilege", True)
+        End Using
 
-                Using StdinPipe As New Pipe, StdoutPipe As New Pipe
-                    Suspended.SetStdHandles(StdinPipe.GetReadHandleUnsafe(), StdoutPipe.GetWriteHandleUnsafe(), StdoutPipe.GetWriteHandleUnsafe())
-                    StreamPipe.Create(Console.OpenStandardInput(), StdinPipe.ConvertWritePipeToStream())
-                    StreamPipe.Create(StdoutPipe.ConvertReadPipeToStream(), Console.OpenStandardOutput())
-                End Using
+        ' TODO: The process cannot be started due to no access to window station and desktop, fix this.
+        Using Suspended As ProcessEx.Suspended = ProcessEx.CreateSuspended("c:\windows\system32\cmd.exe", Nothing, Nothing, Nothing, Nothing)
+            Using Token As New Token("vjmini", "vjmini123")
+                Suspended.SetToken(Token.GetHandleUnsafe())
+            End Using
 
-                JobObject.Create().SetLimits(JobObject.CreateLimits().SetActiveProcessLimit(1)).Assign(Suspended.GetHandleUnsafe()).Dispose()
-                Using x As ProcessEx = Suspended.Resume()
-                    x.WaitOne()
-                End Using
+            Using StdinPipe As New Pipe, StdoutPipe As New Pipe
+                Suspended.SetStdHandles(StdinPipe.GetReadHandleUnsafe(), StdoutPipe.GetWriteHandleUnsafe(), StdoutPipe.GetWriteHandleUnsafe())
+                StreamPipe.Create(Console.OpenStandardInput(), StdinPipe.ConvertWritePipeToStream())
+                StreamPipe.Create(StdoutPipe.ConvertReadPipeToStream(), Console.OpenStandardOutput())
+            End Using
+
+            'JobObject.Create().SetLimits(JobObject.CreateLimits().SetActiveProcessLimit(1)).Assign(Suspended.GetHandleUnsafe()).Dispose()
+
+            Using Process As ProcessEx = Suspended.Resume()
+                Process.WaitOne()
             End Using
         End Using
     End Sub

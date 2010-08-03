@@ -1,6 +1,24 @@
 ﻿Friend Module NativeMethods
 
 #Region "advapi32.dll"
+    Public Declare Auto Function OpenProcessToken Lib "advapi32.dll" ( _
+        ByVal ProcessHandle As IntPtr, _
+        ByVal DesiredAccess As TokenAccess, _
+        ByRef TokenHandle As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
+
+    Public Declare Auto Function LookupPrivilegeValue Lib "advapi32.dll" ( _
+        ByVal SystemName As String, _
+        ByVal Name As String, _
+        ByRef Luid As LUID) As <MarshalAs(UnmanagedType.Bool)> Boolean
+
+    Public Declare Auto Function AdjustTokenPrivileges Lib "advapi32.dll" ( _
+        ByVal TokenHandle As IntPtr, _
+        <MarshalAs(UnmanagedType.Bool)> ByVal DisableAllPrivileges As Boolean, _
+        ByRef NewState As TOKEN_PRIVILEGES, _
+        ByVal BufferLength As Int32, _
+        ByRef PreviousState As TOKEN_PRIVILEGES, _
+        ByRef ReturnLength As Int32) As <MarshalAs(UnmanagedType.Bool)> Boolean
+
     Public Declare Auto Function CreateProcessAsUser Lib "advapi32.dll" ( _
         ByVal TokenHandle As IntPtr, _
         ByVal ApplicationName As String, _
@@ -93,6 +111,32 @@
         ByVal AceFlags As Int32, _
         ByVal AccessMask As Int32, _
         ByVal pSid As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
+
+    Public Enum TokenAccess As Int32
+        TOKEN_ADJUST_PRIVILEGES = &H20
+        TOKEN_ALL_ACCESS = &HF01FF
+    End Enum
+
+    Public Enum PrivilegeAttribute As Int32
+        SE_PRIVILEGE_ENABLED_BY_DEFAULT = &H1
+        SE_PRIVILEGE_ENABLED = &H2
+        SE_PRIVILEGE_USED_FOR_ACCESS = &H80000000
+    End Enum
+
+    Public Structure LUID
+        Dim LowPart As Int32
+        Dim HighPart As Int32
+    End Structure
+
+    Public Structure LUID_AND_ATTRIBUTES
+        Dim Luid As LUID
+        Dim Attributes As PrivilegeAttribute
+    End Structure
+
+    Public Structure TOKEN_PRIVILEGES
+        Dim PrivilegeCount As Int32
+        Dim Privilege As LUID_AND_ATTRIBUTES
+    End Structure
 
     Public Structure ACL_SIZE_INFORMATION
         Dim AceCount As Int32
