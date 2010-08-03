@@ -15,7 +15,6 @@
         End Using
     End Function
 
-    ' TODO: login token
     Public Shared Function CreateSuspended(ByVal ApplicationName As String, ByVal CommandLine As String, _
         ByVal Environment As IEnumerable(Of String), ByVal CurrentDirectory As String, ByVal Desktop As String) As Suspended
 
@@ -110,7 +109,21 @@
             m_ThreadHandle = ThreadHandle
         End Sub
 
-        Public Sub SetStdHandles(ByVal StdInputHandle As IntPtr, ByVal StdOutputHandle As IntPtr, ByVal StdErrorHandle As IntPtr)
+        Public Function SetToken(ByVal TokenHandle As IntPtr) As Suspended
+            If m_Resumed Then
+                Throw New Exception("The suspended process has already been resumed.")
+            End If
+
+            Dim AccessToken As PROCESS_ACCESS_TOKEN
+
+            AccessToken.Token = TokenHandle
+            AccessToken.Thread = IntPtr.Zero
+
+            NtSuccess(NtSetInformationProcess(m_ProcessHandle, PROCESSINFOCLASS.ProcessAccessToken, AccessToken, Marshal.SizeOf(AccessToken)))
+            Return Me
+        End Function
+
+        Public Function SetStdHandles(ByVal StdInputHandle As IntPtr, ByVal StdOutputHandle As IntPtr, ByVal StdErrorHandle As IntPtr) As Suspended
             If m_Resumed Then
                 Throw New Exception("The suspended process has already been resumed.")
             End If
@@ -129,7 +142,9 @@
             Else
                 SetPebStdHandles64(m_ProcessHandle, TargetStdInputHandle, TargetStdOutputHandle, TargetStdErrorHandle)
             End If
-        End Sub
+
+            Return Me
+        End Function
 
         Private Shared Sub SetPebStdHandles32(ByVal ProcessHandle As IntPtr, ByVal StdInputHandle As IntPtr, ByVal StdOutputHandle As IntPtr, ByVal StdErrorHandle As IntPtr)
             Dim ProcessInformation As PROCESS_BASIC_INFORMATION
@@ -213,7 +228,7 @@
             End Try
         End Function
 
-        Public Sub Terminate(ByVal ExitCode As Int32)
+        Public Function Terminate(ByVal ExitCode As Int32) As Suspended
             If m_Resumed Then
                 Throw New Exception("The suspended process has already been resumed.")
             End If
@@ -225,7 +240,9 @@
             Finally
                 m_Resumed = True
             End Try
-        End Sub
+
+            Return Me
+        End Function
 
 #Region "IDisposable Support"
         Private disposedValue As Boolean ' To detect redundant calls
@@ -253,7 +270,5 @@
             GC.SuppressFinalize(Me)
         End Sub
 #End Region
-
     End Class
-
 End Class

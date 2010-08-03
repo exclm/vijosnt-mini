@@ -495,7 +495,7 @@
     Public Declare Auto Function NtSetInformationProcess Lib "ntdll.dll" ( _
         ByVal ProcessHandle As IntPtr, _
         ByVal ProcessInformationClass As PROCESSINFOCLASS, _
-        ByVal ProcessInformation As IntPtr, _
+        ByRef ProcessInformation As PROCESS_ACCESS_TOKEN, _
         ByVal ProcessInformationLength As Int32) As NTSTATUS
 
     Public Declare Auto Function RtlNtStatusToDosError Lib "ntdll.dll" ( _
@@ -508,6 +508,11 @@
         Dim Reserved2 As IntPtr
         Dim UniqueProcessId As IntPtr
         Dim Reserved3 As IntPtr
+    End Structure
+
+    Public Structure PROCESS_ACCESS_TOKEN
+        Dim Token As IntPtr
+        Dim Thread As IntPtr
     End Structure
 
     Public Enum PROCESSINFOCLASS
@@ -538,7 +543,7 @@
 
     Public Sub NtSuccess(ByVal Status As NTSTATUS)
         If Not NT_SUCCESS(Status) Then
-            Throw New Win32Exception(RtlNtStatusToDosError(NTSTATUS.STATUS_SUCCESS))
+            Throw New Win32Exception(RtlNtStatusToDosError(Status))
         End If
     End Sub
 End Module
