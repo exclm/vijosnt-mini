@@ -33,8 +33,8 @@
     ' IDisposable
     Protected Overridable Sub Dispose(ByVal disposing As Boolean)
         If Not Me.disposedValue Then
-            m_ReadHandle.Dispose()
-            m_WriteHandle.Dispose()
+            m_ReadHandle.Close()
+            m_WriteHandle.Close()
         End If
         Me.disposedValue = True
     End Sub

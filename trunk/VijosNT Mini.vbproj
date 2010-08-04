@@ -121,6 +121,8 @@
     <Compile Include="Compiler\Compiler.vb" />
     <Compile Include="Path\AppPath.vb" />
     <Compile Include="Path\Path.vb" />
+    <Compile Include="Utility\MiniWaitPool.vb" />
+    <Compile Include="Utility\WatchDog.vb" />
     <Compile Include="Win32\Desktop.vb" />
     <Compile Include="Win32\Handle.vb" />
     <Compile Include="Win32\JobObject.vb" />

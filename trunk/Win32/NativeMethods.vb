@@ -231,8 +231,6 @@
 #End Region
 
 #Region "kernel32.dll"
-    Public Declare Auto Function GetTickCount Lib "kernel32.dll" () As Int32
-
     Public Declare Auto Function CreateProcess Lib "kernel32.dll" ( _
         ByVal ApplicationName As String, _
         ByVal CommandLine As String, _

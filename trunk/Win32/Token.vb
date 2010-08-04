@@ -81,7 +81,7 @@
     ' IDisposable
     Protected Sub Dispose(ByVal disposing As Boolean)
         If Not Me.disposedValue Then
-            m_Handle.Dispose()
+            m_Handle.Close()
         End If
         Me.disposedValue = True
     End Sub

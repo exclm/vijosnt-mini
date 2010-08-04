@@ -157,6 +157,11 @@
             Win32True(TerminateThread(m_Thread.GetHandleUnsafe(), ExitCode))
         End Sub
 
+        Public Function GetAliveTime() As Int32
+            ' TODO: return max(cpu time, idle time)
+            ' Don't use GetTickCount() because it would overflow every 4x.xx days
+        End Function
+
 #Region "IDisposable Support"
         Private disposedValue As Boolean ' To detect redundant calls
 
@@ -166,8 +171,8 @@
                 If Not m_Resumed Then
                     Me.Terminate(1)
                 End If
-                m_Process.Dispose()
-                m_Thread.Dispose()
+                m_Process.Close()
+                m_Thread.Close()
             End If
             Me.disposedValue = True
         End Sub
@@ -193,7 +198,7 @@
     ' IDisposable
     Protected Overridable Sub Dispose(ByVal disposing As Boolean)
         If Not Me.disposedValue Then
-            m_Handle.Dispose()
+            m_Handle.Close()
         End If
         Me.disposedValue = True
     End Sub

@@ -13,8 +13,8 @@
             Try
                 For i As Int32 = 0 To 99
                     Dim Process As ProcessEx, Stream As Stream
-                    Using StdinPipe As New Pipe, StdoutPipe As New Pipe
-                        Using Suspended As ProcessEx.Suspended = ProcessEx.CreateSuspended("c:\MinGW64\bin\gcc.exe", "foo --version", Nothing, Nothing, Desktop.GetName(), StdinPipe.GetReadHandle(), StdoutPipe.GetWriteHandle(), StdoutPipe.GetWriteHandle(), Token)
+                    Using StdoutPipe As New Pipe()
+                        Using Suspended As ProcessEx.Suspended = ProcessEx.CreateSuspended("c:\MinGW64\bin\gcc.exe", Nothing, Nothing, Nothing, Desktop.GetName(), Nothing, Nothing, StdoutPipe.GetWriteHandle(), Token)
                             Using JobObject As JobObject = JobObject.Create().SetLimits(JobObject.CreateLimits().SetActiveProcessLimit(1))
                                 JobObject.Assign(Suspended.GetHandle())
                             End Using
@@ -24,9 +24,9 @@
                     End Using
 
                     Using Reader As New StreamReader(Stream)
-                        Reader.ReadToEnd()
+                        Console.WriteLine(Reader.ReadToEnd())
                     End Using
-                    Process.GetHandle().Wait()
+                    Process.GetHandle().WaitOne()
                 Next
             Finally
                 Desktop.RemoveAceBySid(Token.GetSid())
