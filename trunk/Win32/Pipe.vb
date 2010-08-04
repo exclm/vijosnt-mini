@@ -1,4 +1,4 @@
-﻿Public Class Pipe
+﻿Friend Class Pipe
     Implements IDisposable
 
     Protected m_ReadHandle As Handle

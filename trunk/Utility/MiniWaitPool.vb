@@ -1,4 +1,4 @@
-﻿Public Class MiniWaitPool
+﻿Friend Class MiniWaitPool
     Public Delegate Sub WaitPoolCallback(ByVal State As Object, ByVal Timeouted As Boolean)
 
     Protected Structure WaitPoolEntry
