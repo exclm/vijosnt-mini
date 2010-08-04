@@ -1,4 +1,4 @@
-﻿Public Class Handle
+﻿Friend Class Handle
     Implements IDisposable
 
     Private m_Handle As IntPtr
