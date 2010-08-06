@@ -105,13 +105,13 @@
 #End Region
 
     Protected m_InitialProcessTime As Int64
-    Protected m_InitialIdleTime As Int64
+    Protected m_InitialIdleProcessTime As Int64
 
     Public Sub New(ByVal OwnedHandle As IntPtr)
         MyBase.New(OwnedHandle)
 
         m_InitialProcessTime = GetProcessTime()
-        ' TODO: Get m_InitialIdleTime
+        m_InitialIdleProcessTime = GetIdleProcessTime()
     End Sub
 
     Public Sub Kill(ByVal ReturnCode As Int32)
@@ -129,12 +129,14 @@
         Return KernelTime + UserTime
     End Function
 
-    Public Function GetAliveTime() As Int32
-        Dim ProcessTime As Int64 = GetProcessTime() - m_InitialProcessTime
-        Dim IdleTime As Int64 ' TODO: GetIdleTime() - m_InitialIdleTime
+    Public ReadOnly Property AliveTime() As Int32
+        Get
+            Dim ProcessTime As Int64 = GetProcessTime() - m_InitialProcessTime
+            Dim IdleProcessTime As Int64 = (GetIdleProcessTime() - m_InitialIdleProcessTime) \ Environment.ProcessorCount
 
-        Return Math.Max(ProcessTime, IdleTime) \ 10000
-    End Function
+            Return Math.Max(ProcessTime, IdleProcessTime) \ 10000
+        End Get
+    End Property
 
     ' TODO: attach debugger
     Public Class Suspended

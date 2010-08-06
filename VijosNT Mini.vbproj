@@ -119,8 +119,8 @@
     <Compile Include="Compiler\CompilerInterfaces.vb" />
     <Compile Include="Compiler\CompilerManager.vb" />
     <Compile Include="Compiler\Compiler.vb" />
-    <Compile Include="Path\AppPath.vb" />
-    <Compile Include="Path\Path.vb" />
+    <Compile Include="Utility\AppPath.vb" />
+    <Compile Include="Utility\Path.vb" />
     <Compile Include="Utility\MiniWaitPool.vb" />
     <Compile Include="Utility\WatchDog.vb" />
     <Compile Include="Win32\Desktop.vb" />
@@ -130,6 +130,7 @@
     <Compile Include="Win32\Pipe.vb" />
     <Compile Include="Win32\ProcessEx.vb" />
     <Compile Include="Win32\UserObject.vb" />
+    <Compile Include="Win32\Win32Misc.vb" />
     <Compile Include="Win32\WindowStation.vb" />
     <Compile Include="Service\Service.vb" />
     <Compile Include="Service\ServiceEntry.vb" />
@@ -148,8 +149,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Path\TempPath.vb" />
-    <Compile Include="Path\TempPathServer.vb" />
+    <Compile Include="Utility\TempPath.vb" />
+    <Compile Include="Utility\TempPathServer.vb" />
     <Compile Include="Win32\NativeMethods.vb" />
     <Compile Include="Utility\RandomString.vb" />
     <Compile Include="Utility\StreamPipe.vb" />
@@ -176,8 +177,8 @@
   <ItemGroup>
     <Folder Include="Data Source\" />
     <Folder Include="Logger\" />
-    <Folder Include="Output Layer\" />
     <Folder Include="Result Collector\" />
+    <Folder Include="Special Judge\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

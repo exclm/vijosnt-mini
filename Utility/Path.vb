@@ -1,4 +1,4 @@
-﻿Public MustInherit Class Path
+﻿Friend MustInherit Class Path
     Public MustOverride Function GetPath() As String
 
     Public Overridable Function GetDirectoryInfo() As DirectoryInfo

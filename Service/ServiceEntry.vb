@@ -14,7 +14,7 @@
                 For i As Int32 = 0 To 0
                     Dim Process As ProcessEx, Stream As Stream
                     Using StdoutPipe As New Pipe()
-                        Using Suspended As ProcessEx.Suspended = ProcessEx.CreateSuspended("C:\Program Files\Java\jre6\bin\java.exe", "java hello_world.HelloWorld", Nothing, "D:\JavaCourse\Workspace\HelloWorld\bin", Desktop.GetName(), Nothing, StdoutPipe.GetWriteHandle(), StdoutPipe.GetWriteHandle(), Token)
+                        Using Suspended As ProcessEx.Suspended = ProcessEx.CreateSuspended("D:\Works\C++\WinTest\x64\Release\WinTest.exe", Nothing, Nothing, Nothing, Desktop.GetName(), Nothing, StdoutPipe.GetWriteHandle(), StdoutPipe.GetWriteHandle(), Token)
                             Using JobObject As New JobObject()
                                 With JobObject.Limits
                                     .ActiveProcess = 1
@@ -31,6 +31,9 @@
                     Using Reader As New StreamReader(Stream)
                         Console.WriteLine(Reader.ReadToEnd())
                     End Using
+
+                    Process.WaitOne()
+                    Console.WriteLine(Process.AliveTime)
                     Process.Close()
                 Next
             Finally
