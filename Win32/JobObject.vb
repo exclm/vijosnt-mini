@@ -1,225 +1,302 @@
 ﻿Friend Class JobObject
+    Inherits KernelObject
     Implements IDisposable
 
-    Public Class Limits
+    Public Class JobLimits
         Protected m_Data As JOBOBJECT_EXTENDED_LIMIT_INFORMATION
+        Protected m_JobObject As JobObject
 
-        Public Enum Limit
-            BreakawayOk = &H800
-            DieOnUnhandledException = &H400
-            KillOnJobClose = &H2000
-            SilentBreakawayOk = &H1000
-        End Enum
-
-        Public Sub New()
-            m_Data.BasicLimitInformation.PriorityClass = PriorityClass.Normal
-            m_Data.BasicLimitInformation.SchedulingClass = 5
+        Public Sub New(ByVal JobObject As JobObject)
+            m_JobObject = JobObject
+            Win32True(QueryInformationJobObject(JobObject.GetHandleUnsafe(), JobObjectInfoClass.JobObjectExtendedLimitInformation, m_Data, Marshal.SizeOf(m_Data), Nothing))
         End Sub
 
-        Public Sub New(ByVal JobObjectHandle As IntPtr)
-            Win32True(QueryInformationJobObject(JobObjectHandle, JobObjectInfoClass.JobObjectExtendedLimitInformation, m_Data, Marshal.SizeOf(m_Data), Nothing))
+        Public Sub Commit()
+            Win32True(SetInformationJobObject(m_JobObject.GetHandleUnsafe(), JobObjectInfoClass.JobObjectExtendedLimitInformation, m_Data, Marshal.SizeOf(m_Data)))
         End Sub
 
-        Public Sub SetInformation(ByVal JobObjectHandle As IntPtr)
-            Win32True(SetInformationJobObject(JobObjectHandle, JobObjectInfoClass.JobObjectExtendedLimitInformation, m_Data, Marshal.SizeOf(m_Data)))
-        End Sub
+        Public Property ProcessTime() As Nullable(Of Int64)
+            Get
+                If (m_Data.BasicLimitInformation.LimitFlags And JobObjectLimitFlags.JOB_OBJECT_LIMIT_PROCESS_TIME) <> 0 Then
+                    Return m_Data.BasicLimitInformation.PerProcessUserTimeLimit
+                Else
+                    Return Nothing
+                End If
+            End Get
 
-        Public Function GetProcessTimeLimit() As Nullable(Of Int64)
-            If (m_Data.BasicLimitInformation.LimitFlags And JobObjectLimitFlags.JOB_OBJECT_LIMIT_PROCESS_TIME) <> 0 Then
-                Return m_Data.BasicLimitInformation.PerProcessUserTimeLimit
-            Else
-                Return Nothing
-            End If
-        End Function
+            Set(ByVal Value As Nullable(Of Int64))
+                If Value IsNot Nothing Then
+                    m_Data.BasicLimitInformation.LimitFlags = m_Data.BasicLimitInformation.LimitFlags Or JobObjectLimitFlags.JOB_OBJECT_LIMIT_PROCESS_TIME
+                    m_Data.BasicLimitInformation.PerProcessUserTimeLimit = Value
+                Else
+                    m_Data.BasicLimitInformation.LimitFlags = m_Data.BasicLimitInformation.LimitFlags And Not JobObjectLimitFlags.JOB_OBJECT_LIMIT_PROCESS_TIME
+                End If
+            End Set
+        End Property
 
-        Public Function SetProcessTimeLimit(ByVal Value As Nullable(Of Int64)) As Limits
-            If Value IsNot Nothing Then
-                m_Data.BasicLimitInformation.LimitFlags = m_Data.BasicLimitInformation.LimitFlags Or JobObjectLimitFlags.JOB_OBJECT_LIMIT_PROCESS_TIME
-                m_Data.BasicLimitInformation.PerProcessUserTimeLimit = Value
-            Else
-                m_Data.BasicLimitInformation.LimitFlags = m_Data.BasicLimitInformation.LimitFlags And Not JobObjectLimitFlags.JOB_OBJECT_LIMIT_PROCESS_TIME
-            End If
-            Return Me
-        End Function
+        Public Property PriorityClass() As Nullable(Of PriorityClass)
+            Get
+                If (m_Data.BasicLimitInformation.LimitFlags And JobObjectLimitFlags.JOB_OBJECT_LIMIT_PRIORITY_CLASS) = JobObjectLimitFlags.JOB_OBJECT_LIMIT_PRIORITY_CLASS Then
+                    Return m_Data.BasicLimitInformation.PriorityClass
+                Else
+                    Return Nothing
+                End If
+            End Get
 
-        Public Function GetPriorityClassLimit() As Nullable(Of PriorityClass)
-            If (m_Data.BasicLimitInformation.LimitFlags And JobObjectLimitFlags.JOB_OBJECT_LIMIT_PRIORITY_CLASS) = JobObjectLimitFlags.JOB_OBJECT_LIMIT_PRIORITY_CLASS Then
-                Return m_Data.BasicLimitInformation.PriorityClass
-            Else
-                Return Nothing
-            End If
-        End Function
+            Set(ByVal Value As Nullable(Of PriorityClass))
+                If Value IsNot Nothing Then
+                    m_Data.BasicLimitInformation.LimitFlags = m_Data.BasicLimitInformation.LimitFlags Or JobObjectLimitFlags.JOB_OBJECT_LIMIT_PRIORITY_CLASS
+                    m_Data.BasicLimitInformation.PriorityClass = Value
+                Else
+                    m_Data.BasicLimitInformation.LimitFlags = m_Data.BasicLimitInformation.LimitFlags And Not JobObjectLimitFlags.JOB_OBJECT_LIMIT_PRIORITY_CLASS
+                End If
+            End Set
+        End Property
 
-        Public Function SetPriorityClassLimit(ByVal Value As Nullable(Of PriorityClass)) As Limits
-            If Value IsNot Nothing Then
-                m_Data.BasicLimitInformation.LimitFlags = m_Data.BasicLimitInformation.LimitFlags Or JobObjectLimitFlags.JOB_OBJECT_LIMIT_PRIORITY_CLASS
-                m_Data.BasicLimitInformation.PriorityClass = Value
-            Else
-                m_Data.BasicLimitInformation.LimitFlags = m_Data.BasicLimitInformation.LimitFlags And Not JobObjectLimitFlags.JOB_OBJECT_LIMIT_PRIORITY_CLASS
-            End If
-            Return Me
-        End Function
+        Public Property ActiveProcess() As Nullable(Of Int32)
+            Get
+                If (m_Data.BasicLimitInformation.LimitFlags And JobObjectLimitFlags.JOB_OBJECT_LIMIT_ACTIVE_PROCESS) <> 0 Then
+                    Return m_Data.BasicLimitInformation.ActiveProcessLimit
+                Else
+                    Return Nothing
+                End If
+            End Get
 
-        Public Function GetActiveProcessLimit() As Nullable(Of Int32)
-            If (m_Data.BasicLimitInformation.LimitFlags And JobObjectLimitFlags.JOB_OBJECT_LIMIT_ACTIVE_PROCESS) <> 0 Then
-                Return m_Data.BasicLimitInformation.ActiveProcessLimit
-            Else
-                Return Nothing
-            End If
-        End Function
+            Set(ByVal Value As Nullable(Of Int32))
+                If Value IsNot Nothing Then
+                    m_Data.BasicLimitInformation.LimitFlags = m_Data.BasicLimitInformation.LimitFlags Or JobObjectLimitFlags.JOB_OBJECT_LIMIT_ACTIVE_PROCESS
+                    m_Data.BasicLimitInformation.ActiveProcessLimit = Value
+                Else
+                    m_Data.BasicLimitInformation.LimitFlags = m_Data.BasicLimitInformation.LimitFlags And Not JobObjectLimitFlags.JOB_OBJECT_LIMIT_ACTIVE_PROCESS
+                End If
+            End Set
+        End Property
 
-        Public Function SetActiveProcessLimit(ByVal Value As Nullable(Of Int32)) As Limits
-            If Value IsNot Nothing Then
-                m_Data.BasicLimitInformation.LimitFlags = m_Data.BasicLimitInformation.LimitFlags Or JobObjectLimitFlags.JOB_OBJECT_LIMIT_ACTIVE_PROCESS
-                m_Data.BasicLimitInformation.ActiveProcessLimit = Value
-            Else
-                m_Data.BasicLimitInformation.LimitFlags = m_Data.BasicLimitInformation.LimitFlags And Not JobObjectLimitFlags.JOB_OBJECT_LIMIT_ACTIVE_PROCESS
-            End If
-            Return Me
-        End Function
+        Public Property ProcessMemory() As Nullable(Of IntPtr)
+            Get
+                If (m_Data.BasicLimitInformation.LimitFlags And JobObjectLimitFlags.JOB_OBJECT_LIMIT_PROCESS_MEMORY) <> 0 Then
+                    Return m_Data.ProcessMemoryLimit
+                Else
+                    Return Nothing
+                End If
+            End Get
 
-        Public Function GetProcessMemoryLimit() As Nullable(Of IntPtr)
-            If (m_Data.BasicLimitInformation.LimitFlags And JobObjectLimitFlags.JOB_OBJECT_LIMIT_PROCESS_MEMORY) <> 0 Then
-                Return m_Data.ProcessMemoryLimit
-            Else
-                Return Nothing
-            End If
-        End Function
+            Set(ByVal Value As Nullable(Of IntPtr))
+                If Value IsNot Nothing Then
+                    m_Data.BasicLimitInformation.LimitFlags = m_Data.BasicLimitInformation.LimitFlags Or JobObjectLimitFlags.JOB_OBJECT_LIMIT_PROCESS_MEMORY
+                    m_Data.ProcessMemoryLimit = Value
+                Else
+                    m_Data.BasicLimitInformation.LimitFlags = m_Data.BasicLimitInformation.LimitFlags And Not JobObjectLimitFlags.JOB_OBJECT_LIMIT_PROCESS_MEMORY
+                End If
+            End Set
+        End Property
 
-        Public Function SetProcessMemoryLimit(ByVal Value As Nullable(Of IntPtr)) As Limits
-            If Value IsNot Nothing Then
-                m_Data.BasicLimitInformation.LimitFlags = m_Data.BasicLimitInformation.LimitFlags Or JobObjectLimitFlags.JOB_OBJECT_LIMIT_PROCESS_MEMORY
-                m_Data.ProcessMemoryLimit = Value
-            Else
-                m_Data.BasicLimitInformation.LimitFlags = m_Data.BasicLimitInformation.LimitFlags And Not JobObjectLimitFlags.JOB_OBJECT_LIMIT_PROCESS_MEMORY
-            End If
-            Return Me
-        End Function
+        Public Property BreakawayOk() As Boolean
+            Get
+                Return (m_Data.BasicLimitInformation.LimitFlags And JobObjectLimitFlags.JOB_OBJECT_LIMIT_BREAKAWAY_OK) = JobObjectLimitFlags.JOB_OBJECT_LIMIT_BREAKAWAY_OK
+            End Get
 
-        Public Function SetLimit(ByVal Limit As Limit, ByVal Value As Boolean) As Limits
-            If Value Then
-                m_Data.BasicLimitInformation.LimitFlags = m_Data.BasicLimitInformation.LimitFlags Or Limit
-            Else
-                m_Data.BasicLimitInformation.LimitFlags = m_Data.BasicLimitInformation.LimitFlags And Not Limit
-            End If
-            Return Me
-        End Function
+            Set(ByVal Value As Boolean)
+                If Value Then
+                    m_Data.BasicLimitInformation.LimitFlags = m_Data.BasicLimitInformation.LimitFlags Or JobObjectLimitFlags.JOB_OBJECT_LIMIT_BREAKAWAY_OK
+                Else
+                    m_Data.BasicLimitInformation.LimitFlags = m_Data.BasicLimitInformation.LimitFlags And Not JobObjectLimitFlags.JOB_OBJECT_LIMIT_BREAKAWAY_OK
+                End If
+            End Set
+        End Property
 
-        Public Function GetLimit(ByVal Limit As Limit) As Boolean
-            Return (m_Data.BasicLimitInformation.LimitFlags And Limit) = Limit
-        End Function
+        Public Property DieOnUnhandledException() As Boolean
+            Get
+                Return (m_Data.BasicLimitInformation.LimitFlags And JobObjectLimitFlags.JOB_OBJECT_LIMIT_DIE_ON_UNHANDLED_EXCEPTION) = JobObjectLimitFlags.JOB_OBJECT_LIMIT_DIE_ON_UNHANDLED_EXCEPTION
+            End Get
+
+            Set(ByVal Value As Boolean)
+                If Value Then
+                    m_Data.BasicLimitInformation.LimitFlags = m_Data.BasicLimitInformation.LimitFlags Or JobObjectLimitFlags.JOB_OBJECT_LIMIT_DIE_ON_UNHANDLED_EXCEPTION
+                Else
+                    m_Data.BasicLimitInformation.LimitFlags = m_Data.BasicLimitInformation.LimitFlags And Not JobObjectLimitFlags.JOB_OBJECT_LIMIT_DIE_ON_UNHANDLED_EXCEPTION
+                End If
+            End Set
+        End Property
+
+        Public Property KillOnJobClose() As Boolean
+            Get
+                Return (m_Data.BasicLimitInformation.LimitFlags And JobObjectLimitFlags.JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE) = JobObjectLimitFlags.JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE
+            End Get
+
+            Set(ByVal Value As Boolean)
+                If Value Then
+                    m_Data.BasicLimitInformation.LimitFlags = m_Data.BasicLimitInformation.LimitFlags Or JobObjectLimitFlags.JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE
+                Else
+                    m_Data.BasicLimitInformation.LimitFlags = m_Data.BasicLimitInformation.LimitFlags And Not JobObjectLimitFlags.JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE
+                End If
+            End Set
+        End Property
+
+        Public Property SilentBreakawayOk() As Boolean
+            Get
+                Return (m_Data.BasicLimitInformation.LimitFlags And JobObjectLimitFlags.JOB_OBJECT_LIMIT_SILENT_BREAKAWAY_OK) = JobObjectLimitFlags.JOB_OBJECT_LIMIT_SILENT_BREAKAWAY_OK
+            End Get
+
+            Set(ByVal Value As Boolean)
+                If Value Then
+                    m_Data.BasicLimitInformation.LimitFlags = m_Data.BasicLimitInformation.LimitFlags Or JobObjectLimitFlags.JOB_OBJECT_LIMIT_SILENT_BREAKAWAY_OK
+                Else
+                    m_Data.BasicLimitInformation.LimitFlags = m_Data.BasicLimitInformation.LimitFlags And Not JobObjectLimitFlags.JOB_OBJECT_LIMIT_SILENT_BREAKAWAY_OK
+                End If
+            End Set
+        End Property
     End Class
 
-    Public Class UIRestrictions
+    Public Class JobUIRestrictions
         Protected m_Data As JOBOBJECT_BASIC_UI_RESTRICTIONS
+        Protected m_JobObject As JobObject
 
-        Public Enum Limit As Int32
-            [Handles] = &H1
-            ReadClipboard = &H2
-            WriteClipboard = &H4
-            SystemParameters = &H8
-            DisplaySettings = &H10
-            GlobalAtoms = &H20
-            Desktop = &H40
-            ExitWindows = &H80
-            All = &HFF
-        End Enum
-
-        Public Sub New()
-            ' Do nothing
+        Public Sub New(ByVal JobObject As JobObject)
+            m_JobObject = JobObject
+            Win32True(QueryInformationJobObject(JobObject.GetHandleUnsafe(), JobObjectInfoClass.JobObjectBasicUIRestrictions, m_Data, Marshal.SizeOf(m_Data), Nothing))
         End Sub
 
-        Public Sub New(ByVal JobObjectHandle As IntPtr)
-            Win32True(QueryInformationJobObject(JobObjectHandle, JobObjectInfoClass.JobObjectBasicUIRestrictions, m_Data, Marshal.SizeOf(m_Data), Nothing))
+        Public Sub Commit()
+            Win32True(SetInformationJobObject(m_JobObject.GetHandleUnsafe(), JobObjectInfoClass.JobObjectBasicUIRestrictions, m_Data, Marshal.SizeOf(m_Data)))
         End Sub
 
-        Public Sub SetInformation(ByVal JobObjectHandle As IntPtr)
-            Win32True(SetInformationJobObject(JobObjectHandle, JobObjectInfoClass.JobObjectBasicUIRestrictions, m_Data, Marshal.SizeOf(m_Data)))
-        End Sub
+        Public Property [Handles]() As Boolean
+            Get
+                Return (m_Data.UIRestrictionClass And UIRestrictionClass.JOB_OBJECT_UILIMIT_HANDLES) = UIRestrictionClass.JOB_OBJECT_UILIMIT_HANDLES
+            End Get
 
-        Public Function SetLimit(ByVal Limit As Limit, ByVal Value As Boolean) As UIRestrictions
-            If Value Then
-                m_Data.UIRestrictionClass = m_Data.UIRestrictionClass Or Limit
-            Else
-                m_Data.UIRestrictionClass = m_Data.UIRestrictionClass And Not Limit
-            End If
-            Return Me
-        End Function
+            Set(ByVal Value As Boolean)
+                If Value Then
+                    m_Data.UIRestrictionClass = m_Data.UIRestrictionClass Or UIRestrictionClass.JOB_OBJECT_UILIMIT_HANDLES
+                Else
+                    m_Data.UIRestrictionClass = m_Data.UIRestrictionClass And Not UIRestrictionClass.JOB_OBJECT_UILIMIT_HANDLES
+                End If
+            End Set
+        End Property
 
-        Public Function GetLimit(ByVal Limit As Limit) As Boolean
-            Return (m_Data.UIRestrictionClass And Limit) = Limit
-        End Function
+        Public Property ReadClipboard() As Boolean
+            Get
+                Return (m_Data.UIRestrictionClass And UIRestrictionClass.JOB_OBJECT_UILIMIT_READCLIPBOARD) = UIRestrictionClass.JOB_OBJECT_UILIMIT_READCLIPBOARD
+            End Get
+
+            Set(ByVal Value As Boolean)
+                If Value Then
+                    m_Data.UIRestrictionClass = m_Data.UIRestrictionClass Or UIRestrictionClass.JOB_OBJECT_UILIMIT_READCLIPBOARD
+                Else
+                    m_Data.UIRestrictionClass = m_Data.UIRestrictionClass And Not UIRestrictionClass.JOB_OBJECT_UILIMIT_READCLIPBOARD
+                End If
+            End Set
+        End Property
+
+        Public Property WriteClipboard() As Boolean
+            Get
+                Return (m_Data.UIRestrictionClass And UIRestrictionClass.JOB_OBJECT_UILIMIT_WRITECLIPBOARD) = UIRestrictionClass.JOB_OBJECT_UILIMIT_WRITECLIPBOARD
+            End Get
+
+            Set(ByVal Value As Boolean)
+                If Value Then
+                    m_Data.UIRestrictionClass = m_Data.UIRestrictionClass Or UIRestrictionClass.JOB_OBJECT_UILIMIT_WRITECLIPBOARD
+                Else
+                    m_Data.UIRestrictionClass = m_Data.UIRestrictionClass And Not UIRestrictionClass.JOB_OBJECT_UILIMIT_WRITECLIPBOARD
+                End If
+            End Set
+        End Property
+
+        Public Property SystemParameters() As Boolean
+            Get
+                Return (m_Data.UIRestrictionClass And UIRestrictionClass.JOB_OBJECT_UILIMIT_SYSTEMPARAMETERS) = UIRestrictionClass.JOB_OBJECT_UILIMIT_SYSTEMPARAMETERS
+            End Get
+
+            Set(ByVal Value As Boolean)
+                If Value Then
+                    m_Data.UIRestrictionClass = m_Data.UIRestrictionClass Or UIRestrictionClass.JOB_OBJECT_UILIMIT_SYSTEMPARAMETERS
+                Else
+                    m_Data.UIRestrictionClass = m_Data.UIRestrictionClass And Not UIRestrictionClass.JOB_OBJECT_UILIMIT_SYSTEMPARAMETERS
+                End If
+            End Set
+        End Property
+
+        Public Property DisplaySettings() As Boolean
+            Get
+                Return (m_Data.UIRestrictionClass And UIRestrictionClass.JOB_OBJECT_UILIMIT_DISPLAYSETTINGS) = UIRestrictionClass.JOB_OBJECT_UILIMIT_DISPLAYSETTINGS
+            End Get
+
+            Set(ByVal Value As Boolean)
+                If Value Then
+                    m_Data.UIRestrictionClass = m_Data.UIRestrictionClass Or UIRestrictionClass.JOB_OBJECT_UILIMIT_DISPLAYSETTINGS
+                Else
+                    m_Data.UIRestrictionClass = m_Data.UIRestrictionClass And Not UIRestrictionClass.JOB_OBJECT_UILIMIT_DISPLAYSETTINGS
+                End If
+            End Set
+        End Property
+
+        Public Property GlobalAtoms() As Boolean
+            Get
+                Return (m_Data.UIRestrictionClass And UIRestrictionClass.JOB_OBJECT_UILIMIT_GLOBALATOMS) = UIRestrictionClass.JOB_OBJECT_UILIMIT_GLOBALATOMS
+            End Get
+
+            Set(ByVal Value As Boolean)
+                If Value Then
+                    m_Data.UIRestrictionClass = m_Data.UIRestrictionClass Or UIRestrictionClass.JOB_OBJECT_UILIMIT_GLOBALATOMS
+                Else
+                    m_Data.UIRestrictionClass = m_Data.UIRestrictionClass And Not UIRestrictionClass.JOB_OBJECT_UILIMIT_GLOBALATOMS
+                End If
+            End Set
+        End Property
+
+        Public Property Desktop() As Boolean
+            Get
+                Return (m_Data.UIRestrictionClass And UIRestrictionClass.JOB_OBJECT_UILIMIT_DESKTOP) = UIRestrictionClass.JOB_OBJECT_UILIMIT_DESKTOP
+            End Get
+
+            Set(ByVal Value As Boolean)
+                If Value Then
+                    m_Data.UIRestrictionClass = m_Data.UIRestrictionClass Or UIRestrictionClass.JOB_OBJECT_UILIMIT_DESKTOP
+                Else
+                    m_Data.UIRestrictionClass = m_Data.UIRestrictionClass And Not UIRestrictionClass.JOB_OBJECT_UILIMIT_DESKTOP
+                End If
+            End Set
+        End Property
+
+        Public Property ExitWindows() As Boolean
+            Get
+                Return (m_Data.UIRestrictionClass And UIRestrictionClass.JOB_OBJECT_UILIMIT_EXITWINDOWS) = UIRestrictionClass.JOB_OBJECT_UILIMIT_EXITWINDOWS
+            End Get
+
+            Set(ByVal Value As Boolean)
+                If Value Then
+                    m_Data.UIRestrictionClass = m_Data.UIRestrictionClass Or UIRestrictionClass.JOB_OBJECT_UILIMIT_EXITWINDOWS
+                Else
+                    m_Data.UIRestrictionClass = m_Data.UIRestrictionClass And Not UIRestrictionClass.JOB_OBJECT_UILIMIT_EXITWINDOWS
+                End If
+            End Set
+        End Property
     End Class
-
-    Protected m_Handle As Handle
 
     Public Sub New()
         Dim JobHandle As IntPtr = CreateJobObject(Nothing, Nothing)
         Win32True(JobHandle <> 0)
-        m_Handle = New Handle(JobHandle)
+        MyBase.InternalSetHandle(JobHandle)
     End Sub
 
-    Public Shared Function Create() As JobObject
-        Return New JobObject()
-    End Function
+    Public ReadOnly Property Limits() As JobLimits
+        Get
+            Return New JobLimits(Me)
+        End Get
+    End Property
 
-    Public Shared Function CreateLimits() As Limits
-        Return New Limits()
-    End Function
+    Public ReadOnly Property UIRestrictions() As JobUIRestrictions
+        Get
+            Return New JobUIRestrictions(Me)
+        End Get
+    End Property
 
-    Public Function GetLimits() As Limits
-        Return New Limits(m_Handle.GetHandleUnsafe())
-    End Function
-
-    Public Function SetLimits(ByVal Limits As Limits) As JobObject
-        Limits.SetInformation(m_Handle.GetHandleUnsafe())
-        Return Me
-    End Function
-
-    Public Shared Function CreateUIRestrictions() As UIRestrictions
-        Return New UIRestrictions()
-    End Function
-
-    Public Function GetUIRestrictions() As UIRestrictions
-        Return New UIRestrictions(m_Handle.GetHandleUnsafe())
-    End Function
-
-    Public Function SetUIRestrictions(ByVal UIRestrictions As UIRestrictions) As JobObject
-        UIRestrictions.SetInformation(m_Handle.GetHandleUnsafe())
-        Return Me
-    End Function
-
-    Public Sub Assign(ByVal Process As Handle)
-        Win32True(AssignProcessToJobObject(m_Handle.GetHandleUnsafe(), Process.GetHandleUnsafe()))
+    Public Sub Assign(ByVal Process As KernelObject)
+        Win32True(AssignProcessToJobObject(MyBase.GetHandleUnsafe(), Process.GetHandleUnsafe()))
     End Sub
 
-    Public Sub Terminate(ByVal ExitCode As Int32)
-        Win32True(TerminateJobObject(m_Handle.GetHandleUnsafe(), ExitCode))
+    Public Sub Kill(ByVal ExitCode As Int32)
+        Win32True(TerminateJobObject(MyBase.GetHandleUnsafe(), ExitCode))
     End Sub
-
-#Region "IDisposable Support"
-    Private disposedValue As Boolean ' To detect redundant calls
-
-    ' IDisposable
-    Protected Overridable Sub Dispose(ByVal disposing As Boolean)
-        If Not Me.disposedValue Then
-            m_Handle.Close()
-        End If
-        Me.disposedValue = True
-    End Sub
-
-    Protected Overrides Sub Finalize()
-        ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
-        Dispose(False)
-        MyBase.Finalize()
-    End Sub
-
-    ' This code added by Visual Basic to correctly implement the disposable pattern.
-    Public Sub Dispose() Implements IDisposable.Dispose
-        ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
-        Dispose(True)
-        GC.SuppressFinalize(Me)
-    End Sub
-#End Region
-
 End Class

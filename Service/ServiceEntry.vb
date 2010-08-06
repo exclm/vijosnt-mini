@@ -11,12 +11,17 @@
             WindowStation.AddAllowedAce(Token.GetSid(), GenericAce)
             Desktop.AddAllowedAce(Token.GetSid(), GenericAce)
             Try
-                For i As Int32 = 0 To 99
+                For i As Int32 = 0 To 0
                     Dim Process As ProcessEx, Stream As Stream
                     Using StdoutPipe As New Pipe()
-                        Using Suspended As ProcessEx.Suspended = ProcessEx.CreateSuspended("c:\MinGW64\bin\gcc.exe", Nothing, Nothing, Nothing, Desktop.GetName(), Nothing, Nothing, StdoutPipe.GetWriteHandle(), Token)
-                            Using JobObject As JobObject = JobObject.Create().SetLimits(JobObject.CreateLimits().SetActiveProcessLimit(1))
-                                JobObject.Assign(Suspended.GetHandle())
+                        Using Suspended As ProcessEx.Suspended = ProcessEx.CreateSuspended("C:\Program Files\Java\jre6\bin\java.exe", "java hello_world.HelloWorld", Nothing, "D:\JavaCourse\Workspace\HelloWorld\bin", Desktop.GetName(), Nothing, StdoutPipe.GetWriteHandle(), StdoutPipe.GetWriteHandle(), Token)
+                            Using JobObject As New JobObject()
+                                With JobObject.Limits
+                                    .ActiveProcess = 1
+                                    .BreakawayOk = False
+                                    .Commit()
+                                End With
+                                JobObject.Assign(Suspended)
                             End Using
                             Process = Suspended.Resume()
                         End Using
@@ -26,7 +31,7 @@
                     Using Reader As New StreamReader(Stream)
                         Console.WriteLine(Reader.ReadToEnd())
                     End Using
-                    Process.GetHandle().WaitOne()
+                    Process.Close()
                 Next
             Finally
                 Desktop.RemoveAceBySid(Token.GetSid())

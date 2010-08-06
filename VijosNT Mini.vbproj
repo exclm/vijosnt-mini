@@ -124,7 +124,7 @@
     <Compile Include="Utility\MiniWaitPool.vb" />
     <Compile Include="Utility\WatchDog.vb" />
     <Compile Include="Win32\Desktop.vb" />
-    <Compile Include="Win32\Handle.vb" />
+    <Compile Include="Win32\KernelObject.vb" />
     <Compile Include="Win32\JobObject.vb" />
     <Compile Include="Win32\Token.vb" />
     <Compile Include="Win32\Pipe.vb" />
@@ -175,7 +175,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data Source\" />
-    <Folder Include="Input Layer\" />
     <Folder Include="Logger\" />
     <Folder Include="Output Layer\" />
     <Folder Include="Result Collector\" />

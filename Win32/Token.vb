@@ -1,29 +1,24 @@
 ﻿Friend Class Token
+    Inherits KernelObject
     Implements IDisposable
-
-    Protected m_Handle As Handle
 
     Public Sub New()
         Dim TokenHandle As IntPtr
         Win32True(OpenProcessToken(GetCurrentProcess(), TokenAccess.TOKEN_ALL_ACCESS, TokenHandle))
-        m_Handle = New Handle(TokenHandle)
+        InternalSetHandle(TokenHandle)
     End Sub
 
     Public Sub New(ByVal UserName As String, ByVal Password As String)
         Dim TokenHandle As IntPtr
         Win32True(LogonUser(UserName, ".", Password, LogonType.LOGON32_LOGON_INTERACTIVE, _
             LogonProvider.LOGON32_PROVIDER_DEFAULT, TokenHandle))
-        m_Handle = New Handle(TokenHandle)
+        InternalSetHandle(TokenHandle)
     End Sub
-
-    Public Function GetHandle() As Handle
-        Return m_Handle
-    End Function
 
     Public Function GetSid() As Byte()
         Dim Length As Int32
 
-        If Not GetTokenInformation(m_Handle.GetHandleUnsafe(), TOKEN_INFORMATION_CLASS.TokenGroups, 0, 0, Length) Then
+        If Not GetTokenInformation(MyBase.GetHandleUnsafe(), TOKEN_INFORMATION_CLASS.TokenGroups, 0, 0, Length) Then
             Dim LastErr As Int32 = Marshal.GetLastWin32Error()
             If LastErr <> ERROR_INSUFFICIENT_BUFFER Then
                 Throw New Win32Exception(LastErr)
@@ -34,7 +29,7 @@
 
         Dim TokenGroupsPtr As IntPtr = Marshal.AllocHGlobal(Length)
         Try
-            Win32True(GetTokenInformation(m_Handle.GetHandleUnsafe(), TOKEN_INFORMATION_CLASS.TokenGroups, TokenGroupsPtr, Length, Length))
+            Win32True(GetTokenInformation(MyBase.GetHandleUnsafe(), TOKEN_INFORMATION_CLASS.TokenGroups, TokenGroupsPtr, Length, Length))
 
             Dim GroupCount As Int32 = Marshal.ReadInt32(TokenGroupsPtr, 0)
             For Index As Int32 = 0 To GroupCount - 1
@@ -72,31 +67,6 @@
             TokenPrivileges.Privilege.Attributes = 0
         End If
 
-        Win32True(AdjustTokenPrivileges(m_Handle.GetHandleUnsafe(), False, TokenPrivileges, Marshal.SizeOf(TokenPrivileges), Nothing, Nothing))
+        Win32True(AdjustTokenPrivileges(MyBase.GetHandleUnsafe(), False, TokenPrivileges, Marshal.SizeOf(TokenPrivileges), Nothing, Nothing))
     End Sub
-
-#Region "IDisposable Support"
-    Private disposedValue As Boolean ' To detect redundant calls
-
-    ' IDisposable
-    Protected Sub Dispose(ByVal disposing As Boolean)
-        If Not Me.disposedValue Then
-            m_Handle.Close()
-        End If
-        Me.disposedValue = True
-    End Sub
-
-    Protected Overrides Sub Finalize()
-        ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
-        Dispose(False)
-        MyBase.Finalize()
-    End Sub
-
-    ' This code added by Visual Basic to correctly implement the disposable pattern.
-    Public Sub Dispose() Implements IDisposable.Dispose
-        ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
-        Dispose(True)
-        GC.SuppressFinalize(Me)
-    End Sub
-#End Region
 End Class
