@@ -1,7 +1,17 @@
 ﻿Friend Class MiniWaitPool
-    Public Delegate Sub WaitPoolCallback(ByVal State As Object, ByVal Timeouted As Boolean)
+    Public Delegate Sub WaitPoolCallback(ByVal Result As Result)
 
-    Protected Structure WaitPoolEntry
+    Public Structure Result
+        Public Sub New(ByVal Timeouted As Boolean, ByVal State As Object)
+            Me.Timeouted = Timeouted
+            Me.State = State
+        End Sub
+
+        Dim Timeouted As Boolean
+        Dim State As Object
+    End Structure
+
+    Protected Structure Entry
         Public Sub New(ByVal WaitHandle As WaitHandle, ByVal TimeoutTick As Nullable(Of Int64), ByVal Callback As WaitPoolCallback, ByVal CallbackState As Object)
             Me.WaitHandle = WaitHandle
             Me.TimeoutTick = TimeoutTick
@@ -18,17 +28,17 @@
     Protected m_Thread As Thread
     Protected m_Event As AutoResetEvent
     Protected m_SyncRoot As Object
-    Protected m_List As List(Of WaitPoolEntry)
+    Protected m_List As List(Of Entry)
     Protected m_Stopped As Boolean
 
     Public Sub New()
         m_Thread = New Thread(AddressOf ThreadEntry)
         m_Event = New AutoResetEvent(False)
         m_SyncRoot = New Object()
-        m_List = New List(Of WaitPoolEntry)
+        m_List = New List(Of Entry)
         m_Stopped = False
 
-        m_List.Add(New WaitPoolEntry(m_Event, Nothing, AddressOf InternalCallback, Nothing))
+        m_List.Add(New Entry(m_Event, Nothing, AddressOf InternalCallback, Nothing))
     End Sub
 
     Public Sub Start()
@@ -52,22 +62,22 @@
         End If
 
         SyncLock m_SyncRoot
-            m_List.Add(New WaitPoolEntry(WaitHandle, TimeoutTick, Callback, State))
+            m_List.Add(New Entry(WaitHandle, TimeoutTick, Callback, State))
         End SyncLock
         m_Event.Set()
     End Sub
 
-    Protected Sub InternalCallback()
+    Protected Sub InternalCallback(ByVal Result As Result)
         SyncLock m_SyncRoot
             If Not m_Stopped Then
-                m_List.Add(New WaitPoolEntry(m_Event, Nothing, AddressOf InternalCallback, Nothing))
+                m_List.Add(New Entry(m_Event, Nothing, AddressOf InternalCallback, Nothing))
             End If
         End SyncLock
     End Sub
 
-    Protected Sub DispatchEntry(ByVal Entry As WaitPoolEntry, ByVal Timeouted As Boolean)
+    Protected Sub DispatchEntry(ByVal Entry As Entry, ByVal Timeouted As Boolean)
         Try
-            Entry.Callback.Invoke(Entry.CallbackState, Timeouted)
+            Entry.Callback.Invoke(New Result(Timeouted, Entry.CallbackState))
         Catch ex As Exception
             ' eat it
         End Try
@@ -79,7 +89,7 @@
 
     Protected Sub ThreadEntry()
         While True
-            Dim Entries As WaitPoolEntry()
+            Dim Entries As Entry()
 
             SyncLock m_SyncRoot
                 Entries = m_List.ToArray()
