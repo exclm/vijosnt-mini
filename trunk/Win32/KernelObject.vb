@@ -1,7 +1,16 @@
-﻿Friend Class Handle
+﻿Friend Class KernelObject
     Inherits WaitHandle
+    Implements IDisposable
 
     Public Sub New(ByVal OwnedHandle As IntPtr)
+        InternalSetHandle(OwnedHandle)
+    End Sub
+
+    Protected Sub New()
+        ' Do nothing
+    End Sub
+
+    Protected Sub InternalSetHandle(ByVal OwnedHandle As IntPtr)
         MyBase.SafeWaitHandle = New SafeWaitHandle(OwnedHandle, True)
     End Sub
 

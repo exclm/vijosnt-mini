@@ -1,29 +1,37 @@
 ﻿Friend Class Pipe
     Implements IDisposable
 
-    Protected m_ReadHandle As Handle
-    Protected m_WriteHandle As Handle
+    Public Class Stream
+        Inherits FileStream
+
+        Public Sub New(ByVal OwnedHandle As IntPtr, ByVal Access As FileAccess)
+            MyBase.New(New SafeFileHandle(OwnedHandle, True), Access)
+        End Sub
+    End Class
+
+    Protected m_ReadHandle As KernelObject
+    Protected m_WriteHandle As KernelObject
 
     Public Sub New()
         Dim ReadHandle As IntPtr, WriteHandle As IntPtr
         Win32True(CreatePipe(ReadHandle, WriteHandle, Nothing, 0))
-        m_ReadHandle = New Handle(ReadHandle)
-        m_WriteHandle = New Handle(WriteHandle)
+        m_ReadHandle = New KernelObject(ReadHandle)
+        m_WriteHandle = New KernelObject(WriteHandle)
     End Sub
 
     Public Function GetReadStream() As Stream
-        Return New FileStream(New SafeFileHandle(m_ReadHandle.Duplicate(), True), FileAccess.Read)
+        Return New Stream(m_ReadHandle.Duplicate(), FileAccess.Read)
     End Function
 
     Public Function GetWriteStream() As Stream
-        Return New FileStream(New SafeFileHandle(m_WriteHandle.Duplicate(), True), FileAccess.Write)
+        Return New Stream(m_WriteHandle.Duplicate(), FileAccess.Write)
     End Function
 
-    Public Function GetReadHandle() As Handle
+    Public Function GetReadHandle() As KernelObject
         Return m_ReadHandle
     End Function
 
-    Public Function GetWriteHandle() As Handle
+    Public Function GetWriteHandle() As KernelObject
         Return m_WriteHandle
     End Function
 

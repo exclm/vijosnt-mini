@@ -1,4 +1,5 @@
 ﻿Friend Class ProcessEx
+    Inherits KernelObject
     Implements IDisposable
 
 #Region "Shared members"
@@ -9,14 +10,15 @@
     End Sub
 
     Public Shared Function Attach(ByVal ProcessID As Int32) As ProcessEx
-        Dim hProcess As IntPtr
-        hProcess = OpenProcess(ProcessAccess.PROCESS_ALL_ACCESS, False, ProcessID)
-        Return New ProcessEx(New Handle(hProcess))
+        Dim ProcessHandle As IntPtr
+        ProcessHandle = OpenProcess(ProcessAccess.PROCESS_ALL_ACCESS, False, ProcessID)
+        Win32True(ProcessHandle <> 0)
+        Return New ProcessEx(ProcessHandle)
     End Function
 
     Public Shared Function CreateSuspended(ByVal ApplicationName As String, ByVal CommandLine As String, _
         ByVal Environment As IEnumerable(Of String), ByVal CurrentDirectory As String, ByVal Desktop As String, _
-        ByVal StdInput As Handle, ByVal StdOutput As Handle, ByVal StdError As Handle, ByVal Token As Token) As Suspended
+        ByVal StdInput As KernelObject, ByVal StdOutput As KernelObject, ByVal StdError As KernelObject, ByVal Token As Token) As Suspended
 
         Dim StartupInfo As STARTUPINFO
 
@@ -43,7 +45,7 @@
                             CreationFlags.CREATE_BREAKAWAY_FROM_JOB Or CreationFlags.CREATE_DEFAULT_ERROR_MODE Or CreationFlags.CREATE_NO_WINDOW Or CreationFlags.CREATE_SUSPENDED Or CreationFlags.CREATE_UNICODE_ENVIRONMENT,
                             EnvironmentPtr, CurrentDirectory, StartupInfo, ProcessInformation))
                     Else
-                        Win32True(CreateProcessAsUser(Token.GetHandle().GetHandleUnsafe(), ApplicationName, CommandLine, Nothing, Nothing, True,
+                        Win32True(CreateProcessAsUser(Token.GetHandleUnsafe(), ApplicationName, CommandLine, Nothing, Nothing, True,
                             CreationFlags.CREATE_BREAKAWAY_FROM_JOB Or CreationFlags.CREATE_DEFAULT_ERROR_MODE Or CreationFlags.CREATE_NO_WINDOW Or CreationFlags.CREATE_SUSPENDED Or CreationFlags.CREATE_UNICODE_ENVIRONMENT,
                             EnvironmentPtr, CurrentDirectory, StartupInfo, ProcessInformation))
                     End If
@@ -102,41 +104,51 @@
     End Function
 #End Region
 
-    Protected m_Handle As Handle
+    Protected m_InitialProcessTime As Int64
+    Protected m_InitialIdleTime As Int64
 
-    Public Sub New(ByVal Handle As Handle)
-        m_Handle = Handle
+    Public Sub New(ByVal OwnedHandle As IntPtr)
+        MyBase.New(OwnedHandle)
+
+        m_InitialProcessTime = GetProcessTime()
+        ' TODO: Get m_InitialIdleTime
     End Sub
-
-    Public Function GetHandle() As Handle
-        Return m_Handle
-    End Function
 
     Public Sub Kill(ByVal ReturnCode As Int32)
-        Win32True(TerminateProcess(m_Handle.GetHandleUnsafe(), ReturnCode))
+        Win32True(TerminateProcess(MyBase.GetHandleUnsafe(), ReturnCode))
     End Sub
+
+    Protected Function GetProcessTime() As Int64
+        Dim CreationTime As Int64
+        Dim ExitTime As Int64
+        Dim KernelTime As Int64
+        Dim UserTime As Int64
+
+        Win32True(GetProcessTimes(MyBase.GetHandleUnsafe(), CreationTime, ExitTime, KernelTime, UserTime))
+
+        Return KernelTime + UserTime
+    End Function
+
+    Public Function GetAliveTime() As Int32
+        Dim ProcessTime As Int64 = GetProcessTime() - m_InitialProcessTime
+        Dim IdleTime As Int64 ' TODO: GetIdleTime() - m_InitialIdleTime
+
+        Return Math.Max(ProcessTime, IdleTime) \ 10000
+    End Function
 
     ' TODO: attach debugger
     Public Class Suspended
+        Inherits KernelObject
         Implements IDisposable
 
         Protected m_Resumed As Boolean
-        Protected m_Process As Handle
-        Protected m_Thread As Handle
+        Protected m_Thread As KernelObject
 
         Public Sub New(ByVal ProcessHandle As IntPtr, ByVal ThreadHandle As IntPtr)
+            MyBase.New(ProcessHandle)
             m_Resumed = False
-            m_Process = New Handle(ProcessHandle)
-            m_Thread = New Handle(ThreadHandle)
+            m_Thread = New KernelObject(ThreadHandle)
         End Sub
-
-        Public Function GetHandle() As Handle
-            If m_Resumed Then
-                Throw New Exception("The suspended process has already been resumed.")
-            End If
-
-            Return m_Process
-        End Function
 
         Public Function [Resume]() As ProcessEx
             If m_Resumed Then
@@ -145,34 +157,29 @@
 
             m_Resumed = True
             Win32True(ResumeThread(m_Thread.GetHandleUnsafe()) <> -1)
-            Return New ProcessEx(New Handle(m_Process.Duplicate()))
+            Return New ProcessEx(MyBase.Duplicate())
         End Function
 
-        Public Sub Terminate(ByVal ExitCode As Int32)
+        Public Sub Kill(ByVal ExitCode As Int32)
             If m_Resumed Then
                 Throw New Exception("The suspended process has already been resumed.")
             End If
 
             m_Resumed = True
-            Win32True(TerminateThread(m_Thread.GetHandleUnsafe(), ExitCode))
+            Win32True(TerminateThread(m_Thread.GetHandleUnsafe(), 1))
         End Sub
-
-        Public Function GetAliveTime() As Int32
-            ' TODO: return max(cpu time, idle time)
-            ' Don't use GetTickCount() because it would overflow every 4x.xx days
-        End Function
 
 #Region "IDisposable Support"
         Private disposedValue As Boolean ' To detect redundant calls
 
         ' IDisposable
-        Protected Overridable Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
             If Not Me.disposedValue Then
                 If Not m_Resumed Then
-                    Me.Terminate(1)
+                    Me.Kill(1)
                 End If
-                m_Process.Close()
                 m_Thread.Close()
+                MyBase.Dispose(disposing)
             End If
             Me.disposedValue = True
         End Sub
@@ -182,39 +189,6 @@
             Dispose(False)
             MyBase.Finalize()
         End Sub
-
-        ' This code added by Visual Basic to correctly implement the disposable pattern.
-        Public Sub Dispose() Implements IDisposable.Dispose
-            ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
-            Dispose(True)
-            GC.SuppressFinalize(Me)
-        End Sub
 #End Region
     End Class
-
-#Region "IDisposable Support"
-    Private disposedValue As Boolean ' 检测冗余的调用
-
-    ' IDisposable
-    Protected Overridable Sub Dispose(ByVal disposing As Boolean)
-        If Not Me.disposedValue Then
-            m_Handle.Close()
-        End If
-        Me.disposedValue = True
-    End Sub
-
-    Protected Overrides Sub Finalize()
-        ' 不要更改此代码。请将清理代码放入上面的 Dispose(ByVal disposing As Boolean)中。
-        Dispose(False)
-        MyBase.Finalize()
-    End Sub
-
-    ' Visual Basic 添加此代码是为了正确实现可处置模式。
-    Public Sub Dispose() Implements IDisposable.Dispose
-        ' 不要更改此代码。请将清理代码放入上面的 Dispose(ByVal disposing As Boolean)中。
-        Dispose(True)
-        GC.SuppressFinalize(Me)
-    End Sub
-#End Region
-
 End Class
