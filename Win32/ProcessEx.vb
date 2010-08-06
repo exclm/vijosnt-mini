@@ -4,9 +4,13 @@
 
 #Region "Shared members"
     Protected Shared m_InheritHandleSyncRoot As Object
+    Protected Shared m_ProcessorCount As Int64
 
     Shared Sub New()
         m_InheritHandleSyncRoot = New Object()
+
+        ' We don't support CPU hotplugging
+        m_ProcessorCount = Environment.ProcessorCount
     End Sub
 
     Public Shared Function Attach(ByVal ProcessID As Int32) As ProcessEx
@@ -132,7 +136,7 @@
     Public ReadOnly Property AliveTime() As Int32
         Get
             Dim ProcessTime As Int64 = GetProcessTime() - m_InitialProcessTime
-            Dim IdleProcessTime As Int64 = (GetIdleProcessTime() - m_InitialIdleProcessTime) \ Environment.ProcessorCount
+            Dim IdleProcessTime As Int64 = (GetIdleProcessTime() - m_InitialIdleProcessTime) \ m_ProcessorCount
 
             Return Math.Max(ProcessTime, IdleProcessTime) \ 10000
         End Get
