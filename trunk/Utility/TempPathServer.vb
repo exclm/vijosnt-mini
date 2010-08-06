@@ -1,13 +1,13 @@
-﻿Public NotInheritable Class TempPathServer
+﻿Friend Class TempPathServer
     Implements IDisposable
 
-    Private Const m_SleepTime As Int32 = 30 * 1000
-    Private Const m_TempPathLength As Int32 = 16
+    Protected Const m_SleepTime As Int32 = 30 * 1000
+    Protected Const m_TempPathLength As Int32 = 16
 
-    Private m_Root As DirectoryInfo
-    Private m_Pendings As List(Of DirectoryInfo)
-    Private m_CleanupThread As Thread
-    Private m_RandomString As RandomString
+    Protected m_Root As DirectoryInfo
+    Protected m_Pendings As List(Of DirectoryInfo)
+    Protected m_CleanupThread As Thread
+    Protected m_RandomString As RandomString
 
     Public Sub New()
         Dim AppPath As New AppPath()
@@ -42,7 +42,7 @@
     End Sub
 
     ' Should not use member function so that the class object will not be referenced.
-    Private Shared Sub CleanupThreadEntry(ByVal Pendings As IList(Of DirectoryInfo))
+    Protected Shared Sub CleanupThreadEntry(ByVal Pendings As IList(Of DirectoryInfo))
         Try
             While True
                 Thread.Sleep(m_SleepTime)
@@ -52,7 +52,7 @@
         End Try
     End Sub
 
-    Private Shared Sub Work(ByVal Pendings As IList(Of DirectoryInfo))
+    Protected Shared Sub Work(ByVal Pendings As IList(Of DirectoryInfo))
         SyncLock Pendings
             For Each Dir As DirectoryInfo In Pendings
                 Try

@@ -1,4 +1,4 @@
-﻿Public NotInheritable Class AppPath
+﻿Friend NotInheritable Class AppPath
     Inherits Path
 
     Public Overrides Function GetPath() As String

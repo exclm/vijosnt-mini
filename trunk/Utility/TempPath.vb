@@ -1,9 +1,9 @@
-﻿Public NotInheritable Class TempPath
+﻿Friend Class TempPath
     Inherits Path
     Implements IDisposable
 
-    Private m_Root As DirectoryInfo
-    Private m_Server As TempPathServer
+    Protected m_Root As DirectoryInfo
+    Protected m_Server As TempPathServer
 
     Public Sub New(ByVal Root As DirectoryInfo, ByVal Server As TempPathServer)
         m_Root = Root

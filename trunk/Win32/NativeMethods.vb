@@ -531,16 +531,22 @@
 #End Region
 
 #Region "ntdll.dll"
+    Public Declare Auto Function NtQuerySystemInformation Lib "ntdll.dll" ( _
+        ByVal SystemInformationClass As SYSTEM_INFORMATION_CLASS, _
+        ByVal SystemInformation As IntPtr, _
+        ByVal SystemInformationLength As Int32, _
+        ByRef ReturnLength As Int32) As NTSTATUS
+
     Public Declare Auto Function NtQueryInformationProcess Lib "ntdll.dll" ( _
         ByVal ProcessHandle As IntPtr, _
-        ByVal ProcessInformationClass As PROCESSINFOCLASS, _
+        ByVal ProcessInformationClass As PROCESS_INFORMATION_CLASS, _
         ByRef ProcessInformation As PROCESS_BASIC_INFORMATION, _
         ByVal ProcessInformationLength As Int32, _
         ByRef ReturnLength As Int32) As NTSTATUS
 
     Public Declare Auto Function NtSetInformationProcess Lib "ntdll.dll" ( _
         ByVal ProcessHandle As IntPtr, _
-        ByVal ProcessInformationClass As PROCESSINFOCLASS, _
+        ByVal ProcessInformationClass As PROCESS_INFORMATION_CLASS, _
         ByRef ProcessInformation As PROCESS_ACCESS_TOKEN, _
         ByVal ProcessInformationLength As Int32) As NTSTATUS
 
@@ -561,9 +567,12 @@
         Dim Thread As IntPtr
     End Structure
 
-    Public Enum PROCESSINFOCLASS
+    Public Enum SYSTEM_INFORMATION_CLASS As Int32
+        SystemPerformanceInformation = 2
+    End Enum
+
+    Public Enum PROCESS_INFORMATION_CLASS
         ProcessBasicInformation = 0
-        ProcessAccessToken = 9
     End Enum
 
     Public Enum NTSTATUS As Int32
