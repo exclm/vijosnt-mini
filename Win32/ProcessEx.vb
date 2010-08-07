@@ -142,6 +142,14 @@
         End Get
     End Property
 
+    Public ReadOnly Property ExitCode() As Int32
+        Get
+            Dim Result As Int32
+            Win32True(GetExitCodeProcess(MyBase.GetHandleUnsafe(), Result))
+            Return Result
+        End Get
+    End Property
+
     ' TODO: attach debugger
     Public Class Suspended
         Inherits KernelObject

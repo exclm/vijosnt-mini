@@ -1,47 +1,18 @@
-﻿Public NotInheritable Class ServiceEntry
+﻿Friend NotInheritable Class ServiceEntry
+    Protected Shared Sub WatchDogCallback(ByVal Result As WatchDog.Result)
+        Dim Process As ProcessEx = DirectCast(Result.State, ProcessEx)
+        Console.WriteLine("Quota usage: {0} ms", Result.QuotaUsage \ 10000)
+        Console.WriteLine("Exit code: {0}", Process.ExitCode)
+        Process.Close()
+    End Sub
+
     Public Shared Sub Main()
-        Using Token As New Token()
-            Token.SetPrivilege("SeAssignPrimaryTokenPrivilege", True)
+        Dim Process As ProcessEx, WatchDog As New WatchDog()
+        WatchDog.Start()
+
+        Using Suspended As ProcessEx.Suspended = ProcessEx.CreateSuspended("D:\Works\C++\WinTest\x64\Release\WinTest.exe", Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing)
+            Process = Suspended.Resume()
+            WatchDog.SetWatch(Process, 980 * 10000, AddressOf WatchDogCallback, Process)
         End Using
-
-        Dim x As Date = Date.Now
-
-        Using WindowStation As New WindowStation(), Desktop As New Desktop("ForeverBell"), Token As New Token("vjmini", "vjmini123")
-            Dim GenericAce As New UserObject.AllowedAce(0, UserObject.AceMask.GenericRead Or UserObject.AceMask.GenericWrite Or UserObject.AceMask.GenericExecute)
-            WindowStation.AddAllowedAce(Token.GetSid(), GenericAce)
-            Desktop.AddAllowedAce(Token.GetSid(), GenericAce)
-            Try
-                For i As Int32 = 0 To 0
-                    Dim Process As ProcessEx, Stream As Stream
-                    Using StdoutPipe As New Pipe()
-                        Using Suspended As ProcessEx.Suspended = ProcessEx.CreateSuspended("D:\Works\C++\WinTest\x64\Release\WinTest.exe", Nothing, Nothing, Nothing, Desktop.GetName(), Nothing, StdoutPipe.GetWriteHandle(), StdoutPipe.GetWriteHandle(), Token)
-                            Using JobObject As New JobObject()
-                                With JobObject.Limits
-                                    .ActiveProcess = 1
-                                    .BreakawayOk = False
-                                    .Commit()
-                                End With
-                                JobObject.Assign(Suspended)
-                            End Using
-                            Process = Suspended.Resume()
-                        End Using
-                        Stream = StdoutPipe.GetReadStream()
-                    End Using
-
-                    Using Reader As New StreamReader(Stream)
-                        Console.WriteLine(Reader.ReadToEnd())
-                    End Using
-
-                    Process.WaitOne()
-                    Console.WriteLine(Process.AliveTime)
-                    Process.Close()
-                Next
-            Finally
-                Desktop.RemoveAceBySid(Token.GetSid())
-                WindowStation.RemoveAceBySid(Token.GetSid())
-            End Try
-        End Using
-
-        Console.Write((Date.Now - x).TotalMilliseconds)
     End Sub
 End Class
