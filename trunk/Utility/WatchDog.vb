@@ -27,7 +27,7 @@
 
     Protected m_WaitPool As MiniWaitPool
 
-    Public Sub WatchDog()
+    Public Sub New()
         m_WaitPool = New MiniWaitPool()
     End Sub
 
@@ -54,7 +54,7 @@
     Protected Sub SetWatchInternal(ByVal Context As Context)
         Dim AliveTime As Int64 = Context.Process.AliveTime
 
-        If AliveTime > Context.TimeQuota Then
+        If AliveTime >= Context.TimeQuota Then
             ' The waited process exceeds the time quota, terminate it and fire the callback
             Context.Process.Kill(ERROR_NOT_ENOUGH_QUOTA)
             Context.Callback.Invoke(New Result(Context.CallbackState, Context.Process.AliveTime))
