@@ -133,12 +133,12 @@
         Return KernelTime + UserTime
     End Function
 
-    Public ReadOnly Property AliveTime() As Int32
+    Public ReadOnly Property AliveTime() As Int64
         Get
             Dim ProcessTime As Int64 = GetProcessTime() - m_InitialProcessTime
             Dim IdleProcessTime As Int64 = (GetIdleProcessTime() - m_InitialIdleProcessTime) \ m_ProcessorCount
 
-            Return Math.Max(ProcessTime, IdleProcessTime) \ 10000
+            Return Math.Max(ProcessTime, IdleProcessTime)
         End Get
     End Property
 

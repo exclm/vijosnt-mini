@@ -52,11 +52,11 @@
         m_Event.Set()
     End Sub
 
-    Public Sub Add(ByVal WaitHandle As WaitHandle, ByVal TimeoutValue As Int32, ByVal Callback As WaitPoolCallback, ByVal State As Object)
+    Public Sub Add(ByVal WaitHandle As WaitHandle, ByVal TimeoutValue As Int64, ByVal Callback As WaitPoolCallback, ByVal State As Object)
         Dim TimeoutTick As Nullable(Of Int64)
 
         If TimeoutValue <> Timeout.Infinite Then
-            TimeoutTick = Date.Now.Ticks + Math.BigMul(TimeoutValue, 10000)
+            TimeoutTick = Date.Now.Ticks + TimeoutValue
         Else
             TimeoutTick = Nothing
         End If
