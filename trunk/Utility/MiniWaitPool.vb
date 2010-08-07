@@ -2,13 +2,13 @@
     Public Delegate Sub WaitPoolCallback(ByVal Result As Result)
 
     Public Structure Result
-        Public Sub New(ByVal Timeouted As Boolean, ByVal State As Object)
-            Me.Timeouted = Timeouted
+        Public Sub New(ByVal State As Object, ByVal Timeouted As Boolean)
             Me.State = State
+            Me.Timeouted = Timeouted
         End Sub
 
-        Dim Timeouted As Boolean
         Dim State As Object
+        Dim Timeouted As Boolean
     End Structure
 
     Protected Structure Entry
@@ -52,7 +52,7 @@
         m_Event.Set()
     End Sub
 
-    Public Sub Add(ByVal WaitHandle As WaitHandle, ByVal TimeoutValue As Int64, ByVal Callback As WaitPoolCallback, ByVal State As Object)
+    Public Sub SetWait(ByVal WaitHandle As WaitHandle, ByVal TimeoutValue As Int64, ByVal Callback As WaitPoolCallback, ByVal State As Object)
         Dim TimeoutTick As Nullable(Of Int64)
 
         If TimeoutValue <> Timeout.Infinite Then
@@ -75,12 +75,13 @@
         End SyncLock
     End Sub
 
+    Protected Sub DispatchEntryCallback(ByVal Result As IAsyncResult)
+        Dim Callback As WaitPoolCallback = DirectCast(Result.AsyncState, WaitPoolCallback)
+        Callback.EndInvoke(Result)
+    End Sub
+
     Protected Sub DispatchEntry(ByVal Entry As Entry, ByVal Timeouted As Boolean)
-        Try
-            Entry.Callback.Invoke(New Result(Timeouted, Entry.CallbackState))
-        Catch ex As Exception
-            ' eat it
-        End Try
+        Entry.Callback.BeginInvoke(New Result(Entry.CallbackState, Timeouted), AddressOf DispatchEntryCallback, Entry.Callback)
 
         SyncLock m_SyncRoot
             m_List.Remove(Entry)
