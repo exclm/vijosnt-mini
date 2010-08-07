@@ -75,13 +75,12 @@
         End SyncLock
     End Sub
 
-    Protected Sub DispatchEntryCallback(ByVal Result As IAsyncResult)
-        Dim Callback As WaitPoolCallback = DirectCast(Result.AsyncState, WaitPoolCallback)
-        Callback.EndInvoke(Result)
-    End Sub
-
     Protected Sub DispatchEntry(ByVal Entry As Entry, ByVal Timeouted As Boolean)
-        Entry.Callback.BeginInvoke(New Result(Entry.CallbackState, Timeouted), AddressOf DispatchEntryCallback, Entry.Callback)
+        Try
+            Entry.Callback.Invoke(New Result(Entry.CallbackState, Timeouted))
+        Catch ex As Exception
+            ' eat it
+        End Try
 
         SyncLock m_SyncRoot
             m_List.Remove(Entry)
