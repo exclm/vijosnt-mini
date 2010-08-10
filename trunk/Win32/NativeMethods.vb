@@ -566,7 +566,7 @@
             ByVal ProcessHandle As IntPtr, _
             ByVal DebugObjectHandle As IntPtr) As NTSTATUS
 
-        Public Declare Function NtRemoveProecssDebug Lib "ntdll.dll" ( _
+        Public Declare Function NtRemoveProcessDebug Lib "ntdll.dll" ( _
             ByVal ProcessHandle As IntPtr, _
             ByVal DebugObjectHandle As IntPtr) As NTSTATUS
 
