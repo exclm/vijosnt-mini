@@ -9,8 +9,8 @@
     </SchemaVersion>
     <ProjectGuid>{14264ECC-994C-4D8E-985C-CA7B57076454}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <StartupObject>VijosNT_Mini.ServiceEntry</StartupObject>
-    <RootNamespace>VijosNT_Mini</RootNamespace>
+    <StartupObject>VijosNT.ServiceEntry</StartupObject>
+    <RootNamespace>VijosNT</RootNamespace>
     <AssemblyName>VijosNT Mini</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Console</MyType>
