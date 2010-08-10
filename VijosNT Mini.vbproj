@@ -119,6 +119,17 @@
     <Compile Include="Compiler\CompilerInterfaces.vb" />
     <Compile Include="Compiler\CompilerManager.vb" />
     <Compile Include="Compiler\Compiler.vb" />
+    <Compile Include="Executing\ExecuteCompletionCallback.vb" />
+    <Compile Include="Executing\EnvironmentTag.vb" />
+    <Compile Include="Executing\Executee.vb" />
+    <Compile Include="Executing\ExecuteResult.vb" />
+    <Compile Include="Executing\Executor.vb" />
+    <Compile Include="Executing\Environment.vb" />
+    <Compile Include="Executing\EnvironmentPool.vb" />
+    <Compile Include="Executing\TrustedEnvironment.vb" />
+    <Compile Include="Executing\TrustedEnvironmentPool.vb" />
+    <Compile Include="Executing\UntrustedEnvironment.vb" />
+    <Compile Include="Executing\UntrustedEnvironmentPool.vb" />
     <Compile Include="Utility\AppPath.vb" />
     <Compile Include="Utility\Path.vb" />
     <Compile Include="Utility\MiniWaitPool.vb" />
