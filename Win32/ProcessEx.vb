@@ -150,7 +150,6 @@
         End Get
     End Property
 
-    ' TODO: attach debugger
     Public Class Suspended
         Inherits KernelObject
         Implements IDisposable
