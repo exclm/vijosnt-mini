@@ -1,27 +1,21 @@
 ﻿Friend Class StreamPipe
-    Inherits WaitHandle
-
     Protected m_Source As Stream
     Protected m_Target As Stream
     Protected m_Buffer As Byte()
-    Protected m_Event As ManualResetEvent
 
-    Public Shared Function Create(ByVal Source As Stream, ByVal Target As Stream) As StreamPipe
-        Return New StreamPipe(Source, Target, 4096)
-    End Function
+    Public Shared Sub Connect(ByVal Source As Stream, ByVal Target As Stream)
+        Connect(Source, Target, 4096)
+    End Sub
 
-    Public Shared Function Create(ByVal Source As Stream, ByVal Target As Stream, ByVal BufferSize As Int32) As StreamPipe
-        Return New StreamPipe(Source, Target, BufferSize)
-    End Function
+    Public Shared Sub Connect(ByVal Source As Stream, ByVal Target As Stream, ByVal BufferSize As Int32)
+        Dim StreamPipe As New StreamPipe(Source, Target, BufferSize)
+    End Sub
 
     Protected Sub New(ByVal Source As Stream, ByVal Target As Stream, ByVal BufferSize As Int32)
         m_Source = Source
         m_Target = Target
         m_Buffer = New Byte(0 To BufferSize - 1) {}
         m_Source.BeginRead(m_Buffer, 0, BufferSize, AddressOf OnRead, Nothing)
-        m_Event = New ManualResetEvent(False)
-
-        MyBase.SafeWaitHandle = m_Event.SafeWaitHandle
     End Sub
 
     Protected Sub OnRead(ByVal ar As IAsyncResult)
@@ -32,7 +26,6 @@
         Catch ex As Exception
             m_Target.Close()
             m_Source.Close()
-            m_Event.Set()
         End Try
     End Sub
 
@@ -43,7 +36,6 @@
         Catch ex As Exception
             m_Target.Close()
             m_Source.Close()
-            m_Event.Set()
         End Try
     End Sub
 End Class
