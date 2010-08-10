@@ -8,11 +8,15 @@
 
         Public Sub New(ByVal JobObject As JobObject)
             m_JobObject = JobObject
-            Win32True(QueryInformationJobObject(JobObject.GetHandleUnsafe(), JobObjectInfoClass.JobObjectExtendedLimitInformation, m_Data, Marshal.SizeOf(m_Data), Nothing))
+            Update()
         End Sub
 
         Public Sub Commit()
             Win32True(SetInformationJobObject(m_JobObject.GetHandleUnsafe(), JobObjectInfoClass.JobObjectExtendedLimitInformation, m_Data, Marshal.SizeOf(m_Data)))
+        End Sub
+
+        Public Sub Update()
+            Win32True(QueryInformationJobObject(m_JobObject.GetHandleUnsafe(), JobObjectInfoClass.JobObjectExtendedLimitInformation, m_Data, Marshal.SizeOf(m_Data), Nothing))
         End Sub
 
         Public Property ProcessTime() As Nullable(Of Int64)
@@ -146,6 +150,18 @@
                 End If
             End Set
         End Property
+
+        Public ReadOnly Property PeakProcessMemoryUsed() As Int64
+            Get
+                Return m_Data.PeakProcessMemoryUsed.ToInt64()
+            End Get
+        End Property
+
+        Public ReadOnly Property PeakJobMemoryUsed() As Int64
+            Get
+                Return m_Data.PeakJobMemoryUsed.ToInt64()
+            End Get
+        End Property
     End Class
 
     Public Class JobUIRestrictions
@@ -154,11 +170,15 @@
 
         Public Sub New(ByVal JobObject As JobObject)
             m_JobObject = JobObject
-            Win32True(QueryInformationJobObject(JobObject.GetHandleUnsafe(), JobObjectInfoClass.JobObjectBasicUIRestrictions, m_Data, Marshal.SizeOf(m_Data), Nothing))
+            Update()
         End Sub
 
         Public Sub Commit()
             Win32True(SetInformationJobObject(m_JobObject.GetHandleUnsafe(), JobObjectInfoClass.JobObjectBasicUIRestrictions, m_Data, Marshal.SizeOf(m_Data)))
+        End Sub
+
+        Public Sub Update()
+            Win32True(QueryInformationJobObject(m_JobObject.GetHandleUnsafe(), JobObjectInfoClass.JobObjectBasicUIRestrictions, m_Data, Marshal.SizeOf(m_Data), Nothing))
         End Sub
 
         Public Property [Handles]() As Boolean
