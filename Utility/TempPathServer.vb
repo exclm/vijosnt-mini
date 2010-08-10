@@ -5,12 +5,14 @@
         Protected Const m_SleepTime As Int32 = 30 * 1000
         Protected Const m_TempPathLength As Int32 = 16
 
+        Protected m_SyncRoot As Object
         Protected m_Root As DirectoryInfo
         Protected m_Pendings As List(Of DirectoryInfo)
         Protected m_CleanupThread As Thread
         Protected m_RandomString As RandomString
 
         Public Sub New()
+            m_SyncRoot = New Object()
             Dim AppPath As New AppPath()
             m_Root = AppPath.GetDirectoryInfo().CreateSubdirectory("Temp")
             m_Pendings = New List(Of DirectoryInfo)
@@ -22,7 +24,7 @@
 
         Public Function CreateTempPath() As TempPath
             Dim Dir As DirectoryInfo
-            SyncLock Me
+            SyncLock m_SyncRoot
                 Dim Path As String = m_RandomString.Next(m_TempPathLength)
                 Dir = m_Root.CreateSubdirectory(Path)
             End SyncLock

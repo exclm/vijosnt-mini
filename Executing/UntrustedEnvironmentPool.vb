@@ -20,7 +20,7 @@
         End Property
 
         Public Overrides Function Take() As Environment
-            SyncLock Me
+            SyncLock m_Stack
                 If m_Stack.Count = 0 Then
                     Return Nothing
                 Else
@@ -30,7 +30,7 @@
         End Function
 
         Protected Overrides Sub UntakeInternal(ByVal Environment As Environment)
-            SyncLock Me
+            SyncLock m_Stack
                 m_Stack.Push(Environment)
             End SyncLock
             MyBase.UntakeInternal(Environment)

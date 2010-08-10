@@ -1,5 +1,7 @@
 ﻿Namespace Utility
     Friend Class MiniWaitPool
+        Implements IDisposable
+
         Public Delegate Sub WaitPoolCallback(ByVal Result As Result)
 
         Public Structure Result
@@ -26,12 +28,14 @@
             Dim CallbackState As Object
         End Structure
 
+        Protected m_SyncRoot As Object
         Protected m_Thread As Thread
         Protected m_Event As AutoResetEvent
         Protected m_List As List(Of Entry)
         Protected m_Stopped As Boolean
 
         Public Sub New()
+            m_SyncRoot = New Object()
             m_Thread = New Thread(AddressOf ThreadEntry)
             m_Event = New AutoResetEvent(False)
             m_List = New List(Of Entry)
@@ -45,7 +49,7 @@
         End Sub
 
         Public Sub [Stop]()
-            SyncLock Me
+            SyncLock m_SyncRoot
                 m_Stopped = True
             End SyncLock
             m_Event.Set()
@@ -60,14 +64,14 @@
                 TimeoutTick = Nothing
             End If
 
-            SyncLock Me
+            SyncLock m_SyncRoot
                 m_List.Add(New Entry(WaitHandle, TimeoutTick, Callback, State))
             End SyncLock
             m_Event.Set()
         End Sub
 
         Protected Sub InternalCallback(ByVal Result As Result)
-            SyncLock Me
+            SyncLock m_SyncRoot
                 If Not m_Stopped Then
                     m_List.Add(New Entry(m_Event, Nothing, AddressOf InternalCallback, Nothing))
                 End If
@@ -83,7 +87,7 @@
                 End Try
             End If
 
-            SyncLock Me
+            SyncLock m_SyncRoot
                 m_List.Remove(Entry)
             End SyncLock
         End Sub
@@ -92,7 +96,7 @@
             While True
                 Dim Entries As Entry()
 
-                SyncLock Me
+                SyncLock m_SyncRoot
                     Entries = m_List.ToArray()
                 End SyncLock
 
@@ -130,5 +134,27 @@
                 End If
             End While
         End Sub
+
+#Region "IDisposable Support"
+        Private disposedValue As Boolean ' 检测冗余的调用
+
+        ' IDisposable
+        Protected Overridable Sub Dispose(ByVal disposing As Boolean)
+            If Not Me.disposedValue Then
+                If disposing Then
+                    m_Event.Close()
+                End If
+            End If
+            Me.disposedValue = True
+        End Sub
+
+        ' Visual Basic 添加此代码是为了正确实现可处置模式。
+        Public Sub Dispose() Implements IDisposable.Dispose
+            ' 不要更改此代码。请将清理代码放入上面的 Dispose(ByVal disposing As Boolean)中。
+            Dispose(True)
+            GC.SuppressFinalize(Me)
+        End Sub
+#End Region
+
     End Class
 End Namespace

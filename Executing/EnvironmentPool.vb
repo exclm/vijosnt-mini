@@ -25,7 +25,7 @@
         End Sub
 
         Public Sub Untake(ByVal Environment As Environment)
-            SyncLock Me
+            SyncLock m_PendingExecutees
                 If m_PendingExecutees.Count <> 0 Then
                     Dim Executee As Executee = m_PendingExecutees.Dequeue()
                     Executee.Environment = Environment
@@ -44,7 +44,7 @@
                 Executee.Environment = Environment
                 Executee.Execute()
             Else
-                SyncLock Me
+                SyncLock m_PendingExecutees
                     m_PendingExecutees.Enqueue(Executee)
                 End SyncLock
             End If

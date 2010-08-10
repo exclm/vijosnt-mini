@@ -1,10 +1,12 @@
 ﻿Namespace Executing
     Friend Class Executor
+        Protected m_SyncRoot As Object
         Protected m_AvailableSlots As Int32
         Protected m_Pools As Dictionary(Of EnvironmentTag, EnvironmentPool)
         Protected m_PendingExecutees As Queue(Of Executee)
 
         Public Sub New(ByVal Slots As Int32, ByVal Pools As IEnumerable(Of EnvironmentPool))
+            m_SyncRoot = New Object()
             m_AvailableSlots = Slots
             m_Pools = New Dictionary(Of EnvironmentTag, EnvironmentPool)()
             m_PendingExecutees = New Queue(Of Executee)()
@@ -16,7 +18,7 @@
         End Sub
 
         Public Function Take() As Boolean
-            SyncLock Me
+            SyncLock m_SyncRoot
                 Debug.Assert(m_AvailableSlots >= 0)
 
                 If m_AvailableSlots <> 0 Then
@@ -29,7 +31,7 @@
         End Function
 
         Public Sub Untake()
-            SyncLock Me
+            SyncLock m_SyncRoot
                 If m_PendingExecutees.Count <> 0 Then
                     Dim Executee As Executee = m_PendingExecutees.Dequeue()
                     m_Pools(Executee.RequiredEnvironment).Queue(Executee)
@@ -43,7 +45,7 @@
             If Take() Then
                 m_Pools(Executee.RequiredEnvironment).Queue(Executee)
             Else
-                SyncLock Me
+                SyncLock m_SyncRoot
                     m_PendingExecutees.Enqueue(Executee)
                 End SyncLock
             End If
