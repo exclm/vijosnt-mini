@@ -119,10 +119,8 @@
     <Compile Include="Compiler\CompilerInterfaces.vb" />
     <Compile Include="Compiler\CompilerManager.vb" />
     <Compile Include="Compiler\Compiler.vb" />
-    <Compile Include="Executing\ExecuteCompletionCallback.vb" />
     <Compile Include="Executing\EnvironmentTag.vb" />
     <Compile Include="Executing\Executee.vb" />
-    <Compile Include="Executing\ExecuteResult.vb" />
     <Compile Include="Executing\Executor.vb" />
     <Compile Include="Executing\Environment.vb" />
     <Compile Include="Executing\EnvironmentPool.vb" />
