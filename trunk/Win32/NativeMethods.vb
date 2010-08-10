@@ -550,8 +550,54 @@
         ByRef ProcessInformation As PROCESS_ACCESS_TOKEN, _
         ByVal ProcessInformationLength As Int32) As NTSTATUS
 
+    Public Declare Function NtCreateDebugObject Lib "ntdll.dll" ( _
+        ByRef DebugObjectHandle As IntPtr, _
+        ByVal DesiredAccess As DebugObjectAccess, _
+        ByVal ObjectAttributes As IntPtr, _
+        ByVal Flags As DebugObjectFlags) As NTSTATUS
+
+    Public Declare Function NtClose Lib "ntdll.dll" ( _
+        ByVal Handle As IntPtr) As NTSTATUS
+
+    ' Need PROCESS_SET_PORT for the process object
+    ' and DEBUG_PROCESS_ASSIGN for the debug object
+    Public Declare Function NtDebugActiveProcess Lib "ntdll.dll" ( _
+        ByVal ProcessHandle As IntPtr, _
+        ByVal DebugObjectHandle As IntPtr) As NTSTATUS
+
+    Public Declare Function NtRemoveProecssDebug Lib "ntdll.dll" ( _
+        ByVal ProcessHandle As IntPtr, _
+        ByVal DebugObjectHandle As IntPtr) As NTSTATUS
+
+    Public Declare Function NtWaitForDebugEvent Lib "ntdll.dll" ( _
+        ByVal DebugObjectHandle As IntPtr, _
+        ByVal Alertable As Boolean, _
+        ByVal Timeout As IntPtr, _
+        ByVal WaitStateChange As IntPtr) As NTSTATUS
+
+    Public Declare Function NtDebugContinue Lib "ntdll.dll" ( _
+        ByVal DebugObjectHandle As IntPtr, _
+        ByRef ClientId As CLIENT_ID, _
+        ByVal ContinueStatus As NTSTATUS) As NTSTATUS
+
     Public Declare Auto Function RtlNtStatusToDosError Lib "ntdll.dll" ( _
         ByVal Status As NTSTATUS) As Int32
+
+    Public Structure CLIENT_ID
+        Dim UniqueProcess As IntPtr
+        Dim UniqueThread As IntPtr
+    End Structure
+
+    Public Enum DebugObjectAccess As Int32
+        DEBUG_OBJECT_WAIT_STATE_CHANGE = &H1
+        DEBUG_OBJECT_ADD_REMOVE_PROCESS = &H2
+        DEBUG_OBJECT_SET_INFORMATION = &H4
+        DEBUG_OBJECT_ALL_ACCESS = &H1F000F
+    End Enum
+
+    Public Enum DebugObjectFlags As Int32
+        DEBUG_OBJECT_KILL_ON_CLOSE = &H1
+    End Enum
 
     Public Structure PROCESS_BASIC_INFORMATION
         Dim Reserved0 As IntPtr
@@ -575,8 +621,51 @@
         ProcessBasicInformation = 0
     End Enum
 
+    Public Enum ExceptionCode As Int32
+        EXCEPTION_ACCESS_VIOLATION = &HC0000005
+        EXCEPTION_DATATYPE_MISALIGNMENT = &H80000002
+        EXCEPTION_BREAKPOINT = &H80000003
+        EXCEPTION_SINGLE_STEP = &H80000004
+        EXCEPTION_ARRAY_BOUNDS_EXCEEDED = &HC000008C
+        EXCEPTION_FLT_DENORMAL_OPERAND = &HC000008D
+        EXCEPTION_FLT_DIVIDE_BY_ZERO = &HC000008E
+        EXCEPTION_FLT_INEXACT_RESULT = &HC000008F
+        EXCEPTION_FLT_INVALID_OPERATION = &HC0000090
+        EXCEPTION_FLT_OVERFLOW = &HC0000091
+        EXCEPTION_FLT_STACK_CHECK = &HC0000092
+        EXCEPTION_FLT_UNDERFLOW = &HC0000093
+        EXCEPTION_INT_DIVIDE_BY_ZERO = &HC0000094
+        EXCEPTION_INT_OVERFLOW = &HC0000095
+        EXCEPTION_PRIVILEGED_INSTRUCTION = &HC0000096
+        EXCEPTION_IN_PAGE_ERROR = &HC0000006
+        EXCEPTION_ILLEGAL_INSTRUCTION = &HC000001D
+        EXCEPTION_NONCONTINUABLE_EXCEPTION = &HC0000025
+        EXCEPTION_STACK_OVERFLOW = &HC00000FD
+        EXCEPTION_INVALID_DISPOSITION = &HC0000026
+        EXCEPTION_GUARD_PAGE_VIOLATION = &H80000001
+        EXCEPTION_INVALID_HANDLE = &HC0000008
+        EXCEPTION_CONTROL_C_EXIT = &HC000013A
+    End Enum
+
+    Public Structure EXCEPTION_RECORD
+        Dim ExceptionCode As ExceptionCode
+        Dim ExceptionFlags As Int32
+        Dim ExceptionRecord As IntPtr
+        Dim ExceptionAddress As IntPtr
+        Dim NumberParameters As Int32
+
+        <MarshalAs(UnmanagedType.ByValArray, SizeConst:=15)> _
+        Dim ExceptionInformation As IntPtr()
+    End Structure
+
     Public Enum NTSTATUS As Int32
-        STATUS_SUCCESS = 0
+        STATUS_SUCCESS = &H0
+        STATUS_DEBUGGER_INACTIVE = &HC0000354
+        DBG_EXCEPTION_HANDLED = &H10001
+        DBG_EXCEPTION_NOT_HANDLED = &H80010001
+        DBG_TERMINATE_THREAD = &H40010003
+        DBG_TERMINATE_PROCESS = &H40010004
+        DBG_CONTINUE = &H10002
     End Enum
 
     Public Function NT_SUCCESS(ByVal Status As NTSTATUS) As Boolean
