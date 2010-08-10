@@ -1,4 +1,4 @@
-﻿Imports VijosNT_Mini.Win32
+﻿Imports VijosNT.Win32
 
 Namespace Executing
     Friend Class UntrustedEnvironment

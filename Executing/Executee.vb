@@ -1,5 +1,5 @@
-﻿Imports VijosNT_Mini.Utility
-Imports VijosNT_Mini.Win32
+﻿Imports VijosNT.Utility
+Imports VijosNT.Win32
 
 Namespace Executing
     Friend Class Executee
