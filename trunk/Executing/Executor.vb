@@ -28,7 +28,7 @@
             End SyncLock
         End Function
 
-        Public Function Untake() As Boolean
+        Public Sub Untake()
             SyncLock Me
                 If m_PendingExecutees.Count <> 0 Then
                     Dim Executee As Executee = m_PendingExecutees.Dequeue()
@@ -37,9 +37,7 @@
                     m_AvailableSlots += 1
                 End If
             End SyncLock
-
-            Return True
-        End Function
+        End Sub
 
         Public Sub Queue(ByVal Executee As Executee)
             If Take() Then
