@@ -15,7 +15,11 @@ Namespace Executing
             End Set
         End Property
 
-        Public MustOverride ReadOnly Property RequiredEnvironment() As EnvironmentTag
+        Public Overridable ReadOnly Property RequiredEnvironment() As EnvironmentTag
+            Get
+                Return EnvironmentTag.Trusted
+            End Get
+        End Property
 
         Public Overridable Sub Execute()
             Environment.Untake()
