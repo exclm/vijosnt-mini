@@ -124,6 +124,9 @@
     <Compile Include="Executing\Executor.vb" />
     <Compile Include="Executing\Environment.vb" />
     <Compile Include="Executing\EnvironmentPool.vb" />
+    <Compile Include="Executing\ProcessExecutee.vb" />
+    <Compile Include="Executing\ProcessExecuteeCompletion.vb" />
+    <Compile Include="Executing\ProcessExecuteeResult.vb" />
     <Compile Include="Executing\TrustedEnvironment.vb" />
     <Compile Include="Executing\TrustedEnvironmentPool.vb" />
     <Compile Include="Executing\UntrustedEnvironment.vb" />
