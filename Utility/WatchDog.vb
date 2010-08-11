@@ -17,7 +17,7 @@ Namespace Utility
         End Structure
 
         Protected Structure Context
-            Public Sub New(ByVal Process As ProcessEx, ByVal TimeQuota As Int64, ByVal Callback As WatchDogCallback, ByVal CallbackState As Object)
+            Public Sub New(ByVal Process As ProcessEx, ByVal TimeQuota As Nullable(Of Int64), ByVal Callback As WatchDogCallback, ByVal CallbackState As Object)
                 Me.Process = Process
                 Me.TimeQuota = TimeQuota
                 Me.Callback = Callback
@@ -25,7 +25,7 @@ Namespace Utility
             End Sub
 
             Dim Process As ProcessEx
-            Dim TimeQuota As Int64
+            Dim TimeQuota As Nullable(Of Int64)
             Dim Callback As WatchDogCallback
             Dim CallbackState As Object
         End Structure
@@ -60,7 +60,10 @@ Namespace Utility
         Protected Sub SetWatchInternal(ByVal Context As Context)
             Dim AliveTime As Int64 = Context.Process.AliveTime
 
-            If AliveTime >= Context.TimeQuota Then
+            If Context.TimeQuota Is Nothing Then
+                ' The quota is not limited, set up the wait pool
+                m_WaitPool.SetWait(Context.Process, Nothing, AddressOf SetWatchCallback, Context)
+            ElseIf AliveTime >= Context.TimeQuota Then
                 ' The waited process exceeds the time quota, terminate it and fire the callback
                 Context.Process.Kill(ERROR_NOT_ENOUGH_QUOTA)
                 If Context.Callback IsNot Nothing Then _
@@ -71,7 +74,7 @@ Namespace Utility
             End If
         End Sub
 
-        Public Sub SetWatch(ByVal Process As ProcessEx, ByVal TimeQuota As Int64, ByVal Callback As WatchDogCallback, ByVal State As Object)
+        Public Sub SetWatch(ByVal Process As ProcessEx, ByVal TimeQuota As Nullable(Of Int64), ByVal Callback As WatchDogCallback, ByVal State As Object)
             SetWatchInternal(New Context(Process, TimeQuota, Callback, State))
         End Sub
 
