@@ -76,17 +76,17 @@
             InternalSetHandle(DebugObjectHandle)
         End Sub
 
-        Public Sub Attach(ByVal Process As KernelObject)
-            NtSuccess(NtDebugActiveProcess(Process.GetHandleUnsafe(), MyBase.GetHandleUnsafe()))
+        Public Sub Attach(ByVal ProcessHandleNotOwned As IntPtr)
+            NtSuccess(NtDebugActiveProcess(ProcessHandleNotOwned, MyBase.GetHandleUnsafe()))
         End Sub
 
-        Public Event OnCreateThread(ByVal Header As Header, ByVal Info As CreateThreadInfo)
-        Public Event OnCreateProcess(ByVal Header As Header, ByVal Info As CreateProcessInfo)
-        Public Event OnExitThread(ByVal Header As Header, ByVal Info As ExitThreadInfo)
-        Public Event OnExitProcess(ByVal Header As Header, ByVal Info As ExitProcessInfo)
-        Public Event OnException(ByVal Header As Header, ByVal Info As ExceptionInfo, ByRef Handled As Boolean)
-        Public Event OnLoadDll(ByVal Header As Header, ByVal Info As LoadDllInfo)
-        Public Event OnUnloadDll(ByVal Header As Header, ByVal Info As UnloadDllInfo)
+        Public Event OnCreateThread(ByVal Header As Header, ByVal Info As CreateThreadInfo, ByRef ContinueStatus As NTSTATUS)
+        Public Event OnCreateProcess(ByVal Header As Header, ByVal Info As CreateProcessInfo, ByRef ContinueStatus As NTSTATUS)
+        Public Event OnExitThread(ByVal Header As Header, ByVal Info As ExitThreadInfo, ByRef ContinueStatus As NTSTATUS)
+        Public Event OnExitProcess(ByVal Header As Header, ByVal Info As ExitProcessInfo, ByRef ContinueStatus As NTSTATUS)
+        Public Event OnException(ByVal Header As Header, ByVal Info As ExceptionInfo, ByRef ContinueStatus As NTSTATUS)
+        Public Event OnLoadDll(ByVal Header As Header, ByVal Info As LoadDllInfo, ByRef ContinueStatus As NTSTATUS)
+        Public Event OnUnloadDll(ByVal Header As Header, ByVal Info As UnloadDllInfo, ByRef ContinueStatus As NTSTATUS)
 
         Public Function WaitForEvent() As Boolean
             Dim BufferPtr As IntPtr = Marshal.AllocHGlobal(IntPtr.Size * 22 + 8)
@@ -96,44 +96,39 @@
                 NtSuccess(Status)
                 Dim Header As Header = Marshal.PtrToStructure(BufferPtr, GetType(Header))
                 Dim InfoPtr As IntPtr = BufferPtr.ToInt64() + Marshal.SizeOf(Header)
+                Dim ContinueStatus As NTSTATUS = NTSTATUS.DBG_CONTINUE
                 Select Case Header.NewState
                     Case DebugState.CreateThread
                         Dim Info As CreateThreadInfo = Marshal.PtrToStructure(InfoPtr, GetType(CreateThreadInfo))
-                        RaiseEvent OnCreateThread(Header, Info)
+                        RaiseEvent OnCreateThread(Header, Info, ContinueStatus)
                         NtSuccess(NtClose(Info.HandleToThread))
                     Case (DebugState.CreateProcess)
                         Dim Info As CreateProcessInfo = Marshal.PtrToStructure(InfoPtr, GetType(CreateProcessInfo))
-                        RaiseEvent OnCreateProcess(Header, Info)
+                        RaiseEvent OnCreateProcess(Header, Info, ContinueStatus)
                         NtSuccess(NtClose(Info.HandleToProcess))
                         NtSuccess(NtClose(Info.HandleToThread))
                         NtSuccess(NtClose(Info.NewProcess.FileHandle))
                     Case DebugState.ExitThread
                         Dim Info As ExitThreadInfo = Marshal.PtrToStructure(InfoPtr, GetType(ExitThreadInfo))
-                        RaiseEvent OnExitThread(Header, Info)
+                        RaiseEvent OnExitThread(Header, Info, ContinueStatus)
                     Case DebugState.ExitProcess
                         Dim Info As ExitProcessInfo = Marshal.PtrToStructure(InfoPtr, GetType(ExitProcessInfo))
-                        RaiseEvent OnExitProcess(Header, Info)
+                        RaiseEvent OnExitProcess(Header, Info, ContinueStatus)
                     Case DebugState.Exception, DebugState.Breakpoint, DebugState.SingleStep
                         Dim Info As ExceptionInfo = Marshal.PtrToStructure(InfoPtr, GetType(ExceptionInfo))
-                        Dim Handled As Boolean = False
-                        RaiseEvent OnException(Header, Info, Handled)
-                        If Handled Then
-                            NtSuccess(NtDebugContinue(MyBase.GetHandleUnsafe(), Header.AppClientId, NTSTATUS.DBG_EXCEPTION_HANDLED))
-                        Else
-                            NtSuccess(NtDebugContinue(MyBase.GetHandleUnsafe(), Header.AppClientId, NTSTATUS.DBG_EXCEPTION_NOT_HANDLED))
-                        End If
-                        Return True
+                        ContinueStatus = NTSTATUS.DBG_EXCEPTION_NOT_HANDLED
+                        RaiseEvent OnException(Header, Info, ContinueStatus)
                     Case DebugState.LoadDll
                         Dim Info As LoadDllInfo = Marshal.PtrToStructure(InfoPtr, GetType(LoadDllInfo))
-                        RaiseEvent OnLoadDll(Header, Info)
+                        RaiseEvent OnLoadDll(Header, Info, ContinueStatus)
                         NtSuccess(NtClose(Info.FileHandle))
                     Case DebugState.UnloadDll
                         Dim Info As UnloadDllInfo = Marshal.PtrToStructure(InfoPtr, GetType(UnloadDllInfo))
-                        RaiseEvent OnUnloadDll(Header, Info)
+                        RaiseEvent OnUnloadDll(Header, Info, ContinueStatus)
                     Case Else
                         Throw New Win32Exception("Unknown debug state")
                 End Select
-                NtSuccess(NtDebugContinue(MyBase.GetHandleUnsafe(), Header.AppClientId, NTSTATUS.DBG_CONTINUE))
+                NtSuccess(NtDebugContinue(MyBase.GetHandleUnsafe(), Header.AppClientId, ContinueStatus))
                 Return True
             Finally
                 Marshal.FreeHGlobal(BufferPtr)

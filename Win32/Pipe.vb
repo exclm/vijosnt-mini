@@ -29,11 +29,11 @@
         End Function
 
         Public Function GetReadHandle() As KernelObject
-            Return m_ReadHandle
+            Return New KernelObject(m_ReadHandle)
         End Function
 
         Public Function GetWriteHandle() As KernelObject
-            Return m_WriteHandle
+            Return New KernelObject(m_WriteHandle)
         End Function
 
 #Region "IDisposable Support"

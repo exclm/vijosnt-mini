@@ -132,6 +132,7 @@
     <Compile Include="Executing\UntrustedEnvironment.vb" />
     <Compile Include="Executing\UntrustedEnvironmentPool.vb" />
     <Compile Include="Utility\AppPath.vb" />
+    <Compile Include="Utility\ProcessMonitor.vb" />
     <Compile Include="Utility\Path.vb" />
     <Compile Include="Utility\MiniWaitPool.vb" />
     <Compile Include="Utility\WatchDog.vb" />

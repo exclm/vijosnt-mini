@@ -51,6 +51,7 @@ Namespace Utility
                 ' The waited process was ended, fire the callback
                 If Context.Callback IsNot Nothing Then _
                     Context.Callback.Invoke(New Result(Context.CallbackState, Context.Process.AliveTime))
+                Context.Process.Close()
             Else
                 ' The waited process is still running, set watch again
                 SetWatchInternal(Context)
@@ -68,6 +69,7 @@ Namespace Utility
                 Context.Process.Kill(ERROR_NOT_ENOUGH_QUOTA)
                 If Context.Callback IsNot Nothing Then _
                     Context.Callback.Invoke(New Result(Context.CallbackState, Context.Process.AliveTime))
+                Context.Process.Close()
             Else
                 ' There is still time quota remaining, set up the wait pool
                 m_WaitPool.SetWait(Context.Process, Context.TimeQuota - AliveTime, AddressOf SetWatchCallback, Context)
