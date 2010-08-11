@@ -22,7 +22,11 @@
         Protected Sub OnRead(ByVal ar As IAsyncResult)
             Try
                 Dim Length As Int32 = m_Source.EndRead(ar)
-                If Length = 0 Then Throw New EndOfStreamException()
+                If Length = 0 Then
+                    m_Target.Close()
+                    m_Source.Close()
+                    Return
+                End If
                 m_Target.BeginWrite(m_Buffer, 0, Length, AddressOf OnWrite, Nothing)
             Catch ex As Exception
                 m_Target.Close()

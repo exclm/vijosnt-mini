@@ -313,8 +313,8 @@
             End Get
         End Property
 
-        Public Sub Assign(ByVal Process As KernelObject)
-            Win32True(AssignProcessToJobObject(MyBase.GetHandleUnsafe(), Process.GetHandleUnsafe()))
+        Public Sub Assign(ByVal ProcessHandleNotOwned As IntPtr)
+            Win32True(AssignProcessToJobObject(MyBase.GetHandleUnsafe(), ProcessHandleNotOwned))
         End Sub
 
         Public Sub Kill(ByVal ExitCode As Int32)

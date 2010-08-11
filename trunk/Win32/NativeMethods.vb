@@ -232,6 +232,9 @@
 #End Region
 
 #Region "kernel32.dll"
+        Public Declare Auto Function GetProcessId Lib "kernel32.dll" ( _
+            ByVal Process As IntPtr) As Int32
+
         Public Declare Auto Function CreateProcess Lib "kernel32.dll" ( _
             ByVal ApplicationName As String, _
             ByVal CommandLine As String, _

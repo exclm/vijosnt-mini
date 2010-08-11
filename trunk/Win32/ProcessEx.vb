@@ -23,7 +23,8 @@
 
         Public Shared Function CreateSuspended(ByVal ApplicationName As String, ByVal CommandLine As String, _
             ByVal Environment As IEnumerable(Of String), ByVal CurrentDirectory As String, ByVal Desktop As String, _
-            ByVal StdInput As KernelObject, ByVal StdOutput As KernelObject, ByVal StdError As KernelObject, ByVal Token As Token) As Suspended
+            ByVal StdInputHandleNotOwned As IntPtr, ByVal StdOutputHandleNotOwned As IntPtr, ByVal StdErrorHandleNotOwned As IntPtr, _
+            ByVal Token As Token) As Suspended
 
             Dim StartupInfo As STARTUPINFO
 
@@ -38,12 +39,12 @@
             If Environment IsNot Nothing Then EnvironmentPtr = AllocEnvironment(Environment)
             Try
                 SyncLock m_InheritHandleSyncRoot
-                    If StdInput IsNot Nothing Then _
-                        StartupInfo.hStdInput = StdInput.Duplicate(True)
-                    If StdOutput IsNot Nothing Then _
-                        StartupInfo.hStdOutput = StdOutput.Duplicate(True)
-                    If StdError IsNot Nothing Then _
-                        StartupInfo.hStdError = StdError.Duplicate(True)
+                    If StdInputHandleNotOwned <> IntPtr.Zero Then _
+                        StartupInfo.hStdInput = KernelObject.Duplicate(StdInputHandleNotOwned, True)
+                    If StdOutputHandleNotOwned <> IntPtr.Zero Then _
+                        StartupInfo.hStdOutput = KernelObject.Duplicate(StdOutputHandleNotOwned, True)
+                    If StdErrorHandleNotOwned <> IntPtr.Zero Then _
+                        StartupInfo.hStdError = KernelObject.Duplicate(StdErrorHandleNotOwned, True)
                     Try
                         If Token Is Nothing Then
                             Win32True(CreateProcess(ApplicationName, CommandLine, Nothing, Nothing, True,
