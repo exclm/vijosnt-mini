@@ -96,6 +96,9 @@ Namespace Executing
                 StdErrorHandle = m_StdError.GetHandleUnsafe()
 
             Try
+                ' TODO: Check PE (Static memory limit)
+                ' TODO: Add access to working directory
+
                 Dim Suspended As ProcessEx.Suspended
                 Try
                     Suspended = ProcessEx.CreateSuspended( _
