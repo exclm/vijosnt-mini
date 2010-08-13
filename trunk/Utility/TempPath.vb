@@ -1,6 +1,6 @@
 ﻿Namespace Utility
     Friend Class TempPath
-        Inherits Path
+        Inherits PathEx
         Implements IDisposable
 
         Protected m_Root As DirectoryInfo
