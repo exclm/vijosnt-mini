@@ -66,13 +66,17 @@ Namespace Utility
                 m_WaitPool.SetWait(Context.Process, Nothing, AddressOf SetWatchCallback, Context)
             ElseIf AliveTime >= Context.TimeQuota Then
                 ' The waited process exceeds the time quota, terminate it and fire the callback
-                Context.Process.Kill(ERROR_NOT_ENOUGH_QUOTA)
+                Try
+                    Context.Process.Kill(ERROR_NOT_ENOUGH_QUOTA)
+                Catch ex As Exception
+                    ' eat it
+                End Try
                 If Context.Callback IsNot Nothing Then _
                     Context.Callback.Invoke(New Result(Context.CallbackState, Context.Process.AliveTime))
                 Context.Process.Close()
             Else
                 ' There is still time quota remaining, set up the wait pool
-                m_WaitPool.SetWait(Context.Process, Context.TimeQuota - AliveTime, AddressOf SetWatchCallback, Context)
+                m_WaitPool.SetWait(Context.Process, Context.TimeQuota - AliveTime + 50000, AddressOf SetWatchCallback, Context)
             End If
         End Sub
 

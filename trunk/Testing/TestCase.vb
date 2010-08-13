@@ -17,6 +17,18 @@ Namespace Testing
             Dim CompletionState As Object
         End Structure
 
+        Public Overridable ReadOnly Property Index() As Int32
+            Get
+                Return 1
+            End Get
+        End Property
+
+        Public Overridable ReadOnly Property Weight() As Int32
+            Get
+                Return 100
+            End Get
+        End Property
+
         Public Overridable ReadOnly Property TimeQuota() As Nullable(Of Int64)
             Get
                 Return Nothing
@@ -30,7 +42,9 @@ Namespace Testing
         End Property
 
         Public Overridable Function OpenInputStream() As Stream
-            Throw New NotImplementedException()
+            Using Input As KernelObject = OpenInput()
+                Return (New FileStream(New SafeFileHandle(Input.Duplicate(), True), FileAccess.Read))
+            End Using
         End Function
 
         Public Overridable Function OpenInput() As KernelObject
@@ -54,7 +68,10 @@ Namespace Testing
         End Function
 
         Protected Overridable Function OpenAnswer() As KernelObject
-            Throw New NotImplementedException()
+            Using Pipe As New Pipe()
+                StreamPipe.Connect(OpenAnswerStream(), Pipe.GetWriteStream())
+                Return Pipe.GetReadHandle()
+            End Using
         End Function
 
         Protected Overridable Function LoadJudger() As Object
@@ -63,15 +80,16 @@ Namespace Testing
 
         Protected Overridable Sub JudgeWorker(ByVal State As Context)
             Dim Result As TestCaseResult
-
             Result.State = State.CompletionState
-            Result.AnswerCorrect = False
-            Result.Exception = Nothing
 
             Try
-                Result.AnswerCorrect = LoadJudger().Compare(State.OutputStream, State.AnswerStream)
+                If LoadJudger().Compare(State.OutputStream, State.AnswerStream) Then
+                    Result.Score = Me.Weight
+                Else
+                    Result.Score = 0
+                End If
             Catch ex As Exception
-                Result.Exception = ex
+                Result.Score = Nothing
             End Try
 
             Try

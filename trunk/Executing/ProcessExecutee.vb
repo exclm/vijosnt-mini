@@ -5,25 +5,37 @@ Namespace Executing
     Friend Class ProcessExecutee
         Inherits Executee
 
-        Protected m_WatchDog As WatchDog
-        Protected m_ProcessMonitor As ProcessMonitor
-        Protected m_JobObject As JobObject
-        Protected m_ApplicationName As String
-        Protected m_CommandLine As String
-        Protected m_EnvironmentVariables As IEnumerable(Of String)
-        Protected m_CurrentDirectory As String
-        Protected m_StdInput As KernelObject
-        Protected m_StdOutput As KernelObject
-        Protected m_StdError As KernelObject
-        Protected m_TimeQuota As Nullable(Of Int64)
-        Protected m_MemoryQuota As Nullable(Of Int64)
-        Protected m_ActiveProcessQuota As Nullable(Of Int32)
-        Protected m_Remaining As Int32
-        Protected m_Completion As ProcessExecuteeCompletion
-        Protected m_Result As ProcessExecuteeResult
-        Protected m_SyncRoot As Object
+        Private m_WatchDog As WatchDog
+        Private m_ProcessMonitor As ProcessMonitor
+        Private m_JobObject As JobObject
+        Private m_ApplicationName As String
+        Private m_CommandLine As String
+        Private m_EnvironmentVariables As IEnumerable(Of String)
+        Private m_CurrentDirectory As String
+        Private m_StdInput As KernelObject
+        Private m_StdOutput As KernelObject
+        Private m_StdError As KernelObject
+        Private m_TimeQuota As Nullable(Of Int64)
+        Private m_MemoryQuota As Nullable(Of Int64)
+        Private m_ActiveProcessQuota As Nullable(Of Int32)
+        Private m_Remaining As Int32
+        Private m_Completion As ProcessExecuteeCompletion
+        Private m_Result As ProcessExecuteeResult
+
+        Protected Sub New()
+
+        End Sub
 
         Public Sub New(ByVal WatchDog As WatchDog, ByVal ProcessMonitor As ProcessMonitor, _
+            ByVal ApplicationName As String, ByVal CommandLine As String, _
+            ByVal EnvironmentVariables As IEnumerable(Of String), ByVal CurrentDirectory As String, _
+            ByVal StdInput As KernelObject, ByVal StdOutput As KernelObject, ByVal StdError As KernelObject, _
+            ByVal TimeQuota As Nullable(Of Int64), ByVal MemoryQuota As Nullable(Of Int64), ByVal ActiveProcessQuota As Nullable(Of Int32), _
+            ByVal Completion As ProcessExecuteeCompletion, ByVal State As Object)
+            FinalConstruct(WatchDog, ProcessMonitor, ApplicationName, CommandLine, EnvironmentVariables, CurrentDirectory, StdInput, StdOutput, StdError, TimeQuota, MemoryQuota, ActiveProcessQuota, Completion, State)
+        End Sub
+
+        Protected Sub FinalConstruct(ByVal WatchDog As WatchDog, ByVal ProcessMonitor As ProcessMonitor, _
             ByVal ApplicationName As String, ByVal CommandLine As String, _
             ByVal EnvironmentVariables As IEnumerable(Of String), ByVal CurrentDirectory As String, _
             ByVal StdInput As KernelObject, ByVal StdOutput As KernelObject, ByVal StdError As KernelObject, _
@@ -44,10 +56,9 @@ Namespace Executing
             m_ActiveProcessQuota = ActiveProcessQuota
             m_Completion = Completion
             m_Result.State = State
-            m_SyncRoot = New Object()
         End Sub
 
-        Protected Sub WorkCompleted()
+        Private Sub WorkCompleted()
             If Interlocked.Decrement(m_Remaining) = 0 Then
                 If m_Completion IsNot Nothing Then
                     Try
@@ -60,25 +71,19 @@ Namespace Executing
             End If
         End Sub
 
-        Protected Sub WatchDogCallback(ByVal Result As WatchDog.Result)
-            SyncLock m_SyncRoot
-                m_Result.TimeQuotaUsage = Result.QuotaUsage
-                m_Result.MemoryQuotaUsage = m_JobObject.Limits.PeakProcessMemoryUsed
-            End SyncLock
+        Private Sub WatchDogCallback(ByVal Result As WatchDog.Result)
+            m_Result.TimeQuotaUsage = Result.QuotaUsage
+            m_Result.MemoryQuotaUsage = m_JobObject.Limits.PeakProcessMemoryUsed
             WorkCompleted()
         End Sub
 
-        Protected Sub ProcessMonitorCallback(ByVal Result As ProcessMonitor.Result)
-            SyncLock m_SyncRoot
-                m_Result.ExitStatus = Result.ExitStatus
-                m_Result.Exception = Result.Exception
-            End SyncLock
+        Private Sub ProcessMonitorCallback(ByVal Result As ProcessMonitor.Result)
+            m_Result.ExitStatus = Result.ExitStatus
+            m_Result.Exception = Result.Exception
             WorkCompleted()
         End Sub
 
         Public Overrides Sub Execute()
-            m_Remaining = 2
-
             Dim StdInputHandle As IntPtr = IntPtr.Zero
             Dim StdOutputHandle As IntPtr = IntPtr.Zero
             Dim StdErrorHandle As IntPtr = IntPtr.Zero
@@ -91,9 +96,17 @@ Namespace Executing
                 StdErrorHandle = m_StdError.GetHandleUnsafe()
 
             Try
-                Dim Suspended As ProcessEx.Suspended = ProcessEx.CreateSuspended( _
-                    m_ApplicationName, m_CommandLine, m_EnvironmentVariables, m_CurrentDirectory, Environment.DesktopName, _
-                    StdInputHandle, StdOutputHandle, StdErrorHandle, Environment.Token)
+                Dim Suspended As ProcessEx.Suspended
+                Try
+                    Suspended = ProcessEx.CreateSuspended( _
+                        m_ApplicationName, m_CommandLine, m_EnvironmentVariables, m_CurrentDirectory, Environment.DesktopName, _
+                        StdInputHandle, StdOutputHandle, StdErrorHandle, Environment.Token)
+                Catch ex As Exception
+                    m_Result.ExitStatus = Nothing
+                    m_Remaining = 1
+                    WorkCompleted()
+                    Return
+                End Try
 
                 m_JobObject = New JobObject()
                 m_JobObject.Assign(Suspended.GetHandleUnsafe())
@@ -104,6 +117,9 @@ Namespace Executing
                     .Commit()
                 End With
 
+                ' TODO: UI Limit
+
+                m_Remaining = 2
                 m_ProcessMonitor.Attach(Suspended, AddressOf ProcessMonitorCallback, Nothing)
                 m_WatchDog.SetWatch(Suspended.Resume(), m_TimeQuota, AddressOf WatchDogCallback, Nothing)
             Finally
