@@ -6,8 +6,8 @@
             Return New DirectoryInfo(GetPath())
         End Function
 
-        Public Function ResolvePath(ByVal RelativePath As String) As String
-            Return GetPath() & "\" & RelativePath
+        Public Function Combine(ByVal RelativePath As String) As String
+            Return Path.Combine(GetPath(), RelativePath)
         End Function
     End Class
 End Namespace
