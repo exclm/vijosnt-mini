@@ -22,6 +22,12 @@ Namespace Testing
                 TestCase.TimeQuota, TestCase.MemoryQuota, 1, AddressOf ProcessExecuteeCompletion, Nothing)
         End Sub
 
+        Public Overrides ReadOnly Property RequiredEnvironment() As EnvironmentTag
+            Get
+                Return EnvironmentTag.Untrusted
+            End Get
+        End Property
+
         Private Sub TestCaseCompletion(ByVal Result As TestCaseResult)
             m_Result.Score = Result.Score
             WorkCompleted()
