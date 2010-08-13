@@ -1,6 +1,6 @@
 ﻿Namespace Utility
     Friend NotInheritable Class AppPath
-        Inherits Path
+        Inherits PathEx
 
         Public Overrides Function GetPath() As String
             Return My.Application.Info.DirectoryPath
