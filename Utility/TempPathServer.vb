@@ -5,17 +5,15 @@
         Protected Const m_SleepTime As Int32 = 30 * 1000
         Protected Const m_TempPathLength As Int32 = 16
 
-        Protected m_SyncRoot As Object
         Protected m_Root As DirectoryInfo
         Protected m_Pendings As List(Of DirectoryInfo)
         Protected m_CleanupThread As Thread
         Protected m_RandomString As RandomString
 
         Public Sub New()
-            m_SyncRoot = New Object()
             Dim AppPath As New AppPath()
             m_Root = AppPath.GetDirectoryInfo().CreateSubdirectory("Temp")
-            m_Pendings = New List(Of DirectoryInfo)
+            m_Pendings = New List(Of DirectoryInfo)(m_Root.GetDirectories())
             m_CleanupThread = New Thread(AddressOf CleanupThreadEntry)
             m_RandomString = New RandomString()
             m_CleanupThread.Priority = ThreadPriority.Lowest
@@ -24,7 +22,7 @@
 
         Public Function CreateTempPath() As TempPath
             Dim Dir As DirectoryInfo
-            SyncLock m_SyncRoot
+            SyncLock m_Root
                 Dim Path As String = m_RandomString.Next(m_TempPathLength)
                 Dir = m_Root.CreateSubdirectory(Path)
             End SyncLock
@@ -48,8 +46,8 @@
         Protected Shared Sub CleanupThreadEntry(ByVal Pendings As IList(Of DirectoryInfo))
             Try
                 While True
-                    Thread.Sleep(m_SleepTime)
                     Work(Pendings)
+                    Thread.Sleep(m_SleepTime)
                 End While
             Catch ex As ThreadAbortException
             End Try
@@ -57,16 +55,22 @@
 
         Protected Shared Sub Work(ByVal Pendings As IList(Of DirectoryInfo))
             SyncLock Pendings
-                For Each Dir As DirectoryInfo In Pendings
+                Dim Index As Int32 = 0
+                While Index < Pendings.Count
+                    Dim Dir As DirectoryInfo = Pendings(Index)
                     Try
                         Dir.Delete(True)
-                    Catch ex As IOException
+                    Catch ex As Exception
+                        ' Do nothing
                     End Try
                     Dir.Refresh()
-                    If Not Dir.Exists() Then
-                        Pendings.Remove(Dir)
+                    If Dir.Exists() Then
+                        Index += 1
+                    Else
+                        Pendings(Index) = Pendings(Pendings.Count - 1)
+                        Pendings.RemoveAt(Pendings.Count - 1)
                     End If
-                Next
+                End While
             End SyncLock
         End Sub
 
