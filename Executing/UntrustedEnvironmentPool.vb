@@ -1,6 +1,6 @@
 ﻿Namespace Executing
     Friend Class UntrustedEnvironmentPool
-        Inherits EnvironmentPool
+        Inherits EnvironmentPoolBase
         Implements IDisposable
 
         Protected m_Stack As Stack(Of UntrustedEnvironment)
@@ -20,7 +20,7 @@
             End Get
         End Property
 
-        Public Overrides Function Take() As Environment
+        Public Overrides Function Take() As EnvironmentBase
             SyncLock m_Stack
                 If m_Stack.Count = 0 Then
                     Return Nothing
@@ -30,7 +30,7 @@
             End SyncLock
         End Function
 
-        Protected Overrides Sub UntakeInternal(ByVal Environment As Environment)
+        Protected Overrides Sub UntakeInternal(ByVal Environment As EnvironmentBase)
             SyncLock m_Stack
                 m_Stack.Push(Environment)
             End SyncLock

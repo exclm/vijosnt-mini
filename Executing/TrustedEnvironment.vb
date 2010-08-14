@@ -2,7 +2,7 @@
 
 Namespace Executing
     Friend Class TrustedEnvironment
-        Inherits Environment
+        Inherits EnvironmentBase
 
         Public Overrides ReadOnly Property Tag() As EnvironmentTag
             Get

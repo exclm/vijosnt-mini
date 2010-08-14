@@ -9,7 +9,7 @@
     </SchemaVersion>
     <ProjectGuid>{14264ECC-994C-4D8E-985C-CA7B57076454}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <StartupObject>VijosNT.ServiceEntry</StartupObject>
+    <StartupObject>VijosNT.EntryPoint</StartupObject>
     <RootNamespace>VijosNT</RootNamespace>
     <AssemblyName>VijosNT Mini</AssemblyName>
     <FileAlignment>512</FileAlignment>
@@ -98,6 +98,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -109,6 +110,7 @@
     <Import Include="System.Collections.Generic" />
     <Import Include="System.ComponentModel" />
     <Import Include="System.Data" />
+    <Import Include="System.Data.SQLite" />
     <Import Include="System.Diagnostics" />
     <Import Include="System.IO" />
     <Import Include="System.Runtime.InteropServices" />
@@ -125,11 +127,12 @@
     <Compile Include="Compiling\LocalCompilerInstance.vb" />
     <Compile Include="Compiling\Target.vb" />
     <Compile Include="Compiling\TargetInstance.vb" />
+    <Compile Include="EntryPoint.vb" />
     <Compile Include="Executing\EnvironmentTag.vb" />
     <Compile Include="Executing\Executee.vb" />
     <Compile Include="Executing\Executor.vb" />
-    <Compile Include="Executing\Environment.vb" />
-    <Compile Include="Executing\EnvironmentPool.vb" />
+    <Compile Include="Executing\EnvironmentBase.vb" />
+    <Compile Include="Executing\EnvironmentPoolBase.vb" />
     <Compile Include="Executing\ProcessExecutee.vb" />
     <Compile Include="Executing\ProcessExecuteeCompletion.vb" />
     <Compile Include="Executing\ProcessExecuteeResult.vb" />
@@ -137,6 +140,9 @@
     <Compile Include="Executing\TrustedEnvironmentPool.vb" />
     <Compile Include="Executing\UntrustedEnvironment.vb" />
     <Compile Include="Executing\UntrustedEnvironmentPool.vb" />
+    <Compile Include="LocalDb\Database.vb" />
+    <Compile Include="LocalDb\Log.vb" />
+    <Compile Include="LocalDb\LogLevel.vb" />
     <Compile Include="Testing\APlusBTestSuite.vb" />
     <Compile Include="Testing\DefaultJudger.vb" />
     <Compile Include="Testing\LocalTestCase.vb" />
@@ -167,7 +173,6 @@
     <Compile Include="Win32\Win32Misc.vb" />
     <Compile Include="Win32\WindowStation.vb" />
     <Compile Include="Service\Service.vb" />
-    <Compile Include="Service\ServiceEntry.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -214,6 +219,9 @@
     <Folder Include="Data Source\" />
     <Folder Include="Logger\" />
     <Folder Include="Result Collector\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Service\TextFile1.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,17 +1,17 @@
 ﻿Imports VijosNT.Win32
 
 Namespace Executing
-    Friend MustInherit Class Environment
+    Friend MustInherit Class EnvironmentBase
         Implements IDisposable
 
-        Protected m_EnvironmentPool As EnvironmentPool
+        Protected m_EnvironmentPool As EnvironmentPoolBase
 
-        Public Property Pool() As EnvironmentPool
+        Public Property Pool() As EnvironmentPoolBase
             Get
                 Return m_EnvironmentPool
             End Get
 
-            Set(ByVal Value As EnvironmentPool)
+            Set(ByVal Value As EnvironmentPoolBase)
                 m_EnvironmentPool = Value
             End Set
         End Property

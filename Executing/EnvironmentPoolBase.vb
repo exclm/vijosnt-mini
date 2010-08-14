@@ -1,9 +1,9 @@
 ﻿Namespace Executing
-    Friend MustInherit Class EnvironmentPool
+    Friend MustInherit Class EnvironmentPoolBase
         Implements IDisposable
 
         Public MustOverride ReadOnly Property Tag() As EnvironmentTag
-        Public MustOverride Function Take() As Environment
+        Public MustOverride Function Take() As EnvironmentBase
 
         Protected m_PendingExecutees As Queue(Of Executee)
         Protected m_Executor As Executor
@@ -22,11 +22,11 @@
             End Set
         End Property
 
-        Protected Overridable Sub UntakeInternal(ByVal Environment As Environment)
+        Protected Overridable Sub UntakeInternal(ByVal Environment As EnvironmentBase)
             ' Do nothing
         End Sub
 
-        Public Sub Untake(ByVal Environment As Environment)
+        Public Sub Untake(ByVal Environment As EnvironmentBase)
             SyncLock m_PendingExecutees
                 If m_PendingExecutees.Count <> 0 Then
                     Dim Executee As Executee = m_PendingExecutees.Dequeue()
@@ -44,7 +44,7 @@
         Public Sub Queue(ByVal Executee As Executee)
             Debug.Assert(Executee.RequiredEnvironment = Me.Tag)
 
-            Dim Environment As Environment = Me.Take()
+            Dim Environment As EnvironmentBase = Me.Take()
             If Environment IsNot Nothing Then
                 Executee.Environment = Environment
                 Executee.Execute()

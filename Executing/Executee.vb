@@ -3,14 +3,14 @@ Imports VijosNT.Win32
 
 Namespace Executing
     Friend MustInherit Class Executee
-        Protected m_Environment As Environment
+        Protected m_Environment As EnvironmentBase
 
-        Public Property Environment() As Environment
+        Public Property Environment() As EnvironmentBase
             Get
                 Return m_Environment
             End Get
 
-            Set(ByVal Value As Environment)
+            Set(ByVal Value As EnvironmentBase)
                 m_Environment = Value
             End Set
         End Property
