@@ -5,11 +5,11 @@ Imports VijosNT.Utility
 
 Friend NotInheritable Class ServiceEntry
     Public Shared Sub Main()
-        SetWorkerThreads(16, 500)
+        SetWorkerThreads(40, 500)
         Dim ts As New VijosTestSuite("D:\Project\VijosNT\Tyvj_begin_data")
         Dim wd As New WatchDog
         Dim pm As New ProcessMonitor
-        Dim ex As New Executor(4, New EnvironmentPool() {New TrustedEnvironmentPool(), _
+        Dim ex As New Executor(11, New EnvironmentPool() {New TrustedEnvironmentPool(), _
             New UntrustedEnvironmentPool(New UntrustedEnvironment() { _
                 New UntrustedEnvironment("Untrusted Desktop 1", "vjmini", "vjmini123"), _
                 New UntrustedEnvironment("Untrusted Desktop 2", "vjmini", "vjmini123"), _
@@ -46,6 +46,7 @@ Friend NotInheritable Class ServiceEntry
         Console.ReadLine()
         Console.WriteLine("Exiting...")
         ex.Dispose()
+        tps.Dispose()
         System.Environment.Exit(0)
     End Sub
 End Class

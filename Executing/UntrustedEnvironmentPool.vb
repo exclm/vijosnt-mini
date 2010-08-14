@@ -48,6 +48,7 @@
                 End While
             End If
             Me.disposedValue = True
+            MyBase.Dispose(disposing)
         End Sub
 
         Protected Overrides Sub Finalize()

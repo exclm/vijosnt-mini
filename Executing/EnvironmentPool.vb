@@ -23,7 +23,7 @@
         End Property
 
         Protected Overridable Sub UntakeInternal(ByVal Environment As Environment)
-            m_Executor.Untake()
+            ' Do nothing
         End Sub
 
         Public Sub Untake(ByVal Environment As Environment)
@@ -35,6 +35,9 @@
                 Else
                     UntakeInternal(Environment)
                 End If
+
+                ' N.B. The executor reference stands for queuing so we should untake anyway
+                m_Executor.Untake()
             End SyncLock
         End Sub
 

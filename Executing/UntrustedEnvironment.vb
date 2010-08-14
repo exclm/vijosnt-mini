@@ -43,16 +43,17 @@ Namespace Executing
         ' IDisposable
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
             If Not Me.disposedValue Then
-                Dim Sid As Byte() = m_Token.GetSid()
-                m_WindowStation.RemoveAceBySid(Sid)
-                m_Desktop.RemoveAceBySid(Sid)
                 If disposing Then
+                    Dim Sid As Byte() = m_Token.GetSid()
+                    m_WindowStation.RemoveAceBySid(Sid)
+                    m_Desktop.RemoveAceBySid(Sid)
                     m_WindowStation.Dispose()
                     m_Desktop.Dispose()
                     m_Token.Close()
                 End If
             End If
             Me.disposedValue = True
+            MyBase.Dispose(disposing)
         End Sub
 
         Protected Overrides Sub Finalize()
