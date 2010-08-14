@@ -14,11 +14,12 @@ Namespace Background
         Private m_Executor As Executor
 
         Public Sub New()
-            SetWorkerThreads(Config.ExecutorSlots * 4, Config.ExecutorSlots * 8)
+            Dim ExecutorSlots As Int32 = Config.ExecutorSlots
+            SetWorkerThreads(ExecutorSlots * 4, ExecutorSlots * 8)
             m_WatchDog = New WatchDog()
             m_ProcessMonitor = New ProcessMonitor()
             m_TempPathServer = New TempPathServer()
-            m_Executor = New Executor(Config.ExecutorSlots, New EnvironmentPoolBase() { _
+            m_Executor = New Executor(ExecutorSlots, New EnvironmentPoolBase() { _
                 New TrustedEnvironmentPool(), New UntrustedEnvironmentPool(GetUntrustedEnvironments())})
             m_WatchDog.Start()
             m_ProcessMonitor.Start()

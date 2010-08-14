@@ -69,5 +69,26 @@
                 Source.Seek(0, SeekOrigin.Begin)
             End Try
         End Sub
+
+        Public Function RegexSimpleEscape(ByVal Pattern As String) As String
+            Dim Builder As New StringBuilder()
+            Builder.Append("^"c)
+            Using Reader As New StringReader(Pattern)
+                Dim NextInt As Int32 = Reader.Read()
+                While NextInt <> -1
+                    Dim NextChar As Char = ChrW(NextInt)
+                    If NextChar = "*"c Then
+                        Builder.Append(".*")
+                    ElseIf NextChar = "?"c Then
+                        Builder.Append(".{1}")
+                    Else
+                        Builder.Append(Regex.Escape(NextChar))
+                    End If
+                    NextInt = Reader.Read()
+                End While
+            End Using
+            Builder.Append("$"c)
+            Return Builder.ToString()
+        End Function
     End Module
 End Namespace

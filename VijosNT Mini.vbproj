@@ -115,6 +115,7 @@
     <Import Include="System.IO" />
     <Import Include="System.Runtime.InteropServices" />
     <Import Include="System.Text" />
+    <Import Include="System.Text.RegularExpressions" />
     <Import Include="System.Threading" />
   </ItemGroup>
   <ItemGroup>
