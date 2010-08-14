@@ -17,6 +17,7 @@
             m_CleanupThread = New Thread(AddressOf CleanupThreadEntry)
             m_RandomString = New RandomString()
             m_CleanupThread.Priority = ThreadPriority.Lowest
+            m_CleanupThread.IsBackground = True
             m_CleanupThread.Start(m_Pendings)
         End Sub
 
@@ -44,13 +45,10 @@
 
         ' Should not use member function so that the class object will not be referenced.
         Protected Shared Sub CleanupThreadEntry(ByVal Pendings As IList(Of DirectoryInfo))
-            Try
-                While True
-                    Work(Pendings)
-                    Thread.Sleep(m_SleepTime)
-                End While
-            Catch ex As ThreadAbortException
-            End Try
+            While True
+                Work(Pendings)
+                Thread.Sleep(m_SleepTime)
+            End While
         End Sub
 
         Protected Shared Sub Work(ByVal Pendings As IList(Of DirectoryInfo))
@@ -79,7 +77,6 @@
 
         Protected Sub Dispose(ByVal disposing As Boolean)
             If Not Me.disposedValue Then
-                m_CleanupThread.Abort()
                 Work(m_Pendings)
             End If
             Me.disposedValue = True
