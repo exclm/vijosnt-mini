@@ -197,6 +197,7 @@
                     MyBase.Dispose(disposing)
                 End If
                 Me.disposedValue = True
+                MyBase.Dispose(disposing)
             End Sub
 
             Protected Overrides Sub Finalize()

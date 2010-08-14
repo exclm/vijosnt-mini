@@ -35,6 +35,7 @@ Namespace Compiling
                 End If
             End If
             Me.disposedValue = True
+            MyBase.Dispose(disposing)
         End Sub
 #End Region
 
