@@ -12,7 +12,7 @@ Namespace LocalDb
                 m_Connection.Open()
             Catch ex As Exception
                 Trace.WriteLine(ex.ToString())
-                Throw
+                Environment.Exit(1)
             End Try
         End Sub
 

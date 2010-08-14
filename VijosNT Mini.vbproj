@@ -140,9 +140,11 @@
     <Compile Include="Executing\TrustedEnvironmentPool.vb" />
     <Compile Include="Executing\UntrustedEnvironment.vb" />
     <Compile Include="Executing\UntrustedEnvironmentPool.vb" />
+    <Compile Include="LocalDb\Config.vb" />
     <Compile Include="LocalDb\Database.vb" />
     <Compile Include="LocalDb\Log.vb" />
     <Compile Include="LocalDb\LogLevel.vb" />
+    <Compile Include="LocalDb\UntrustedEnvironments.vb" />
     <Compile Include="Testing\APlusBTestSuite.vb" />
     <Compile Include="Testing\DefaultJudger.vb" />
     <Compile Include="Testing\LocalTestCase.vb" />
@@ -172,7 +174,7 @@
     <Compile Include="Win32\UserObject.vb" />
     <Compile Include="Win32\Win32Misc.vb" />
     <Compile Include="Win32\WindowStation.vb" />
-    <Compile Include="Service\Service.vb" />
+    <Compile Include="Background\Service.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -217,11 +219,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data Source\" />
-    <Folder Include="Logger\" />
     <Folder Include="Result Collector\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Service\TextFile1.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
