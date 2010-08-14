@@ -6,16 +6,16 @@
         Private m_TotalSlots As Int32
         Private m_AvailableSlots As Int32
         Private m_AllSlotsAvailable As ManualResetEvent
-        Private m_Pools As Dictionary(Of EnvironmentTag, EnvironmentPool)
+        Private m_Pools As Dictionary(Of EnvironmentTag, EnvironmentPoolBase)
         Private m_PendingExecutees As Queue(Of Executee)
         Private m_AllowQueuing As Boolean
 
-        Public Sub New(ByVal Slots As Int32, ByVal Pools As IEnumerable(Of EnvironmentPool))
+        Public Sub New(ByVal Slots As Int32, ByVal Pools As IEnumerable(Of EnvironmentPoolBase))
             m_SyncRoot = New Object()
             m_TotalSlots = Slots
             m_AvailableSlots = Slots
             m_AllSlotsAvailable = New ManualResetEvent(True)
-            m_Pools = New Dictionary(Of EnvironmentTag, EnvironmentPool)()
+            m_Pools = New Dictionary(Of EnvironmentTag, EnvironmentPoolBase)()
             m_PendingExecutees = New Queue(Of Executee)()
             m_AllowQueuing = True
 
@@ -76,7 +76,7 @@
                     m_AllowQueuing = False
                     m_AllSlotsAvailable.WaitOne()
 
-                    For Each Pool As EnvironmentPool In m_Pools.Values
+                    For Each Pool As EnvironmentPoolBase In m_Pools.Values
                         Pool.Dispose()
                     Next
                 End If

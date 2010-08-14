@@ -621,7 +621,7 @@
             SystemPerformanceInformation = 2
         End Enum
 
-        Public Enum PROCESS_INFORMATION_CLASS
+        Public Enum PROCESS_INFORMATION_CLASS As Int32
             ProcessBasicInformation = 0
         End Enum
 

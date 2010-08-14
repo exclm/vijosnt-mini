@@ -1,5 +1,5 @@
 ﻿Namespace Executing
-    Public Enum EnvironmentTag
+    Public Enum EnvironmentTag As Int32
         Trusted
         Untrusted
     End Enum

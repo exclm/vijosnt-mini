@@ -1,6 +1,6 @@
 ﻿Namespace Executing
     Friend Class TrustedEnvironmentPool
-        Inherits EnvironmentPool
+        Inherits EnvironmentPoolBase
 
         Public Overrides ReadOnly Property Tag() As EnvironmentTag
             Get
@@ -8,7 +8,7 @@
             End Get
         End Property
 
-        Public Overrides Function Take() As Environment
+        Public Overrides Function Take() As EnvironmentBase
             Dim Result As New TrustedEnvironment()
             Result.Pool = Me
             Return Result

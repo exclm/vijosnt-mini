@@ -2,7 +2,7 @@
 
 Namespace Executing
     Friend Class UntrustedEnvironment
-        Inherits Environment
+        Inherits EnvironmentBase
         Implements IDisposable
 
         Protected m_WindowStation As WindowStation
