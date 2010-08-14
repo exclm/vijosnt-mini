@@ -41,7 +41,7 @@ Namespace Executing
         Private disposedValue As Boolean ' 检测冗余的调用
 
         ' IDisposable
-        Protected Overridable Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
             If Not Me.disposedValue Then
                 Dim Sid As Byte() = m_Token.GetSid()
                 m_WindowStation.RemoveAceBySid(Sid)
@@ -59,13 +59,6 @@ Namespace Executing
             ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
             Dispose(False)
             MyBase.Finalize()
-        End Sub
-
-        ' Visual Basic 添加此代码是为了正确实现可处置模式。
-        Public Sub Dispose() Implements IDisposable.Dispose
-            ' 不要更改此代码。请将清理代码放入上面的 Dispose(ByVal disposing As Boolean)中。
-            Dispose(True)
-            GC.SuppressFinalize(Me)
         End Sub
 #End Region
 

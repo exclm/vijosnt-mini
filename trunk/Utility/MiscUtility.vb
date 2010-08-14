@@ -31,5 +31,43 @@
                 ThreadPool.SetMinThreads(Min, MinCompletionPortThreads)
             End If
         End Sub
+
+        Public Sub BufferedCopy(ByVal Source As Stream, ByVal Target As Stream)
+            BufferedCopy(Source, Target, 4096)
+        End Sub
+
+        Public Sub BufferedCopy(ByVal Source As Stream, ByVal Target As Stream, ByVal BufferSize As Int32)
+            Dim Buffer As Byte() = New Byte(0 To BufferSize - 1) {}
+            Try
+                Do
+                    Dim Length As Int32 = Source.Read(Buffer, 0, Buffer.Length)
+                    If Length = 0 Then _
+                        Return
+                    Target.Write(Buffer, 0, Length)
+                Loop
+            Finally
+                Target.Close()
+                Source.Close()
+            End Try
+        End Sub
+
+        Public Sub BufferedCopySeek0(ByVal Source As Stream, ByVal Target As Stream)
+            BufferedCopySeek0(Source, Target, 4096)
+        End Sub
+
+        Public Sub BufferedCopySeek0(ByVal Source As Stream, ByVal Target As Stream, ByVal BufferSize As Int32)
+            Dim Buffer As Byte() = New Byte(0 To BufferSize - 1) {}
+            Try
+                Do
+                    Dim Length As Int32 = Source.Read(Buffer, 0, Buffer.Length)
+                    If Length = 0 Then _
+                        Return
+                    Target.Write(Buffer, 0, Length)
+                Loop
+            Finally
+                Target.Close()
+                Source.Seek(0, SeekOrigin.Begin)
+            End Try
+        End Sub
     End Module
 End Namespace

@@ -1,28 +1,15 @@
-﻿Imports VijosNT.Win32
-
-Namespace Executing
-    Friend MustInherit Class Environment
+﻿Namespace Compiling
+    Friend MustInherit Class CompilerInstance
         Implements IDisposable
 
-        Protected m_EnvironmentPool As EnvironmentPool
+        Public MustOverride ReadOnly Property WorkingDirectory() As String
+        Public MustOverride Function OpenTarget() As Target
 
-        Public Property Pool() As EnvironmentPool
+        Public Overridable ReadOnly Property EnvironmentVariables() As IEnumerable(Of String)
             Get
-                Return m_EnvironmentPool
+                Return Nothing
             End Get
-
-            Set(ByVal Value As EnvironmentPool)
-                m_EnvironmentPool = Value
-            End Set
         End Property
-
-        Public Sub Untake()
-            Me.Pool.Untake(Me)
-        End Sub
-
-        Public MustOverride ReadOnly Property Tag() As EnvironmentTag
-        Public MustOverride ReadOnly Property DesktopName() As String
-        Public MustOverride ReadOnly Property Token() As Token
 
 #Region "IDisposable Support"
         ' IDisposable
