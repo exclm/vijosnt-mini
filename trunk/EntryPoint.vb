@@ -1,12 +1,14 @@
-﻿Imports VijosNT.Service
+﻿Imports VijosNT.Background
 
 Public Class EntryPoint
     Public Shared Sub Main()
-        ' TODO
+        ' TODO: Implement user interface
         'If Environment.UserInteractive Then
         '    Start UI
         'Else
-        Service.Entry()
+        Using Service As New Service()
+            Service.Entry()
+        End Using
         'End If
     End Sub
 End Class
