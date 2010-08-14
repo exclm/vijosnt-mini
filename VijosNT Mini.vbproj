@@ -116,9 +116,15 @@
     <Import Include="System.Threading" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Compiler\CompilerInterfaces.vb" />
-    <Compile Include="Compiler\CompilerManager.vb" />
-    <Compile Include="Compiler\Compiler.vb" />
+    <Compile Include="Compiling\Compiler.vb" />
+    <Compile Include="Compiling\CompilerExecutee.vb" />
+    <Compile Include="Compiling\CompilerExecuteeCompletion.vb" />
+    <Compile Include="Compiling\CompilerInstance.vb" />
+    <Compile Include="Compiling\CompilerExecuteeResult.vb" />
+    <Compile Include="Compiling\LocalCompiler.vb" />
+    <Compile Include="Compiling\LocalCompilerInstance.vb" />
+    <Compile Include="Compiling\Target.vb" />
+    <Compile Include="Compiling\TargetInstance.vb" />
     <Compile Include="Executing\EnvironmentTag.vb" />
     <Compile Include="Executing\Executee.vb" />
     <Compile Include="Executing\Executor.vb" />
@@ -192,6 +198,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Compiling\LocalTarget.vb" />
+    <Compile Include="Compiling\LocalTargetInstance.vb" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>

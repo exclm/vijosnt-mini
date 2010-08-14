@@ -1,5 +1,7 @@
 ﻿Namespace Executing
     Friend Class Executor
+        Implements IDisposable
+
         Protected m_SyncRoot As Object
         Protected m_AvailableSlots As Int32
         Protected m_Pools As Dictionary(Of EnvironmentTag, EnvironmentPool)
@@ -50,5 +52,30 @@
                 End SyncLock
             End If
         End Sub
+
+#Region "IDisposable Support"
+        Private disposedValue As Boolean ' 检测冗余的调用
+
+        ' IDisposable
+        Protected Overridable Sub Dispose(ByVal disposing As Boolean)
+            If Not Me.disposedValue Then
+                If disposing Then
+                    For Each Pool As EnvironmentPool In m_Pools.Values
+                        Pool.Dispose()
+                    Next
+
+                End If
+            End If
+            Me.disposedValue = True
+        End Sub
+
+        ' Visual Basic 添加此代码是为了正确实现可处置模式。
+        Public Sub Dispose() Implements IDisposable.Dispose
+            ' 不要更改此代码。请将清理代码放入上面的 Dispose(ByVal disposing As Boolean)中。
+            Dispose(True)
+            GC.SuppressFinalize(Me)
+        End Sub
+#End Region
+
     End Class
 End Namespace

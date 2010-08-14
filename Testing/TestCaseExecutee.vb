@@ -1,4 +1,5 @@
-﻿Imports VijosNT.Executing
+﻿Imports VijosNT.Compiling
+Imports VijosNT.Executing
 Imports VijosNT.Utility
 
 Namespace Testing
@@ -8,16 +9,17 @@ Namespace Testing
         Private m_Remaining As Int32
         Private m_Completion As TestCaseExecuteeCompletion
         Private m_Result As TestCaseExecuteeResult
+        Private m_TargetInstance As TargetInstance
 
-        ' TODO: Use stuff from Compiling module to replace ApplicationName
         ' TODO: Stderr monitor
-        Public Sub New(ByVal WatchDog As WatchDog, ByVal ProcessMonitor As ProcessMonitor, ByVal ApplicationName As String, ByVal TestCase As TestCase, ByVal Completion As TestCaseExecuteeCompletion, ByVal State As Object)
+        Public Sub New(ByVal WatchDog As WatchDog, ByVal ProcessMonitor As ProcessMonitor, ByVal TargetInstance As TargetInstance, ByVal TestCase As TestCase, ByVal Completion As TestCaseExecuteeCompletion, ByVal State As Object)
             m_Completion = Completion
             m_Result.State = State
             m_Result.Index = TestCase.Index
+            m_TargetInstance = TargetInstance
 
             m_Remaining = 2
-            FinalConstruct(WatchDog, ProcessMonitor, ApplicationName, Nothing, Nothing, Nothing, _
+            FinalConstruct(WatchDog, ProcessMonitor, TargetInstance.ApplicationName, Nothing, Nothing, Nothing, _
                 TestCase.OpenInput(), TestCase.OpenOutput(AddressOf TestCaseCompletion, Nothing), Nothing, _
                 TestCase.TimeQuota, TestCase.MemoryQuota, 1, AddressOf ProcessExecuteeCompletion, Nothing)
         End Sub
@@ -34,6 +36,7 @@ Namespace Testing
         End Sub
 
         Private Sub ProcessExecuteeCompletion(ByVal Result As ProcessExecuteeResult)
+            m_TargetInstance.Dispose()
             m_Result.ExitStatus = Result.ExitStatus
             m_Result.TimeQuotaUsage = Result.TimeQuotaUsage
             m_Result.MemoryQuotaUsage = Result.MemoryQuotaUsage

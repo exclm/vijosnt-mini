@@ -34,7 +34,7 @@
         Public Sub Free(ByVal Dir As DirectoryInfo)
             Try
                 Dir.Delete(True)
-            Catch ex As IOException
+            Catch ex As Exception
                 Dir.Refresh()
                 If Dir.Exists() Then
                     SyncLock m_Pendings
