@@ -25,6 +25,7 @@ Namespace Executing
 
             If m_EnableSecurity Then
                 Dim UntrustedPool As New UntrustedEnvironmentPool(GetUntrustedEnvironments())
+                UntrustedPool.Executor = Me
                 m_Pools.Add(EnvironmentTag.Untrusted, UntrustedPool)
             Else
                 m_Pools.Add(EnvironmentTag.Untrusted, TrustedPool)

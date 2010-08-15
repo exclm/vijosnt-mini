@@ -61,11 +61,7 @@ Namespace Executing
         Private Sub WorkCompleted()
             If Interlocked.Decrement(m_Remaining) = 0 Then
                 If m_Completion IsNot Nothing Then
-                    Try
-                        m_Completion.Invoke(m_Result)
-                    Catch ex As Exception
-                        ' eat it
-                    End Try
+                    m_Completion.Invoke(m_Result)
                 End If
                 MyBase.Execute()
             End If

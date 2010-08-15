@@ -80,11 +80,7 @@
 
         Protected Sub DispatchEntry(ByVal Entry As Entry, ByVal Timeouted As Boolean)
             If Entry.Callback IsNot Nothing Then
-                Try
-                    Entry.Callback.Invoke(New Result(Entry.CallbackState, Timeouted))
-                Catch ex As Exception
-                    ' eat it
-                End Try
+                Entry.Callback.Invoke(New Result(Entry.CallbackState, Timeouted))
             End If
 
             SyncLock m_SyncRoot

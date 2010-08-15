@@ -15,15 +15,14 @@ Namespace Executing
             m_Token = New Token(UserName, Password)
 
             Dim Sid As Byte() = m_Token.GetSid()
+
+            ' Remove residual aces
+            m_WindowStation.RemoveAceBySid(Sid)
+            m_Desktop.RemoveAceBySid(Sid)
+
             m_WindowStation.AddAllowedAce(Sid, New UserObject.AllowedAce(0, UserObject.AceMask.GenericRead Or UserObject.AceMask.GenericWrite Or UserObject.AceMask.GenericExecute))
             m_Desktop.AddAllowedAce(Sid, New UserObject.AllowedAce(0, UserObject.AceMask.GenericRead Or UserObject.AceMask.GenericWrite Or UserObject.AceMask.GenericExecute))
         End Sub
-
-        Public Overrides ReadOnly Property Tag() As EnvironmentTag
-            Get
-                Return EnvironmentTag.Untrusted
-            End Get
-        End Property
 
         Public Overrides ReadOnly Property DesktopName() As String
             Get

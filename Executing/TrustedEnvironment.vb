@@ -4,12 +4,6 @@ Namespace Executing
     Friend Class TrustedEnvironment
         Inherits EnvironmentBase
 
-        Public Overrides ReadOnly Property Tag() As EnvironmentTag
-            Get
-                Return EnvironmentTag.Trusted
-            End Get
-        End Property
-
         Public Overrides ReadOnly Property DesktopName() As String
             Get
                 Return Nothing

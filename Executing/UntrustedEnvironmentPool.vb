@@ -14,12 +14,6 @@
             Next
         End Sub
 
-        Public Overrides ReadOnly Property Tag() As EnvironmentTag
-            Get
-                Return EnvironmentTag.Untrusted
-            End Get
-        End Property
-
         Public Overrides Function Take() As EnvironmentBase
             SyncLock m_Stack
                 If m_Stack.Count = 0 Then

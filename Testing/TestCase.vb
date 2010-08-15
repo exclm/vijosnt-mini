@@ -17,6 +17,8 @@ Namespace Testing
             Dim CompletionState As Object
         End Structure
 
+        Private m_ReadStream As Stream
+
         Public Overridable ReadOnly Property Index() As Int32
             Get
                 Return 1
@@ -54,9 +56,9 @@ Namespace Testing
             End Using
         End Function
 
-        Public Function OpenOutput(ByVal Completion As TestCaseCompletion, ByVal State As Object) As KernelObject
+        Public Function OpenOutput() As KernelObject
             Using Pipe As New Pipe()
-                ThreadPool.UnsafeQueueUserWorkItem(AddressOf JudgeWorker, New Context(Pipe.GetReadStream(), OpenAnswerStream(), Completion, State))
+                m_ReadStream = Pipe.GetReadStream()
                 Return Pipe.GetWriteHandle()
             End Using
         End Function
@@ -92,11 +94,11 @@ Namespace Testing
                 Result.Score = Nothing
             End Try
 
-            Try
-                State.Completion.Invoke(Result)
-            Catch ex As Exception
-                ' eat it
-            End Try
+            State.Completion.Invoke(Result)
+        End Sub
+
+        Public Sub QueueJudgeWorker(ByVal Completion As TestCaseCompletion, ByVal State As Object)
+            ThreadPool.QueueUserWorkItem(AddressOf JudgeWorker, New Context(m_ReadStream, OpenAnswerStream(), Completion, State))
         End Sub
     End Class
 End Namespace

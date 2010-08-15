@@ -74,11 +74,7 @@ Namespace Background
 
             If Context.Compiler Is Nothing Then
                 If Context.Completion IsNot Nothing Then
-                    Try
-                        Context.Completion.Invoke(New TestResult(Context.CompletionState, TestResultFlag.CompilerNotFound, Nothing, 0, 0, 0, Nothing))
-                    Catch ex As Exception
-                        ' eat it
-                    End Try
+                    Context.Completion.Invoke(New TestResult(Context.CompletionState, TestResultFlag.CompilerNotFound, Nothing, 0, 0, 0, Nothing))
                 End If
                 If Interlocked.Decrement(m_Running) = 0 Then _
                     m_CanExit.Set()
@@ -87,11 +83,7 @@ Namespace Background
 
             If Context.TestCases Is Nothing Then
                 If Context.Completion IsNot Nothing Then
-                    Try
-                        Context.Completion.Invoke(New TestResult(Context.CompletionState, TestResultFlag.TestSuiteNotFound, Nothing, 0, 0, 0, Nothing))
-                    Catch ex As Exception
-                        ' eat it
-                    End Try
+                    Context.Completion.Invoke(New TestResult(Context.CompletionState, TestResultFlag.TestSuiteNotFound, Nothing, 0, 0, 0, Nothing))
                 End If
                 If Interlocked.Decrement(m_Running) = 0 Then _
                     m_CanExit.Set()
@@ -134,11 +126,7 @@ Namespace Background
             End If
 
             If Context.Completion IsNot Nothing Then
-                Try
-                    Context.Completion.Invoke(New TestResult(Context.CompletionState, TestResultFlag.CompileError, Warning, 0, 0, 0, Nothing))
-                Catch ex As Exception
-                    ' eat it
-                End Try
+                Context.Completion.Invoke(New TestResult(Context.CompletionState, TestResultFlag.CompileError, Warning, 0, 0, 0, Nothing))
             End If
             If Interlocked.Decrement(m_Running) = 0 Then _
                 m_CanExit.Set()
@@ -202,11 +190,7 @@ Namespace Background
         Private Sub TestWorkCompleted(ByVal Context As TestContext)
             If Interlocked.Decrement(Context.Remaining) = 0 Then
                 If Context.Completion IsNot Nothing Then
-                    Try
-                        Context.Completion.Invoke(New TestResult(Context.CompletionState, Context.Flag, Nothing, Context.Score, Context.TimeUsage, Context.MemoryUsage, Context.TestResults.Values))
-                    Catch ex As Exception
-                        ' eat it
-                    End Try
+                    Context.Completion.Invoke(New TestResult(Context.CompletionState, Context.Flag, Nothing, Context.Score, Context.TimeUsage, Context.MemoryUsage, Context.TestResults.Values))
                 End If
                 If Interlocked.Decrement(m_Running) = 0 Then _
                     m_CanExit.Set()

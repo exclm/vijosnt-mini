@@ -2,7 +2,6 @@
     Friend MustInherit Class EnvironmentPoolBase
         Implements IDisposable
 
-        Public MustOverride ReadOnly Property Tag() As EnvironmentTag
         Public MustOverride Function Take() As EnvironmentBase
 
         Protected m_PendingExecutees As Queue(Of Executee)
@@ -42,8 +41,6 @@
         End Sub
 
         Public Sub Queue(ByVal Executee As Executee)
-            Debug.Assert(Executee.RequiredEnvironment = Me.Tag)
-
             Dim Environment As EnvironmentBase = Me.Take()
             If Environment IsNot Nothing Then
                 Executee.Environment = Environment
