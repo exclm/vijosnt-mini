@@ -26,10 +26,10 @@ Namespace Testing
             End Using
         End Sub
 
-        Public Function TryLoad(ByVal Text As String) As IEnumerable(Of TestCase)
+        Public Function TryLoad(ByVal Id As String) As IEnumerable(Of TestCase)
             For Each Entry As TestSuiteEntry In m_Entries
-                If Entry.Regex.IsMatch(Text) Then
-                    Dim Result As IEnumerable(Of TestCase) = Entry.TestSuite.TryLoad(Text)
+                If Entry.Regex.IsMatch(Id) Then
+                    Dim Result As IEnumerable(Of TestCase) = Entry.TestSuite.TryLoad(Id)
                     If Result IsNot Nothing Then _
                         Return Result
                 End If

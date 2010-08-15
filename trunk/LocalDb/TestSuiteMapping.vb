@@ -8,7 +8,7 @@
             Try
                 Using Command As SQLiteCommand = Database.CreateCommand( _
                     "CREATE TABLE IF NOT EXISTS TestSuiteMapping (" & _
-                    "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
+                    "Id INTEGER PRIMARY KEY AUTOINCREMENT, " & _
                     "Pattern TEXT, " & _
                     "ClassName TEXT, " & _
                     "Parameter TEXT)")
@@ -16,9 +16,9 @@
                 End Using
 
                 m_SelectCommand = Database.CreateCommand( _
-                    "SELECT * FROM TestSuiteMapping ORDER BY ID")
+                    "SELECT * FROM TestSuiteMapping ORDER BY Id")
                 m_InsertCommand = Database.CreateCommand( _
-                    "INSERT INTO TestSuiteMapping (ID, Pattern, ClassName, Parameter) VALUES (NULL, @Pattern, @ClassName, @Parameter)")
+                    "INSERT INTO TestSuiteMapping (Id, Pattern, ClassName, Parameter) VALUES (NULL, @Pattern, @ClassName, @Parameter)")
             Catch ex As Exception
                 Log.Add(LogLevel.Error, "初始化时发生异常", ex.ToString())
                 Environment.Exit(1)

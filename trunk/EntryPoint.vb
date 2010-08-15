@@ -1,4 +1,5 @@
 ﻿Imports VijosNT.Background
+Imports VijosNT.Utility
 
 Public Class EntryPoint
     Public Shared Sub Main()
@@ -6,6 +7,7 @@ Public Class EntryPoint
         'If Environment.UserInteractive Then
         '    Start UI
         'Else
+        SetWorkerThreads(500, 500)
         Using Service As New Service()
             Service.Entry()
         End Using

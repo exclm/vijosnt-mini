@@ -2,7 +2,7 @@
     Friend Class APlusBTestSuite
         Inherits TestSuite
 
-        Public Overrides Function TryLoad(ByVal ID As String) As IEnumerable(Of TestCase)
+        Public Overrides Function TryLoad(ByVal Id As String) As IEnumerable(Of TestCase)
             Dim Result As New List(Of TestCase)
             Dim Random As New Random()
             For Index As Int32 = 0 To 9

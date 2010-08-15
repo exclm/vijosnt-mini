@@ -8,7 +8,7 @@
             Try
                 Using Command As SQLiteCommand = Database.CreateCommand( _
                     "CREATE TABLE IF NOT EXISTS CompilerMapping (" & _
-                    "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
+                    "Id INTEGER PRIMARY KEY AUTOINCREMENT, " & _
                     "Pattern TEXT, " & _
                     "ApplicationName TEXT, " & _
                     "CommandLine TEXT, " & _
@@ -23,9 +23,9 @@
                 End Using
 
                 m_SelectCommand = Database.CreateCommand( _
-                    "SELECT * FROM CompilerMapping ORDER BY ID")
+                    "SELECT * FROM CompilerMapping ORDER BY Id")
                 m_InsertCommand = Database.CreateCommand( _
-                    "INSERT INTO CompilerMapping (ID, Pattern, ApplicationName, CommandLine, TimeQuota, MemoryQuota, ActiveProcessQuota, SourceFileName, TargetFileName, TargetApplicationName, TargetCommandLine) VALUES (NULL, @Pattern, @ApplicationName, @CommandLine, @TimeQuota, @MemoryQuota, @ActiveProcessQuota, @SourceFileName, @TargetFileName, @TargetApplicationName, @TargetCommandLine)")
+                    "INSERT INTO CompilerMapping (Id, Pattern, ApplicationName, CommandLine, TimeQuota, MemoryQuota, ActiveProcessQuota, SourceFileName, TargetFileName, TargetApplicationName, TargetCommandLine) VALUES (NULL, @Pattern, @ApplicationName, @CommandLine, @TimeQuota, @MemoryQuota, @ActiveProcessQuota, @SourceFileName, @TargetFileName, @TargetApplicationName, @TargetCommandLine)")
             Catch ex As Exception
                 Log.Add(LogLevel.Error, "初始化时发生异常", ex.ToString())
                 Environment.Exit(1)

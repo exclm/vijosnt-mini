@@ -6,7 +6,7 @@
             Try
                 Using Command As SQLiteCommand = Database.CreateCommand( _
                     "CREATE TABLE IF NOT EXISTS Log (" & _
-                    "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
+                    "Id INTEGER PRIMARY KEY AUTOINCREMENT, " & _
                     "Level INTEGER, " & _
                     "Title TEXT, " & _
                     "Date INTEGER, " & _
@@ -15,7 +15,7 @@
                 End Using
 
                 m_InsertCommand = Database.CreateCommand( _
-                    "INSERT INTO Log (ID, Level, Title, Date, Detail) VALUES (NULL, @Level, @Title, @Date, @Detail)")
+                    "INSERT INTO Log (Id, Level, Title, Date, Detail) VALUES (NULL, @Level, @Title, @Date, @Detail)")
             Catch ex As Exception
                 Trace.WriteLine(ex.ToString())
                 Environment.Exit(1)
