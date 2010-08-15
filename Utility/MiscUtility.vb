@@ -92,5 +92,13 @@
             Builder.Append("$)")
             Return Builder.ToString()
         End Function
+
+        Public Function DBNullToNothing(ByVal Value As Object) As Object
+            If IsDBNull(Value) Then
+                Return Nothing
+            Else
+                Return Value
+            End If
+        End Function
     End Module
 End Namespace

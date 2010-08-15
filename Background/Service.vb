@@ -12,6 +12,8 @@ Namespace Background
         Private m_WatchDog As WatchDog
         Private m_ProcessMonitor As ProcessMonitor
         Private m_Executor As Executor
+        Private m_CompilerPool As LocalCompilerPool
+        Private m_TestSuitePool As TestSuitePool
 
         Public Sub New()
             Dim ExecutorSlots As Int32 = Config.ExecutorSlots
@@ -23,7 +25,8 @@ Namespace Background
                 New TrustedEnvironmentPool(), New UntrustedEnvironmentPool(GetUntrustedEnvironments())})
             m_WatchDog.Start()
             m_ProcessMonitor.Start()
-            ' TODO: Compiler list & Test suite mapping list
+            m_CompilerPool = New LocalCompilerPool(m_TempPathServer)
+            m_TestSuitePool = New TestSuitePool()
         End Sub
 
         Private Function GetUntrustedEnvironments() As IEnumerable(Of UntrustedEnvironment)
