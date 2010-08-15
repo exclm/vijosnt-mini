@@ -119,6 +119,11 @@
     <Import Include="System.Threading" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Background\Runner.vb" />
+    <Compile Include="Background\TestCompletion.vb" />
+    <Compile Include="Background\TestResult.vb" />
+    <Compile Include="Background\TestResultEntry.vb" />
+    <Compile Include="Background\TestResultFlag.vb" />
     <Compile Include="Compiling\Compiler.vb" />
     <Compile Include="Compiling\CompilerExecutee.vb" />
     <Compile Include="Compiling\CompilerExecuteeCompletion.vb" />

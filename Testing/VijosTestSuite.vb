@@ -26,9 +26,9 @@
             m_Root = Root
         End Sub
 
-        Public Overrides Function TryLoad(ByVal ID As String) As IEnumerable(Of TestCase)
+        Public Overrides Function TryLoad(ByVal Id As String) As IEnumerable(Of TestCase)
             Try
-                Dim ProblemRoot As String = Path.Combine(m_Root, ID)
+                Dim ProblemRoot As String = Path.Combine(m_Root, Id)
                 Dim Result As New List(Of TestCase)
                 For Each Config As Config In LoadConfig(ProblemRoot)
                     Result.Add(LoadTestCase(ProblemRoot, Config))

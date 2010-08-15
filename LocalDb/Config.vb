@@ -58,5 +58,20 @@
             End Set
         End Property
 
+        Public Shared Property EnableSecurity() As Boolean
+            Get
+                Dim Value As String = [Get]("EnableSecurity")
+                If Value Is Nothing Then
+                    Put("EnableSecurity", False)
+                    Return False
+                Else
+                    Return Boolean.Parse(Value)
+                End If
+            End Get
+
+            Set(ByVal Value As Boolean)
+                Put("EnableSecurity", Value.ToString())
+            End Set
+        End Property
     End Class
 End Namespace
