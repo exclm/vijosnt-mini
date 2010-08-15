@@ -12,7 +12,6 @@ Namespace Background
             Public CompletionState As Object
             Public Compiler As Compiler
             Public TestCases As IEnumerable(Of TestCase)
-            Public SyncRoot As Object
             Public Flag As TestResultFlag
             Public Score As Int32
             Public TimeUsage As Int64
@@ -65,7 +64,6 @@ Namespace Background
             Context.CompletionState = State
             Context.Compiler = m_CompilerPool.TryGet(CompilerText)
             Context.TestCases = m_TestSuitePool.TryLoad(TestSuiteId)
-            Context.SyncRoot = New Object()
             Context.Flag = TestResultFlag.Null
             Context.Score = 0
             Context.TimeUsage = 0
@@ -174,7 +172,7 @@ Namespace Background
                 End If
             End If
 
-            SyncLock Context.TestContext.SyncRoot
+            SyncLock Context.TestContext
                 Context.TestContext.TestResults.Add(Entry.Index, Entry)
                 Context.TestContext.Score += Entry.Score
                 Context.TestContext.TimeUsage += Entry.TimeUsage
