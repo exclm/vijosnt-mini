@@ -20,7 +20,6 @@ Namespace Executing
             Me.Pool.Untake(Me)
         End Sub
 
-        Public MustOverride ReadOnly Property Tag() As EnvironmentTag
         Public MustOverride ReadOnly Property DesktopName() As String
         Public MustOverride ReadOnly Property Token() As Token
 
