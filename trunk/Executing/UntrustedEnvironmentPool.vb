@@ -12,6 +12,10 @@
                 Environment.Pool = Me
                 m_Stack.Push(Environment)
             Next
+
+            If m_Stack.Count = 0 Then
+                Throw New Exception("There must be at least one untrusted environment")
+            End If
         End Sub
 
         Public Overrides Function Take() As EnvironmentBase

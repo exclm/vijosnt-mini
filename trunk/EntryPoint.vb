@@ -1,4 +1,5 @@
 ﻿Imports VijosNT.Background
+Imports VijosNT.LocalDb
 Imports VijosNT.Utility
 
 Public Class EntryPoint
@@ -7,9 +8,13 @@ Public Class EntryPoint
         'If Environment.UserInteractive Then
         '    Start UI
         'Else
-        Using Service As New Service()
-            Service.Entry()
-        End Using
+        Try
+            Using Service As New Service()
+                Service.Entry()
+            End Using
+        Catch ex As Exception
+            Log.Add(LogLevel.Error, "Unexpected exception caught", ex.ToString())
+        End Try
         'End If
     End Sub
 End Class
