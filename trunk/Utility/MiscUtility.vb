@@ -18,20 +18,6 @@
             Character = NextChar
         End Sub
 
-        Public Sub SetWorkerThreads(ByVal Min As Int32, ByVal Max As Int32)
-            Dim MinWorkerThreads As Int32, MinCompletionPortThreads As Int32
-            Dim MaxWorkerThreads As Int32, MaxCompletionPortThreads As Int32
-            ThreadPool.GetMinThreads(MinWorkerThreads, MinCompletionPortThreads)
-            ThreadPool.GetMaxThreads(MaxWorkerThreads, MaxCompletionPortThreads)
-            If Min <= MaxWorkerThreads Then
-                ThreadPool.SetMinThreads(Min, MinCompletionPortThreads)
-                ThreadPool.SetMaxThreads(Max, MaxCompletionPortThreads)
-            Else
-                ThreadPool.SetMaxThreads(Max, MaxCompletionPortThreads)
-                ThreadPool.SetMinThreads(Min, MinCompletionPortThreads)
-            End If
-        End Sub
-
         Public Sub BufferedCopy(ByVal Source As Stream, ByVal Target As Stream)
             BufferedCopy(Source, Target, 4096)
         End Sub
