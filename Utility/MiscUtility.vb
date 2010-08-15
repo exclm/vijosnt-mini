@@ -72,7 +72,7 @@
 
         Public Function RegexSimpleEscape(ByVal Pattern As String) As String
             Dim Builder As New StringBuilder()
-            Builder.Append("^"c)
+            Builder.Append("^(")
             Using Reader As New StringReader(Pattern)
                 Dim NextInt As Int32 = Reader.Read()
                 While NextInt <> -1
@@ -81,13 +81,15 @@
                         Builder.Append(".*")
                     ElseIf NextChar = "?"c Then
                         Builder.Append(".{1}")
+                    ElseIf NextChar = ";"c Then
+                        Builder.Append("|")
                     Else
                         Builder.Append(Regex.Escape(NextChar))
                     End If
                     NextInt = Reader.Read()
                 End While
             End Using
-            Builder.Append("$"c)
+            Builder.Append("$)")
             Return Builder.ToString()
         End Function
     End Module
