@@ -49,8 +49,12 @@ Namespace Background
 
         Private Sub WriteStartupLog()
             Dim Builder As New StringBuilder()
+            Dim Assembly As Assembly = Assembly.GetExecutingAssembly()
+            Builder.AppendLine("VijosNT Mini 版本: " & Assembly.GetName().Version.ToString())
+            Builder.AppendLine("公共语言运行库版本: " & Assembly.ImageRuntimeVersion)
+            Builder.AppendLine("启动时间: " & Date.Now.ToString())
             Builder.AppendLine("数据库引擎: " & Database.EngineVersion)
-            Log.Add(LogLevel.Information, "VijosNT 启动成功", Builder.ToString())
+            Log.Add(LogLevel.Information, "程序启动成功", Builder.ToString())
         End Sub
 
 #Region "IDisposable Support"

@@ -113,6 +113,7 @@
     <Import Include="System.Data.SQLite" />
     <Import Include="System.Diagnostics" />
     <Import Include="System.IO" />
+    <Import Include="System.Reflection" />
     <Import Include="System.Runtime.InteropServices" />
     <Import Include="System.Text" />
     <Import Include="System.Text.RegularExpressions" />
