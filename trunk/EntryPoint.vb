@@ -9,13 +9,7 @@ Public Class EntryPoint
                 Daemon.Entry()
             End Using
         Else
-            Try
-                Using Service As New Service()
-                    Service.Entry()
-                End Using
-            Catch ex As Exception
-                Log.Add(LogLevel.Error, "Unexpected exception caught", ex.ToString())
-            End Try
+            ServiceBase.Run(New Service())
         End If
     End Sub
 End Class

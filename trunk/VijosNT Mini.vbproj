@@ -104,6 +104,7 @@
     <Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -121,6 +122,7 @@
     <Import Include="System.IO" />
     <Import Include="System.Reflection" />
     <Import Include="System.Runtime.InteropServices" />
+    <Import Include="System.ServiceProcess" />
     <Import Include="System.Text" />
     <Import Include="System.Text.RegularExpressions" />
     <Import Include="System.Threading" />
@@ -166,8 +168,6 @@
     <Compile Include="LocalDb\CompilerMapping.vb" />
     <Compile Include="LocalDb\Config.vb" />
     <Compile Include="LocalDb\Database.vb" />
-    <Compile Include="LocalDb\Log.vb" />
-    <Compile Include="LocalDb\LogLevel.vb" />
     <Compile Include="LocalDb\TestSuiteMapping.vb" />
     <Compile Include="LocalDb\UntrustedEnvironments.vb" />
     <Compile Include="Testing\APlusBTestSuite.vb" />
@@ -195,13 +195,18 @@
     <Compile Include="Win32\FileEx.vb" />
     <Compile Include="Win32\KernelObject.vb" />
     <Compile Include="Win32\JobObject.vb" />
+    <Compile Include="Win32\Service.vb" />
+    <Compile Include="Win32\ServiceManager.vb" />
+    <Compile Include="Win32\ServiceObject.vb" />
     <Compile Include="Win32\Token.vb" />
     <Compile Include="Win32\Pipe.vb" />
     <Compile Include="Win32\ProcessEx.vb" />
     <Compile Include="Win32\UserObject.vb" />
     <Compile Include="Win32\Win32Misc.vb" />
     <Compile Include="Win32\WindowStation.vb" />
-    <Compile Include="Background\Service.vb" />
+    <Compile Include="Background\Service.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -224,6 +229,9 @@
     <Compile Include="Utility\StreamPipe.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Background\Service.resx">
+      <DependentUpon>Service.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Foreground\ConsoleForm.resx">
       <DependentUpon>ConsoleForm.vb</DependentUpon>
     </EmbeddedResource>

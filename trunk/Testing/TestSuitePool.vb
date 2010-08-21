@@ -18,7 +18,7 @@ Namespace Testing
                         Case "VijosTestSuite"
                             Entry.TestSuite = New VijosTestSuite(Reader("Parameter"))
                         Case Else
-                            Log.Add(LogLevel.Warning, "测试数据集加载失败", "未找到类名为 " & Reader("ClassName") & " 的测试数据集容器。")
+                            EventLog.WriteEntry(My.Resources.ServiceName, "测试数据集加载失败" & vbCrLf & "未找到类名为 " & Reader("ClassName") & " 的测试数据集容器。", EventLogEntryType.Warning)
                             Continue While
                     End Select
                     m_Entries.Add(Entry)

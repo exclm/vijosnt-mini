@@ -17,7 +17,7 @@
                 m_ReplaceCommand = Database.CreateCommand( _
                     "REPLACE INTO Config (Key, Data) VALUES (@Key, @Data)")
             Catch ex As Exception
-                Log.Add(LogLevel.Error, "初始化时发生异常", ex.ToString())
+                EventLog.WriteEntry(My.Resources.ServiceName, ex.ToString(), EventLogEntryType.Error)
                 Environment.Exit(1)
             End Try
         End Sub

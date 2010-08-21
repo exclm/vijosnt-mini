@@ -113,6 +113,54 @@
             ByVal AccessMask As Int32, _
             ByVal pSid As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
+        Public Declare Auto Function OpenSCManager Lib "advapi32.dll" ( _
+            ByVal MachineName As String, _
+            ByVal DatabaseName As String, _
+            ByVal dwDesiredAccess As SCManagerAccess) As IntPtr
+
+        Public Declare Auto Function CloseServiceHandle Lib "advapi32.dll" ( _
+            ByVal hSCObject As IntPtr) As Boolean
+
+        Public Declare Auto Function OpenService Lib "advapi32.dll" ( _
+            ByVal hSCManager As IntPtr, _
+            ByVal ServiceName As String, _
+            ByVal dwDesiredAccess As ServiceAccess) As IntPtr
+
+        Public Declare Auto Function DeleteService Lib "advapi32.dll" ( _
+            ByVal hService As IntPtr) As Boolean
+
+        Public Declare Auto Function CreateService Lib "advapi32.dll" ( _
+            ByVal hSCManager As IntPtr, _
+            ByVal ServiceName As String, _
+            ByVal DisplayName As String, _
+            ByVal dwDesiredAccess As ServiceAccess, _
+            ByVal dwServiceType As ServiceType, _
+            ByVal dwStartType As ServiceStartType, _
+            ByVal dwErrorControl As ServiceErrorControl, _
+            ByVal BinaryPathName As String, _
+            ByVal LoadOrderGroup As String, _
+            ByVal lpdwTagId As Int32, _
+            ByVal Dependencies As String, _
+            ByVal ServiceStartName As String, _
+            ByVal Password As String) As IntPtr
+
+        Public Declare Auto Function StartService Lib "advapi32.dll" ( _
+            ByVal hService As IntPtr, _
+            ByVal dwNumServiceArgs As Int32, _
+            ByVal lpServiceArgVectors As IntPtr) As Boolean
+
+        Public Declare Auto Function ControlService Lib "advapi32.dll" ( _
+            ByVal hService As IntPtr, _
+            ByVal dwControl As ServiceControl, _
+            ByRef ServiceStatus As SERVICE_STATUS) As Boolean
+
+        Public Declare Auto Function QueryServiceStatusEx Lib "advapi32.dll" ( _
+            ByVal hService As IntPtr, _
+            ByVal InfoLevel As SC_STATUS_TYPE, _
+            ByRef Buffer As SERVICE_STATUS_PROCESS, _
+            ByVal cbBufSize As Int32, _
+            ByRef cbBytesNeeded As Int32) As Boolean
+
         Public Enum TokenAccess As Int32
             TOKEN_ADJUST_PRIVILEGES = &H20
             TOKEN_ALL_ACCESS = &HF01FF
@@ -191,6 +239,87 @@
 
         Public Enum UserObjectInformation As Int32
             UOI_NAME = 2
+        End Enum
+
+        Public Enum SCManagerAccess As Int32
+            SC_MANAGER_ALL_ACCESS = &HF003F
+        End Enum
+
+        Public Enum ServiceAccess As Int32
+            SERVICE_ALL_ACCESS = &HF01FF
+        End Enum
+
+        Public Structure SERVICE_STATUS
+            Dim dwServiceType As Int32
+            Dim dwCurrentState As ServiceState
+            Dim dwControlsAccepted As Int32
+            Dim dwWin32ExitCode As Int32
+            Dim dwServiceSpecificExitCode As Int32
+            Dim dwCheckPoint As Int32
+            Dim dwWaitHint As Int32
+        End Structure
+
+        Public Structure SERVICE_STATUS_PROCESS
+            Dim dwServiceType As Int32
+            Dim dwCurrentState As ServiceState
+            Dim dwControlsAccepted As Int32
+            Dim dwWin32ExitCode As Int32
+            Dim dwServiceSpecificExitCode As Int32
+            Dim dwCheckPoint As Int32
+            Dim dwWaitHint As Int32
+            Dim dwProcessId As Int32
+            Dim dwServiceFlags As Int32
+        End Structure
+
+        Public Enum ServiceState As Int32
+            SERVICE_CONTINUE_PENDING = 5
+            SERVICE_PAUSE_PENDING = 6
+            SERVICE_PAUSED = 7
+            SERVICE_RUNNING = 4
+            SERVICE_START_PENDING = 2
+            SERVICE_STOP_PENDING = 3
+            SERVICE_STOPPED = 1
+        End Enum
+
+        Public Enum SC_STATUS_TYPE As Int32
+            SC_STATUS_PROCESS_INFO = 0
+        End Enum
+
+        Public Enum ServiceType As Int32
+            SERVICE_ADAPTER = &H4
+            SERVICE_FILE_SYSTEM_DRIVER = &H2
+            SERVICE_KERNEL_DRIVER = &H1
+            SERVICE_RECOGNIZER_DRIVER = &H8
+            SERVICE_WIN32_OWN_PROCESS = &H10
+            SERVICE_WIN32_SHARE_PROCESS = &H20
+            SERVICE_INTERACTIVE_PROCESS = &H100
+        End Enum
+
+        Public Enum ServiceStartType As Int32
+            SERVICE_AUTO_START = &H2
+            SERVICE_BOOT_START = &H0
+            SERVICE_DEMAND_START = &H3
+            SERVICE_DISABLED = &H4
+            SERVICE_SYSTEM_START = &H1
+        End Enum
+
+        Public Enum ServiceErrorControl As Int32
+            SERVICE_ERROR_CRITICAL = &H3
+            SERVICE_ERROR_IGNORE = &H0
+            SERVICE_ERROR_NORMAL = &H1
+            SERVICE_ERROR_SEVERE = &H2
+        End Enum
+
+        Public Enum ServiceControl As Int32
+            SERVICE_CONTROL_CONTINUE = &H3
+            SERVICE_CONTROL_INTERROGATE = &H4
+            SERVICE_CONTROL_NETBINDADD = &H7
+            SERVICE_CONTROL_NETBINDDISABLE = &HA
+            SERVICE_CONTROL_NETBINDENABLE = &H9
+            SERVICE_CONTROL_NETBINDREMOVE = &H8
+            SERVICE_CONTROL_PARAMCHANGE = &H6
+            SERVICE_CONTROL_PAUSE = &H2
+            SERVICE_CONTROL_STOP = &H1
         End Enum
 #End Region
 
@@ -678,6 +807,9 @@
 #End Region
 
         Public Const ERROR_INSUFFICIENT_BUFFER As Int32 = 122
+        Public Const ERROR_SERVICE_DOES_NOT_EXIST As Int32 = 1060
+        Public Const ERROR_SERVICE_NOT_ACTIVE As Int32 = 1062
+        Public Const ERROR_SERVICE_MARKED_FOR_DELETE As Int32 = 1072
         Public Const ERROR_NOT_ENOUGH_QUOTA As Int32 = 1816
         Public Const SE_GROUP_LOGON_ID As Int32 = &HC0000000
         Public Const SECURITY_DESCRIPTOR_REVISION As Int32 = 1

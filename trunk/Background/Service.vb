@@ -2,80 +2,38 @@
 
 Namespace Background
     Friend Class Service
-        Implements IDisposable
+        Inherits ServiceBase
 
         Private m_Runner As Runner
 
         Public Sub New()
+            AutoLog = False
+            ServiceName = My.Resources.ServiceName
             m_Runner = New Runner()
         End Sub
 
-        Public Sub Entry()
+        Protected Overrides Sub OnStart(ByVal args() As String)
             WriteStartupLog()
-            Using ms As New MemoryStream()
-                Using sr As New StreamWriter(ms)
-                    sr.WriteLine("#include <stdio.h>")
-                    sr.WriteLine()
-                    sr.WriteLine("int main(void)")
-                    sr.WriteLine("{")
-                    sr.WriteLine("    int a, b;")
-                    sr.WriteLine("    scanf(""%d%d"", &a, &b);")
-                    sr.WriteLine("    printf(""%d\n"", a + b);")
-                    sr.WriteLine("    return 0;")
-                    sr.WriteLine("}")
-                End Using
+        End Sub
 
-                Console.WriteLine("Enter a number to perform test")
-                Console.WriteLine("Type other things to exit")
-
-                Do
-                    Console.Write("> ")
-                    Dim Number As Int32
-                    Try
-                        Number = Int32.Parse(Console.ReadLine())
-                    Catch ex As Exception
-                        Exit Do
-                    End Try
-
-                    For Index As Int32 = 0 To Number - 1
-                        m_Runner.Queue("gcc", New MemoryStream(ms.ToArray()), "A+B", _
-                            Sub(Result As TestResult)
-                                Console.WriteLine("{0}, {1}, {2}ms, {3}kb", Result.Flag, Result.Score, Result.TimeUsage \ 10000, Result.MemoryUsage \ 1024)
-                            End Sub, Nothing)
-                    Next
-                Loop
-            End Using
+        Protected Overrides Sub OnStop()
+            m_Runner.Dispose()
+            EventLog.WriteEntry("服务已成功停止。")
         End Sub
 
         Private Sub WriteStartupLog()
             Dim Builder As New StringBuilder()
             Dim Assembly As Assembly = Assembly.GetExecutingAssembly()
+            Builder.AppendLine("服务已成功启动。")
             Builder.AppendLine("VijosNT Mini 版本: " & Assembly.GetName().Version.ToString())
             Builder.AppendLine("公共语言运行库版本: " & Assembly.ImageRuntimeVersion)
             Builder.AppendLine("启动时间: " & Date.Now.ToString())
             Builder.AppendLine("数据库引擎: " & Database.EngineVersion)
-            Log.Add(LogLevel.Information, "程序启动成功", Builder.ToString())
+            EventLog.WriteEntry(Builder.ToString())
         End Sub
 
-#Region "IDisposable Support"
-        Private disposedValue As Boolean ' 检测冗余的调用
+        Private Sub InitializeComponent()
 
-        ' IDisposable
-        Protected Overridable Sub Dispose(ByVal disposing As Boolean)
-            If Not Me.disposedValue Then
-                If disposing Then
-                    m_Runner.Dispose()
-                End If
-            End If
-            Me.disposedValue = True
         End Sub
-
-        ' Visual Basic 添加此代码是为了正确实现可处置模式。
-        Public Sub Dispose() Implements IDisposable.Dispose
-            ' 不要更改此代码。请将清理代码放入上面的 Dispose(ByVal disposing As Boolean)中。
-            Dispose(True)
-            GC.SuppressFinalize(Me)
-        End Sub
-#End Region
     End Class
 End Namespace

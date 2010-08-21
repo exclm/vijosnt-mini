@@ -20,7 +20,7 @@
                 m_InsertCommand = Database.CreateCommand( _
                     "INSERT INTO TestSuiteMapping (Id, Pattern, ClassName, Parameter) VALUES (NULL, @Pattern, @ClassName, @Parameter)")
             Catch ex As Exception
-                Log.Add(LogLevel.Error, "初始化时发生异常", ex.ToString())
+                EventLog.WriteEntry(My.Resources.ServiceName, ex.ToString(), EventLogEntryType.Error)
                 Environment.Exit(1)
             End Try
         End Sub
