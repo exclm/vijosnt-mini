@@ -8,12 +8,12 @@
     <SchemaVersion>
     </SchemaVersion>
     <ProjectGuid>{14264ECC-994C-4D8E-985C-CA7B57076454}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <StartupObject>VijosNT.EntryPoint</StartupObject>
     <RootNamespace>VijosNT</RootNamespace>
     <AssemblyName>VijosNT Mini</AssemblyName>
     <FileAlignment>512</FileAlignment>
-    <MyType>Console</MyType>
+    <MyType>WindowsFormsWithCustomSubMain</MyType>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <SccProjectName>Svn</SccProjectName>
     <SccLocalPath>Svn</SccLocalPath>
@@ -95,11 +95,16 @@
     <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86" />
     <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -112,12 +117,14 @@
     <Import Include="System.Data" />
     <Import Include="System.Data.SQLite" />
     <Import Include="System.Diagnostics" />
+    <Import Include="System.Drawing" />
     <Import Include="System.IO" />
     <Import Include="System.Reflection" />
     <Import Include="System.Runtime.InteropServices" />
     <Import Include="System.Text" />
     <Import Include="System.Text.RegularExpressions" />
     <Import Include="System.Threading" />
+    <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Background\Runner.vb" />
@@ -149,6 +156,13 @@
     <Compile Include="Executing\TrustedEnvironmentPool.vb" />
     <Compile Include="Executing\UntrustedEnvironment.vb" />
     <Compile Include="Executing\UntrustedEnvironmentPool.vb" />
+    <Compile Include="Foreground\ConsoleForm.Designer.vb">
+      <DependentUpon>ConsoleForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Foreground\ConsoleForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Foreground\Daemon.vb" />
     <Compile Include="LocalDb\CompilerMapping.vb" />
     <Compile Include="LocalDb\Config.vb" />
     <Compile Include="LocalDb\Database.vb" />
@@ -210,6 +224,9 @@
     <Compile Include="Utility\StreamPipe.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Foreground\ConsoleForm.resx">
+      <DependentUpon>ConsoleForm.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
@@ -220,6 +237,7 @@
   <ItemGroup>
     <Compile Include="Compiling\LocalTarget.vb" />
     <Compile Include="Compiling\LocalTargetInstance.vb" />
+    <None Include="My Project\app.manifest" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -232,6 +250,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data Source\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Artwork\BlueV.ico" />
+    <Content Include="Artwork\GreenV.ico" />
+    <Content Include="Artwork\RedV.ico" />
+    <None Include="Resources\BlackV.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
