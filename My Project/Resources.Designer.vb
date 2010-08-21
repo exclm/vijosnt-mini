@@ -67,6 +67,15 @@ Namespace My.Resources
             End Get
         End Property
         
+        '''<summary>
+        '''  查找类似 VijosNT Service 的本地化字符串。
+        '''</summary>
+        Friend ReadOnly Property DisplayName() As String
+            Get
+                Return ResourceManager.GetString("DisplayName", resourceCulture)
+            End Get
+        End Property
+        
         Friend ReadOnly Property GreenV() As System.Drawing.Icon
             Get
                 Dim obj As Object = ResourceManager.GetObject("GreenV", resourceCulture)
@@ -78,6 +87,15 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("RedV", resourceCulture)
                 Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查找类似 vjntsvc 的本地化字符串。
+        '''</summary>
+        Friend ReadOnly Property ServiceName() As String
+            Get
+                Return ResourceManager.GetString("ServiceName", resourceCulture)
             End Get
         End Property
     End Module
