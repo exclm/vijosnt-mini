@@ -59,5 +59,26 @@ Namespace My.Resources
                 resourceCulture = value
             End Set
         End Property
+        
+        Friend ReadOnly Property BlueV() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("BlueV", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property GreenV() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("GreenV", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property RedV() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("RedV", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
     End Module
 End Namespace
