@@ -79,11 +79,19 @@
             Return Builder.ToString()
         End Function
 
-        Public Function DBNullToNothing(ByVal Value As Object) As Object
+        Public Function DbToLocalInt64(ByVal Value As Object) As Nullable(Of Int64)
             If IsDBNull(Value) Then
                 Return Nothing
             Else
-                Return Value
+                Return Convert.ToInt64(Value)
+            End If
+        End Function
+
+        Public Function DbToLocalInt32(ByVal Value As Object) As Nullable(Of Int32)
+            If IsDBNull(Value) Then
+                Return Nothing
+            Else
+                Return Convert.ToInt32(Value)
             End If
         End Function
     End Module

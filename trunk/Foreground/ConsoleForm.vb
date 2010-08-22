@@ -1,4 +1,5 @@
-﻿Imports VijosNT.Win32
+﻿Imports VijosNT.LocalDb
+Imports VijosNT.Win32
 
 Namespace Foreground
     Friend Class ConsoleForm
@@ -73,6 +74,7 @@ Namespace Foreground
                     m_ServiceManager = New ServiceManager()
                     m_Service = m_ServiceManager.Open(My.Resources.ServiceName)
                     ServiceTimer.Enabled = True
+
             End Select
             RefreshPage(Name)
         End Sub
@@ -101,6 +103,30 @@ Namespace Foreground
                                 StatusLabel.Text = "VijosNT 服务处于未知状态 (" & State.ToString() & ")"
                         End Select
                     End If
+                Case "CompilerPage"
+                    With CompilerList
+                        Dim SelectedId As Int32 = -1
+                        With .SelectedItems
+                            If .Count <> 0 Then
+                                SelectedId = .Item(0).Tag
+                            End If
+                        End With
+                        With .Items
+                            .Clear()
+                            Using Reader As IDataReader = CompilerMapping.GetHeaders()
+                                While Reader.Read()
+                                    Dim Id As Int32 = Reader("Id")
+                                    With .Add(Reader("Pattern"))
+                                        .Tag = Id
+                                        If Id = SelectedId Then
+                                            .Selected = True
+                                        End If
+                                    End With
+                                End While
+                            End Using
+                        End With
+                        CompilerList_SelectedIndexChanged(Nothing, Nothing)
+                    End With
             End Select
         End Sub
 
@@ -128,6 +154,60 @@ Namespace Foreground
 
         Private Sub ServiceTimer_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ServiceTimer.Tick
             RefreshPage("RootPage")
+        End Sub
+
+        Private Sub CompilerList_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CompilerList.SelectedIndexChanged
+            With CompilerList.SelectedItems
+                If .Count <> 0 Then
+                    CompilerProperty.SelectedObject = CompilerMapping.GetConfig(.Item(0).Tag)
+                    RemoveCompilerButton.Enabled = True
+                    With .Item(0)
+                        MoveUpCompilerButton.Enabled = .Index <> 0
+                        MoveDownCompilerButton.Enabled = .Index <> CompilerList.Items.Count - 1
+                    End With
+                Else
+                    CompilerProperty.SelectedObject = Nothing
+                    RemoveCompilerButton.Enabled = False
+                    MoveUpCompilerButton.Enabled = False
+                    MoveDownCompilerButton.Enabled = False
+                End If
+            End With
+        End Sub
+
+        Private Sub AddCompilerButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddCompilerButton.Click
+            CompilerMapping.Add("", "", "", 15000 * 10000, Nothing, Nothing, "", "", "", "")
+            RefreshPage("CompilerPage")
+        End Sub
+
+        Private Sub CompilerProperty_PropertyValueChanged(ByVal s As Object, ByVal e As System.Windows.Forms.PropertyValueChangedEventArgs) Handles CompilerProperty.PropertyValueChanged
+            RefreshPage("CompilerPage")
+        End Sub
+
+        Private Sub RemoveCompilerButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RemoveCompilerButton.Click
+            CompilerMapping.Remove(CompilerList.SelectedItems.Item(0).Tag)
+            RefreshPage("CompilerPage")
+        End Sub
+
+        Private Sub MoveUpCompilerButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MoveUpCompilerButton.Click
+            With CompilerList.SelectedItems.Item(0)
+                Dim Id As Int32 = .Tag
+                With CompilerList.Items(.Index - 1)
+                    CompilerMapping.Swap(Id, .Tag)
+                    .Selected = True
+                End With
+            End With
+            RefreshPage("CompilerPage")
+        End Sub
+
+        Private Sub MoveDownCompilerButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MoveDownCompilerButton.Click
+            With CompilerList.SelectedItems.Item(0)
+                Dim Id As Int32 = .Tag
+                With CompilerList.Items(.Index + 1)
+                    CompilerMapping.Swap(Id, .Tag)
+                    .Selected = True
+                End With
+            End With
+            RefreshPage("CompilerPage")
         End Sub
     End Class
 End Namespace

@@ -13,15 +13,6 @@ Namespace Background
         End Sub
 
         Protected Overrides Sub OnStart(ByVal args() As String)
-            WriteStartupLog()
-        End Sub
-
-        Protected Overrides Sub OnStop()
-            m_Runner.Dispose()
-            EventLog.WriteEntry("服务已成功停止。")
-        End Sub
-
-        Private Sub WriteStartupLog()
             Dim Builder As New StringBuilder()
             Dim Assembly As Assembly = Assembly.GetExecutingAssembly()
             Builder.AppendLine("服务已成功启动。")
@@ -32,8 +23,9 @@ Namespace Background
             EventLog.WriteEntry(Builder.ToString())
         End Sub
 
-        Private Sub InitializeComponent()
-
+        Protected Overrides Sub OnStop()
+            m_Runner.Dispose()
+            EventLog.WriteEntry("服务已成功停止。")
         End Sub
     End Class
 End Namespace

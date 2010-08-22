@@ -13,11 +13,11 @@ Namespace Compiling
                     Dim Entry As LocalCompilerEntry
                     Entry.Regex = New Regex(RegexSimpleEscape(Reader("Pattern")), RegexOptions.IgnoreCase)
                     Entry.Compiler = New LocalCompiler(TempPathServer, _
-                        DBNullToNothing(Reader("ApplicationName")), _
-                        DBNullToNothing(Reader("CommandLine")), _
-                        DBNullToNothing(Reader("TimeQuota")), _
-                        DBNullToNothing(Reader("MemoryQuota")), _
-                        DBNullToNothing(Reader("ActiveProcessQuota")), _
+                        Reader("ApplicationName"), _
+                        Reader("CommandLine"), _
+                        DbToLocalInt64(Reader("TimeQuota")), _
+                        DbToLocalInt64(Reader("MemoryQuota")), _
+                        DbToLocalInt32(Reader("ActiveProcessQuota")), _
                         Reader("SourceFileName"), Reader("TargetFileName"))
                     ' TODO: TargetApplicationName and TargetCommandLine
                     m_Entries.Add(Entry)

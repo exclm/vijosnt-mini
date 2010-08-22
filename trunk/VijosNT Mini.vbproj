@@ -158,6 +158,7 @@
     <Compile Include="Executing\TrustedEnvironmentPool.vb" />
     <Compile Include="Executing\UntrustedEnvironment.vb" />
     <Compile Include="Executing\UntrustedEnvironmentPool.vb" />
+    <Compile Include="LocalDb\CompilerConfig.vb" />
     <Compile Include="Foreground\ConsoleForm.Designer.vb">
       <DependentUpon>ConsoleForm.vb</DependentUpon>
     </Compile>
