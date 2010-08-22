@@ -20,6 +20,10 @@ Namespace LocalDb
             Return New SQLiteCommand(CommandText, m_Connection)
         End Function
 
+        Public Shared Function CreateTransaction() As SQLiteTransaction
+            Return m_Connection.BeginTransaction()
+        End Function
+
         Public Shared ReadOnly Property EngineVersion() As String
             Get
                 Return "SQLite " & SQLiteConnection.SQLiteVersion
