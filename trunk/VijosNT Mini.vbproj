@@ -130,6 +130,8 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LocalDb\TestSuiteClass.vb" />
+    <Compile Include="LocalDb\TestSuiteConfig.vb" />
     <Compile Include="Remoting\PipeClient.vb" />
     <Compile Include="Remoting\PipeServer.vb" />
     <Compile Include="Background\Runner.vb" />

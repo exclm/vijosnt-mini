@@ -13,9 +13,9 @@ Namespace Testing
                     Dim Entry As TestSuiteEntry
                     Entry.Regex = New Regex(RegexSimpleEscape(Reader("Pattern")), RegexOptions.IgnoreCase)
                     Select Case Reader("ClassName")
-                        Case "APlusBTestSuite"
+                        Case "APlusB"
                             Entry.TestSuite = New APlusBTestSuite()
-                        Case "VijosTestSuite"
+                        Case "Vijos"
                             Entry.TestSuite = New VijosTestSuite(Reader("Parameter"))
                         Case Else
                             EventLog.WriteEntry(My.Resources.ServiceName, "测试数据集加载失败" & vbCrLf & "未找到类名为 " & Reader("ClassName") & " 的测试数据集容器。", EventLogEntryType.Warning)
