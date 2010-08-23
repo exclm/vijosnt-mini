@@ -124,6 +124,39 @@ Namespace Foreground
                         End If
                         CompilerList_SelectedIndexChanged(Nothing, Nothing)
                     End With
+                Case "TestSuitePage"
+                    With TestSuiteList
+                        Dim SelectedId As Int32 = -1
+                        With .SelectedItems
+                            If .Count <> 0 Then
+                                SelectedId = .Item(0).Tag
+                            End If
+                        End With
+                        With .Items
+                            .Clear()
+                            Using Reader As IDataReader = TestSuiteMapping.GetAll()
+                                While Reader.Read()
+                                    Dim Id As Int32 = Reader("Id")
+                                    With .Add(Reader("Pattern"))
+                                        With .SubItems
+                                            .Add(Reader("ClassName"))
+                                            .Add(Reader("Parameter"))
+                                        End With
+                                        .Tag = Id
+                                        If Id = SelectedId Then
+                                            .Selected = True
+                                        End If
+                                    End With
+                                End While
+                            End Using
+                        End With
+                        If .Items.Count <> 0 AndAlso .SelectedItems.Count = 0 Then
+                            .Items(0).Selected = True
+                        End If
+                        TestSuiteList_SelectedIndexChanged(Nothing, Nothing)
+                    End With
+                Case "ExecutorPage"
+                    ExecutorSlotsText.Text = Config.ExecutorSlots
             End Select
         End Sub
 
@@ -165,7 +198,7 @@ Namespace Foreground
         End Sub
 
         Private Sub AddCompilerButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddCompilerButton.Click
-            CompilerMapping.Add("ext", String.Empty, String.Empty, 15000 * 10000, Nothing, Nothing, String.Empty, String.Empty, String.Empty, String.Empty)
+            CompilerMapping.Add("*", String.Empty, String.Empty, 15000 * 10000, Nothing, Nothing, String.Empty, String.Empty, String.Empty, String.Empty)
             RefreshPage("CompilerPage")
         End Sub
 
@@ -198,6 +231,84 @@ Namespace Foreground
                 End With
             End With
             RefreshPage("CompilerPage")
+        End Sub
+
+        Private Sub TestSuiteList_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TestSuiteList.SelectedIndexChanged
+            With TestSuiteList.SelectedItems
+                If .Count <> 0 Then
+                    TestSuiteProperty.SelectedObject = TestSuiteMapping.GetConfig(.Item(0).Tag)
+                    RemoveTestSuiteButton.Enabled = True
+                    With .Item(0)
+                        MoveUpTestSuiteButton.Enabled = .Index <> 0
+                        MoveDownTestSuiteButton.Enabled = .Index <> TestSuiteList.Items.Count - 1
+                    End With
+                Else
+                    TestSuiteProperty.SelectedObject = Nothing
+                    RemoveTestSuiteButton.Enabled = False
+                    MoveUpTestSuiteButton.Enabled = False
+                    MoveDownTestSuiteButton.Enabled = False
+                End If
+            End With
+        End Sub
+
+        Private Sub AddTestSuiteButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddTestSuiteButton.Click
+            TestSuiteMapping.Add("*", "APlusB", String.Empty)
+            RefreshPage("TestSuitePage")
+        End Sub
+
+        Private Sub RemoveTestSuiteButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RemoveTestSuiteButton.Click
+            TestSuiteMapping.Remove(TestSuiteList.SelectedItems.Item(0).Tag)
+            RefreshPage("TestSuitePage")
+        End Sub
+
+        Private Sub MoveUpTestSuiteButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MoveUpTestSuiteButton.Click
+            With TestSuiteList.SelectedItems.Item(0)
+                Dim Id As Int32 = .Tag
+                With TestSuiteList.Items(.Index - 1)
+                    TestSuiteMapping.Swap(Id, .Tag)
+                    .Selected = True
+                End With
+            End With
+            RefreshPage("TestSuitePage")
+        End Sub
+
+        Private Sub MoveDownTestSuiteButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MoveDownTestSuiteButton.Click
+            With TestSuiteList.SelectedItems.Item(0)
+                Dim Id As Int32 = .Tag
+                With TestSuiteList.Items(.Index + 1)
+                    TestSuiteMapping.Swap(Id, .Tag)
+                    .Selected = True
+                End With
+            End With
+            RefreshPage("TestSuitePage")
+        End Sub
+
+        Private Sub TestSuiteProperty_PropertyValueChanged(ByVal s As Object, ByVal e As System.Windows.Forms.PropertyValueChangedEventArgs) Handles TestSuiteProperty.PropertyValueChanged
+            RefreshPage("TestSuitePage")
+        End Sub
+
+        Private Sub ExecutorSlotsText_Validated(ByVal sender As Object, ByVal e As System.EventArgs) Handles ExecutorSlotsText.Validated
+            Config.ExecutorSlots = Int32.Parse(ExecutorSlotsText.Text)
+        End Sub
+
+        Private Sub ExecutorSlotsText_Validating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles ExecutorSlotsText.Validating
+            Try
+                Dim ExecutorSlots As Int32 = Int32.Parse(ExecutorSlotsText.Text)
+                If ExecutorSlots < 1 OrElse ExecutorSlots > 16 Then
+                    Throw New ArgumentOutOfRangeException("ExecutorSlots")
+                End If
+                ErrorProvider.Clear()
+            Catch ex As Exception
+                ErrorProvider.SetError(ExecutorSlotsText, "必须为 1-16 之间的整数")
+                e.Cancel = True
+            End Try
+        End Sub
+
+        Private Sub EnableSecurityCheck_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles EnableSecurityCheck.CheckedChanged
+            If EnableSecurityCheck.Checked Then
+                EnableSecurityCheck.Checked = False
+                MessageBox.Show("点了也没用, 哈哈~~", "zzz..", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            End If
         End Sub
     End Class
 End Namespace
