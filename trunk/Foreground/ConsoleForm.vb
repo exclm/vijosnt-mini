@@ -29,10 +29,10 @@ Namespace Foreground
 
         Private Sub DisplayPage(ByVal Name As String)
             With TabControl.TabPages
-                .Clear()
                 If .Count <> 0 Then
                     LeavePage(.Item(0).Name)
                 End If
+                .Clear()
                 EnterPage(Name)
                 .Add(m_Pages(Name))
             End With
@@ -58,6 +58,7 @@ Namespace Foreground
                         m_Service.Close()
                         m_Service = Nothing
                     End If
+                    StatusLabel.Text = Nothing
             End Select
         End Sub
 
@@ -164,7 +165,7 @@ Namespace Foreground
         End Sub
 
         Private Sub AddCompilerButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-            CompilerMapping.Add("ext", "", "", 15000 * 10000, Nothing, Nothing, "", "", "", "")
+            CompilerMapping.Add("ext", String.Empty, String.Empty, 15000 * 10000, Nothing, Nothing, String.Empty, String.Empty, String.Empty, String.Empty)
             RefreshPage("CompilerPage")
         End Sub
 
