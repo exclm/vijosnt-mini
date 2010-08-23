@@ -24,8 +24,7 @@ Namespace Foreground
             TabControl.TabPages.Clear()
 
             m_RootNode = NavigationTree.Nodes.Item("Root")
-
-            ' TODO: If service is ready then expand tree
+            NavigationTree.ExpandAll()
         End Sub
 
         Private Sub DisplayPage(ByVal Name As String)
@@ -37,10 +36,6 @@ Namespace Foreground
                 EnterPage(Name)
                 .Add(m_Pages(Name))
             End With
-        End Sub
-
-        Private Sub ConsoleForm_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
-            m_Daemon.ConsoleClosed()
         End Sub
 
         Private Sub ExitMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ExitMenu.Click
@@ -63,8 +58,6 @@ Namespace Foreground
                         m_Service.Close()
                         m_Service = Nothing
                     End If
-                    m_ServiceManager.Close()
-                    m_ServiceManager = Nothing
             End Select
         End Sub
 
@@ -74,7 +67,6 @@ Namespace Foreground
                     m_ServiceManager = New ServiceManager()
                     m_Service = m_ServiceManager.Open(My.Resources.ServiceName)
                     ServiceTimer.Enabled = True
-
             End Select
             RefreshPage(Name)
         End Sub
@@ -130,17 +122,10 @@ Namespace Foreground
             End Select
         End Sub
 
-        Private Sub NavigationTree_BeforeCollapse(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewCancelEventArgs) Handles NavigationTree.BeforeCollapse
-            ' TODO: Disconnect pipe server
-        End Sub
-
-        Private Sub NavigationTree_BeforeExpand(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewCancelEventArgs) Handles NavigationTree.BeforeExpand
-            ' TODO: Connect pipe server
-        End Sub
-
         Private Sub InstallButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles InstallButton.Click
             m_Service = m_ServiceManager.Create(My.Resources.ServiceName, My.Resources.DisplayName, Application.ExecutablePath)
             m_Service.Start()
+            m_Daemon.ServiceInstalled = True
             RefreshPage("RootPage")
         End Sub
 
@@ -175,7 +160,7 @@ Namespace Foreground
         End Sub
 
         Private Sub AddCompilerButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddCompilerButton.Click
-            CompilerMapping.Add("", "", "", 15000 * 10000, Nothing, Nothing, "", "", "", "")
+            CompilerMapping.Add("ext", "", "", 15000 * 10000, Nothing, Nothing, "", "", "", "")
             RefreshPage("CompilerPage")
         End Sub
 

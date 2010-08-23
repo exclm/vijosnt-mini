@@ -126,9 +126,12 @@
     <Import Include="System.Text" />
     <Import Include="System.Text.RegularExpressions" />
     <Import Include="System.Threading" />
+    <Import Include="System.Timers" />
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Remoting\PipeClient.vb" />
+    <Compile Include="Remoting\PipeServer.vb" />
     <Compile Include="Background\Runner.vb" />
     <Compile Include="Background\TestCompletion.vb" />
     <Compile Include="Background\TestResult.vb" />
@@ -171,6 +174,7 @@
     <Compile Include="LocalDb\Database.vb" />
     <Compile Include="LocalDb\TestSuiteMapping.vb" />
     <Compile Include="LocalDb\UntrustedEnvironments.vb" />
+    <Compile Include="Remoting\Session.vb" />
     <Compile Include="Testing\APlusBTestSuite.vb" />
     <Compile Include="Testing\DefaultJudger.vb" />
     <Compile Include="Testing\LocalTestCase.vb" />
@@ -196,6 +200,7 @@
     <Compile Include="Win32\FileEx.vb" />
     <Compile Include="Win32\KernelObject.vb" />
     <Compile Include="Win32\JobObject.vb" />
+    <Compile Include="Win32\NamedPipe.vb" />
     <Compile Include="Win32\Service.vb" />
     <Compile Include="Win32\ServiceManager.vb" />
     <Compile Include="Win32\ServiceObject.vb" />

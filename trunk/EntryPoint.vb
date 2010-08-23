@@ -1,15 +1,11 @@
-﻿Imports VijosNT.Background
-Imports VijosNT.Foreground
-Imports VijosNT.LocalDb
-
-Public Class EntryPoint
+﻿Public Class EntryPoint
     Public Shared Sub Main()
         If Environment.UserInteractive Then
-            Using Daemon As New Daemon()
+            Using Daemon As New Foreground.Daemon()
                 Daemon.Entry()
             End Using
         Else
-            ServiceBase.Run(New Service())
+            ServiceBase.Run(New Background.Service())
         End If
     End Sub
 End Class
