@@ -83,6 +83,15 @@ Namespace My.Resources
             End Get
         End Property
         
+        '''<summary>
+        '''  查找类似 \\.\pipe\vijosnt 的本地化字符串。
+        '''</summary>
+        Friend ReadOnly Property PipeName() As String
+            Get
+                Return ResourceManager.GetString("PipeName", resourceCulture)
+            End Get
+        End Property
+        
         Friend ReadOnly Property RedV() As System.Drawing.Icon
             Get
                 Dim obj As Object = ResourceManager.GetObject("RedV", resourceCulture)

@@ -50,6 +50,9 @@ Namespace Background
         End Sub
 
         Public Function Queue(ByVal CompilerText As String, ByVal SourceCode As Stream, ByVal TestSuiteId As String, ByVal Completion As TestCompletion, ByVal State As Object) As Boolean
+            If Not m_AllowQueuing Then _
+                Return False
+
             m_CanExit.Reset()
             Interlocked.Increment(m_Running)
 
@@ -204,6 +207,7 @@ Namespace Background
                 If disposing Then
                     m_AllowQueuing = False
                     m_CanExit.WaitOne()
+                    m_CanExit.Close()
                     m_Executor.Dispose()
                     m_TempPathServer.Dispose()
                     m_ProcessMonitor.Stop()

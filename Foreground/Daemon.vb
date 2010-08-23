@@ -1,28 +1,34 @@
-﻿Namespace Foreground
+﻿Imports VijosNT.Remoting
+Imports VijosNT.Win32
+
+Namespace Foreground
     Friend Class Daemon
         Implements IDisposable
 
+        Private m_LastColor As Color
         Private m_NotifyIcon As NotifyIcon
         Private m_Console As ConsoleForm
+        Private m_ServiceTimer As System.Timers.Timer
+        Private m_ServiceInstalled As Boolean
+        Private m_PipeClient As PipeClient
 
         Public Sub New()
-            m_NotifyIcon = New NotifyIcon()
-            m_NotifyIcon.Text = "VijosNT"
-            AddHandler m_NotifyIcon.DoubleClick, AddressOf OnConsole
-            m_NotifyIcon.ContextMenuStrip = CreateMenu()
-            SetIconColor(Color.Green)
-            m_NotifyIcon.Visible = True
+            CreateNotifyIcon()
+            CreateTimer()
+            CreatePipeClient()
+            OnServiceTimer(Nothing, Nothing)
         End Sub
 
-        Public Sub SetIconColor(ByVal Color As Color)
-            Select Case Color
-                Case Color.Red
-                    m_NotifyIcon.Icon = My.Resources.RedV
-                Case Color.Green
-                    m_NotifyIcon.Icon = My.Resources.GreenV
-                Case Color.Blue
-                    m_NotifyIcon.Icon = My.Resources.BlueV
-            End Select
+        Public Sub Entry()
+            Application.Run()
+        End Sub
+
+        Private Sub CreateNotifyIcon()
+            m_NotifyIcon = New NotifyIcon()
+            m_NotifyIcon.Text = "VijosNT"
+            m_NotifyIcon.ContextMenuStrip = CreateMenu()
+            m_NotifyIcon.Visible = True
+            AddHandler m_NotifyIcon.DoubleClick, AddressOf OnConsole
         End Sub
 
         Private Function CreateMenu() As ContextMenuStrip
@@ -37,15 +43,40 @@
             Return Result
         End Function
 
+        Private Sub CreateTimer()
+            m_ServiceTimer = New System.Timers.Timer(500)
+            AddHandler m_ServiceTimer.Elapsed, AddressOf OnServiceTimer
+        End Sub
+
+        Private Sub CreatePipeClient()
+            m_PipeClient = New PipeClient()
+            AddHandler m_PipeClient.Disconnected, AddressOf OnPipeDisconnect
+        End Sub
+
+        Public Sub SetIconColor(ByVal Color As Color)
+            If Color <> m_LastColor Then
+                m_LastColor = Color
+                Select Case Color
+                    Case Color.Red
+                        m_NotifyIcon.Icon = My.Resources.RedV
+                    Case Color.Green
+                        m_NotifyIcon.Icon = My.Resources.GreenV
+                    Case Color.Blue
+                        m_NotifyIcon.Icon = My.Resources.BlueV
+                End Select
+            End If
+        End Sub
+
         Private Sub OnConsole(ByVal sender As Object, ByVal e As EventArgs)
             If m_Console Is Nothing Then
                 m_Console = New ConsoleForm(Me)
+                AddHandler m_Console.FormClosed, AddressOf OnConsoleClosed
             End If
             m_Console.Show()
-            m_Console.BringToFront()
+            m_Console.Activate()
         End Sub
 
-        Public Sub ConsoleClosed()
+        Private Sub OnConsoleClosed(ByVal sender As Object, ByVal e As EventArgs)
             m_Console = Nothing
         End Sub
 
@@ -53,9 +84,59 @@
             Application.Exit()
         End Sub
 
-        Public Sub Entry()
-            Application.Run()
+        Private Sub TestService()
+            Using ServiceManager As New ServiceManager()
+                Dim Service As Service = ServiceManager.Open(My.Resources.ServiceName)
+                If Service IsNot Nothing Then
+                    ServiceInstalled = True
+                    Service.Dispose()
+                Else
+                    ServiceInstalled = False
+                    Return
+                End If
+            End Using
         End Sub
+
+        Private Function TryConnect() As Boolean
+            Try
+                m_PipeClient.Connect(My.Resources.PipeName)
+            Catch ex As Exception
+                Return False
+            End Try
+            Return True
+        End Function
+
+        Private Sub OnServiceTimer(ByVal sender As Object, ByVal e As ElapsedEventArgs)
+            TestService()
+            If TryConnect() Then
+                SetIconColor(Color.Green)
+                m_ServiceTimer.Stop()
+            Else
+                SetIconColor(Color.Red)
+            End If
+        End Sub
+
+        Private Sub OnPipeDisconnect()
+            TestService()
+        End Sub
+
+        Public Property ServiceInstalled() As Boolean
+            Get
+                Return m_ServiceInstalled
+            End Get
+
+            Set(ByVal Value As Boolean)
+                m_ServiceInstalled = Value
+                If Value Then
+                    If Not m_PipeClient.Connected Then
+                        m_ServiceTimer.Start()
+                    End If
+                Else
+                    SetIconColor(Color.Red)
+                    m_ServiceTimer.Stop()
+                End If
+            End Set
+        End Property
 
 #Region "IDisposable Support"
         Private disposedValue As Boolean ' 检测冗余的调用
@@ -64,6 +145,7 @@
         Protected Overridable Sub Dispose(ByVal disposing As Boolean)
             If Not Me.disposedValue Then
                 If disposing Then
+                    m_ServiceTimer.Dispose()
                     m_NotifyIcon.Dispose()
                     If m_Console IsNot Nothing Then
                         m_Console.Close()

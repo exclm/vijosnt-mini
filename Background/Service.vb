@@ -1,15 +1,18 @@
 ﻿Imports VijosNT.LocalDb
+Imports VijosNT.Remoting
 
 Namespace Background
     Friend Class Service
         Inherits ServiceBase
 
         Private m_Runner As Runner
+        Private m_Server As PipeServer
 
         Public Sub New()
             AutoLog = False
             ServiceName = My.Resources.ServiceName
             m_Runner = New Runner()
+            m_Server = New PipeServer(m_Runner)
         End Sub
 
         Protected Overrides Sub OnStart(ByVal args() As String)

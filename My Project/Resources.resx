@@ -127,6 +127,9 @@
   <data name="GreenV" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\artwork\greenv.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="PipeName" xml:space="preserve">
+    <value>\\.\pipe\vijosnt</value>
+  </data>
   <data name="RedV" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\artwork\redv.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

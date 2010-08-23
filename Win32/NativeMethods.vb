@@ -361,6 +361,15 @@
 #End Region
 
 #Region "kernel32.dll"
+        Public Declare Auto Function CreateFile Lib "kernel32.dll" ( _
+            ByVal FileName As String, _
+            ByVal DesiredAccess As CreateFileAccess, _
+            ByVal ShareMode As CreateFileShare, _
+            ByRef SecurityAttributes As SECURITY_ATTRIBUTES, _
+            ByVal CreateDisposition As CreateFileDisposition, _
+            ByVal FlagsAndAttributes As CreateFileFlags, _
+            ByVal TemplateHandle As IntPtr) As IntPtr
+
         Public Declare Auto Function GetProcessId Lib "kernel32.dll" ( _
             ByVal Process As IntPtr) As Int32
 
@@ -493,6 +502,55 @@
             ByVal dwOptions As DuplicateOption) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
         Public Declare Auto Function GetCurrentProcess Lib "kernel32.dll" () As IntPtr
+
+        Public Declare Auto Function CreateNamedPipe Lib "kernel32.dll" ( _
+            ByVal Name As String, _
+            ByVal OpenMode As NamedPipeOpenMode, _
+            ByVal PipeMode As NamedPipeMode, _
+            ByVal nMaxInstances As NamedPipeMaxInstances, _
+            ByVal nOutBufferSize As Int32,
+            ByVal nInBufferSize As Int32,
+            ByVal nDefaultTimeOut As Int32, _
+            ByRef SecurityAttributes As SECURITY_ATTRIBUTES) As IntPtr
+
+        Public Declare Auto Function ConnectNamedPipe Lib "kernel32.dll" ( _
+            ByVal NamedPipeHandle As IntPtr, _
+            ByRef lpOverlapped As NativeOverlapped) As <MarshalAs(UnmanagedType.Bool)> Boolean
+
+        Public Enum CreateFileAccess As Int32
+            GENERIC_ALL = &H10000000
+            GENERIC_READ = &H80000000
+            GENERIC_WRITE = &H40000000
+            GENERIC_EXECUTE = &H20000000
+        End Enum
+
+        Public Enum CreateFileShare As Int32
+            FILE_SHARE_NONE = &H0
+            FILE_SHARE_DELETE = &H4
+            FILE_SHARE_READ = &H1
+            FILE_SHARE_WRITE = &H2
+        End Enum
+
+        Public Enum CreateFileDisposition As Int32
+            CREATE_ALWAYS = 2
+            CREATE_NEW = 1
+            OPEN_ALWAYS = 4
+            OPEN_EXISTING = 3
+            TRUNCATE_EXISTING = 5
+        End Enum
+
+        Public Enum CreateFileFlags As Int32
+            FILE_FLAG_BACKUP_SEMANTICS = &H2000000
+            FILE_FLAG_DELETE_ON_CLOSE = &H4000000
+            FILE_FLAG_NO_BUFFERING = &H20000000
+            FILE_FLAG_OPEN_NO_RECALL = &H100000
+            FILE_FLAG_OPEN_REPARSE_POINT = &H200000
+            FILE_FLAG_OVERLAPPED = &H40000000
+            FILE_FLAG_POSIX_SEMANTICS = &H1000000
+            FILE_FLAG_RANDOM_ACCESS = &H10000000
+            FILE_FLAG_SEQUENTIAL_SCAN = &H8000000
+            FILE_FLAG_WRITE_THROUGH = &H80000000
+        End Enum
 
         Public Enum DuplicateOption As Int32
             DUPLICATE_CLOSE_SOURCE = 1
@@ -661,6 +719,31 @@
         Public Enum ProcessAccess As Int32
             PROCESS_ALL_ACCESS = &H1F0FFF
         End Enum
+
+        Public Enum NamedPipeOpenMode As Int32
+            PIPE_ACCESS_DUPLEX = &H3
+            PIPE_ACCESS_INBOUND = &H1
+            PIPE_ACCESS_OUTBOUND = &H2
+            FILE_FLAG_FIRST_PIPE_INSTANCE = &H80000
+            FILE_FLAG_WRITE_THROUGH = &H80000000
+            FILE_FLAG_OVERLAPPED = &H40000000
+            WRITE_DAC = &H40000
+            WRITE_OWNER = &H80000
+            ACCESS_SYSTEM_SECURITY = &H1000000
+        End Enum
+
+        Public Enum NamedPipeMode As Int32
+            PIPE_TYPE_BYTE = &H0
+            PIPE_TYPE_MESSAGE = &H4
+            PIPE_READMODE_BYTE = &H0
+            PIPE_READMODE_MESSAGE = &H2
+            PIPE_WAIT = &H0
+            PIPE_NOWAIT = &H1
+        End Enum
+
+        Public Enum NamedPipeMaxInstances As Int32
+            PIPE_UNLIMITED_INSTANCES = 255
+        End Enum
 #End Region
 
 #Region "ntdll.dll"
@@ -806,7 +889,10 @@
         End Function
 #End Region
 
+        Public Const INVALID_HANDLE_VALUE As Int32 = -1
         Public Const ERROR_INSUFFICIENT_BUFFER As Int32 = 122
+        Public Const ERROR_PIPE_CONNECTED As Int32 = 535
+        Public Const ERROR_IO_PENDING As Int32 = 997
         Public Const ERROR_SERVICE_DOES_NOT_EXIST As Int32 = 1060
         Public Const ERROR_SERVICE_NOT_ACTIVE As Int32 = 1062
         Public Const ERROR_SERVICE_MARKED_FOR_DELETE As Int32 = 1072
