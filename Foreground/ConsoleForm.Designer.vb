@@ -73,6 +73,8 @@
             Me.ExecutorSlotsText = New System.Windows.Forms.TextBox()
             Me.ServiceTimer = New System.Windows.Forms.Timer(Me.components)
             Me.ErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
+            Me.HelpStrip0 = New System.Windows.Forms.ToolStripSeparator()
+            Me.HomePageMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.MenuStrip.SuspendLayout()
             Me.StatusStrip.SuspendLayout()
             Me.SplitContainer.Panel1.SuspendLayout()
@@ -117,7 +119,7 @@
             '
             'HelpMenu
             '
-            Me.HelpMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AboutMenu})
+            Me.HelpMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.HomePageMenu, Me.HelpStrip0, Me.AboutMenu})
             Me.HelpMenu.Name = "HelpMenu"
             Me.HelpMenu.Size = New System.Drawing.Size(61, 21)
             Me.HelpMenu.Text = "帮助(&H)"
@@ -125,7 +127,7 @@
             'AboutMenu
             '
             Me.AboutMenu.Name = "AboutMenu"
-            Me.AboutMenu.Size = New System.Drawing.Size(116, 22)
+            Me.AboutMenu.Size = New System.Drawing.Size(152, 22)
             Me.AboutMenu.Text = "关于(&A)"
             '
             'StatusStrip
@@ -575,6 +577,17 @@
             '
             Me.ErrorProvider.ContainerControl = Me
             '
+            'HelpStrip0
+            '
+            Me.HelpStrip0.Name = "HelpStrip0"
+            Me.HelpStrip0.Size = New System.Drawing.Size(149, 6)
+            '
+            'HomePageMenu
+            '
+            Me.HomePageMenu.Name = "HomePageMenu"
+            Me.HomePageMenu.Size = New System.Drawing.Size(152, 22)
+            Me.HomePageMenu.Text = "主页(&H)"
+            '
             'ConsoleForm
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
@@ -657,5 +670,7 @@
         Friend WithEvents SecurityDesktopNameHeader As System.Windows.Forms.ColumnHeader
         Friend WithEvents SecurityUserNameHeader As System.Windows.Forms.ColumnHeader
         Friend WithEvents SecurityPasswordHeader As System.Windows.Forms.ColumnHeader
+        Friend WithEvents HomePageMenu As System.Windows.Forms.ToolStripMenuItem
+        Friend WithEvents HelpStrip0 As System.Windows.Forms.ToolStripSeparator
     End Class
 End Namespace

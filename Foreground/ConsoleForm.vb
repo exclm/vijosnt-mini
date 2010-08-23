@@ -310,5 +310,9 @@ Namespace Foreground
                 MessageBox.Show("点了也没用, 哈哈~~", "zzz..", MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End Sub
+
+        Private Sub HomePageMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles HomePageMenu.Click
+            Process.Start("http://code.google.com/p/vijosnt-mini/")
+        End Sub
     End Class
 End Namespace
