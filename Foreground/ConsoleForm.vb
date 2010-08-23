@@ -109,6 +109,7 @@ Namespace Foreground
                                 While Reader.Read()
                                     Dim Id As Int32 = Reader("Id")
                                     With .Add(Reader("Pattern"))
+                                        .SubItems.Add(Reader("CommandLine"))
                                         .Tag = Id
                                         If Id = SelectedId Then
                                             .Selected = True
@@ -117,6 +118,9 @@ Namespace Foreground
                                 End While
                             End Using
                         End With
+                        If .Items.Count <> 0 AndAlso .SelectedItems.Count = 0 Then
+                            .Items(0).Selected = True
+                        End If
                         CompilerList_SelectedIndexChanged(Nothing, Nothing)
                     End With
             End Select
@@ -159,7 +163,7 @@ Namespace Foreground
             End With
         End Sub
 
-        Private Sub AddCompilerButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddCompilerButton.Click
+        Private Sub AddCompilerButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
             CompilerMapping.Add("ext", "", "", 15000 * 10000, Nothing, Nothing, "", "", "", "")
             RefreshPage("CompilerPage")
         End Sub
