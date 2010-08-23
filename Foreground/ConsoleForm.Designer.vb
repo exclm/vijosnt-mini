@@ -24,10 +24,10 @@
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
-            Dim TreeNode13 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
-            Dim TreeNode14 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
-            Dim TreeNode15 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("安全设置")
-            Dim TreeNode16 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode13, TreeNode14, TreeNode15})
+            Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
+            Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
+            Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("安全设置")
+            Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2, TreeNode3})
             Me.MenuStrip = New System.Windows.Forms.MenuStrip()
             Me.FileMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.ExitMenu = New System.Windows.Forms.ToolStripMenuItem()
@@ -136,15 +136,15 @@
             Me.NavigationTree.Dock = System.Windows.Forms.DockStyle.Fill
             Me.NavigationTree.Location = New System.Drawing.Point(0, 0)
             Me.NavigationTree.Name = "NavigationTree"
-            TreeNode13.Name = "Compiler"
-            TreeNode13.Text = "编译器映射"
-            TreeNode14.Name = "TestSuite"
-            TreeNode14.Text = "数据集映射"
-            TreeNode15.Name = "Security"
-            TreeNode15.Text = "安全设置"
-            TreeNode16.Name = "Root"
-            TreeNode16.Text = "VijosNT"
-            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode16})
+            TreeNode1.Name = "Compiler"
+            TreeNode1.Text = "编译器映射"
+            TreeNode2.Name = "TestSuite"
+            TreeNode2.Text = "数据集映射"
+            TreeNode3.Name = "Security"
+            TreeNode3.Text = "安全设置"
+            TreeNode4.Name = "Root"
+            TreeNode4.Text = "VijosNT"
+            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode4})
             Me.NavigationTree.Size = New System.Drawing.Size(194, 505)
             Me.NavigationTree.TabIndex = 0
             '
