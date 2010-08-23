@@ -58,8 +58,8 @@ Namespace Foreground
                         m_Service.Close()
                         m_Service = Nothing
                     End If
-                    StatusLabel.Text = Nothing
             End Select
+            StatusLabel.Text = Nothing
         End Sub
 
         Private Sub EnterPage(ByVal Name As String)
@@ -164,7 +164,7 @@ Namespace Foreground
             End With
         End Sub
 
-        Private Sub AddCompilerButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Private Sub AddCompilerButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddCompilerButton.Click
             CompilerMapping.Add("ext", String.Empty, String.Empty, 15000 * 10000, Nothing, Nothing, String.Empty, String.Empty, String.Empty, String.Empty)
             RefreshPage("CompilerPage")
         End Sub
