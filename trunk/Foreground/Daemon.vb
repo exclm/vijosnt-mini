@@ -25,7 +25,7 @@ Namespace Foreground
 
         Private Sub CreateNotifyIcon()
             m_NotifyIcon = New NotifyIcon()
-            m_NotifyIcon.Text = "VijosNT"
+            m_NotifyIcon.Text = "VijosNT Daemon"
             m_NotifyIcon.ContextMenuStrip = CreateMenu()
             m_NotifyIcon.Visible = True
             AddHandler m_NotifyIcon.DoubleClick, AddressOf OnConsole
