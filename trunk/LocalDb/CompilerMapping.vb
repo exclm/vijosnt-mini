@@ -29,7 +29,7 @@
                 m_SelectCommand = Database.CreateCommand( _
                     "SELECT * FROM CompilerMapping ORDER BY Id")
                 m_SelectHeaderCommand = Database.CreateCommand( _
-                    "SELECT Id, Pattern FROM CompilerMapping ORDER BY Id")
+                    "SELECT Id, Pattern, CommandLine FROM CompilerMapping ORDER BY Id")
                 m_SelectConfigCommand = Database.CreateCommand( _
                     "SELECT * FROM CompilerMapping WHERE Id = @Id")
                 m_InsertCommand = Database.CreateCommand( _

@@ -269,7 +269,6 @@
     <Content Include="Artwork\BlueV.ico" />
     <Content Include="Artwork\GreenV.ico" />
     <Content Include="Artwork\RedV.ico" />
-    <None Include="Resources\BlackV.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

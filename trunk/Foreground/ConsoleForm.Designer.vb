@@ -24,10 +24,10 @@
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
-            Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
-            Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
-            Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("安全设置")
-            Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2, TreeNode3})
+            Dim TreeNode13 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
+            Dim TreeNode14 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
+            Dim TreeNode15 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("安全设置")
+            Dim TreeNode16 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode13, TreeNode14, TreeNode15})
             Me.MenuStrip = New System.Windows.Forms.MenuStrip()
             Me.FileMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.ExitMenu = New System.Windows.Forms.ToolStripMenuItem()
@@ -42,13 +42,15 @@
             Me.UninstallButton = New System.Windows.Forms.Button()
             Me.InstallButton = New System.Windows.Forms.Button()
             Me.CompilerPage = New System.Windows.Forms.TabPage()
-            Me.CompilerList = New System.Windows.Forms.ListView()
-            Me.PatternHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-            Me.CompilerProperty = New System.Windows.Forms.PropertyGrid()
+            Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
             Me.MoveDownCompilerButton = New System.Windows.Forms.Button()
             Me.MoveUpCompilerButton = New System.Windows.Forms.Button()
             Me.RemoveCompilerButton = New System.Windows.Forms.Button()
             Me.AddCompilerButton = New System.Windows.Forms.Button()
+            Me.CompilerList = New System.Windows.Forms.ListView()
+            Me.PatternHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.CommandLineHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.CompilerProperty = New System.Windows.Forms.PropertyGrid()
             Me.TestSuitePage = New System.Windows.Forms.TabPage()
             Me.SecurityPage = New System.Windows.Forms.TabPage()
             Me.ServiceTimer = New System.Windows.Forms.Timer(Me.components)
@@ -60,6 +62,9 @@
             Me.TabControl.SuspendLayout()
             Me.RootPage.SuspendLayout()
             Me.CompilerPage.SuspendLayout()
+            Me.SplitContainer1.Panel1.SuspendLayout()
+            Me.SplitContainer1.Panel2.SuspendLayout()
+            Me.SplitContainer1.SuspendLayout()
             Me.SuspendLayout()
             '
             'MenuStrip
@@ -131,15 +136,15 @@
             Me.NavigationTree.Dock = System.Windows.Forms.DockStyle.Fill
             Me.NavigationTree.Location = New System.Drawing.Point(0, 0)
             Me.NavigationTree.Name = "NavigationTree"
-            TreeNode1.Name = "Compiler"
-            TreeNode1.Text = "编译器映射"
-            TreeNode2.Name = "TestSuite"
-            TreeNode2.Text = "数据集映射"
-            TreeNode3.Name = "Security"
-            TreeNode3.Text = "安全设置"
-            TreeNode4.Name = "Root"
-            TreeNode4.Text = "VijosNT"
-            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode4})
+            TreeNode13.Name = "Compiler"
+            TreeNode13.Text = "编译器映射"
+            TreeNode14.Name = "TestSuite"
+            TreeNode14.Text = "数据集映射"
+            TreeNode15.Name = "Security"
+            TreeNode15.Text = "安全设置"
+            TreeNode16.Name = "Root"
+            TreeNode16.Text = "VijosNT"
+            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode16})
             Me.NavigationTree.Size = New System.Drawing.Size(194, 505)
             Me.NavigationTree.TabIndex = 0
             '
@@ -188,12 +193,7 @@
             '
             'CompilerPage
             '
-            Me.CompilerPage.Controls.Add(Me.CompilerList)
-            Me.CompilerPage.Controls.Add(Me.CompilerProperty)
-            Me.CompilerPage.Controls.Add(Me.MoveDownCompilerButton)
-            Me.CompilerPage.Controls.Add(Me.MoveUpCompilerButton)
-            Me.CompilerPage.Controls.Add(Me.RemoveCompilerButton)
-            Me.CompilerPage.Controls.Add(Me.AddCompilerButton)
+            Me.CompilerPage.Controls.Add(Me.SplitContainer1)
             Me.CompilerPage.Location = New System.Drawing.Point(4, 25)
             Me.CompilerPage.Name = "CompilerPage"
             Me.CompilerPage.Padding = New System.Windows.Forms.Padding(3)
@@ -202,56 +202,47 @@
             Me.CompilerPage.Text = "编译器映射"
             Me.CompilerPage.UseVisualStyleBackColor = True
             '
-            'CompilerList
+            'SplitContainer1
             '
-            Me.CompilerList.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-            Me.CompilerList.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.PatternHeader})
-            Me.CompilerList.FullRowSelect = True
-            Me.CompilerList.HideSelection = False
-            Me.CompilerList.Location = New System.Drawing.Point(6, 6)
-            Me.CompilerList.MultiSelect = False
-            Me.CompilerList.Name = "CompilerList"
-            Me.CompilerList.Size = New System.Drawing.Size(167, 434)
-            Me.CompilerList.TabIndex = 0
-            Me.CompilerList.UseCompatibleStateImageBehavior = False
-            Me.CompilerList.View = System.Windows.Forms.View.Details
+            Me.SplitContainer1.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.SplitContainer1.Location = New System.Drawing.Point(3, 3)
+            Me.SplitContainer1.Name = "SplitContainer1"
+            Me.SplitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal
             '
-            'PatternHeader
+            'SplitContainer1.Panel1
             '
-            Me.PatternHeader.Text = "扩展名"
-            Me.PatternHeader.Width = 79
+            Me.SplitContainer1.Panel1.Controls.Add(Me.MoveDownCompilerButton)
+            Me.SplitContainer1.Panel1.Controls.Add(Me.MoveUpCompilerButton)
+            Me.SplitContainer1.Panel1.Controls.Add(Me.RemoveCompilerButton)
+            Me.SplitContainer1.Panel1.Controls.Add(Me.AddCompilerButton)
+            Me.SplitContainer1.Panel1.Controls.Add(Me.CompilerList)
             '
-            'CompilerProperty
+            'SplitContainer1.Panel2
             '
-            Me.CompilerProperty.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.CompilerProperty.BackColor = System.Drawing.SystemColors.Window
-            Me.CompilerProperty.Location = New System.Drawing.Point(209, 6)
-            Me.CompilerProperty.Name = "CompilerProperty"
-            Me.CompilerProperty.Size = New System.Drawing.Size(359, 434)
-            Me.CompilerProperty.TabIndex = 5
+            Me.SplitContainer1.Panel2.Controls.Add(Me.CompilerProperty)
+            Me.SplitContainer1.Size = New System.Drawing.Size(570, 470)
+            Me.SplitContainer1.SplitterDistance = 129
+            Me.SplitContainer1.TabIndex = 6
             '
             'MoveDownCompilerButton
             '
-            Me.MoveDownCompilerButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+            Me.MoveDownCompilerButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.MoveDownCompilerButton.Enabled = False
-            Me.MoveDownCompilerButton.Location = New System.Drawing.Point(179, 36)
+            Me.MoveDownCompilerButton.Location = New System.Drawing.Point(543, 33)
             Me.MoveDownCompilerButton.Name = "MoveDownCompilerButton"
             Me.MoveDownCompilerButton.Size = New System.Drawing.Size(24, 24)
-            Me.MoveDownCompilerButton.TabIndex = 4
+            Me.MoveDownCompilerButton.TabIndex = 6
             Me.MoveDownCompilerButton.Text = "↓"
             Me.MoveDownCompilerButton.UseVisualStyleBackColor = True
             '
             'MoveUpCompilerButton
             '
-            Me.MoveUpCompilerButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+            Me.MoveUpCompilerButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.MoveUpCompilerButton.Enabled = False
-            Me.MoveUpCompilerButton.Location = New System.Drawing.Point(179, 6)
+            Me.MoveUpCompilerButton.Location = New System.Drawing.Point(543, 3)
             Me.MoveUpCompilerButton.Name = "MoveUpCompilerButton"
             Me.MoveUpCompilerButton.Size = New System.Drawing.Size(24, 24)
-            Me.MoveUpCompilerButton.TabIndex = 3
+            Me.MoveUpCompilerButton.TabIndex = 5
             Me.MoveUpCompilerButton.Text = "↑"
             Me.MoveUpCompilerButton.UseVisualStyleBackColor = True
             '
@@ -259,22 +250,59 @@
             '
             Me.RemoveCompilerButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
             Me.RemoveCompilerButton.Enabled = False
-            Me.RemoveCompilerButton.Location = New System.Drawing.Point(93, 446)
+            Me.RemoveCompilerButton.Location = New System.Drawing.Point(89, 102)
             Me.RemoveCompilerButton.Name = "RemoveCompilerButton"
             Me.RemoveCompilerButton.Size = New System.Drawing.Size(80, 24)
-            Me.RemoveCompilerButton.TabIndex = 2
+            Me.RemoveCompilerButton.TabIndex = 4
             Me.RemoveCompilerButton.Text = "移除(&R)"
             Me.RemoveCompilerButton.UseVisualStyleBackColor = True
             '
             'AddCompilerButton
             '
             Me.AddCompilerButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-            Me.AddCompilerButton.Location = New System.Drawing.Point(6, 446)
+            Me.AddCompilerButton.Location = New System.Drawing.Point(3, 102)
             Me.AddCompilerButton.Name = "AddCompilerButton"
             Me.AddCompilerButton.Size = New System.Drawing.Size(80, 24)
-            Me.AddCompilerButton.TabIndex = 1
+            Me.AddCompilerButton.TabIndex = 3
             Me.AddCompilerButton.Text = "添加(&A)"
             Me.AddCompilerButton.UseVisualStyleBackColor = True
+            '
+            'CompilerList
+            '
+            Me.CompilerList.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                        Or System.Windows.Forms.AnchorStyles.Left) _
+                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.CompilerList.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.PatternHeader, Me.CommandLineHeader})
+            Me.CompilerList.FullRowSelect = True
+            Me.CompilerList.HideSelection = False
+            Me.CompilerList.Location = New System.Drawing.Point(3, 3)
+            Me.CompilerList.MultiSelect = False
+            Me.CompilerList.Name = "CompilerList"
+            Me.CompilerList.Size = New System.Drawing.Size(534, 93)
+            Me.CompilerList.TabIndex = 1
+            Me.CompilerList.UseCompatibleStateImageBehavior = False
+            Me.CompilerList.View = System.Windows.Forms.View.Details
+            '
+            'PatternHeader
+            '
+            Me.PatternHeader.Text = "扩展名匹配"
+            Me.PatternHeader.Width = 113
+            '
+            'CommandLineHeader
+            '
+            Me.CommandLineHeader.Text = "命令行"
+            Me.CommandLineHeader.Width = 377
+            '
+            'CompilerProperty
+            '
+            Me.CompilerProperty.BackColor = System.Drawing.SystemColors.Window
+            Me.CompilerProperty.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.CompilerProperty.Location = New System.Drawing.Point(0, 0)
+            Me.CompilerProperty.Name = "CompilerProperty"
+            Me.CompilerProperty.PropertySort = System.Windows.Forms.PropertySort.Categorized
+            Me.CompilerProperty.Size = New System.Drawing.Size(570, 337)
+            Me.CompilerProperty.TabIndex = 6
+            Me.CompilerProperty.ToolbarVisible = False
             '
             'TestSuitePage
             '
@@ -321,6 +349,9 @@
             Me.TabControl.ResumeLayout(False)
             Me.RootPage.ResumeLayout(False)
             Me.CompilerPage.ResumeLayout(False)
+            Me.SplitContainer1.Panel1.ResumeLayout(False)
+            Me.SplitContainer1.Panel2.ResumeLayout(False)
+            Me.SplitContainer1.ResumeLayout(False)
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -342,6 +373,7 @@
         Friend WithEvents UninstallButton As System.Windows.Forms.Button
         Friend WithEvents StatusLabel As System.Windows.Forms.ToolStripStatusLabel
         Friend WithEvents ServiceTimer As System.Windows.Forms.Timer
+        Friend WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
         Friend WithEvents CompilerProperty As System.Windows.Forms.PropertyGrid
         Friend WithEvents MoveDownCompilerButton As System.Windows.Forms.Button
         Friend WithEvents MoveUpCompilerButton As System.Windows.Forms.Button
@@ -349,5 +381,6 @@
         Friend WithEvents AddCompilerButton As System.Windows.Forms.Button
         Friend WithEvents CompilerList As System.Windows.Forms.ListView
         Friend WithEvents PatternHeader As System.Windows.Forms.ColumnHeader
+        Friend WithEvents CommandLineHeader As System.Windows.Forms.ColumnHeader
     End Class
 End Namespace
