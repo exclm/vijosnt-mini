@@ -237,9 +237,11 @@
   <ItemGroup>
     <EmbeddedResource Include="Background\Service.resx">
       <DependentUpon>Service.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Foreground\ConsoleForm.resx">
       <DependentUpon>ConsoleForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
