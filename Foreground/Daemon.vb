@@ -11,11 +11,13 @@ Namespace Foreground
         Private m_ServiceTimer As System.Timers.Timer
         Private m_ServiceInstalled As Boolean
         Private m_PipeClient As PipeClient
+        Private m_Floating As FloatingForm
 
         Public Sub New()
             CreateNotifyIcon()
             CreateTimer()
             CreatePipeClient()
+            CreateFloating()
             OnServiceTimer(Nothing, Nothing)
         End Sub
 
@@ -51,6 +53,11 @@ Namespace Foreground
         Private Sub CreatePipeClient()
             m_PipeClient = New PipeClient()
             AddHandler m_PipeClient.Disconnected, AddressOf OnPipeDisconnect
+        End Sub
+
+        Private Sub CreateFloating()
+            m_Floating = New FloatingForm(Me)
+            m_Floating.Show()
         End Sub
 
         Public Sub SetIconColor(ByVal Color As Color)
@@ -137,6 +144,33 @@ Namespace Foreground
                 End If
             End Set
         End Property
+
+        Public Function ReloadCompiler() As Boolean
+            Try
+                m_PipeClient.Write(ClientMessage.ReloadCompiler)
+                Return True
+            Catch ex As Exception
+                Return False
+            End Try
+        End Function
+
+        Public Function ReloadTestSuite() As Boolean
+            Try
+                m_PipeClient.Write(ClientMessage.ReloadTestSuite)
+                Return True
+            Catch ex As Exception
+                Return False
+            End Try
+        End Function
+
+        Public Function ReloadExecutor() As Boolean
+            Try
+                m_PipeClient.Write(ClientMessage.ReloadExecutor)
+                Return True
+            Catch ex As Exception
+                Return False
+            End Try
+        End Function
 
 #Region "IDisposable Support"
         Private disposedValue As Boolean ' 检测冗余的调用

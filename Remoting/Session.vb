@@ -47,7 +47,30 @@ Namespace Remoting
         End Sub
 
         Private Sub OnReceived(ByVal Length As Int32)
+            Using Stream As New MemoryStream(m_Buffer, 0, Length), _
+                Reader As New BinaryReader(Stream)
+                Dim Message As ClientMessage = Reader.ReadInt32()
+                Select Case Message
+                    Case ClientMessage.ReloadCompiler
+                        OnReloadCompiler(Reader)
+                    Case ClientMessage.ReloadTestSuite
+                        OnReloadTestSuite(Reader)
+                    Case ClientMessage.ReloadExecutor
+                        OnReloadExecutor(Reader)
+                End Select
+            End Using
+        End Sub
 
+        Private Sub OnReloadCompiler(ByVal Reader As BinaryReader)
+            m_Runner.ReloadCompiler()
+        End Sub
+
+        Private Sub OnReloadTestSuite(ByVal Reader As BinaryReader)
+            m_Runner.ReloadTestSuite()
+        End Sub
+
+        Private Sub OnReloadExecutor(ByVal Reader As BinaryReader)
+            m_Runner.ReloadExecutor()
         End Sub
 
         Private Sub OnDisconnected()

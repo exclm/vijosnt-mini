@@ -94,5 +94,35 @@
                 Return Convert.ToInt32(Value)
             End If
         End Function
+
+        Public Function DbToLocalString(ByVal Value As Object) As String
+            If IsDBNull(Value) Then
+                Return Nothing
+            Else
+                Return Convert.ToString(Value)
+            End If
+        End Function
+
+        Public Function DbToLocalDate(ByVal Value As Object) As Nullable(Of Date)
+            If IsDBNull(Value) Then
+                Return Nothing
+            Else
+                Return New Date(Convert.ToInt64(Value))
+            End If
+        End Function
+
+        Public Function ReadData(ByVal DataReader As IDataReader, ByVal Name As String) As Object
+            If Name.StartsWith("$") Then
+                Return DbToLocalString(DataReader(Name.Substring(1)))
+            ElseIf Name.StartsWith("%") Then
+                Return DbToLocalInt32(DataReader(Name.Substring(1)))
+            ElseIf Name.StartsWith("&") Then
+                Return DbToLocalInt64(DataReader(Name.Substring(1)))
+            ElseIf Name.StartsWith("#") Then
+                Return DbToLocalDate(DataReader(Name.Substring(1)))
+            Else
+                Return DataReader(Name)
+            End If
+        End Function
     End Module
 End Namespace

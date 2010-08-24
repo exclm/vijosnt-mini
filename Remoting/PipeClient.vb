@@ -50,6 +50,30 @@ Namespace Remoting
             End Try
         End Sub
 
+        Public Sub Write(ByVal ParamArray Params As Object())
+            Dim MyStream As Stream = m_Stream
+            If MyStream Is Nothing Then _
+                Throw New Exception("not connected")
+            Using Stream As New MemoryStream()
+                Using Writer As New BinaryWriter(Stream)
+                    For Each Param As Object In Params
+                        Writer.Write(Param)
+                    Next
+                End Using
+                Dim Buffer As Byte() = Stream.ToArray()
+                MyStream.BeginWrite(Buffer, 0, Buffer.Length, AddressOf OnWrite, MyStream)
+            End Using
+        End Sub
+
+        Private Sub OnWrite(ByVal Result As IAsyncResult)
+            Dim Stream As Stream = DirectCast(Result.AsyncState, Stream)
+            Try
+                Stream.EndWrite(Result)
+            Catch ex As Exception
+                ' Do nothing
+            End Try
+        End Sub
+
         Private Sub OnReceive(ByVal Length As Int32)
             Dim Block As Byte() = New Byte(0 To Length - 1) {}
             Buffer.BlockCopy(m_Buffer, 0, Block, 0, Length)

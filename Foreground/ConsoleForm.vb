@@ -1,4 +1,5 @@
 ﻿Imports VijosNT.LocalDb
+Imports VijosNT.Utility
 Imports VijosNT.Win32
 
 Namespace Foreground
@@ -10,7 +11,6 @@ Namespace Foreground
         Private m_Service As Service
 
         Public Sub New(ByVal Daemon As Daemon)
-
             ' 此调用是设计器所必需的。
             InitializeComponent()
 
@@ -46,6 +46,18 @@ Namespace Foreground
             MessageBox.Show("Hello world!", "About", MessageBoxButtons.OK, MessageBoxIcon.Information)
         End Sub
 
+        Private Sub WikiToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles WikiToolStripMenuItem.Click
+            Process.Start("http://code.google.com/p/vijosnt-mini/w/list")
+        End Sub
+
+        Private Sub HomePageMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles HomePageMenu.Click
+            Process.Start("http://code.google.com/p/vijosnt-mini/")
+        End Sub
+
+        Private Sub CheckUpdateMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckUpdateMenu.Click
+            Process.Start("http://code.google.com/p/vijosnt-mini/downloads/list")
+        End Sub
+
         Private Sub NavigationTree_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles NavigationTree.AfterSelect
             DisplayPage(e.Node.Name & "Page")
         End Sub
@@ -53,11 +65,13 @@ Namespace Foreground
         Private Sub LeavePage(ByVal Name As String)
             Select Case Name
                 Case "RootPage"
-                    ServiceTimer.Enabled = False
+                    ServiceTimer.Stop()
                     If m_Service IsNot Nothing Then
                         m_Service.Close()
                         m_Service = Nothing
                     End If
+                Case "LocalDataSourcePage"
+                    LocalSourceTimer.Stop()
             End Select
             StatusLabel.Text = Nothing
         End Sub
@@ -67,9 +81,37 @@ Namespace Foreground
                 Case "RootPage"
                     m_ServiceManager = New ServiceManager()
                     m_Service = m_ServiceManager.Open(My.Resources.ServiceName)
-                    ServiceTimer.Enabled = True
+                    ServiceTimer.Start()
+                Case "LocalDataSourcePage"
+                    LocalSourceTimer.Start()
             End Select
             RefreshPage(Name)
+        End Sub
+
+        Private Sub RefreshListView(ByVal ListView As ListView, ByVal DataReader As IDataReader, ByVal IdColumnName As String, ByVal FirstColumnName As String, ByVal ParamArray RestColumnNames As String())
+            Dim SelectedId As Int32 = -1
+            With ListView.SelectedItems
+                If .Count <> 0 Then
+                    SelectedId = .Item(0).Tag
+                End If
+            End With
+            With ListView.Items
+                .Clear()
+                While DataReader.Read()
+                    Dim Id As Int32 = DataReader(IdColumnName)
+                    With .Add(CType(ReadData(DataReader, FirstColumnName), String))
+                        .Tag = Id
+                        With .SubItems
+                            For Each ColumnName As String In RestColumnNames
+                                .Add(CType(ReadData(DataReader, ColumnName), String))
+                            Next
+                        End With
+                        If Id = SelectedId Then
+                            .Selected = True
+                        End If
+                    End With
+                End While
+            End With
         End Sub
 
         Private Sub RefreshPage(ByVal Name As String)
@@ -97,66 +139,21 @@ Namespace Foreground
                         End Select
                     End If
                 Case "CompilerPage"
-                    With CompilerList
-                        Dim SelectedId As Int32 = -1
-                        With .SelectedItems
-                            If .Count <> 0 Then
-                                SelectedId = .Item(0).Tag
-                            End If
-                        End With
-                        With .Items
-                            .Clear()
-                            Using Reader As IDataReader = CompilerMapping.GetHeaders()
-                                While Reader.Read()
-                                    Dim Id As Int32 = Reader("Id")
-                                    With .Add(Reader("Pattern"))
-                                        .SubItems.Add(Reader("CommandLine"))
-                                        .Tag = Id
-                                        If Id = SelectedId Then
-                                            .Selected = True
-                                        End If
-                                    End With
-                                End While
-                            End Using
-                        End With
-                        If .Items.Count <> 0 AndAlso .SelectedItems.Count = 0 Then
-                            .Items(0).Selected = True
-                        End If
-                        CompilerList_SelectedIndexChanged(Nothing, Nothing)
-                    End With
+                    Using Reader As IDataReader = CompilerMapping.GetHeaders()
+                        RefreshListView(CompilerList, Reader, "Id", "Pattern", "CommandLine")
+                    End Using
+                    CompilerList_SelectedIndexChanged(Nothing, Nothing)
                 Case "TestSuitePage"
-                    With TestSuiteList
-                        Dim SelectedId As Int32 = -1
-                        With .SelectedItems
-                            If .Count <> 0 Then
-                                SelectedId = .Item(0).Tag
-                            End If
-                        End With
-                        With .Items
-                            .Clear()
-                            Using Reader As IDataReader = TestSuiteMapping.GetAll()
-                                While Reader.Read()
-                                    Dim Id As Int32 = Reader("Id")
-                                    With .Add(Reader("Pattern"))
-                                        With .SubItems
-                                            .Add(Reader("ClassName"))
-                                            .Add(Reader("Parameter"))
-                                        End With
-                                        .Tag = Id
-                                        If Id = SelectedId Then
-                                            .Selected = True
-                                        End If
-                                    End With
-                                End While
-                            End Using
-                        End With
-                        If .Items.Count <> 0 AndAlso .SelectedItems.Count = 0 Then
-                            .Items(0).Selected = True
-                        End If
-                        TestSuiteList_SelectedIndexChanged(Nothing, Nothing)
-                    End With
+                    Using Reader As IDataReader = TestSuiteMapping.GetAll()
+                        RefreshListView(TestSuiteList, Reader, "Id", "Pattern", "ClassName", "Parameter")
+                    End Using
+                    TestSuiteList_SelectedIndexChanged(Nothing, Nothing)
                 Case "ExecutorPage"
                     ExecutorSlotsText.Text = Config.ExecutorSlots
+                Case "LocalDataSourcePage"
+                    Using Reader As IDataReader = Record.GetHeaders()
+                        RefreshListView(LocalSourceList, Reader, "Id", "Id", "$Flag", "FileName", "%Score", "&TimeUsage", "&MemoryUsage", "#Date")
+                    End Using
             End Select
         End Sub
 
@@ -199,15 +196,18 @@ Namespace Foreground
 
         Private Sub AddCompilerButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddCompilerButton.Click
             CompilerMapping.Add("*", String.Empty, String.Empty, 15000 * 10000, Nothing, Nothing, String.Empty, String.Empty, String.Empty, String.Empty)
+            ApplyCompilerButton.Enabled = True
             RefreshPage("CompilerPage")
         End Sub
 
         Private Sub CompilerProperty_PropertyValueChanged(ByVal s As Object, ByVal e As System.Windows.Forms.PropertyValueChangedEventArgs) Handles CompilerProperty.PropertyValueChanged
+            ApplyCompilerButton.Enabled = True
             RefreshPage("CompilerPage")
         End Sub
 
         Private Sub RemoveCompilerButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RemoveCompilerButton.Click
             CompilerMapping.Remove(CompilerList.SelectedItems.Item(0).Tag)
+            ApplyCompilerButton.Enabled = True
             RefreshPage("CompilerPage")
         End Sub
 
@@ -219,6 +219,7 @@ Namespace Foreground
                     .Selected = True
                 End With
             End With
+            ApplyCompilerButton.Enabled = True
             RefreshPage("CompilerPage")
         End Sub
 
@@ -230,6 +231,7 @@ Namespace Foreground
                     .Selected = True
                 End With
             End With
+            ApplyCompilerButton.Enabled = True
             RefreshPage("CompilerPage")
         End Sub
 
@@ -253,11 +255,13 @@ Namespace Foreground
 
         Private Sub AddTestSuiteButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddTestSuiteButton.Click
             TestSuiteMapping.Add("*", "APlusB", String.Empty)
+            ApplyTestSuiteButton.Enabled = True
             RefreshPage("TestSuitePage")
         End Sub
 
         Private Sub RemoveTestSuiteButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RemoveTestSuiteButton.Click
             TestSuiteMapping.Remove(TestSuiteList.SelectedItems.Item(0).Tag)
+            ApplyTestSuiteButton.Enabled = True
             RefreshPage("TestSuitePage")
         End Sub
 
@@ -269,6 +273,7 @@ Namespace Foreground
                     .Selected = True
                 End With
             End With
+            ApplyTestSuiteButton.Enabled = True
             RefreshPage("TestSuitePage")
         End Sub
 
@@ -280,15 +285,18 @@ Namespace Foreground
                     .Selected = True
                 End With
             End With
+            ApplyTestSuiteButton.Enabled = True
             RefreshPage("TestSuitePage")
         End Sub
 
         Private Sub TestSuiteProperty_PropertyValueChanged(ByVal s As Object, ByVal e As System.Windows.Forms.PropertyValueChangedEventArgs) Handles TestSuiteProperty.PropertyValueChanged
+            ApplyTestSuiteButton.Enabled = True
             RefreshPage("TestSuitePage")
         End Sub
 
         Private Sub ExecutorSlotsText_Validated(ByVal sender As Object, ByVal e As System.EventArgs) Handles ExecutorSlotsText.Validated
             Config.ExecutorSlots = Int32.Parse(ExecutorSlotsText.Text)
+            ApplyExecutorButton.Enabled = True
         End Sub
 
         Private Sub ExecutorSlotsText_Validating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles ExecutorSlotsText.Validating
@@ -311,8 +319,23 @@ Namespace Foreground
             End If
         End Sub
 
-        Private Sub HomePageMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles HomePageMenu.Click
-            Process.Start("http://code.google.com/p/vijosnt-mini/")
+        Private Sub ApplyCompilerButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ApplyCompilerButton.Click
+            m_Daemon.ReloadCompiler()
+            ApplyCompilerButton.Enabled = False
+        End Sub
+
+        Private Sub ApplyTestSuiteButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ApplyTestSuiteButton.Click
+            m_Daemon.ReloadTestSuite()
+            ApplyTestSuiteButton.Enabled = False
+        End Sub
+
+        Private Sub ApplyExecutorButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ApplyExecutorButton.Click
+            m_Daemon.ReloadExecutor()
+            ApplyExecutorButton.Enabled = False
+        End Sub
+
+        Private Sub LocalSourceTimer_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles LocalSourceTimer.Tick
+            RefreshPage("LocalDataSourcePage")
         End Sub
     End Class
 End Namespace
