@@ -120,6 +120,20 @@
                 Return DbToLocalInt64(DataReader(Name.Substring(1)))
             ElseIf Name.StartsWith("#") Then
                 Return DbToLocalDate(DataReader(Name.Substring(1)))
+            ElseIf Name.StartsWith("!") Then
+                Dim Value As Nullable(Of Int64) = DbToLocalInt64(DataReader(Name.Substring(1)))
+                If Value.HasValue Then
+                    Return (Value.Value \ 10000).ToString() & "ms"
+                Else
+                    Return Nothing
+                End If
+            ElseIf Name.StartsWith("@") Then
+                Dim Value As Nullable(Of Int64) = DbToLocalInt64(DataReader(Name.Substring(1)))
+                If Value.HasValue Then
+                    Return (Value.Value \ 1024).ToString() & "KB"
+                Else
+                    Return Nothing
+                End If
             Else
                 Return DataReader(Name)
             End If

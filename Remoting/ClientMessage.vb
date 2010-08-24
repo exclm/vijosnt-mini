@@ -3,6 +3,7 @@
         ReloadCompiler
         ReloadTestSuite
         ReloadExecutor
-
+        ReloadDataSource
+        FeedDataSource
     End Enum
 End Namespace

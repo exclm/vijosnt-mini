@@ -1,4 +1,4 @@
-﻿Imports VijosNT.Background
+﻿Imports VijosNT.Feeding
 
 Namespace Remoting
     Friend Class Session
@@ -57,6 +57,10 @@ Namespace Remoting
                         OnReloadTestSuite(Reader)
                     Case ClientMessage.ReloadExecutor
                         OnReloadExecutor(Reader)
+                    Case ClientMessage.ReloadDataSource
+                        OnReloadDataSource(Reader)
+                    Case ClientMessage.FeedDataSource
+                        OnFeedDataSource(Reader)
                 End Select
             End Using
         End Sub
@@ -71,6 +75,14 @@ Namespace Remoting
 
         Private Sub OnReloadExecutor(ByVal Reader As BinaryReader)
             m_Runner.ReloadExecutor()
+        End Sub
+
+        Private Sub OnReloadDataSource(ByVal Reader As BinaryReader)
+            m_Runner.ReloadDataSource()
+        End Sub
+
+        Private Sub OnFeedDataSource(ByVal Reader As BinaryReader)
+            m_Runner.Feed(Reader.ReadString())
         End Sub
 
         Private Sub OnDisconnected()

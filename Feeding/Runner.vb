@@ -3,7 +3,7 @@ Imports VijosNT.Executing
 Imports VijosNT.Testing
 Imports VijosNT.Utility
 
-Namespace Background
+Namespace Feeding
     Friend Class Runner
         Implements IDisposable
 
@@ -31,6 +31,7 @@ Namespace Background
         Private m_Executor As Executor
         Private m_CompilerPool As LocalCompilerPool
         Private m_TestSuitePool As TestSuitePool
+        Private m_DataSourcePool As DataSourcePool
         Private m_Running As Int32
         Private m_CanExit As ManualResetEvent
         Private m_AllowQueuing As Boolean
@@ -44,6 +45,7 @@ Namespace Background
             m_ProcessMonitor.Start()
             m_CompilerPool = New LocalCompilerPool(m_TempPathServer)
             m_TestSuitePool = New TestSuitePool()
+            m_DataSourcePool = New DataSourcePool()
             m_Running = 0
             m_CanExit = New ManualResetEvent(True)
             m_AllowQueuing = True
@@ -65,7 +67,37 @@ Namespace Background
             m_AllowQueuing = True
         End Sub
 
-        Public Function Queue(ByVal CompilerText As String, ByVal SourceCode As Stream, ByVal TestSuiteId As String, ByVal Completion As TestCompletion, ByVal State As Object) As Boolean
+        Public Sub ReloadDataSource()
+            m_DataSourcePool.Reload()
+        End Sub
+
+        Private Structure FeedContext
+            Dim Source As DataSourceBase
+            Dim Id As Int32
+        End Structure
+
+        Public Sub Feed(ByVal DataSourceName As String)
+            While True
+                Dim Source As DataSourceBase = m_DataSourcePool.Get(DataSourceName)
+                Dim Record As Nullable(Of DataSourceRecord) = Source.Take()
+                If Not Record.HasValue Then _
+                    Return
+                Dim Context As FeedContext
+                Context.Source = Source
+                Context.Id = Record.Value.Id
+                If Not Queue(Record.Value.FileName, New MemoryStream(Encoding.Default.GetBytes(Record.Value.SourceCode)), AddressOf FeedCompletion, Context) Then
+                    Source.Untake(Record.Value.Id)
+                    Return
+                End If
+            End While
+        End Sub
+
+        Private Sub FeedCompletion(ByVal Result As TestResult)
+            Dim Context As FeedContext = DirectCast(Result.State, FeedContext)
+            Context.Source.Untake(Context.Id, Result)
+        End Sub
+
+        Public Function Queue(ByVal FileName As String, ByVal SourceCode As Stream, ByVal Completion As TestCompletion, ByVal State As Object) As Boolean
             If Not m_AllowQueuing Then _
                 Return False
 
@@ -81,8 +113,8 @@ Namespace Background
             Dim Context As New TestContext()
             Context.Completion = Completion
             Context.CompletionState = State
-            Context.Compiler = m_CompilerPool.TryGet(CompilerText)
-            Context.TestCases = m_TestSuitePool.TryLoad(TestSuiteId)
+            Context.Compiler = m_CompilerPool.TryGet(Path.GetExtension(FileName))
+            Context.TestCases = m_TestSuitePool.TryLoad(Path.GetFileNameWithoutExtension(FileName))
             Context.Flag = TestResultFlag.None
             Context.Score = 0
             Context.TimeUsage = 0

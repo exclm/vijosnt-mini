@@ -89,29 +89,34 @@ Namespace Foreground
         End Sub
 
         Private Sub RefreshListView(ByVal ListView As ListView, ByVal DataReader As IDataReader, ByVal IdColumnName As String, ByVal FirstColumnName As String, ByVal ParamArray RestColumnNames As String())
-            Dim SelectedId As Int32 = -1
-            With ListView.SelectedItems
-                If .Count <> 0 Then
-                    SelectedId = .Item(0).Tag
-                End If
-            End With
-            With ListView.Items
-                .Clear()
-                While DataReader.Read()
-                    Dim Id As Int32 = DataReader(IdColumnName)
-                    With .Add(CType(ReadData(DataReader, FirstColumnName), String))
-                        .Tag = Id
-                        With .SubItems
-                            For Each ColumnName As String In RestColumnNames
-                                .Add(CType(ReadData(DataReader, ColumnName), String))
-                            Next
+            ListView.BeginUpdate()
+            Try
+                Dim SelectedId As Int32 = -1
+                With ListView.SelectedItems
+                    If .Count <> 0 Then
+                        SelectedId = .Item(0).Tag
+                    End If
+                End With
+                With ListView.Items
+                    .Clear()
+                    While DataReader.Read()
+                        Dim Id As Int32 = DataReader(IdColumnName)
+                        With .Add(CType(ReadData(DataReader, FirstColumnName), String))
+                            .Tag = Id
+                            With .SubItems
+                                For Each ColumnName As String In RestColumnNames
+                                    .Add(CType(ReadData(DataReader, ColumnName), String))
+                                Next
+                            End With
+                            If Id = SelectedId Then
+                                .Selected = True
+                            End If
                         End With
-                        If Id = SelectedId Then
-                            .Selected = True
-                        End If
-                    End With
-                End While
-            End With
+                    End While
+                End With
+            Finally
+                ListView.EndUpdate()
+            End Try
         End Sub
 
         Private Sub RefreshPage(ByVal Name As String)
@@ -152,7 +157,7 @@ Namespace Foreground
                     ExecutorSlotsText.Text = Config.ExecutorSlots
                 Case "LocalDataSourcePage"
                     Using Reader As IDataReader = Record.GetHeaders()
-                        RefreshListView(LocalSourceList, Reader, "Id", "Id", "$Flag", "FileName", "%Score", "&TimeUsage", "&MemoryUsage", "#Date")
+                        RefreshListView(LocalSourceList, Reader, "Id", "Id", "$Flag", "FileName", "%Score", "!TimeUsage", "@MemoryUsage", "#Date")
                     End Using
             End Select
         End Sub
@@ -195,7 +200,7 @@ Namespace Foreground
         End Sub
 
         Private Sub AddCompilerButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddCompilerButton.Click
-            CompilerMapping.Add("*", String.Empty, String.Empty, 15000 * 10000, Nothing, Nothing, String.Empty, String.Empty, String.Empty, String.Empty)
+            CompilerMapping.Add(".*", String.Empty, String.Empty, 15000 * 10000, Nothing, Nothing, String.Empty, String.Empty, String.Empty, String.Empty)
             ApplyCompilerButton.Enabled = True
             RefreshPage("CompilerPage")
         End Sub

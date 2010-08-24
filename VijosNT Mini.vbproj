@@ -9,7 +9,8 @@
     </SchemaVersion>
     <ProjectGuid>{14264ECC-994C-4D8E-985C-CA7B57076454}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>VijosNT.EntryPoint</StartupObject>
+    <StartupObject>
+    </StartupObject>
     <RootNamespace>VijosNT</RootNamespace>
     <AssemblyName>VijosNT Mini</AssemblyName>
     <FileAlignment>512</FileAlignment>
@@ -143,6 +144,10 @@
     <Compile Include="Compiling\LocalTargetInstance.vb" />
     <Compile Include="Compiling\Target.vb" />
     <Compile Include="Compiling\TargetInstance.vb" />
+    <Compile Include="Feeding\DataSourceBase.vb" />
+    <Compile Include="Feeding\DataSourcePool.vb" />
+    <Compile Include="Feeding\LocalDataSource.vb" />
+    <Compile Include="Feeding\DataSourceRecord.vb" />
     <Compile Include="Foreground\FloatingForm.Designer.vb">
       <DependentUpon>FloatingForm.vb</DependentUpon>
     </Compile>
@@ -155,11 +160,11 @@
     <Compile Include="Remoting\ClientMessage.vb" />
     <Compile Include="Remoting\PipeClient.vb" />
     <Compile Include="Remoting\PipeServer.vb" />
-    <Compile Include="Background\Runner.vb" />
-    <Compile Include="Background\TestCompletion.vb" />
-    <Compile Include="Background\TestResult.vb" />
-    <Compile Include="Background\TestResultEntry.vb" />
-    <Compile Include="Background\TestResultFlag.vb" />
+    <Compile Include="Feeding\Runner.vb" />
+    <Compile Include="Feeding\TestCompletion.vb" />
+    <Compile Include="Feeding\TestResult.vb" />
+    <Compile Include="Feeding\TestResultEntry.vb" />
+    <Compile Include="Feeding\TestResultFlag.vb" />
     <Compile Include="EntryPoint.vb" />
     <Compile Include="Executing\EnvironmentTag.vb" />
     <Compile Include="Executing\Executee.vb" />
@@ -202,6 +207,9 @@
     <Compile Include="Testing\TestSuitePool.vb" />
     <Compile Include="Testing\VijosTestSuite.vb" />
     <Compile Include="Utility\AppPath.vb" />
+    <Compile Include="Utility\DoubleBufferedListView.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Utility\MiscUtility.vb" />
     <Compile Include="Utility\ProcessMonitor.vb" />
     <Compile Include="Utility\PathEx.vb" />
@@ -277,9 +285,7 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Data Source\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Artwork\BlueV.ico" />
     <Content Include="Artwork\GreenV.ico" />

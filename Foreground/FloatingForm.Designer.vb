@@ -36,6 +36,7 @@
             Me.Name = "FloatingForm"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
+            Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
             Me.Text = "VijosNT 悬浮窗"
             Me.TopMost = True
             Me.ResumeLayout(False)

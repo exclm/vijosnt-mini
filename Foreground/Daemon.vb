@@ -1,4 +1,5 @@
-﻿Imports VijosNT.Remoting
+﻿Imports VijosNT.LocalDb
+Imports VijosNT.Remoting
 Imports VijosNT.Win32
 
 Namespace Foreground
@@ -11,6 +12,7 @@ Namespace Foreground
         Private m_ServiceTimer As System.Timers.Timer
         Private m_ServiceInstalled As Boolean
         Private m_PipeClient As PipeClient
+        Private m_FloatingMenu As ToolStripMenuItem
         Private m_Floating As FloatingForm
 
         Public Sub New()
@@ -39,6 +41,7 @@ Namespace Foreground
                 With .Add("控制台(&C)", Nothing, AddressOf OnConsole)
                     .Font = New Font(.Font, FontStyle.Bold)
                 End With
+                m_FloatingMenu = DirectCast(.Add("悬浮窗(&F)", Nothing, AddressOf OnFloating), ToolStripMenuItem)
                 .Add("-")
                 .Add("退出(&X)", Nothing, AddressOf OnExit)
             End With
@@ -56,8 +59,8 @@ Namespace Foreground
         End Sub
 
         Private Sub CreateFloating()
-            m_Floating = New FloatingForm(Me)
-            m_Floating.Show()
+            If Config.DisplayFloating Then _
+                OnFloating(Nothing, Nothing)
         End Sub
 
         Public Sub SetIconColor(ByVal Color As Color)
@@ -85,6 +88,32 @@ Namespace Foreground
 
         Private Sub OnConsoleClosed(ByVal sender As Object, ByVal e As EventArgs)
             m_Console = Nothing
+        End Sub
+
+        Public Sub OnFloating(ByVal sender As Object, ByVal e As EventArgs)
+            If m_Floating Is Nothing Then
+                m_Floating = New FloatingForm(Me)
+                AddHandler m_Floating.FormClosing, AddressOf OnFloatingClosing
+                AddHandler m_Floating.FormClosed, AddressOf OnFloatingClosed
+                m_Floating.Show()
+                m_FloatingMenu.Checked = True
+                Config.DisplayFloating = True
+            Else
+                m_Floating.Close()
+                m_Floating = Nothing
+                m_FloatingMenu.Checked = False
+                Config.DisplayFloating = False
+            End If
+        End Sub
+
+        Private Sub OnFloatingClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs)
+            If e.CloseReason = CloseReason.UserClosing Then _
+                Config.DisplayFloating = False
+        End Sub
+
+        Private Sub OnFloatingClosed(ByVal sender As Object, ByVal e As EventArgs)
+            m_Floating = Nothing
+            m_FloatingMenu.Checked = False
         End Sub
 
         Private Sub OnExit(ByVal sender As Object, ByVal e As EventArgs)
@@ -166,6 +195,15 @@ Namespace Foreground
         Public Function ReloadExecutor() As Boolean
             Try
                 m_PipeClient.Write(ClientMessage.ReloadExecutor)
+                Return True
+            Catch ex As Exception
+                Return False
+            End Try
+        End Function
+
+        Public Function FeedDataSource(ByVal DataSourceName As String) As Boolean
+            Try
+                m_PipeClient.Write(ClientMessage.FeedDataSource, DataSourceName)
                 Return True
             Catch ex As Exception
                 Return False

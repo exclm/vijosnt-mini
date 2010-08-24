@@ -7,7 +7,7 @@ Namespace LocalDb
         Shared Sub New()
             Try
                 Dim Builder As New SQLiteConnectionStringBuilder()
-                Builder.DataSource = "VijosNT.db3"
+                Builder.DataSource = Path.Combine(My.Application.Info.DirectoryPath, "VijosNT.db3")
                 m_Connection = New SQLiteConnection(Builder.ToString())
                 m_Connection.Open()
             Catch ex As Exception

@@ -1,4 +1,4 @@
-﻿Namespace Background
+﻿Namespace Feeding
     Friend Structure TestResult
         Public Sub New(ByVal State As Object, ByVal Flag As TestResultFlag, ByVal Warning As String, ByVal Score As Int32, ByVal TimeUsage As Int64, ByVal MemoryUsage As Int64, ByVal Entries As IEnumerable(Of TestResultEntry))
             Me.State = State
