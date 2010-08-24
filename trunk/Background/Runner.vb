@@ -49,6 +49,22 @@ Namespace Background
             m_AllowQueuing = True
         End Sub
 
+        Public Sub ReloadCompiler()
+            m_CompilerPool.Reload()
+        End Sub
+
+        Public Sub ReloadTestSuite()
+            m_TestSuitePool.Reload()
+        End Sub
+
+        Public Sub ReloadExecutor()
+            m_AllowQueuing = False
+            m_CanExit.WaitOne()
+            m_Executor.Dispose()
+            m_Executor = New Executor()
+            m_AllowQueuing = True
+        End Sub
+
         Public Function Queue(ByVal CompilerText As String, ByVal SourceCode As Stream, ByVal TestSuiteId As String, ByVal Completion As TestCompletion, ByVal State As Object) As Boolean
             If Not m_AllowQueuing Then _
                 Return False
@@ -67,7 +83,7 @@ Namespace Background
             Context.CompletionState = State
             Context.Compiler = m_CompilerPool.TryGet(CompilerText)
             Context.TestCases = m_TestSuitePool.TryLoad(TestSuiteId)
-            Context.Flag = TestResultFlag.Null
+            Context.Flag = TestResultFlag.None
             Context.Score = 0
             Context.TimeUsage = 0
             Context.MemoryUsage = 0

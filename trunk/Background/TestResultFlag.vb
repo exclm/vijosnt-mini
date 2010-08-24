@@ -1,6 +1,6 @@
 ﻿Namespace Background
     Public Enum TestResultFlag As Int32
-        Null
+        None
         Accepted
         WrongAnswer
         TimeLimitExceeded

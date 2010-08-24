@@ -24,14 +24,21 @@
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
-            Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
-            Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
-            Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("执行设置")
-            Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2, TreeNode3})
+            Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
+            Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
+            Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("执行设置")
+            Dim TreeNode10 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("本地数据源")
+            Dim TreeNode11 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("外部数据源")
+            Dim TreeNode12 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode7, TreeNode8, TreeNode9, TreeNode10, TreeNode11})
             Me.MenuStrip = New System.Windows.Forms.MenuStrip()
             Me.FileMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.ExitMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.HelpMenu = New System.Windows.Forms.ToolStripMenuItem()
+            Me.WikiToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+            Me.HelpStrip0 = New System.Windows.Forms.ToolStripSeparator()
+            Me.HomePageMenu = New System.Windows.Forms.ToolStripMenuItem()
+            Me.CheckUpdateMenu = New System.Windows.Forms.ToolStripMenuItem()
+            Me.HelpStrip1 = New System.Windows.Forms.ToolStripSeparator()
             Me.AboutMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.StatusStrip = New System.Windows.Forms.StatusStrip()
             Me.StatusLabel = New System.Windows.Forms.ToolStripStatusLabel()
@@ -43,6 +50,7 @@
             Me.InstallButton = New System.Windows.Forms.Button()
             Me.CompilerPage = New System.Windows.Forms.TabPage()
             Me.CompilerSplit = New System.Windows.Forms.SplitContainer()
+            Me.ApplyCompilerButton = New System.Windows.Forms.Button()
             Me.MoveDownCompilerButton = New System.Windows.Forms.Button()
             Me.MoveUpCompilerButton = New System.Windows.Forms.Button()
             Me.RemoveCompilerButton = New System.Windows.Forms.Button()
@@ -53,6 +61,7 @@
             Me.CompilerProperty = New System.Windows.Forms.PropertyGrid()
             Me.TestSuitePage = New System.Windows.Forms.TabPage()
             Me.TestSuiteSplit = New System.Windows.Forms.SplitContainer()
+            Me.ApplyTestSuiteButton = New System.Windows.Forms.Button()
             Me.MoveDownTestSuiteButton = New System.Windows.Forms.Button()
             Me.MoveUpTestSuiteButton = New System.Windows.Forms.Button()
             Me.RemoveTestSuiteButton = New System.Windows.Forms.Button()
@@ -63,18 +72,28 @@
             Me.TestSuiteParameterHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.TestSuiteProperty = New System.Windows.Forms.PropertyGrid()
             Me.ExecutorPage = New System.Windows.Forms.TabPage()
+            Me.ApplyExecutorButton = New System.Windows.Forms.Button()
             Me.SecurityGroup = New System.Windows.Forms.GroupBox()
-            Me.ListView1 = New System.Windows.Forms.ListView()
+            Me.UntrustedList = New System.Windows.Forms.ListView()
             Me.SecurityDesktopNameHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.SecurityUserNameHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.SecurityPasswordHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.EnableSecurityCheck = New System.Windows.Forms.CheckBox()
             Me.ExecutorSlotsLabel = New System.Windows.Forms.Label()
             Me.ExecutorSlotsText = New System.Windows.Forms.TextBox()
+            Me.LocalDataSourcePage = New System.Windows.Forms.TabPage()
+            Me.LocalSourceList = New System.Windows.Forms.ListView()
+            Me.LocalSourceIdHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.LocalSourceFlagHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.LocalSourceFileNameHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.LocalSourceScoreHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.LocalSourceTimeUsageHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.LocalSourceMemoryUsageHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.LocalSourceDateHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.RemoteDataSourcePage = New System.Windows.Forms.TabPage()
             Me.ServiceTimer = New System.Windows.Forms.Timer(Me.components)
             Me.ErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
-            Me.HelpStrip0 = New System.Windows.Forms.ToolStripSeparator()
-            Me.HomePageMenu = New System.Windows.Forms.ToolStripMenuItem()
+            Me.LocalSourceTimer = New System.Windows.Forms.Timer(Me.components)
             Me.MenuStrip.SuspendLayout()
             Me.StatusStrip.SuspendLayout()
             Me.SplitContainer.Panel1.SuspendLayout()
@@ -92,6 +111,7 @@
             Me.TestSuiteSplit.SuspendLayout()
             Me.ExecutorPage.SuspendLayout()
             Me.SecurityGroup.SuspendLayout()
+            Me.LocalDataSourcePage.SuspendLayout()
             CType(Me.ErrorProvider, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
@@ -119,15 +139,43 @@
             '
             'HelpMenu
             '
-            Me.HelpMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.HomePageMenu, Me.HelpStrip0, Me.AboutMenu})
+            Me.HelpMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.WikiToolStripMenuItem, Me.HelpStrip0, Me.HomePageMenu, Me.CheckUpdateMenu, Me.HelpStrip1, Me.AboutMenu})
             Me.HelpMenu.Name = "HelpMenu"
             Me.HelpMenu.Size = New System.Drawing.Size(61, 21)
             Me.HelpMenu.Text = "帮助(&H)"
             '
+            'WikiToolStripMenuItem
+            '
+            Me.WikiToolStripMenuItem.Name = "WikiToolStripMenuItem"
+            Me.WikiToolStripMenuItem.Size = New System.Drawing.Size(141, 22)
+            Me.WikiToolStripMenuItem.Text = "&Wiki"
+            '
+            'HelpStrip0
+            '
+            Me.HelpStrip0.Name = "HelpStrip0"
+            Me.HelpStrip0.Size = New System.Drawing.Size(138, 6)
+            '
+            'HomePageMenu
+            '
+            Me.HomePageMenu.Name = "HomePageMenu"
+            Me.HomePageMenu.Size = New System.Drawing.Size(141, 22)
+            Me.HomePageMenu.Text = "主页(&H)"
+            '
+            'CheckUpdateMenu
+            '
+            Me.CheckUpdateMenu.Name = "CheckUpdateMenu"
+            Me.CheckUpdateMenu.Size = New System.Drawing.Size(141, 22)
+            Me.CheckUpdateMenu.Text = "检查更新(&U)"
+            '
+            'HelpStrip1
+            '
+            Me.HelpStrip1.Name = "HelpStrip1"
+            Me.HelpStrip1.Size = New System.Drawing.Size(138, 6)
+            '
             'AboutMenu
             '
             Me.AboutMenu.Name = "AboutMenu"
-            Me.AboutMenu.Size = New System.Drawing.Size(152, 22)
+            Me.AboutMenu.Size = New System.Drawing.Size(141, 22)
             Me.AboutMenu.Text = "关于(&A)"
             '
             'StatusStrip
@@ -169,15 +217,19 @@
             Me.NavigationTree.Location = New System.Drawing.Point(0, 0)
             Me.NavigationTree.Margin = New System.Windows.Forms.Padding(2)
             Me.NavigationTree.Name = "NavigationTree"
-            TreeNode1.Name = "Compiler"
-            TreeNode1.Text = "编译器映射"
-            TreeNode2.Name = "TestSuite"
-            TreeNode2.Text = "数据集映射"
-            TreeNode3.Name = "Executor"
-            TreeNode3.Text = "执行设置"
-            TreeNode4.Name = "Root"
-            TreeNode4.Text = "VijosNT"
-            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode4})
+            TreeNode7.Name = "Compiler"
+            TreeNode7.Text = "编译器映射"
+            TreeNode8.Name = "TestSuite"
+            TreeNode8.Text = "数据集映射"
+            TreeNode9.Name = "Executor"
+            TreeNode9.Text = "执行设置"
+            TreeNode10.Name = "LocalDataSource"
+            TreeNode10.Text = "本地数据源"
+            TreeNode11.Name = "RemoteDataSource"
+            TreeNode11.Text = "外部数据源"
+            TreeNode12.Name = "Root"
+            TreeNode12.Text = "VijosNT"
+            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode12})
             Me.NavigationTree.Size = New System.Drawing.Size(194, 515)
             Me.NavigationTree.TabIndex = 0
             '
@@ -187,6 +239,8 @@
             Me.TabControl.Controls.Add(Me.CompilerPage)
             Me.TabControl.Controls.Add(Me.TestSuitePage)
             Me.TabControl.Controls.Add(Me.ExecutorPage)
+            Me.TabControl.Controls.Add(Me.LocalDataSourcePage)
+            Me.TabControl.Controls.Add(Me.RemoteDataSourcePage)
             Me.TabControl.Dock = System.Windows.Forms.DockStyle.Fill
             Me.TabControl.Location = New System.Drawing.Point(0, 0)
             Me.TabControl.Margin = New System.Windows.Forms.Padding(2)
@@ -235,7 +289,7 @@
             Me.CompilerPage.Margin = New System.Windows.Forms.Padding(2)
             Me.CompilerPage.Name = "CompilerPage"
             Me.CompilerPage.Padding = New System.Windows.Forms.Padding(2)
-            Me.CompilerPage.Size = New System.Drawing.Size(579, 489)
+            Me.CompilerPage.Size = New System.Drawing.Size(560, 264)
             Me.CompilerPage.TabIndex = 1
             Me.CompilerPage.Text = "编译器映射"
             Me.CompilerPage.UseVisualStyleBackColor = True
@@ -250,6 +304,7 @@
             '
             'CompilerSplit.Panel1
             '
+            Me.CompilerSplit.Panel1.Controls.Add(Me.ApplyCompilerButton)
             Me.CompilerSplit.Panel1.Controls.Add(Me.MoveDownCompilerButton)
             Me.CompilerSplit.Panel1.Controls.Add(Me.MoveUpCompilerButton)
             Me.CompilerSplit.Panel1.Controls.Add(Me.RemoveCompilerButton)
@@ -259,16 +314,27 @@
             'CompilerSplit.Panel2
             '
             Me.CompilerSplit.Panel2.Controls.Add(Me.CompilerProperty)
-            Me.CompilerSplit.Size = New System.Drawing.Size(575, 485)
-            Me.CompilerSplit.SplitterDistance = 145
+            Me.CompilerSplit.Size = New System.Drawing.Size(556, 260)
+            Me.CompilerSplit.SplitterDistance = 77
             Me.CompilerSplit.SplitterWidth = 3
             Me.CompilerSplit.TabIndex = 6
+            '
+            'ApplyCompilerButton
+            '
+            Me.ApplyCompilerButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.ApplyCompilerButton.Enabled = False
+            Me.ApplyCompilerButton.Location = New System.Drawing.Point(452, 52)
+            Me.ApplyCompilerButton.Name = "ApplyCompilerButton"
+            Me.ApplyCompilerButton.Size = New System.Drawing.Size(75, 23)
+            Me.ApplyCompilerButton.TabIndex = 7
+            Me.ApplyCompilerButton.Text = "应用(&A)"
+            Me.ApplyCompilerButton.UseVisualStyleBackColor = True
             '
             'MoveDownCompilerButton
             '
             Me.MoveDownCompilerButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.MoveDownCompilerButton.Enabled = False
-            Me.MoveDownCompilerButton.Location = New System.Drawing.Point(550, 29)
+            Me.MoveDownCompilerButton.Location = New System.Drawing.Point(531, 29)
             Me.MoveDownCompilerButton.Margin = New System.Windows.Forms.Padding(2)
             Me.MoveDownCompilerButton.Name = "MoveDownCompilerButton"
             Me.MoveDownCompilerButton.Size = New System.Drawing.Size(23, 23)
@@ -280,7 +346,7 @@
             '
             Me.MoveUpCompilerButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.MoveUpCompilerButton.Enabled = False
-            Me.MoveUpCompilerButton.Location = New System.Drawing.Point(550, 2)
+            Me.MoveUpCompilerButton.Location = New System.Drawing.Point(531, 2)
             Me.MoveUpCompilerButton.Margin = New System.Windows.Forms.Padding(2)
             Me.MoveUpCompilerButton.Name = "MoveUpCompilerButton"
             Me.MoveUpCompilerButton.Size = New System.Drawing.Size(23, 23)
@@ -292,7 +358,7 @@
             '
             Me.RemoveCompilerButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
             Me.RemoveCompilerButton.Enabled = False
-            Me.RemoveCompilerButton.Location = New System.Drawing.Point(81, 120)
+            Me.RemoveCompilerButton.Location = New System.Drawing.Point(81, 52)
             Me.RemoveCompilerButton.Margin = New System.Windows.Forms.Padding(2)
             Me.RemoveCompilerButton.Name = "RemoveCompilerButton"
             Me.RemoveCompilerButton.Size = New System.Drawing.Size(75, 23)
@@ -303,7 +369,7 @@
             'AddCompilerButton
             '
             Me.AddCompilerButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-            Me.AddCompilerButton.Location = New System.Drawing.Point(2, 120)
+            Me.AddCompilerButton.Location = New System.Drawing.Point(2, 52)
             Me.AddCompilerButton.Margin = New System.Windows.Forms.Padding(2)
             Me.AddCompilerButton.Name = "AddCompilerButton"
             Me.AddCompilerButton.Size = New System.Drawing.Size(75, 23)
@@ -323,7 +389,7 @@
             Me.CompilerList.Margin = New System.Windows.Forms.Padding(2)
             Me.CompilerList.MultiSelect = False
             Me.CompilerList.Name = "CompilerList"
-            Me.CompilerList.Size = New System.Drawing.Size(544, 114)
+            Me.CompilerList.Size = New System.Drawing.Size(525, 46)
             Me.CompilerList.TabIndex = 1
             Me.CompilerList.UseCompatibleStateImageBehavior = False
             Me.CompilerList.View = System.Windows.Forms.View.Details
@@ -340,13 +406,15 @@
             '
             'CompilerProperty
             '
+            Me.CompilerProperty.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                        Or System.Windows.Forms.AnchorStyles.Left) _
+                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.CompilerProperty.BackColor = System.Drawing.SystemColors.Window
-            Me.CompilerProperty.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.CompilerProperty.Location = New System.Drawing.Point(0, 0)
+            Me.CompilerProperty.Location = New System.Drawing.Point(2, 2)
             Me.CompilerProperty.Margin = New System.Windows.Forms.Padding(2)
             Me.CompilerProperty.Name = "CompilerProperty"
             Me.CompilerProperty.PropertySort = System.Windows.Forms.PropertySort.Categorized
-            Me.CompilerProperty.Size = New System.Drawing.Size(575, 337)
+            Me.CompilerProperty.Size = New System.Drawing.Size(525, 176)
             Me.CompilerProperty.TabIndex = 6
             Me.CompilerProperty.ToolbarVisible = False
             '
@@ -357,7 +425,7 @@
             Me.TestSuitePage.Margin = New System.Windows.Forms.Padding(2)
             Me.TestSuitePage.Name = "TestSuitePage"
             Me.TestSuitePage.Padding = New System.Windows.Forms.Padding(2)
-            Me.TestSuitePage.Size = New System.Drawing.Size(579, 489)
+            Me.TestSuitePage.Size = New System.Drawing.Size(560, 264)
             Me.TestSuitePage.TabIndex = 2
             Me.TestSuitePage.Text = "数据集映射"
             Me.TestSuitePage.UseVisualStyleBackColor = True
@@ -372,6 +440,7 @@
             '
             'TestSuiteSplit.Panel1
             '
+            Me.TestSuiteSplit.Panel1.Controls.Add(Me.ApplyTestSuiteButton)
             Me.TestSuiteSplit.Panel1.Controls.Add(Me.MoveDownTestSuiteButton)
             Me.TestSuiteSplit.Panel1.Controls.Add(Me.MoveUpTestSuiteButton)
             Me.TestSuiteSplit.Panel1.Controls.Add(Me.RemoveTestSuiteButton)
@@ -381,16 +450,27 @@
             'TestSuiteSplit.Panel2
             '
             Me.TestSuiteSplit.Panel2.Controls.Add(Me.TestSuiteProperty)
-            Me.TestSuiteSplit.Size = New System.Drawing.Size(575, 485)
-            Me.TestSuiteSplit.SplitterDistance = 215
+            Me.TestSuiteSplit.Size = New System.Drawing.Size(556, 260)
+            Me.TestSuiteSplit.SplitterDistance = 115
             Me.TestSuiteSplit.SplitterWidth = 3
             Me.TestSuiteSplit.TabIndex = 7
+            '
+            'ApplyTestSuiteButton
+            '
+            Me.ApplyTestSuiteButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.ApplyTestSuiteButton.Enabled = False
+            Me.ApplyTestSuiteButton.Location = New System.Drawing.Point(452, 90)
+            Me.ApplyTestSuiteButton.Name = "ApplyTestSuiteButton"
+            Me.ApplyTestSuiteButton.Size = New System.Drawing.Size(75, 23)
+            Me.ApplyTestSuiteButton.TabIndex = 8
+            Me.ApplyTestSuiteButton.Text = "应用(&A)"
+            Me.ApplyTestSuiteButton.UseVisualStyleBackColor = True
             '
             'MoveDownTestSuiteButton
             '
             Me.MoveDownTestSuiteButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.MoveDownTestSuiteButton.Enabled = False
-            Me.MoveDownTestSuiteButton.Location = New System.Drawing.Point(550, 29)
+            Me.MoveDownTestSuiteButton.Location = New System.Drawing.Point(531, 29)
             Me.MoveDownTestSuiteButton.Margin = New System.Windows.Forms.Padding(2)
             Me.MoveDownTestSuiteButton.Name = "MoveDownTestSuiteButton"
             Me.MoveDownTestSuiteButton.Size = New System.Drawing.Size(23, 23)
@@ -402,7 +482,7 @@
             '
             Me.MoveUpTestSuiteButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.MoveUpTestSuiteButton.Enabled = False
-            Me.MoveUpTestSuiteButton.Location = New System.Drawing.Point(550, 2)
+            Me.MoveUpTestSuiteButton.Location = New System.Drawing.Point(531, 2)
             Me.MoveUpTestSuiteButton.Margin = New System.Windows.Forms.Padding(2)
             Me.MoveUpTestSuiteButton.Name = "MoveUpTestSuiteButton"
             Me.MoveUpTestSuiteButton.Size = New System.Drawing.Size(23, 23)
@@ -414,7 +494,7 @@
             '
             Me.RemoveTestSuiteButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
             Me.RemoveTestSuiteButton.Enabled = False
-            Me.RemoveTestSuiteButton.Location = New System.Drawing.Point(81, 190)
+            Me.RemoveTestSuiteButton.Location = New System.Drawing.Point(81, 90)
             Me.RemoveTestSuiteButton.Margin = New System.Windows.Forms.Padding(2)
             Me.RemoveTestSuiteButton.Name = "RemoveTestSuiteButton"
             Me.RemoveTestSuiteButton.Size = New System.Drawing.Size(75, 23)
@@ -425,7 +505,7 @@
             'AddTestSuiteButton
             '
             Me.AddTestSuiteButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-            Me.AddTestSuiteButton.Location = New System.Drawing.Point(2, 190)
+            Me.AddTestSuiteButton.Location = New System.Drawing.Point(2, 90)
             Me.AddTestSuiteButton.Margin = New System.Windows.Forms.Padding(2)
             Me.AddTestSuiteButton.Name = "AddTestSuiteButton"
             Me.AddTestSuiteButton.Size = New System.Drawing.Size(75, 23)
@@ -445,7 +525,7 @@
             Me.TestSuiteList.Margin = New System.Windows.Forms.Padding(2)
             Me.TestSuiteList.MultiSelect = False
             Me.TestSuiteList.Name = "TestSuiteList"
-            Me.TestSuiteList.Size = New System.Drawing.Size(544, 184)
+            Me.TestSuiteList.Size = New System.Drawing.Size(525, 84)
             Me.TestSuiteList.TabIndex = 1
             Me.TestSuiteList.UseCompatibleStateImageBehavior = False
             Me.TestSuiteList.View = System.Windows.Forms.View.Details
@@ -467,18 +547,21 @@
             '
             'TestSuiteProperty
             '
+            Me.TestSuiteProperty.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                        Or System.Windows.Forms.AnchorStyles.Left) _
+                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.TestSuiteProperty.BackColor = System.Drawing.SystemColors.Window
-            Me.TestSuiteProperty.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.TestSuiteProperty.Location = New System.Drawing.Point(0, 0)
+            Me.TestSuiteProperty.Location = New System.Drawing.Point(2, 2)
             Me.TestSuiteProperty.Margin = New System.Windows.Forms.Padding(2)
             Me.TestSuiteProperty.Name = "TestSuiteProperty"
             Me.TestSuiteProperty.PropertySort = System.Windows.Forms.PropertySort.Categorized
-            Me.TestSuiteProperty.Size = New System.Drawing.Size(575, 267)
+            Me.TestSuiteProperty.Size = New System.Drawing.Size(525, 138)
             Me.TestSuiteProperty.TabIndex = 6
             Me.TestSuiteProperty.ToolbarVisible = False
             '
             'ExecutorPage
             '
+            Me.ExecutorPage.Controls.Add(Me.ApplyExecutorButton)
             Me.ExecutorPage.Controls.Add(Me.SecurityGroup)
             Me.ExecutorPage.Controls.Add(Me.EnableSecurityCheck)
             Me.ExecutorPage.Controls.Add(Me.ExecutorSlotsLabel)
@@ -492,12 +575,23 @@
             Me.ExecutorPage.Text = "执行设置"
             Me.ExecutorPage.UseVisualStyleBackColor = True
             '
+            'ApplyExecutorButton
+            '
+            Me.ApplyExecutorButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.ApplyExecutorButton.Enabled = False
+            Me.ApplyExecutorButton.Location = New System.Drawing.Point(465, 62)
+            Me.ApplyExecutorButton.Name = "ApplyExecutorButton"
+            Me.ApplyExecutorButton.Size = New System.Drawing.Size(75, 23)
+            Me.ApplyExecutorButton.TabIndex = 9
+            Me.ApplyExecutorButton.Text = "应用(&A)"
+            Me.ApplyExecutorButton.UseVisualStyleBackColor = True
+            '
             'SecurityGroup
             '
             Me.SecurityGroup.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                         Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.SecurityGroup.Controls.Add(Me.ListView1)
+            Me.SecurityGroup.Controls.Add(Me.UntrustedList)
             Me.SecurityGroup.Enabled = False
             Me.SecurityGroup.Location = New System.Drawing.Point(31, 101)
             Me.SecurityGroup.Margin = New System.Windows.Forms.Padding(2)
@@ -508,20 +602,20 @@
             Me.SecurityGroup.TabStop = False
             Me.SecurityGroup.Text = "安全设置"
             '
-            'ListView1
+            'UntrustedList
             '
-            Me.ListView1.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.SecurityDesktopNameHeader, Me.SecurityUserNameHeader, Me.SecurityPasswordHeader})
-            Me.ListView1.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.ListView1.FullRowSelect = True
-            Me.ListView1.HideSelection = False
-            Me.ListView1.Location = New System.Drawing.Point(2, 16)
-            Me.ListView1.Margin = New System.Windows.Forms.Padding(2)
-            Me.ListView1.MultiSelect = False
-            Me.ListView1.Name = "ListView1"
-            Me.ListView1.Size = New System.Drawing.Size(507, 346)
-            Me.ListView1.TabIndex = 2
-            Me.ListView1.UseCompatibleStateImageBehavior = False
-            Me.ListView1.View = System.Windows.Forms.View.Details
+            Me.UntrustedList.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.SecurityDesktopNameHeader, Me.SecurityUserNameHeader, Me.SecurityPasswordHeader})
+            Me.UntrustedList.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.UntrustedList.FullRowSelect = True
+            Me.UntrustedList.HideSelection = False
+            Me.UntrustedList.Location = New System.Drawing.Point(2, 16)
+            Me.UntrustedList.Margin = New System.Windows.Forms.Padding(2)
+            Me.UntrustedList.MultiSelect = False
+            Me.UntrustedList.Name = "UntrustedList"
+            Me.UntrustedList.Size = New System.Drawing.Size(507, 346)
+            Me.UntrustedList.TabIndex = 2
+            Me.UntrustedList.UseCompatibleStateImageBehavior = False
+            Me.UntrustedList.View = System.Windows.Forms.View.Details
             '
             'SecurityDesktopNameHeader
             '
@@ -566,8 +660,74 @@
             Me.ExecutorSlotsText.Location = New System.Drawing.Point(151, 29)
             Me.ExecutorSlotsText.Margin = New System.Windows.Forms.Padding(2)
             Me.ExecutorSlotsText.Name = "ExecutorSlotsText"
-            Me.ExecutorSlotsText.Size = New System.Drawing.Size(392, 21)
+            Me.ExecutorSlotsText.Size = New System.Drawing.Size(389, 21)
             Me.ExecutorSlotsText.TabIndex = 0
+            '
+            'LocalDataSourcePage
+            '
+            Me.LocalDataSourcePage.Controls.Add(Me.LocalSourceList)
+            Me.LocalDataSourcePage.Location = New System.Drawing.Point(4, 22)
+            Me.LocalDataSourcePage.Name = "LocalDataSourcePage"
+            Me.LocalDataSourcePage.Padding = New System.Windows.Forms.Padding(3)
+            Me.LocalDataSourcePage.Size = New System.Drawing.Size(579, 489)
+            Me.LocalDataSourcePage.TabIndex = 4
+            Me.LocalDataSourcePage.Text = "本地数据源"
+            Me.LocalDataSourcePage.UseVisualStyleBackColor = True
+            '
+            'LocalSourceList
+            '
+            Me.LocalSourceList.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                        Or System.Windows.Forms.AnchorStyles.Left) _
+                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.LocalSourceList.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.LocalSourceIdHeader, Me.LocalSourceFlagHeader, Me.LocalSourceFileNameHeader, Me.LocalSourceScoreHeader, Me.LocalSourceTimeUsageHeader, Me.LocalSourceMemoryUsageHeader, Me.LocalSourceDateHeader})
+            Me.LocalSourceList.FullRowSelect = True
+            Me.LocalSourceList.HideSelection = False
+            Me.LocalSourceList.Location = New System.Drawing.Point(6, 6)
+            Me.LocalSourceList.MultiSelect = False
+            Me.LocalSourceList.Name = "LocalSourceList"
+            Me.LocalSourceList.Size = New System.Drawing.Size(567, 477)
+            Me.LocalSourceList.TabIndex = 0
+            Me.LocalSourceList.UseCompatibleStateImageBehavior = False
+            Me.LocalSourceList.View = System.Windows.Forms.View.Details
+            '
+            'LocalSourceIdHeader
+            '
+            Me.LocalSourceIdHeader.Text = "Id"
+            '
+            'LocalSourceFlagHeader
+            '
+            Me.LocalSourceFlagHeader.Text = "Flag"
+            '
+            'LocalSourceFileNameHeader
+            '
+            Me.LocalSourceFileNameHeader.Text = "文件名"
+            '
+            'LocalSourceScoreHeader
+            '
+            Me.LocalSourceScoreHeader.Text = "得分"
+            '
+            'LocalSourceTimeUsageHeader
+            '
+            Me.LocalSourceTimeUsageHeader.Text = "时间"
+            '
+            'LocalSourceMemoryUsageHeader
+            '
+            Me.LocalSourceMemoryUsageHeader.Text = "空间"
+            '
+            'LocalSourceDateHeader
+            '
+            Me.LocalSourceDateHeader.Text = "日期"
+            Me.LocalSourceDateHeader.Width = 124
+            '
+            'RemoteDataSourcePage
+            '
+            Me.RemoteDataSourcePage.Location = New System.Drawing.Point(4, 22)
+            Me.RemoteDataSourcePage.Name = "RemoteDataSourcePage"
+            Me.RemoteDataSourcePage.Padding = New System.Windows.Forms.Padding(3)
+            Me.RemoteDataSourcePage.Size = New System.Drawing.Size(579, 489)
+            Me.RemoteDataSourcePage.TabIndex = 5
+            Me.RemoteDataSourcePage.Text = "外部数据源"
+            Me.RemoteDataSourcePage.UseVisualStyleBackColor = True
             '
             'ServiceTimer
             '
@@ -577,16 +737,9 @@
             '
             Me.ErrorProvider.ContainerControl = Me
             '
-            'HelpStrip0
+            'LocalSourceTimer
             '
-            Me.HelpStrip0.Name = "HelpStrip0"
-            Me.HelpStrip0.Size = New System.Drawing.Size(149, 6)
-            '
-            'HomePageMenu
-            '
-            Me.HomePageMenu.Name = "HomePageMenu"
-            Me.HomePageMenu.Size = New System.Drawing.Size(152, 22)
-            Me.HomePageMenu.Text = "主页(&H)"
+            Me.LocalSourceTimer.Interval = 500
             '
             'ConsoleForm
             '
@@ -620,11 +773,13 @@
             Me.ExecutorPage.ResumeLayout(False)
             Me.ExecutorPage.PerformLayout()
             Me.SecurityGroup.ResumeLayout(False)
+            Me.LocalDataSourcePage.ResumeLayout(False)
             CType(Me.ErrorProvider, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
         End Sub
+
         Friend WithEvents MenuStrip As System.Windows.Forms.MenuStrip
         Friend WithEvents FileMenu As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents ExitMenu As System.Windows.Forms.ToolStripMenuItem
@@ -666,11 +821,28 @@
         Friend WithEvents ExecutorSlotsLabel As System.Windows.Forms.Label
         Friend WithEvents EnableSecurityCheck As System.Windows.Forms.CheckBox
         Friend WithEvents SecurityGroup As System.Windows.Forms.GroupBox
-        Friend WithEvents ListView1 As System.Windows.Forms.ListView
+        Friend WithEvents UntrustedList As System.Windows.Forms.ListView
         Friend WithEvents SecurityDesktopNameHeader As System.Windows.Forms.ColumnHeader
         Friend WithEvents SecurityUserNameHeader As System.Windows.Forms.ColumnHeader
         Friend WithEvents SecurityPasswordHeader As System.Windows.Forms.ColumnHeader
         Friend WithEvents HomePageMenu As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents HelpStrip0 As System.Windows.Forms.ToolStripSeparator
+        Friend WithEvents ApplyCompilerButton As System.Windows.Forms.Button
+        Friend WithEvents ApplyTestSuiteButton As System.Windows.Forms.Button
+        Friend WithEvents ApplyExecutorButton As System.Windows.Forms.Button
+        Friend WithEvents WikiToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+        Friend WithEvents CheckUpdateMenu As System.Windows.Forms.ToolStripMenuItem
+        Friend WithEvents HelpStrip1 As System.Windows.Forms.ToolStripSeparator
+        Friend WithEvents LocalDataSourcePage As System.Windows.Forms.TabPage
+        Friend WithEvents LocalSourceList As System.Windows.Forms.ListView
+        Friend WithEvents RemoteDataSourcePage As System.Windows.Forms.TabPage
+        Friend WithEvents LocalSourceIdHeader As System.Windows.Forms.ColumnHeader
+        Friend WithEvents LocalSourceFlagHeader As System.Windows.Forms.ColumnHeader
+        Friend WithEvents LocalSourceFileNameHeader As System.Windows.Forms.ColumnHeader
+        Friend WithEvents LocalSourceScoreHeader As System.Windows.Forms.ColumnHeader
+        Friend WithEvents LocalSourceTimeUsageHeader As System.Windows.Forms.ColumnHeader
+        Friend WithEvents LocalSourceMemoryUsageHeader As System.Windows.Forms.ColumnHeader
+        Friend WithEvents LocalSourceDateHeader As System.Windows.Forms.ColumnHeader
+        Friend WithEvents LocalSourceTimer As System.Windows.Forms.Timer
     End Class
 End Namespace

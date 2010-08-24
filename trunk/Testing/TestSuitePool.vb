@@ -3,10 +3,18 @@ Imports VijosNT.Utility
 
 Namespace Testing
     Friend Class TestSuitePool
-        Private m_Entries As IList(Of TestSuiteEntry)
+        Private m_Entries As IEnumerable(Of TestSuiteEntry)
 
         Public Sub New()
-            m_Entries = New List(Of TestSuiteEntry)
+            Reload()
+        End Sub
+
+        Public Sub Reload()
+            m_Entries = ReadEntries()
+        End Sub
+
+        Private Function ReadEntries() As IEnumerable(Of TestSuiteEntry)
+            Dim Result As New List(Of TestSuiteEntry)
 
             Using Reader As IDataReader = TestSuiteMapping.GetAll()
                 While Reader.Read()
@@ -21,13 +29,17 @@ Namespace Testing
                             EventLog.WriteEntry(My.Resources.ServiceName, "测试数据集加载失败" & vbCrLf & "未找到类名为 " & Reader("ClassName") & " 的测试数据集容器。", EventLogEntryType.Warning)
                             Continue While
                     End Select
-                    m_Entries.Add(Entry)
+                    Result.Add(Entry)
                 End While
             End Using
-        End Sub
+
+            Return Result
+        End Function
 
         Public Function TryLoad(ByVal Id As String) As IEnumerable(Of TestCase)
-            For Each Entry As TestSuiteEntry In m_Entries
+            Dim Entries As IEnumerable(Of TestSuiteEntry) = m_Entries
+
+            For Each Entry As TestSuiteEntry In Entries
                 If Entry.Regex.IsMatch(Id) Then
                     Dim Result As IEnumerable(Of TestCase) = Entry.TestSuite.TryLoad(Id)
                     If Result IsNot Nothing Then _
