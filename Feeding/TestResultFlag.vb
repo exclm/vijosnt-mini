@@ -8,6 +8,7 @@
         RuntimeError
         JudgerError
         CompileError
+        InternalError
         TestSuiteNotFound
         CompilerNotFound
     End Enum

@@ -139,7 +139,17 @@ Namespace Feeding
                 Return True
             End If
 
-            m_Executor.Queue(New CompilerExecutee(m_WatchDog, m_ProcessMonitor, m_TempPathServer, Context.Compiler, SourceCode, AddressOf TestCompileCompletion, Context))
+            Try
+                m_Executor.Queue(New CompilerExecutee(m_WatchDog, m_ProcessMonitor, m_TempPathServer, Context.Compiler, SourceCode, AddressOf TestCompileCompletion, Context))
+            Catch ex As Exception
+                If Context.Completion IsNot Nothing Then
+                    Context.Completion.Invoke(New TestResult(Context.CompletionState, TestResultFlag.InternalError, ex.ToString(), 0, 0, 0, Nothing))
+                End If
+                If Interlocked.Decrement(m_Running) = 0 Then _
+                    m_CanExit.Set()
+                Return True
+            End Try
+
             Return True
         End Function
 
