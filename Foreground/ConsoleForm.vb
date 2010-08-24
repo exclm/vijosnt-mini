@@ -58,6 +58,10 @@ Namespace Foreground
             Process.Start("http://code.google.com/p/vijosnt-mini/downloads/list")
         End Sub
 
+        Private Sub ReportIssue_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ReportIssue.Click
+            Process.Start("http://code.google.com/p/vijosnt-mini/issues/list")
+        End Sub
+
         Private Sub NavigationTree_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles NavigationTree.AfterSelect
             DisplayPage(e.Node.Name & "Page")
         End Sub
