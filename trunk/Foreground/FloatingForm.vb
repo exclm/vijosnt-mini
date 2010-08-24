@@ -1,4 +1,6 @@
-﻿Namespace Foreground
+﻿Imports VijosNT.LocalDb
+
+Namespace Foreground
     Friend Class FloatingForm
         Private m_Daemon As Daemon
         Private m_Icon As Icon
@@ -10,6 +12,7 @@
                     LocalDb.Record.Add(Path.GetFileName(File), Reader.ReadToEnd())
                 End Using
             Next
+            m_Daemon.FeedDataSource(String.Empty)
         End Sub
 
         Private Sub FloatingForm_DragEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles Me.DragEnter
@@ -32,6 +35,8 @@
             InitializeComponent()
 
             ' 在 InitializeComponent() 调用之后添加任何初始化。
+            Left = Config.FloatingLeft
+            Top = Config.FloatingTop
         End Sub
     End Class
 End Namespace

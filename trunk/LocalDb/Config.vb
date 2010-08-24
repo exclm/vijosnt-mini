@@ -73,5 +73,51 @@
                 Put("EnableSecurity", Value.ToString())
             End Set
         End Property
+
+        Public Shared Property DisplayFloating() As Boolean
+            Get
+                Dim Value As String = [Get]("DisplayFloating")
+                If Value Is Nothing Then
+                    Put("DisplayFloating", True)
+                    Return True
+                Else
+                    Return Boolean.Parse(Value)
+                End If
+            End Get
+
+            Set(ByVal Value As Boolean)
+                Put("DisplayFloating", Value.ToString())
+            End Set
+        End Property
+
+        Public Shared Property FloatingLeft() As Int32
+            Get
+                Dim Value As String = [Get]("FloatingLeft")
+                If Value Is Nothing Then
+                    Value = Screen.PrimaryScreen.WorkingArea.Width * 3 \ 4
+                    Put("FloatingLeft", Value)
+                End If
+                Return Int32.Parse(Value)
+            End Get
+
+            Set(ByVal Value As Int32)
+                Put("FloatingLeft", Value.ToString())
+            End Set
+        End Property
+
+        Public Shared Property FloatingTop() As Int32
+            Get
+                Dim Value As String = [Get]("FloatingTop")
+                If Value Is Nothing Then
+                    Value = Screen.PrimaryScreen.WorkingArea.Height \ 4
+                    Put("FloatingTop", Value)
+                End If
+                Return Int32.Parse(Value)
+            End Get
+
+            Set(ByVal Value As Int32)
+                Put("FloatingTop", Value.ToString())
+            End Set
+        End Property
     End Class
 End Namespace

@@ -1,4 +1,4 @@
-﻿Namespace Background
+﻿Namespace Feeding
     Public Structure TestResultEntry
         Dim Index As Int32
         Dim Flag As TestResultFlag

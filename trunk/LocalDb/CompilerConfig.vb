@@ -32,7 +32,7 @@ Namespace LocalDb
             CompilerMapping.Update(m_Id, m_Pattern, m_ApplicationName, m_CommandLine, m_TimeQuota, m_MemoryQuota, m_ActiveProcessQuota, m_SourceFileName, m_TargetFileName, m_TargetApplicationName, m_TargetCommandLine)
         End Sub
 
-        <DisplayName("扩展名匹配"), CategoryAttribute("编译器设置"), DescriptionAttribute("用于匹配文件扩展名的字符串, 支持 ?、* 通配符, 多个匹配串使用 ; 分隔")> _
+        <DisplayName("扩展名匹配"), CategoryAttribute("编译器设置"), DescriptionAttribute("用于匹配文件扩展名的字符串, 以 . 开头, 支持 ?、* 通配符, 多个匹配串使用 ; 分隔")> _
         Public Property Pattern() As String
             Get
                 Return m_Pattern

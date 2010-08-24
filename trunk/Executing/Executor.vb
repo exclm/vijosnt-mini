@@ -13,6 +13,9 @@ Namespace Executing
 
         Public Sub New()
             Dim Slots As Int32 = Config.ExecutorSlots
+            Dim Threads As Int32 = Slots * 4 + 4
+            ThreadPool.SetMinThreads(Threads, Threads)
+
             m_SyncRoot = New Object()
             m_AvailableSlots = Slots
             m_Pools = New Dictionary(Of EnvironmentTag, EnvironmentPoolBase)()
