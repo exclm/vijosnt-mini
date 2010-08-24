@@ -94,6 +94,7 @@
             Me.LocalSourceTimeUsageHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.LocalSourceMemoryUsageHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.LocalSourceDateHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.ReportIssue = New System.Windows.Forms.ToolStripMenuItem()
             Me.MenuStrip.SuspendLayout()
             Me.StatusStrip.SuspendLayout()
             Me.SplitContainer.Panel1.SuspendLayout()
@@ -139,7 +140,7 @@
             '
             'HelpMenu
             '
-            Me.HelpMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.WikiToolStripMenuItem, Me.HelpStrip0, Me.HomePageMenu, Me.CheckUpdateMenu, Me.HelpStrip1, Me.AboutMenu})
+            Me.HelpMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.WikiToolStripMenuItem, Me.HelpStrip0, Me.HomePageMenu, Me.CheckUpdateMenu, Me.ReportIssue, Me.HelpStrip1, Me.AboutMenu})
             Me.HelpMenu.Name = "HelpMenu"
             Me.HelpMenu.Size = New System.Drawing.Size(61, 21)
             Me.HelpMenu.Text = "帮助(&H)"
@@ -147,35 +148,35 @@
             'WikiToolStripMenuItem
             '
             Me.WikiToolStripMenuItem.Name = "WikiToolStripMenuItem"
-            Me.WikiToolStripMenuItem.Size = New System.Drawing.Size(141, 22)
+            Me.WikiToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
             Me.WikiToolStripMenuItem.Text = "&Wiki"
             '
             'HelpStrip0
             '
             Me.HelpStrip0.Name = "HelpStrip0"
-            Me.HelpStrip0.Size = New System.Drawing.Size(138, 6)
+            Me.HelpStrip0.Size = New System.Drawing.Size(149, 6)
             '
             'HomePageMenu
             '
             Me.HomePageMenu.Name = "HomePageMenu"
-            Me.HomePageMenu.Size = New System.Drawing.Size(141, 22)
+            Me.HomePageMenu.Size = New System.Drawing.Size(152, 22)
             Me.HomePageMenu.Text = "主页(&H)"
             '
             'CheckUpdateMenu
             '
             Me.CheckUpdateMenu.Name = "CheckUpdateMenu"
-            Me.CheckUpdateMenu.Size = New System.Drawing.Size(141, 22)
+            Me.CheckUpdateMenu.Size = New System.Drawing.Size(152, 22)
             Me.CheckUpdateMenu.Text = "检查更新(&U)"
             '
             'HelpStrip1
             '
             Me.HelpStrip1.Name = "HelpStrip1"
-            Me.HelpStrip1.Size = New System.Drawing.Size(138, 6)
+            Me.HelpStrip1.Size = New System.Drawing.Size(149, 6)
             '
             'AboutMenu
             '
             Me.AboutMenu.Name = "AboutMenu"
-            Me.AboutMenu.Size = New System.Drawing.Size(141, 22)
+            Me.AboutMenu.Size = New System.Drawing.Size(152, 22)
             Me.AboutMenu.Text = "关于(&A)"
             '
             'StatusStrip
@@ -741,6 +742,12 @@
             Me.LocalSourceDateHeader.Text = "日期"
             Me.LocalSourceDateHeader.Width = 124
             '
+            'ReportIssue
+            '
+            Me.ReportIssue.Name = "ReportIssue"
+            Me.ReportIssue.Size = New System.Drawing.Size(152, 22)
+            Me.ReportIssue.Text = "报告问题(&R)"
+            '
             'ConsoleForm
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
@@ -844,5 +851,6 @@
         Friend WithEvents LocalSourceDateHeader As System.Windows.Forms.ColumnHeader
         Friend WithEvents LocalSourceTimer As System.Windows.Forms.Timer
         Friend WithEvents LocalSourceList As VijosNT.Utility.DoubleBufferedListView
+        Friend WithEvents ReportIssue As System.Windows.Forms.ToolStripMenuItem
     End Class
 End Namespace
