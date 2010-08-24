@@ -4,22 +4,17 @@
         Private Shared m_ReplaceCommand As SQLiteCommand
 
         Shared Sub New()
-            Try
-                Using Command As SQLiteCommand = Database.CreateCommand( _
+            Using Command As SQLiteCommand = Database.CreateCommand( _
                     "CREATE TABLE IF NOT EXISTS Config (" & _
                     "Key TEXT PRIMARY KEY, " & _
                     "Data TEXT)")
-                    Command.ExecuteNonQuery()
-                End Using
+                Command.ExecuteNonQuery()
+            End Using
 
-                m_SelectCommand = Database.CreateCommand( _
-                    "SELECT Data FROM Config WHERE Key = @Key")
-                m_ReplaceCommand = Database.CreateCommand( _
-                    "REPLACE INTO Config (Key, Data) VALUES (@Key, @Data)")
-            Catch ex As Exception
-                EventLog.WriteEntry(My.Resources.ServiceName, ex.ToString(), EventLogEntryType.Error)
-                Environment.Exit(1)
-            End Try
+            m_SelectCommand = Database.CreateCommand( _
+                "SELECT Data FROM Config WHERE Key = @Key")
+            m_ReplaceCommand = Database.CreateCommand( _
+                "REPLACE INTO Config (Key, Data) VALUES (@Key, @Data)")
         End Sub
 
         Private Shared Sub Put(ByVal Key As String, ByVal Data As String)

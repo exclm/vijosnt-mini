@@ -8,32 +8,27 @@
         Private Shared m_UpdateIdCommand As SQLiteCommand
 
         Shared Sub New()
-            Try
-                Using Command As SQLiteCommand = Database.CreateCommand( _
+            Using Command As SQLiteCommand = Database.CreateCommand( _
                     "CREATE TABLE IF NOT EXISTS TestSuiteMapping (" & _
                     "Id INTEGER PRIMARY KEY AUTOINCREMENT, " & _
                     "Pattern TEXT, " & _
                     "ClassName TEXT, " & _
                     "Parameter TEXT)")
-                    Command.ExecuteNonQuery()
-                End Using
+                Command.ExecuteNonQuery()
+            End Using
 
-                m_SelectCommand = Database.CreateCommand( _
-                    "SELECT * FROM TestSuiteMapping ORDER BY Id")
-                m_SelectConfigCommand = Database.CreateCommand( _
-                    "SELECT * FROM TestSuiteMapping WHERE Id = @Id")
-                m_InsertCommand = Database.CreateCommand( _
-                    "INSERT INTO TestSuiteMapping (Id, Pattern, ClassName, Parameter) VALUES (NULL, @Pattern, @ClassName, @Parameter)")
-                m_UpdateCommand = Database.CreateCommand( _
-                    "UPDATE TestSuiteMapping SET Pattern = @Pattern, ClassName = @ClassName, Parameter = @Parameter WHERE Id = @Id")
-                m_DeleteCommand = Database.CreateCommand( _
-                    "DELETE FROM TestSuiteMapping WHERE Id = @Id")
-                m_UpdateIdCommand = Database.CreateCommand( _
-                    "UPDATE TestSuiteMapping SET Id = @Id WHERE Id = @OriginalId")
-            Catch ex As Exception
-                EventLog.WriteEntry(My.Resources.ServiceName, ex.ToString(), EventLogEntryType.Error)
-                Environment.Exit(1)
-            End Try
+            m_SelectCommand = Database.CreateCommand( _
+                "SELECT * FROM TestSuiteMapping ORDER BY Id")
+            m_SelectConfigCommand = Database.CreateCommand( _
+                "SELECT * FROM TestSuiteMapping WHERE Id = @Id")
+            m_InsertCommand = Database.CreateCommand( _
+                "INSERT INTO TestSuiteMapping (Id, Pattern, ClassName, Parameter) VALUES (NULL, @Pattern, @ClassName, @Parameter)")
+            m_UpdateCommand = Database.CreateCommand( _
+                "UPDATE TestSuiteMapping SET Pattern = @Pattern, ClassName = @ClassName, Parameter = @Parameter WHERE Id = @Id")
+            m_DeleteCommand = Database.CreateCommand( _
+                "DELETE FROM TestSuiteMapping WHERE Id = @Id")
+            m_UpdateIdCommand = Database.CreateCommand( _
+                "UPDATE TestSuiteMapping SET Id = @Id WHERE Id = @OriginalId")
         End Sub
 
         Public Shared Function GetAll() As IDataReader

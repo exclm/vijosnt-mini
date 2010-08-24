@@ -9,8 +9,7 @@
         Private Shared m_UpdateFinalCommand As SQLiteCommand
 
         Shared Sub New()
-            Try
-                Using Command As SQLiteCommand = Database.CreateCommand( _
+            Using Command As SQLiteCommand = Database.CreateCommand( _
                     "CREATE TABLE IF NOT EXISTS Record (" & _
                     "Id INTEGER PRIMARY KEY AUTOINCREMENT, " & _
                     "FileName TEXT, " & _
@@ -22,28 +21,24 @@
                     "TimeUsage INTEGER, " & _
                     "MemoryUsage INTEGER, " & _
                     "Details BLOB)")
-                    Command.ExecuteNonQuery()
-                End Using
+                Command.ExecuteNonQuery()
+            End Using
 
-                m_SelectHeaderCommand = Database.CreateCommand( _
-                    "SELECT Id, FileName, Date, Taken, Flag, Score, TimeUsage, MemoryUsage FROM Record ORDER BY Id DESC")
-                m_SelectPendingCommand = Database.CreateCommand( _
-                    "SELECT Id FROM Record WHERE Taken = 0 ORDER BY Id")
-                m_SelectCodeCommand = Database.CreateCommand( _
-                    "SELECT FileName, SourceCode FROM Record WHERE Id = @Id")
-                m_InsertCommand = Database.CreateCommand( _
-                    "INSERT INTO Record (Id, FileName, SourceCode, Date, Taken, Flag, Score, TimeUsage, MemoryUsage, Details) " & _
-                    "VALUES (NULL, @FileName, @SourceCode, @Date, 0, 'None', NULL, NULL, NULL, NULL)")
-                m_UpdateTakenCommand = Database.CreateCommand( _
-                    "UPDATE Record SET Taken = -1 WHERE Id = @Id AND Taken = 0")
-                m_UpdateUntakeCommand = Database.CreateCommand( _
-                    "UPDATE Record SET Taken = 0 WHERE Id = @Id")
-                m_UpdateFinalCommand = Database.CreateCommand( _
-                    "UPDATE Record SET Taken = 1, Flag = @Flag, Score = @Score, TimeUsage = @TimeUsage, MemoryUsage = @MemoryUsage, Details = @Details WHERE Id = @Id")
-            Catch ex As Exception
-                EventLog.WriteEntry(My.Resources.ServiceName, ex.ToString(), EventLogEntryType.Error)
-                Environment.Exit(1)
-            End Try
+            m_SelectHeaderCommand = Database.CreateCommand( _
+                "SELECT Id, FileName, Date, Taken, Flag, Score, TimeUsage, MemoryUsage FROM Record ORDER BY Id DESC")
+            m_SelectPendingCommand = Database.CreateCommand( _
+                "SELECT Id FROM Record WHERE Taken = 0 ORDER BY Id")
+            m_SelectCodeCommand = Database.CreateCommand( _
+                "SELECT FileName, SourceCode FROM Record WHERE Id = @Id")
+            m_InsertCommand = Database.CreateCommand( _
+                "INSERT INTO Record (Id, FileName, SourceCode, Date, Taken, Flag, Score, TimeUsage, MemoryUsage, Details) " & _
+                "VALUES (NULL, @FileName, @SourceCode, @Date, 0, 'None', NULL, NULL, NULL, NULL)")
+            m_UpdateTakenCommand = Database.CreateCommand( _
+                "UPDATE Record SET Taken = -1 WHERE Id = @Id AND Taken = 0")
+            m_UpdateUntakeCommand = Database.CreateCommand( _
+                "UPDATE Record SET Taken = 0 WHERE Id = @Id")
+            m_UpdateFinalCommand = Database.CreateCommand( _
+                "UPDATE Record SET Taken = 1, Flag = @Flag, Score = @Score, TimeUsage = @TimeUsage, MemoryUsage = @MemoryUsage, Details = @Details WHERE Id = @Id")
         End Sub
 
         Public Shared Sub Add(ByVal FileName As String, ByVal SourceCode As String)
