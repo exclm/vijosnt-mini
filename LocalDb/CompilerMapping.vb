@@ -9,8 +9,7 @@
         Private Shared m_UpdateIdCommand As SQLiteCommand
 
         Shared Sub New()
-            Try
-                Using Command As SQLiteCommand = Database.CreateCommand( _
+            Using Command As SQLiteCommand = Database.CreateCommand( _
                     "CREATE TABLE IF NOT EXISTS CompilerMapping (" & _
                     "Id INTEGER PRIMARY KEY AUTOINCREMENT, " & _
                     "Pattern TEXT, " & _
@@ -23,27 +22,23 @@
                     "TargetFileName TEXT, " & _
                     "TargetApplicationName TEXT, " & _
                     "TargetCommandLine TEXT)")
-                    Command.ExecuteNonQuery()
-                End Using
+                Command.ExecuteNonQuery()
+            End Using
 
-                m_SelectCommand = Database.CreateCommand( _
-                    "SELECT * FROM CompilerMapping ORDER BY Id")
-                m_SelectHeaderCommand = Database.CreateCommand( _
-                    "SELECT Id, Pattern, CommandLine FROM CompilerMapping ORDER BY Id")
-                m_SelectConfigCommand = Database.CreateCommand( _
-                    "SELECT * FROM CompilerMapping WHERE Id = @Id")
-                m_InsertCommand = Database.CreateCommand( _
-                    "INSERT INTO CompilerMapping (Id, Pattern, ApplicationName, CommandLine, TimeQuota, MemoryQuota, ActiveProcessQuota, SourceFileName, TargetFileName, TargetApplicationName, TargetCommandLine) VALUES (NULL, @Pattern, @ApplicationName, @CommandLine, @TimeQuota, @MemoryQuota, @ActiveProcessQuota, @SourceFileName, @TargetFileName, @TargetApplicationName, @TargetCommandLine)")
-                m_UpdateCommand = Database.CreateCommand( _
-                    "UPDATE CompilerMapping SET Pattern = @Pattern, ApplicationName = @ApplicationName, CommandLine = @CommandLine, TimeQuota = @TimeQuota, MemoryQuota = @MemoryQuota, ActiveProcessQuota = @ActiveProcessQuota, SourceFileName = @SourceFileName, TargetFileName = @TargetFileName, TargetApplicationName = @TargetApplicationName, TargetCommandLine = @TargetCommandLine WHERE Id = @Id")
-                m_DeleteCommand = Database.CreateCommand( _
-                    "DELETE FROM CompilerMapping WHERE Id = @Id")
-                m_UpdateIdCommand = Database.CreateCommand( _
-                    "UPDATE CompilerMapping SET Id = @Id WHERE Id = @OriginalId")
-            Catch ex As Exception
-                EventLog.WriteEntry(My.Resources.ServiceName, ex.ToString(), EventLogEntryType.Error)
-                Environment.Exit(1)
-            End Try
+            m_SelectCommand = Database.CreateCommand( _
+                "SELECT * FROM CompilerMapping ORDER BY Id")
+            m_SelectHeaderCommand = Database.CreateCommand( _
+                "SELECT Id, Pattern, CommandLine FROM CompilerMapping ORDER BY Id")
+            m_SelectConfigCommand = Database.CreateCommand( _
+                "SELECT * FROM CompilerMapping WHERE Id = @Id")
+            m_InsertCommand = Database.CreateCommand( _
+                "INSERT INTO CompilerMapping (Id, Pattern, ApplicationName, CommandLine, TimeQuota, MemoryQuota, ActiveProcessQuota, SourceFileName, TargetFileName, TargetApplicationName, TargetCommandLine) VALUES (NULL, @Pattern, @ApplicationName, @CommandLine, @TimeQuota, @MemoryQuota, @ActiveProcessQuota, @SourceFileName, @TargetFileName, @TargetApplicationName, @TargetCommandLine)")
+            m_UpdateCommand = Database.CreateCommand( _
+                "UPDATE CompilerMapping SET Pattern = @Pattern, ApplicationName = @ApplicationName, CommandLine = @CommandLine, TimeQuota = @TimeQuota, MemoryQuota = @MemoryQuota, ActiveProcessQuota = @ActiveProcessQuota, SourceFileName = @SourceFileName, TargetFileName = @TargetFileName, TargetApplicationName = @TargetApplicationName, TargetCommandLine = @TargetCommandLine WHERE Id = @Id")
+            m_DeleteCommand = Database.CreateCommand( _
+                "DELETE FROM CompilerMapping WHERE Id = @Id")
+            m_UpdateIdCommand = Database.CreateCommand( _
+                "UPDATE CompilerMapping SET Id = @Id WHERE Id = @OriginalId")
         End Sub
 
         Public Shared Function GetAll() As IDataReader

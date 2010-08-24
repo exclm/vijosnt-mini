@@ -4,23 +4,18 @@
         Private Shared m_InsertCommand As SQLiteCommand
 
         Shared Sub New()
-            Try
-                Using Command As SQLiteCommand = Database.CreateCommand( _
+            Using Command As SQLiteCommand = Database.CreateCommand( _
                     "CREATE TABLE IF NOT EXISTS UntrustedEnvironments (" & _
                     "DesktopName TEXT PRIMARY KEY UNIQUE, " & _
                     "UserName TEXT, " & _
                     "Password TEXT)")
-                    Command.ExecuteNonQuery()
-                End Using
+                Command.ExecuteNonQuery()
+            End Using
 
-                m_SelectCommand = Database.CreateCommand( _
-                    "SELECT * FROM UntrustedEnvironments")
-                m_InsertCommand = Database.CreateCommand( _
-                    "INSERT INTO UntrustedEnvironments (DesktopName, UserName, Password) VALUES (@DesktopName, @UserName, @Password)")
-            Catch ex As Exception
-                EventLog.WriteEntry(My.Resources.ServiceName, ex.ToString(), EventLogEntryType.Error)
-                Environment.Exit(1)
-            End Try
+            m_SelectCommand = Database.CreateCommand( _
+                "SELECT * FROM UntrustedEnvironments")
+            m_InsertCommand = Database.CreateCommand( _
+                "INSERT INTO UntrustedEnvironments (DesktopName, UserName, Password) VALUES (@DesktopName, @UserName, @Password)")
         End Sub
 
         Public Shared Function GetAll() As IDataReader
