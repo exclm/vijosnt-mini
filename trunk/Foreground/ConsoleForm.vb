@@ -73,8 +73,6 @@ Namespace Foreground
                         m_Service.Close()
                         m_Service = Nothing
                     End If
-                Case "LocalDataSourcePage"
-                    LocalSourceTimer.Stop()
             End Select
             StatusLabel.Text = Nothing
         End Sub
@@ -84,8 +82,6 @@ Namespace Foreground
                 Case "RootPage"
                     m_Service = m_Daemon.OpenService()
                     ServiceTimer.Start()
-                Case "LocalDataSourcePage"
-                    LocalSourceTimer.Start()
             End Select
             RefreshPage(Name)
         End Sub
@@ -341,7 +337,7 @@ Namespace Foreground
             ApplyExecutorButton.Enabled = False
         End Sub
 
-        Private Sub LocalSourceTimer_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles LocalSourceTimer.Tick
+        Private Sub RefreshLocalButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RefreshLocalButton.Click
             RefreshPage("LocalDataSourcePage")
         End Sub
     End Class

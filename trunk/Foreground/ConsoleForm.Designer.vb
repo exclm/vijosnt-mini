@@ -24,12 +24,12 @@
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
-            Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
-            Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
-            Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("执行设置")
-            Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("本地数据源")
-            Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("外部数据源")
-            Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2, TreeNode3, TreeNode4, TreeNode5})
+            Dim TreeNode13 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
+            Dim TreeNode14 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
+            Dim TreeNode15 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("执行设置")
+            Dim TreeNode16 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("本地数据源")
+            Dim TreeNode17 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("外部数据源")
+            Dim TreeNode18 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode13, TreeNode14, TreeNode15, TreeNode16, TreeNode17})
             Me.MenuStrip = New System.Windows.Forms.MenuStrip()
             Me.FileMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.ExitMenu = New System.Windows.Forms.ToolStripMenuItem()
@@ -38,6 +38,7 @@
             Me.HelpStrip0 = New System.Windows.Forms.ToolStripSeparator()
             Me.HomePageMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.CheckUpdateMenu = New System.Windows.Forms.ToolStripMenuItem()
+            Me.ReportIssue = New System.Windows.Forms.ToolStripMenuItem()
             Me.HelpStrip1 = New System.Windows.Forms.ToolStripSeparator()
             Me.AboutMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.StatusStrip = New System.Windows.Forms.StatusStrip()
@@ -82,11 +83,7 @@
             Me.ExecutorSlotsLabel = New System.Windows.Forms.Label()
             Me.ExecutorSlotsText = New System.Windows.Forms.TextBox()
             Me.LocalDataSourcePage = New System.Windows.Forms.TabPage()
-            Me.RemoteDataSourcePage = New System.Windows.Forms.TabPage()
-            Me.ServiceTimer = New System.Windows.Forms.Timer(Me.components)
-            Me.ErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
-            Me.LocalSourceTimer = New System.Windows.Forms.Timer(Me.components)
-            Me.LocalSourceList = New VijosNT.Utility.DoubleBufferedListView()
+            Me.LocalSourceList = New System.Windows.Forms.ListView()
             Me.LocalSourceIdHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.LocalSourceFlagHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.LocalSourceFileNameHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -94,7 +91,10 @@
             Me.LocalSourceTimeUsageHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.LocalSourceMemoryUsageHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.LocalSourceDateHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-            Me.ReportIssue = New System.Windows.Forms.ToolStripMenuItem()
+            Me.RemoteDataSourcePage = New System.Windows.Forms.TabPage()
+            Me.ServiceTimer = New System.Windows.Forms.Timer(Me.components)
+            Me.ErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
+            Me.RefreshLocalButton = New System.Windows.Forms.Button()
             Me.MenuStrip.SuspendLayout()
             Me.StatusStrip.SuspendLayout()
             Me.SplitContainer.Panel1.SuspendLayout()
@@ -148,35 +148,41 @@
             'WikiToolStripMenuItem
             '
             Me.WikiToolStripMenuItem.Name = "WikiToolStripMenuItem"
-            Me.WikiToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+            Me.WikiToolStripMenuItem.Size = New System.Drawing.Size(141, 22)
             Me.WikiToolStripMenuItem.Text = "&Wiki"
             '
             'HelpStrip0
             '
             Me.HelpStrip0.Name = "HelpStrip0"
-            Me.HelpStrip0.Size = New System.Drawing.Size(149, 6)
+            Me.HelpStrip0.Size = New System.Drawing.Size(138, 6)
             '
             'HomePageMenu
             '
             Me.HomePageMenu.Name = "HomePageMenu"
-            Me.HomePageMenu.Size = New System.Drawing.Size(152, 22)
+            Me.HomePageMenu.Size = New System.Drawing.Size(141, 22)
             Me.HomePageMenu.Text = "主页(&H)"
             '
             'CheckUpdateMenu
             '
             Me.CheckUpdateMenu.Name = "CheckUpdateMenu"
-            Me.CheckUpdateMenu.Size = New System.Drawing.Size(152, 22)
+            Me.CheckUpdateMenu.Size = New System.Drawing.Size(141, 22)
             Me.CheckUpdateMenu.Text = "检查更新(&U)"
+            '
+            'ReportIssue
+            '
+            Me.ReportIssue.Name = "ReportIssue"
+            Me.ReportIssue.Size = New System.Drawing.Size(141, 22)
+            Me.ReportIssue.Text = "报告问题(&R)"
             '
             'HelpStrip1
             '
             Me.HelpStrip1.Name = "HelpStrip1"
-            Me.HelpStrip1.Size = New System.Drawing.Size(149, 6)
+            Me.HelpStrip1.Size = New System.Drawing.Size(138, 6)
             '
             'AboutMenu
             '
             Me.AboutMenu.Name = "AboutMenu"
-            Me.AboutMenu.Size = New System.Drawing.Size(152, 22)
+            Me.AboutMenu.Size = New System.Drawing.Size(141, 22)
             Me.AboutMenu.Text = "关于(&A)"
             '
             'StatusStrip
@@ -218,19 +224,19 @@
             Me.NavigationTree.Location = New System.Drawing.Point(0, 0)
             Me.NavigationTree.Margin = New System.Windows.Forms.Padding(2)
             Me.NavigationTree.Name = "NavigationTree"
-            TreeNode1.Name = "Compiler"
-            TreeNode1.Text = "编译器映射"
-            TreeNode2.Name = "TestSuite"
-            TreeNode2.Text = "数据集映射"
-            TreeNode3.Name = "Executor"
-            TreeNode3.Text = "执行设置"
-            TreeNode4.Name = "LocalDataSource"
-            TreeNode4.Text = "本地数据源"
-            TreeNode5.Name = "RemoteDataSource"
-            TreeNode5.Text = "外部数据源"
-            TreeNode6.Name = "Root"
-            TreeNode6.Text = "VijosNT"
-            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode6})
+            TreeNode13.Name = "Compiler"
+            TreeNode13.Text = "编译器映射"
+            TreeNode14.Name = "TestSuite"
+            TreeNode14.Text = "数据集映射"
+            TreeNode15.Name = "Executor"
+            TreeNode15.Text = "执行设置"
+            TreeNode16.Name = "LocalDataSource"
+            TreeNode16.Text = "本地数据源"
+            TreeNode17.Name = "RemoteDataSource"
+            TreeNode17.Text = "外部数据源"
+            TreeNode18.Name = "Root"
+            TreeNode18.Text = "VijosNT"
+            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode18})
             Me.NavigationTree.Size = New System.Drawing.Size(194, 515)
             Me.NavigationTree.TabIndex = 0
             '
@@ -666,6 +672,7 @@
             '
             'LocalDataSourcePage
             '
+            Me.LocalDataSourcePage.Controls.Add(Me.RefreshLocalButton)
             Me.LocalDataSourcePage.Controls.Add(Me.LocalSourceList)
             Me.LocalDataSourcePage.Location = New System.Drawing.Point(4, 22)
             Me.LocalDataSourcePage.Name = "LocalDataSourcePage"
@@ -674,28 +681,6 @@
             Me.LocalDataSourcePage.TabIndex = 4
             Me.LocalDataSourcePage.Text = "本地数据源"
             Me.LocalDataSourcePage.UseVisualStyleBackColor = True
-            '
-            'RemoteDataSourcePage
-            '
-            Me.RemoteDataSourcePage.Location = New System.Drawing.Point(4, 22)
-            Me.RemoteDataSourcePage.Name = "RemoteDataSourcePage"
-            Me.RemoteDataSourcePage.Padding = New System.Windows.Forms.Padding(3)
-            Me.RemoteDataSourcePage.Size = New System.Drawing.Size(579, 489)
-            Me.RemoteDataSourcePage.TabIndex = 5
-            Me.RemoteDataSourcePage.Text = "外部数据源"
-            Me.RemoteDataSourcePage.UseVisualStyleBackColor = True
-            '
-            'ServiceTimer
-            '
-            Me.ServiceTimer.Interval = 500
-            '
-            'ErrorProvider
-            '
-            Me.ErrorProvider.ContainerControl = Me
-            '
-            'LocalSourceTimer
-            '
-            Me.LocalSourceTimer.Interval = 500
             '
             'LocalSourceList
             '
@@ -708,7 +693,7 @@
             Me.LocalSourceList.Location = New System.Drawing.Point(6, 6)
             Me.LocalSourceList.MultiSelect = False
             Me.LocalSourceList.Name = "LocalSourceList"
-            Me.LocalSourceList.Size = New System.Drawing.Size(567, 477)
+            Me.LocalSourceList.Size = New System.Drawing.Size(567, 448)
             Me.LocalSourceList.TabIndex = 0
             Me.LocalSourceList.UseCompatibleStateImageBehavior = False
             Me.LocalSourceList.View = System.Windows.Forms.View.Details
@@ -742,11 +727,32 @@
             Me.LocalSourceDateHeader.Text = "日期"
             Me.LocalSourceDateHeader.Width = 124
             '
-            'ReportIssue
+            'RemoteDataSourcePage
             '
-            Me.ReportIssue.Name = "ReportIssue"
-            Me.ReportIssue.Size = New System.Drawing.Size(152, 22)
-            Me.ReportIssue.Text = "报告问题(&R)"
+            Me.RemoteDataSourcePage.Location = New System.Drawing.Point(4, 22)
+            Me.RemoteDataSourcePage.Name = "RemoteDataSourcePage"
+            Me.RemoteDataSourcePage.Padding = New System.Windows.Forms.Padding(3)
+            Me.RemoteDataSourcePage.Size = New System.Drawing.Size(579, 489)
+            Me.RemoteDataSourcePage.TabIndex = 5
+            Me.RemoteDataSourcePage.Text = "外部数据源"
+            Me.RemoteDataSourcePage.UseVisualStyleBackColor = True
+            '
+            'ServiceTimer
+            '
+            Me.ServiceTimer.Interval = 500
+            '
+            'ErrorProvider
+            '
+            Me.ErrorProvider.ContainerControl = Me
+            '
+            'RefreshLocalButton
+            '
+            Me.RefreshLocalButton.Location = New System.Drawing.Point(498, 460)
+            Me.RefreshLocalButton.Name = "RefreshLocalButton"
+            Me.RefreshLocalButton.Size = New System.Drawing.Size(75, 23)
+            Me.RefreshLocalButton.TabIndex = 1
+            Me.RefreshLocalButton.Text = "刷新(&R)"
+            Me.RefreshLocalButton.UseVisualStyleBackColor = True
             '
             'ConsoleForm
             '
@@ -849,8 +855,8 @@
         Friend WithEvents LocalSourceTimeUsageHeader As System.Windows.Forms.ColumnHeader
         Friend WithEvents LocalSourceMemoryUsageHeader As System.Windows.Forms.ColumnHeader
         Friend WithEvents LocalSourceDateHeader As System.Windows.Forms.ColumnHeader
-        Friend WithEvents LocalSourceTimer As System.Windows.Forms.Timer
-        Friend WithEvents LocalSourceList As VijosNT.Utility.DoubleBufferedListView
+        Friend WithEvents LocalSourceList As System.Windows.Forms.ListView
         Friend WithEvents ReportIssue As System.Windows.Forms.ToolStripMenuItem
+        Friend WithEvents RefreshLocalButton As System.Windows.Forms.Button
     End Class
 End Namespace
