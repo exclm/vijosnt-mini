@@ -7,14 +7,14 @@ Namespace Compiling
         Private m_TempPathServer As TempPathServer
         Private m_ApplicationName As String
         Private m_CommandLine As String
-        Private m_EnvironmentVariables As String()
+        Private m_EnvironmentVariables As IEnumerable(Of String)
         Private m_TimeQuota As Nullable(Of Int64)
         Private m_MemoryQuota As Nullable(Of Int64)
         Private m_ActiveProcessQuota As Nullable(Of Int32)
         Private m_SourceFileName As String
         Private m_TargetFileName As String
 
-        Public Sub New(ByVal TempPathServer As TempPathServer, ByVal ApplicationName As String, ByVal CommandLine As String, ByVal EnvironmentVariables As String(), _
+        Public Sub New(ByVal TempPathServer As TempPathServer, ByVal ApplicationName As String, ByVal CommandLine As String, ByVal EnvironmentVariables As IEnumerable(Of String), _
             ByVal TimeQuota As Nullable(Of Int64), ByVal MemoryQuota As Nullable(Of Int64), ByVal ActiveProcessQuota As Nullable(Of Int64), _
             ByVal SourceFileName As String, ByVal TargetFileName As String)
 
@@ -34,7 +34,7 @@ Namespace Compiling
             Using SourceFile As New FileStream(TempPath.Combine(m_SourceFileName), FileMode.CreateNew, FileAccess.Write, FileShare.None)
                 BufferedCopy(SourceCode, SourceFile)
             End Using
-            Return New LocalCompilerInstance(TempPath, m_TargetFileName, m_TempPathServer)
+            Return New LocalCompilerInstance(TempPath, m_TargetFileName, m_TempPathServer, m_EnvironmentVariables)
         End Function
 
         Public Overrides ReadOnly Property ApplicationName() As String

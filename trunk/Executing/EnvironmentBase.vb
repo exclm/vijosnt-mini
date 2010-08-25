@@ -20,6 +20,10 @@ Namespace Executing
             Me.Pool.Untake(Me)
         End Sub
 
+        Public Overridable Sub GiveAccess(ByVal DirectoryName As String)
+            ' Do nothing
+        End Sub
+
         Public MustOverride ReadOnly Property DesktopName() As String
         Public MustOverride ReadOnly Property Token() As Token
 
