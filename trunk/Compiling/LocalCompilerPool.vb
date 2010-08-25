@@ -3,16 +3,26 @@ Imports VijosNT.Utility
 
 Namespace Compiling
     Friend Class LocalCompilerPool
-        Private m_Entries As IList(Of LocalCompilerEntry)
+        Private m_TempPathServer As TempPathServer
+        Private m_Entries As IEnumerable(Of LocalCompilerEntry)
 
         Public Sub New(ByVal TempPathServer As TempPathServer)
-            m_Entries = New List(Of LocalCompilerEntry)
+            m_TempPathServer = TempPathServer
+            Reload()
+        End Sub
+
+        Public Sub Reload()
+            m_Entries = ReadEntries()
+        End Sub
+
+        Private Function ReadEntries() As ICollection(Of LocalCompilerEntry)
+            Dim Result As New List(Of LocalCompilerEntry)
 
             Using Reader As IDataReader = CompilerMapping.GetAll()
                 While Reader.Read()
                     Dim Entry As LocalCompilerEntry
                     Entry.Regex = New Regex(RegexSimpleEscape(Reader("Pattern")), RegexOptions.IgnoreCase)
-                    Entry.Compiler = New LocalCompiler(TempPathServer, _
+                    Entry.Compiler = New LocalCompiler(m_TempPathServer, _
                         Reader("ApplicationName"), _
                         Reader("CommandLine"), _
                         DbToLocalInt64(Reader("TimeQuota")), _
@@ -20,13 +30,17 @@ Namespace Compiling
                         DbToLocalInt32(Reader("ActiveProcessQuota")), _
                         Reader("SourceFileName"), Reader("TargetFileName"))
                     ' TODO: TargetApplicationName and TargetCommandLine
-                    m_Entries.Add(Entry)
+                    Result.Add(Entry)
                 End While
             End Using
-        End Sub
+
+            Return Result
+        End Function
 
         Public Function TryGet(ByVal Text As String) As LocalCompiler
-            For Each Entry As LocalCompilerEntry In m_Entries
+            Dim Entries As IEnumerable(Of LocalCompilerEntry) = m_Entries
+
+            For Each Entry As LocalCompilerEntry In Entries
                 If Entry.Regex.IsMatch(Text) Then
                     Return Entry.Compiler
                 End If
