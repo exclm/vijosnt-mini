@@ -7,7 +7,6 @@ Namespace Foreground
         Private m_Daemon As Daemon
         Private m_Pages As Dictionary(Of String, TabPage)
         Private m_RootNode As TreeNode
-        Private m_ServiceManager As ServiceManager
         Private m_Service As Service
 
         Public Sub New(ByVal Daemon As Daemon)
@@ -83,8 +82,7 @@ Namespace Foreground
         Private Sub EnterPage(ByVal Name As String)
             Select Case Name
                 Case "RootPage"
-                    m_ServiceManager = New ServiceManager()
-                    m_Service = m_ServiceManager.Open(My.Resources.ServiceName)
+                    m_Service = m_Daemon.OpenService()
                     ServiceTimer.Start()
                 Case "LocalDataSourcePage"
                     LocalSourceTimer.Start()
@@ -167,7 +165,7 @@ Namespace Foreground
         End Sub
 
         Private Sub InstallButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles InstallButton.Click
-            m_Service = m_ServiceManager.Create(My.Resources.ServiceName, My.Resources.DisplayName, Application.ExecutablePath)
+            m_Service = m_Daemon.CreateService()
             m_Service.Start()
             m_Daemon.ServiceInstalled = True
             RefreshPage("RootPage")
@@ -204,7 +202,7 @@ Namespace Foreground
         End Sub
 
         Private Sub AddCompilerButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddCompilerButton.Click
-            CompilerMapping.Add(".*", String.Empty, String.Empty, 15000 * 10000, Nothing, Nothing, String.Empty, String.Empty, String.Empty, String.Empty)
+            CompilerMapping.Add(".*", String.Empty, String.Empty, String.Empty, 15000 * 10000, Nothing, Nothing, String.Empty, String.Empty, String.Empty, String.Empty)
             ApplyCompilerButton.Enabled = True
             RefreshPage("CompilerPage")
         End Sub

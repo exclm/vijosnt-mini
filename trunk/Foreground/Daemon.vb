@@ -6,7 +6,9 @@ Namespace Foreground
     Friend Class Daemon
         Implements IDisposable
 
+        Private m_ServiceManager As ServiceManager
         Private m_LastColor As Color
+        Private m_Icon As Icon
         Private m_NotifyIcon As NotifyIcon
         Private m_Console As ConsoleForm
         Private m_ServiceTimer As System.Timers.Timer
@@ -16,6 +18,7 @@ Namespace Foreground
         Private m_Floating As FloatingForm
 
         Public Sub New()
+            CreateServiceManager()
             CreateNotifyIcon()
             CreateTimer()
             CreatePipeClient()
@@ -25,6 +28,10 @@ Namespace Foreground
 
         Public Sub Entry()
             Application.Run()
+        End Sub
+
+        Private Sub CreateServiceManager()
+            m_ServiceManager = New ServiceManager()
         End Sub
 
         Private Sub CreateNotifyIcon()
@@ -68,12 +75,17 @@ Namespace Foreground
                 m_LastColor = Color
                 Select Case Color
                     Case Color.Red
-                        m_NotifyIcon.Icon = My.Resources.RedV
+                        m_Icon = My.Resources.RedV
                     Case Color.Green
-                        m_NotifyIcon.Icon = My.Resources.GreenV
+                        m_Icon = My.Resources.GreenV
                     Case Color.Blue
-                        m_NotifyIcon.Icon = My.Resources.BlueV
+                        m_Icon = My.Resources.BlueV
                 End Select
+                m_NotifyIcon.Icon = m_Icon
+                If m_Floating IsNot Nothing Then
+                    m_Floating.SetIcon(m_Icon)
+                    m_Floating.Invalidate()
+                End If
             End If
         End Sub
 
@@ -93,6 +105,7 @@ Namespace Foreground
         Public Sub OnFloating(ByVal sender As Object, ByVal e As EventArgs)
             If m_Floating Is Nothing Then
                 m_Floating = New FloatingForm(Me)
+                m_Floating.SetIcon(m_Icon)
                 AddHandler m_Floating.FormClosing, AddressOf OnFloatingClosing
                 AddHandler m_Floating.FormClosed, AddressOf OnFloatingClosed
                 m_Floating.Show()
@@ -112,6 +125,8 @@ Namespace Foreground
         End Sub
 
         Private Sub OnFloatingClosed(ByVal sender As Object, ByVal e As EventArgs)
+            Config.FloatingTop = m_Floating.Top
+            Config.FloatingLeft = m_Floating.Left
             m_Floating = Nothing
             m_FloatingMenu.Checked = False
         End Sub
@@ -121,16 +136,14 @@ Namespace Foreground
         End Sub
 
         Private Sub TestService()
-            Using ServiceManager As New ServiceManager()
-                Dim Service As Service = ServiceManager.Open(My.Resources.ServiceName)
-                If Service IsNot Nothing Then
-                    ServiceInstalled = True
-                    Service.Dispose()
-                Else
-                    ServiceInstalled = False
-                    Return
-                End If
-            End Using
+            Dim Service As Service = m_ServiceManager.Open(My.Resources.ServiceName)
+            If Service IsNot Nothing Then
+                ServiceInstalled = True
+                Service.Dispose()
+            Else
+                ServiceInstalled = False
+                Return
+            End If
         End Sub
 
         Private Function TryConnect() As Boolean
@@ -155,6 +168,14 @@ Namespace Foreground
         Private Sub OnPipeDisconnect()
             TestService()
         End Sub
+
+        Public Function CreateService() As Service
+            Return m_ServiceManager.Create(My.Resources.ServiceName, My.Resources.DisplayName, Application.ExecutablePath)
+        End Function
+
+        Public Function OpenService() As Service
+            Return m_ServiceManager.Open(My.Resources.ServiceName)
+        End Function
 
         Public Property ServiceInstalled() As Boolean
             Get
@@ -222,6 +243,7 @@ Namespace Foreground
                     If m_Console IsNot Nothing Then
                         m_Console.Close()
                     End If
+                    m_ServiceManager.Dispose()
                 End If
             End If
             Me.disposedValue = True

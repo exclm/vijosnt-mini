@@ -25,6 +25,7 @@ Namespace Compiling
                     Entry.Compiler = New LocalCompiler(m_TempPathServer, _
                         Reader("ApplicationName"), _
                         Reader("CommandLine"), _
+                        ParseEnvironmentVariables(Reader("EnvironmentVariables")), _
                         DbToLocalInt64(Reader("TimeQuota")), _
                         DbToLocalInt64(Reader("MemoryQuota")), _
                         DbToLocalInt32(Reader("ActiveProcessQuota")), _
@@ -35,6 +36,31 @@ Namespace Compiling
             End Using
 
             Return Result
+        End Function
+
+        Private Function ParseEnvironmentVariables(ByVal Value As String) As String()
+            Dim Map As New Dictionary(Of String, String)(StringComparer.InvariantCultureIgnoreCase)
+            For Each Variable As DictionaryEntry In Environment.GetEnvironmentVariables()
+                Map.Add(Variable.Key, Variable.Value)
+            Next
+            Dim Delta As String() = Value.Split(New Char() {"|"c})
+            For Index As Int32 = 0 To Delta.Length - 1
+                With Delta(Index)
+                    Dim Position As Int32 = .IndexOf("="c)
+                    If Position = -1 Then Continue For
+                    Dim Name As String = .Substring(0, Position)
+                    Dim Parameter As String = .Substring(Position + 1)
+                    If Map.ContainsKey(Name) Then _
+                        Map.Remove(Name)
+                    If Parameter.Length <> 0 Then _
+                        Map.Add(Name, Environment.ExpandEnvironmentVariables(Parameter))
+                End With
+            Next
+            Dim Result As New List(Of String)
+            For Each KeyValue As KeyValuePair(Of String, String) In Map
+                Result.Add(KeyValue.Key & "=" & KeyValue.Value)
+            Next
+            Return Result.ToArray()
         End Function
 
         Public Function TryGet(ByVal Text As String) As LocalCompiler

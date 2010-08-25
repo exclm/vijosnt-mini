@@ -30,14 +30,13 @@
             Me.AllowDrop = True
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.BackColor = System.Drawing.Color.White
-            Me.ClientSize = New System.Drawing.Size(190, 46)
-            Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
+            Me.BackColor = System.Drawing.SystemColors.Control
+            Me.ClientSize = New System.Drawing.Size(221, 199)
+            Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
             Me.Name = "FloatingForm"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
             Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
-            Me.Text = "VijosNT 悬浮窗"
             Me.TopMost = True
             Me.ResumeLayout(False)
 
