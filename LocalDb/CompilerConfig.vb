@@ -6,6 +6,7 @@ Namespace LocalDb
         Private m_Pattern As String
         Private m_ApplicationName As String
         Private m_CommandLine As String
+        Private m_EnvironmentVariables As String
         Private m_TimeQuota As Nullable(Of Int64)
         Private m_MemoryQuota As Nullable(Of Int64)
         Private m_ActiveProcessQuota As Nullable(Of Int32)
@@ -19,6 +20,7 @@ Namespace LocalDb
             m_Pattern = Reader("Pattern")
             m_ApplicationName = Reader("ApplicationName")
             m_CommandLine = Reader("CommandLine")
+            m_EnvironmentVariables = Reader("EnvironmentVariables")
             m_TimeQuota = DbToLocalInt64(Reader("TimeQuota"))
             m_MemoryQuota = DbToLocalInt64(Reader("MemoryQuota"))
             m_ActiveProcessQuota = DbToLocalInt32(Reader("ActiveProcessQuota"))
@@ -29,7 +31,7 @@ Namespace LocalDb
         End Sub
 
         Private Sub Commit()
-            CompilerMapping.Update(m_Id, m_Pattern, m_ApplicationName, m_CommandLine, m_TimeQuota, m_MemoryQuota, m_ActiveProcessQuota, m_SourceFileName, m_TargetFileName, m_TargetApplicationName, m_TargetCommandLine)
+            CompilerMapping.Update(m_Id, m_Pattern, m_ApplicationName, m_CommandLine, m_EnvironmentVariables, m_TimeQuota, m_MemoryQuota, m_ActiveProcessQuota, m_SourceFileName, m_TargetFileName, m_TargetApplicationName, m_TargetCommandLine)
         End Sub
 
         <DisplayName("扩展名匹配"), CategoryAttribute("编译器设置"), DescriptionAttribute("用于匹配文件扩展名的字符串, 以 . 开头, 支持 ?、* 通配符, 多个匹配串使用 ; 分隔")> _
@@ -64,6 +66,18 @@ Namespace LocalDb
 
             Set(ByVal Value As String)
                 m_CommandLine = Value
+                Commit()
+            End Set
+        End Property
+
+        <DisplayName("环境变量"), CategoryAttribute("编译器设置"), DescriptionAttribute("编译器的环境变量, 支持用一对 % 嵌套的环境变量名称, 多个环境变量以 | 分隔")> _
+        Public Property EnvironmentVariables() As String
+            Get
+                Return m_EnvironmentVariables
+            End Get
+
+            Set(ByVal Value As String)
+                m_EnvironmentVariables = Value
                 Commit()
             End Set
         End Property

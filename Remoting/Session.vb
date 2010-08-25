@@ -82,7 +82,7 @@ Namespace Remoting
         End Sub
 
         Private Sub OnFeedDataSource(ByVal Reader As BinaryReader)
-            m_Runner.Feed(Reader.ReadString())
+            m_Runner.Feed(Reader.ReadString(), Int32.MaxValue)
         End Sub
 
         Private Sub OnDisconnected()

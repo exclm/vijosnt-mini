@@ -358,6 +358,15 @@
 
         Public Declare Auto Function SwitchDesktop Lib "user32.dll" ( _
             ByVal hDesktop As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
+
+        Public Declare Auto Function SendMessage Lib "user32.dll" ( _
+            ByVal hWnd As IntPtr, ByVal Msg As Int32, ByVal wParam As Int32, ByVal lParam As Int32) As Int32
+
+        Public Declare Auto Function ReleaseCapture Lib "user32.dll" () As <MarshalAs(UnmanagedType.Bool)> Boolean
+
+        Public Const WM_SYSCOMMAND As Int32 = &H112
+        Public Const SC_MOVE As Int32 = &HF010
+        Public Const HT_CAPTION As Int32 = &H2
 #End Region
 
 #Region "kernel32.dll"

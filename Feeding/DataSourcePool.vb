@@ -20,5 +20,11 @@
         Public Function [Get](ByVal Key As String) As DataSourceBase
             Return m_DataSources(Key)
         End Function
+
+        Public ReadOnly Property Sources() As ICollection(Of DataSourceBase)
+            Get
+                Return m_DataSources.Values
+            End Get
+        End Property
     End Class
 End Namespace

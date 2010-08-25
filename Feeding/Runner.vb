@@ -49,6 +49,7 @@ Namespace Feeding
             m_Running = 0
             m_CanExit = New ManualResetEvent(True)
             m_AllowQueuing = True
+            Feed(Int32.MaxValue)
         End Sub
 
         Public Sub ReloadCompiler()
@@ -76,21 +77,37 @@ Namespace Feeding
             Dim Id As Int32
         End Structure
 
-        Public Sub Feed(ByVal DataSourceName As String)
-            While True
-                Dim Source As DataSourceBase = m_DataSourcePool.Get(DataSourceName)
+        Public Function Feed(ByVal Limit As Int32) As Int32
+            Dim Count As Int32 = 0
+            For Each Source As DataSourceBase In m_DataSourcePool.Sources
+                Dim Current As Int32 = Feed(Source, Limit)
+                Count += Current
+                Limit -= Current
+                If Limit = 0 Then Exit For
+            Next
+            Return Count
+        End Function
+
+        Public Function Feed(ByVal DataSourceName As String, ByVal Limit As Int32) As Int32
+            Dim Source As DataSourceBase = m_DataSourcePool.Get(DataSourceName)
+            Return Feed(Source, Limit)
+        End Function
+
+        Public Function Feed(ByVal Source As DataSourceBase, ByVal Limit As Int32) As Int32
+            For Index = 0 To Limit - 1
                 Dim Record As Nullable(Of DataSourceRecord) = Source.Take()
                 If Not Record.HasValue Then _
-                    Return
+                    Return Index
                 Dim Context As FeedContext
                 Context.Source = Source
                 Context.Id = Record.Value.Id
                 If Not Queue(Record.Value.FileName, New MemoryStream(Encoding.Default.GetBytes(Record.Value.SourceCode)), AddressOf FeedCompletion, Context) Then
                     Source.Untake(Record.Value.Id)
-                    Return
+                    Return Index
                 End If
-            End While
-        End Sub
+            Next
+            Return Limit
+        End Function
 
         Private Sub FeedCompletion(ByVal Result As TestResult)
             Dim Context As FeedContext = DirectCast(Result.State, FeedContext)
@@ -184,6 +201,7 @@ Namespace Feeding
                 Return
             End If
 
+            ' Compile failed
             If Context.Completion IsNot Nothing Then
                 Context.Completion.Invoke(New TestResult(Context.CompletionState, TestResultFlag.CompileError, Warning, 0, 0, 0, Nothing))
             End If
