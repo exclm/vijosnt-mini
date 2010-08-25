@@ -38,7 +38,7 @@ Namespace Compiling
             Return Result
         End Function
 
-        Private Function ParseEnvironmentVariables(ByVal Value As String) As String()
+        Private Function ParseEnvironmentVariables(ByVal Value As String) As IEnumerable(Of String)
             Dim Map As New Dictionary(Of String, String)(StringComparer.InvariantCultureIgnoreCase)
             For Each Variable As DictionaryEntry In Environment.GetEnvironmentVariables()
                 Map.Add(Variable.Key, Variable.Value)
@@ -60,7 +60,7 @@ Namespace Compiling
             For Each KeyValue As KeyValuePair(Of String, String) In Map
                 Result.Add(KeyValue.Key & "=" & KeyValue.Value)
             Next
-            Return Result.ToArray()
+            Return Result
         End Function
 
         Public Function TryGet(ByVal Text As String) As LocalCompiler

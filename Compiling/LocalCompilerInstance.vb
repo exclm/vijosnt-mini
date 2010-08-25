@@ -8,16 +8,24 @@ Namespace Compiling
         Private m_WorkingPath As TempPath
         Private m_TargetFileName As String
         Private m_TempPathServer As TempPathServer
+        Private m_EnvironmentVariables As IEnumerable(Of String)
 
-        Public Sub New(ByVal WorkingPath As TempPath, ByVal TargetFileName As String, ByVal TempPathServer As TempPathServer)
+        Public Sub New(ByVal WorkingPath As TempPath, ByVal TargetFileName As String, ByVal TempPathServer As TempPathServer, ByVal EnvironmentVariables As IEnumerable(Of String))
             m_WorkingPath = WorkingPath
             m_TargetFileName = TargetFileName
             m_TempPathServer = TempPathServer
+            m_EnvironmentVariables = EnvironmentVariables
         End Sub
 
         Public Overrides ReadOnly Property WorkingDirectory() As String
             Get
                 Return m_WorkingPath.GetPath()
+            End Get
+        End Property
+
+        Public Overrides ReadOnly Property EnvironmentVariables() As IEnumerable(Of String)
+            Get
+                Return m_EnvironmentVariables
             End Get
         End Property
 

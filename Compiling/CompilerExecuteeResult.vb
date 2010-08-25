@@ -5,6 +5,7 @@ Namespace Compiling
         Dim State As Object
         Dim Target As Target
         Dim ExitStatus As Nullable(Of NTSTATUS)
+        Dim StdErrorMessage As String
         Dim TimeQuotaUsage As Int64
         Dim MemoryQuotaUsage As Int64
         Dim Exception As Nullable(Of EXCEPTION_RECORD)

@@ -93,7 +93,7 @@ Namespace Executing
 
             Try
                 ' TODO: Check PE (Static memory limit)
-                ' TODO: Add access to working directory
+                Environment.GiveAccess(m_CurrentDirectory)
 
                 Dim Suspended As ProcessEx.Suspended
                 Try
