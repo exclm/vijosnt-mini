@@ -24,12 +24,12 @@
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
-            Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
-            Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
-            Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("执行设置")
-            Dim TreeNode10 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("本地数据源")
-            Dim TreeNode11 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("外部数据源")
-            Dim TreeNode12 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode7, TreeNode8, TreeNode9, TreeNode10, TreeNode11})
+            Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
+            Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
+            Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("执行设置")
+            Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("本地数据源")
+            Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("外部数据源")
+            Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2, TreeNode3, TreeNode4, TreeNode5})
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ConsoleForm))
             Me.MenuStrip = New System.Windows.Forms.MenuStrip()
             Me.FileMenu = New System.Windows.Forms.ToolStripMenuItem()
@@ -60,7 +60,7 @@
             Me.CompilerToolStrip = New System.Windows.Forms.ToolStrip()
             Me.AddCompilerButton = New System.Windows.Forms.ToolStripSplitButton()
             Me.NewCompilerMenu = New System.Windows.Forms.ToolStripMenuItem()
-            Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripSeparator()
+            Me.AddCompilerBar0 = New System.Windows.Forms.ToolStripSeparator()
             Me.MingwMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.GccMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.GppMenu = New System.Windows.Forms.ToolStripMenuItem()
@@ -84,6 +84,9 @@
             Me.TestSuiteProperty = New System.Windows.Forms.PropertyGrid()
             Me.TestSuiteToolStrip = New System.Windows.Forms.ToolStrip()
             Me.AddTestSuiteButton = New System.Windows.Forms.ToolStripSplitButton()
+            Me.NewTestSuiteMenu = New System.Windows.Forms.ToolStripMenuItem()
+            Me.AddTestSuiteBar0 = New System.Windows.Forms.ToolStripSeparator()
+            Me.AddAPlusBMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.RemoveTestSuiteButton = New System.Windows.Forms.ToolStripButton()
             Me.TestSuiteSeperator0 = New System.Windows.Forms.ToolStripSeparator()
             Me.MoveUpTestSuiteButton = New System.Windows.Forms.ToolStripButton()
@@ -252,19 +255,19 @@
             Me.NavigationTree.Location = New System.Drawing.Point(0, 0)
             Me.NavigationTree.Margin = New System.Windows.Forms.Padding(2)
             Me.NavigationTree.Name = "NavigationTree"
-            TreeNode7.Name = "Compiler"
-            TreeNode7.Text = "编译器映射"
-            TreeNode8.Name = "TestSuite"
-            TreeNode8.Text = "数据集映射"
-            TreeNode9.Name = "Executor"
-            TreeNode9.Text = "执行设置"
-            TreeNode10.Name = "LocalDataSource"
-            TreeNode10.Text = "本地数据源"
-            TreeNode11.Name = "RemoteDataSource"
-            TreeNode11.Text = "外部数据源"
-            TreeNode12.Name = "Root"
-            TreeNode12.Text = "VijosNT"
-            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode12})
+            TreeNode1.Name = "Compiler"
+            TreeNode1.Text = "编译器映射"
+            TreeNode2.Name = "TestSuite"
+            TreeNode2.Text = "数据集映射"
+            TreeNode3.Name = "Executor"
+            TreeNode3.Text = "执行设置"
+            TreeNode4.Name = "LocalDataSource"
+            TreeNode4.Text = "本地数据源"
+            TreeNode5.Name = "RemoteDataSource"
+            TreeNode5.Text = "外部数据源"
+            TreeNode6.Name = "Root"
+            TreeNode6.Text = "VijosNT"
+            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode6})
             Me.NavigationTree.Size = New System.Drawing.Size(189, 515)
             Me.NavigationTree.TabIndex = 0
             '
@@ -403,7 +406,7 @@
             'AddCompilerButton
             '
             Me.AddCompilerButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            Me.AddCompilerButton.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewCompilerMenu, Me.ToolStripMenuItem1, Me.MingwMenu, Me.MsvsMenu})
+            Me.AddCompilerButton.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewCompilerMenu, Me.AddCompilerBar0, Me.MingwMenu, Me.MsvsMenu})
             Me.AddCompilerButton.Image = CType(resources.GetObject("AddCompilerButton.Image"), System.Drawing.Image)
             Me.AddCompilerButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.AddCompilerButton.Name = "AddCompilerButton"
@@ -416,10 +419,10 @@
             Me.NewCompilerMenu.Size = New System.Drawing.Size(211, 22)
             Me.NewCompilerMenu.Text = "新编译器映射"
             '
-            'ToolStripMenuItem1
+            'AddCompilerBar0
             '
-            Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-            Me.ToolStripMenuItem1.Size = New System.Drawing.Size(208, 6)
+            Me.AddCompilerBar0.Name = "AddCompilerBar0"
+            Me.AddCompilerBar0.Size = New System.Drawing.Size(208, 6)
             '
             'MingwMenu
             '
@@ -431,13 +434,13 @@
             'GccMenu
             '
             Me.GccMenu.Name = "GccMenu"
-            Me.GccMenu.Size = New System.Drawing.Size(152, 22)
+            Me.GccMenu.Size = New System.Drawing.Size(142, 22)
             Me.GccMenu.Text = "C 编译器"
             '
             'GppMenu
             '
             Me.GppMenu.Name = "GppMenu"
-            Me.GppMenu.Size = New System.Drawing.Size(152, 22)
+            Me.GppMenu.Size = New System.Drawing.Size(142, 22)
             Me.GppMenu.Text = "C++ 编译器"
             '
             'MsvsMenu
@@ -607,11 +610,29 @@
             'AddTestSuiteButton
             '
             Me.AddTestSuiteButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.AddTestSuiteButton.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewTestSuiteMenu, Me.AddTestSuiteBar0, Me.AddAPlusBMenu})
             Me.AddTestSuiteButton.Image = CType(resources.GetObject("AddTestSuiteButton.Image"), System.Drawing.Image)
             Me.AddTestSuiteButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.AddTestSuiteButton.Name = "AddTestSuiteButton"
             Me.AddTestSuiteButton.Size = New System.Drawing.Size(64, 22)
             Me.AddTestSuiteButton.Text = "添加(&A)"
+            '
+            'NewTestSuiteMenu
+            '
+            Me.NewTestSuiteMenu.Name = "NewTestSuiteMenu"
+            Me.NewTestSuiteMenu.Size = New System.Drawing.Size(148, 22)
+            Me.NewTestSuiteMenu.Text = "新数据集映射"
+            '
+            'AddTestSuiteBar0
+            '
+            Me.AddTestSuiteBar0.Name = "AddTestSuiteBar0"
+            Me.AddTestSuiteBar0.Size = New System.Drawing.Size(145, 6)
+            '
+            'AddAPlusBMenu
+            '
+            Me.AddAPlusBMenu.Name = "AddAPlusBMenu"
+            Me.AddAPlusBMenu.Size = New System.Drawing.Size(148, 22)
+            Me.AddAPlusBMenu.Text = "A+B"
             '
             'RemoveTestSuiteButton
             '
@@ -785,6 +806,7 @@
             'ApplyExecutorButton
             '
             Me.ApplyExecutorButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.ApplyExecutorButton.Enabled = False
             Me.ApplyExecutorButton.Image = CType(resources.GetObject("ApplyExecutorButton.Image"), System.Drawing.Image)
             Me.ApplyExecutorButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.ApplyExecutorButton.Name = "ApplyExecutorButton"
@@ -1010,7 +1032,7 @@
         Friend WithEvents LocalSourceMemoryUsageHeader As System.Windows.Forms.ColumnHeader
         Friend WithEvents LocalSourceDateHeader As System.Windows.Forms.ColumnHeader
         Friend WithEvents NewCompilerMenu As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents ToolStripMenuItem1 As System.Windows.Forms.ToolStripSeparator
+        Friend WithEvents AddCompilerBar0 As System.Windows.Forms.ToolStripSeparator
         Friend WithEvents MingwMenu As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents GccMenu As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents GppMenu As System.Windows.Forms.ToolStripMenuItem
@@ -1019,5 +1041,8 @@
         Friend WithEvents MscppMenu As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents MscsMenu As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents MsvbMenu As System.Windows.Forms.ToolStripMenuItem
+        Friend WithEvents NewTestSuiteMenu As System.Windows.Forms.ToolStripMenuItem
+        Friend WithEvents AddTestSuiteBar0 As System.Windows.Forms.ToolStripSeparator
+        Friend WithEvents AddAPlusBMenu As System.Windows.Forms.ToolStripMenuItem
     End Class
 End Namespace
