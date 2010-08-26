@@ -153,6 +153,11 @@ Namespace Foreground
                     TestSuiteList_SelectedIndexChanged(Nothing, Nothing)
                 Case "ExecutorPage"
                     ExecutorSlotsText.Text = Config.ExecutorSlots
+                    If Config.EnableSecurity Then
+                        ExecutorSecurityCombo.SelectedIndex = 0
+                    Else
+                        ExecutorSecurityCombo.SelectedIndex = 1
+                    End If
                 Case "LocalDataSourcePage"
                     Using Reader As IDataReader = Record.GetHeaders()
                         RefreshListView(LocalSourceList, Reader, "Id", "Id", "$Flag", "FileName", "%Score", "!TimeUsage", "@MemoryUsage", "#Date")
@@ -197,7 +202,7 @@ Namespace Foreground
             End With
         End Sub
 
-        Private Sub AddCompilerButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddCompilerButton.Click
+        Private Sub AddCompilerButton_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddCompilerButton.ButtonClick
             CompilerMapping.Add(".*", String.Empty, String.Empty, String.Empty, 15000 * 10000, Nothing, Nothing, String.Empty, String.Empty, String.Empty, String.Empty)
             ApplyCompilerButton.Enabled = True
             RefreshPage("CompilerPage")
@@ -256,7 +261,7 @@ Namespace Foreground
             End With
         End Sub
 
-        Private Sub AddTestSuiteButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddTestSuiteButton.Click
+        Private Sub AddTestSuiteButton_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddTestSuiteButton.ButtonClick
             TestSuiteMapping.Add("*", "APlusB", String.Empty)
             ApplyTestSuiteButton.Enabled = True
             RefreshPage("TestSuitePage")
@@ -308,18 +313,10 @@ Namespace Foreground
                 If ExecutorSlots < 1 OrElse ExecutorSlots > 16 Then
                     Throw New ArgumentOutOfRangeException("ExecutorSlots")
                 End If
-                ErrorProvider.Clear()
             Catch ex As Exception
-                ErrorProvider.SetError(ExecutorSlotsText, "必须为 1-16 之间的整数")
+                MessageBox.Show("并发数必须为 1-16 之间的整数。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 e.Cancel = True
             End Try
-        End Sub
-
-        Private Sub EnableSecurityCheck_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles EnableSecurityCheck.CheckedChanged
-            If EnableSecurityCheck.Checked Then
-                EnableSecurityCheck.Checked = False
-                MessageBox.Show("点了也没用, 哈哈~~", "zzz..", MessageBoxButtons.OK, MessageBoxIcon.Information)
-            End If
         End Sub
 
         Private Sub ApplyCompilerButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ApplyCompilerButton.Click
