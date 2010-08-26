@@ -334,8 +334,14 @@ Namespace Foreground
             ApplyExecutorButton.Enabled = False
         End Sub
 
-        Private Sub RefreshLocalButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RefreshLocalButton.Click
+        Private Sub RefreshLocalButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RefershLocalButton.Click
             RefreshPage("LocalDataSourcePage")
+        End Sub
+
+        Private Sub ExecutorSecurityCombo_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ExecutorSecurityCombo.SelectedIndexChanged
+            Dim EnableSecurity As Boolean = ExecutorSecurityCombo.SelectedIndex = 0
+            Config.EnableSecurity = EnableSecurity
+            SecurityList.Enabled = EnableSecurity
         End Sub
     End Class
 End Namespace
