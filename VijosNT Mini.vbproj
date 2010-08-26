@@ -9,8 +9,7 @@
     </SchemaVersion>
     <ProjectGuid>{14264ECC-994C-4D8E-985C-CA7B57076454}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>
-    </StartupObject>
+    <StartupObject>VijosNT.EntryPoint</StartupObject>
     <RootNamespace>VijosNT</RootNamespace>
     <AssemblyName>VijosNT Mini</AssemblyName>
     <FileAlignment>512</FileAlignment>
@@ -153,6 +152,7 @@
     <Compile Include="Feeding\DataSourcePool.vb" />
     <Compile Include="Feeding\LocalDataSource.vb" />
     <Compile Include="Feeding\DataSourceRecord.vb" />
+    <Compile Include="Foreground\CompilerDetection.vb" />
     <Compile Include="Foreground\FloatingForm.Designer.vb">
       <DependentUpon>FloatingForm.vb</DependentUpon>
     </Compile>

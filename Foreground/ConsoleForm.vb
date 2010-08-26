@@ -202,7 +202,7 @@ Namespace Foreground
             End With
         End Sub
 
-        Private Sub AddCompilerButton_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddCompilerButton.ButtonClick
+        Private Sub AddCompilerButton_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddCompilerButton.ButtonClick, NewCompilerMenu.Click
             CompilerMapping.Add(".*", String.Empty, String.Empty, String.Empty, 15000 * 10000, Nothing, Nothing, String.Empty, String.Empty, String.Empty, String.Empty)
             ApplyCompilerButton.Enabled = True
             RefreshPage("CompilerPage")
@@ -302,21 +302,8 @@ Namespace Foreground
             RefreshPage("TestSuitePage")
         End Sub
 
-        Private Sub ExecutorSlotsText_Validated(ByVal sender As Object, ByVal e As System.EventArgs) Handles ExecutorSlotsText.Validated
-            Config.ExecutorSlots = Int32.Parse(ExecutorSlotsText.Text)
+        Private Sub ExecutorSlotsText_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ExecutorSlotsText.TextChanged
             ApplyExecutorButton.Enabled = True
-        End Sub
-
-        Private Sub ExecutorSlotsText_Validating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles ExecutorSlotsText.Validating
-            Try
-                Dim ExecutorSlots As Int32 = Int32.Parse(ExecutorSlotsText.Text)
-                If ExecutorSlots < 1 OrElse ExecutorSlots > 16 Then
-                    Throw New ArgumentOutOfRangeException("ExecutorSlots")
-                End If
-            Catch ex As Exception
-                MessageBox.Show("并发数必须为 1-16 之间的整数。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                e.Cancel = True
-            End Try
         End Sub
 
         Private Sub ApplyCompilerButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ApplyCompilerButton.Click
@@ -330,6 +317,18 @@ Namespace Foreground
         End Sub
 
         Private Sub ApplyExecutorButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ApplyExecutorButton.Click
+            Dim ExecutorSlots As Int32
+            Try
+                ExecutorSlots = Int32.Parse(ExecutorSlotsText.Text)
+                If ExecutorSlots < 1 OrElse ExecutorSlots > 16 Then
+                    Throw New ArgumentOutOfRangeException("ExecutorSlots")
+                End If
+            Catch ex As Exception
+                MessageBox.Show("并发数必须为 1-16 之间的整数。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return
+            End Try
+
+            Config.ExecutorSlots = ExecutorSlots
             m_Daemon.ReloadExecutor()
             ApplyExecutorButton.Enabled = False
         End Sub
@@ -342,6 +341,82 @@ Namespace Foreground
             Dim EnableSecurity As Boolean = ExecutorSecurityCombo.SelectedIndex = 0
             Config.EnableSecurity = EnableSecurity
             SecurityList.Enabled = EnableSecurity
+        End Sub
+
+        Private Sub GccMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GccMenu.Click
+            Dim Path As String = DetectMingw("gcc.exe")
+            If Path IsNot Nothing Then
+                CompilerMapping.Add(".c", Path, "gcc -O2 -s -o foo.exe foo.c -lm", String.Empty, 15000 * 10000, Nothing, Nothing, "foo.c", "foo.exe", String.Empty, String.Empty)
+                ApplyCompilerButton.Enabled = True
+                RefreshPage("CompilerPage")
+            End If
+        End Sub
+
+        Private Sub GppMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GppMenu.Click
+            Dim Path As String = DetectMingw("g++.exe")
+            If Path IsNot Nothing Then
+                CompilerMapping.Add(".cpp;.cxx;.cc", Path, "g++ -O2 -s -o foo.exe foo.cpp -lm", String.Empty, 15000 * 10000, Nothing, Nothing, "foo.cpp", "foo.exe", String.Empty, String.Empty)
+                ApplyCompilerButton.Enabled = True
+                RefreshPage("CompilerPage")
+            End If
+        End Sub
+
+        Private Sub MscMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MscMenu.Click
+            Dim Ide As String = Nothing
+            Dim Include As String = Nothing
+            Dim [Lib] As String = Nothing
+            Dim ClPath As String = DetectMscl(Ide, Include, [Lib])
+            Dim SdkPath As String = DetectMssdk()
+            If ClPath IsNot Nothing AndAlso SdkPath IsNot Nothing Then
+                Dim EnvironmentVariables As New List(Of String)
+                If Ide IsNot Nothing Then _
+                    EnvironmentVariables.Add("PATH=" & Ide & ";%PATH%")
+                If Include IsNot Nothing Then _
+                    EnvironmentVariables.Add("INCLUDE=" & Include & ";" & Path.Combine(SdkPath, "Include") & ";%INCLUDE%")
+                If [Lib] IsNot Nothing Then _
+                    EnvironmentVariables.Add("LIB=" & [Lib] & ";" & Path.Combine(SdkPath, "Lib") & ";%LIB%")
+                CompilerMapping.Add(".c", ClPath, "cl /O2 /TC /Fefoo.exe foo.c", Join(EnvironmentVariables.ToArray(), "|"), 15000 * 10000, Nothing, Nothing, "foo.c", "foo.exe", String.Empty, String.Empty)
+                ApplyCompilerButton.Enabled = True
+                RefreshPage("CompilerPage")
+            End If
+        End Sub
+
+        Private Sub MscppMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MscppMenu.Click
+            Dim Ide As String = Nothing
+            Dim Include As String = Nothing
+            Dim [Lib] As String = Nothing
+            Dim ClPath As String = DetectMscl(Ide, Include, [Lib])
+            Dim SdkPath As String = DetectMssdk()
+            If ClPath IsNot Nothing AndAlso SdkPath IsNot Nothing Then
+                Dim EnvironmentVariables As New List(Of String)
+                If Ide IsNot Nothing Then _
+                    EnvironmentVariables.Add("PATH=" & Ide & ";%PATH%")
+                If Include IsNot Nothing Then _
+                    EnvironmentVariables.Add("INCLUDE=" & Include & ";" & Path.Combine(SdkPath, "Include") & ";%INCLUDE%")
+                If [Lib] IsNot Nothing Then _
+                    EnvironmentVariables.Add("LIB=" & [Lib] & ";" & Path.Combine(SdkPath, "Lib") & ";%LIB%")
+                CompilerMapping.Add(".cpp;.cxx;.cc", ClPath, "cl /O2 /TP /Fefoo.exe foo.cpp", Join(EnvironmentVariables.ToArray(), "|"), 15000 * 10000, Nothing, Nothing, "foo.cpp", "foo.exe", String.Empty, String.Empty)
+                ApplyCompilerButton.Enabled = True
+                RefreshPage("CompilerPage")
+            End If
+        End Sub
+
+        Private Sub MscsMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MscsMenu.Click
+            Dim Path As String = DetectNetfx("csc.exe")
+            If Path IsNot Nothing Then
+                CompilerMapping.Add(".cs", Path, "csc /debug- /o+ /checked- /unsafe+ /out:foo.exe foo.cs", String.Empty, 15000 * 10000, Nothing, Nothing, "foo.cs", "foo.exe", String.Empty, String.Empty)
+                ApplyCompilerButton.Enabled = True
+                RefreshPage("CompilerPage")
+            End If
+        End Sub
+
+        Private Sub MsvbMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MsvbMenu.Click
+            Dim Path As String = DetectNetfx("vbc.exe")
+            If Path IsNot Nothing Then
+                CompilerMapping.Add(".vb", Path, "vbc /debug- /o+ /checked- /unsafe+ /out:foo.exe foo.vb", String.Empty, 15000 * 10000, Nothing, Nothing, "foo.vb", "foo.exe", String.Empty, String.Empty)
+                ApplyCompilerButton.Enabled = True
+                RefreshPage("CompilerPage")
+            End If
         End Sub
     End Class
 End Namespace
