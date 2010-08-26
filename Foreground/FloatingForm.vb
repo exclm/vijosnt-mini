@@ -8,9 +8,14 @@ Namespace Foreground
 
         Private Sub FloatingForm_DragDrop(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles Me.DragDrop
             Dim Files As String() = e.Data.GetData(DataFormats.FileDrop)
-            For Each File In Files
-                Using Reader As New StreamReader(File)
-                    LocalDb.Record.Add(Path.GetFileName(File), Reader.ReadToEnd())
+            For Each File As String In Files
+                Using Stream As New FileStream(File, FileMode.Open, FileAccess.Read, FileShare.Read)
+                    If Stream.Length < 1048576 OrElse _
+                        MessageBox.Show("文件 " & File & " 的长度超过 1MB, 确定要继续吗?", "询问", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+                        Using Reader As New StreamReader(Stream)
+                            LocalDb.Record.Add(Path.GetFileName(File), Reader.ReadToEnd())
+                        End Using
+                    End If
                 End Using
             Next
             m_Daemon.FeedDataSource(String.Empty)

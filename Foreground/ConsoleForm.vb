@@ -410,7 +410,7 @@ Namespace Foreground
         Private Sub MscsMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MscsMenu.Click
             Dim Path As String = DetectNetfx("csc.exe")
             If Path IsNot Nothing Then
-                CompilerMapping.Add(".cs", Path, "csc /debug- /o+ /checked- /unsafe+ /out:foo.exe foo.cs", String.Empty, 15000 * 10000, Nothing, Nothing, "foo.cs", "foo.exe", String.Empty, String.Empty)
+                CompilerMapping.Add(".cs", Path, "csc /debug- /optimize+ /checked- /unsafe+ /out:foo.exe foo.cs", String.Empty, 15000 * 10000, Nothing, Nothing, "foo.cs", "foo.exe", String.Empty, String.Empty)
                 ApplyCompilerButton.Enabled = True
                 RefreshPage("CompilerPage")
             End If
@@ -419,7 +419,7 @@ Namespace Foreground
         Private Sub MsvbMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MsvbMenu.Click
             Dim Path As String = DetectNetfx("vbc.exe")
             If Path IsNot Nothing Then
-                CompilerMapping.Add(".vb", Path, "vbc /debug- /o+ /checked- /unsafe+ /out:foo.exe foo.vb", String.Empty, 15000 * 10000, Nothing, Nothing, "foo.vb", "foo.exe", String.Empty, String.Empty)
+                CompilerMapping.Add(".vb", Path, "vbc /debug- /optimize+ /removeintchecks+ /out:foo.exe foo.vb", String.Empty, 15000 * 10000, Nothing, Nothing, "foo.vb", "foo.exe", String.Empty, String.Empty)
                 ApplyCompilerButton.Enabled = True
                 RefreshPage("CompilerPage")
             End If
