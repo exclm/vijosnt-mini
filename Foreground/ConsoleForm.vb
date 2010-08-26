@@ -261,8 +261,14 @@ Namespace Foreground
             End With
         End Sub
 
-        Private Sub AddTestSuiteButton_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddTestSuiteButton.ButtonClick
+        Private Sub AddTestSuiteButton_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddTestSuiteButton.ButtonClick, NewTestSuiteMenu.Click
             TestSuiteMapping.Add("*", "APlusB", String.Empty)
+            ApplyTestSuiteButton.Enabled = True
+            RefreshPage("TestSuitePage")
+        End Sub
+
+        Private Sub AddAPlusBMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddAPlusBMenu.Click
+            TestSuiteMapping.Add("A+B", "APlusB", String.Empty)
             ApplyTestSuiteButton.Enabled = True
             RefreshPage("TestSuitePage")
         End Sub
@@ -417,6 +423,10 @@ Namespace Foreground
                 ApplyCompilerButton.Enabled = True
                 RefreshPage("CompilerPage")
             End If
+        End Sub
+
+        Private Sub NotImplementedHandler() Handles AddSecurityButton.Click, RemoveSecurityButton.Click, CheckSecurityButton.Click
+            MessageBox.Show("还没写代码 O(∩_∩)O", "友情提示", MessageBoxButtons.OK, MessageBoxIcon.Information)
         End Sub
     End Class
 End Namespace
