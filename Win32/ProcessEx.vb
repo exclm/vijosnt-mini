@@ -194,7 +194,6 @@
                         Me.Kill(1)
                     End If
                     m_Thread.Close()
-                    MyBase.Dispose(disposing)
                 End If
                 Me.disposedValue = True
                 MyBase.Dispose(disposing)
