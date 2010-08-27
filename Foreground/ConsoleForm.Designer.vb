@@ -24,12 +24,12 @@
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
-            Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
-            Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
-            Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("执行设置")
-            Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("本地数据源")
-            Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("外部数据源")
-            Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2, TreeNode3, TreeNode4, TreeNode5})
+            Dim TreeNode19 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
+            Dim TreeNode20 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
+            Dim TreeNode21 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("执行设置")
+            Dim TreeNode22 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("本地数据源")
+            Dim TreeNode23 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("外部数据源")
+            Dim TreeNode24 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode19, TreeNode20, TreeNode21, TreeNode22, TreeNode23})
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ConsoleForm))
             Me.MenuStrip = New System.Windows.Forms.MenuStrip()
             Me.FileMenu = New System.Windows.Forms.ToolStripMenuItem()
@@ -67,6 +67,9 @@
             Me.MsvsMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.MscMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.MscppMenu = New System.Windows.Forms.ToolStripMenuItem()
+            Me.NetfxMenu = New System.Windows.Forms.ToolStripMenuItem()
+            Me.MscsMenu = New System.Windows.Forms.ToolStripMenuItem()
+            Me.MsvbMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.JavaMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.PythonMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.RemoveCompilerButton = New System.Windows.Forms.ToolStripButton()
@@ -125,9 +128,6 @@
             Me.ClearLocalButton = New System.Windows.Forms.ToolStripButton()
             Me.RemoteDataSourcePage = New System.Windows.Forms.TabPage()
             Me.ServiceTimer = New System.Windows.Forms.Timer(Me.components)
-            Me.NetfxMenu = New System.Windows.Forms.ToolStripMenuItem()
-            Me.MscsMenu = New System.Windows.Forms.ToolStripMenuItem()
-            Me.MsvbMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.MenuStrip.SuspendLayout()
             Me.StatusStrip.SuspendLayout()
             Me.SplitContainer.Panel1.SuspendLayout()
@@ -260,19 +260,19 @@
             Me.NavigationTree.Location = New System.Drawing.Point(0, 0)
             Me.NavigationTree.Margin = New System.Windows.Forms.Padding(2)
             Me.NavigationTree.Name = "NavigationTree"
-            TreeNode1.Name = "Compiler"
-            TreeNode1.Text = "编译器映射"
-            TreeNode2.Name = "TestSuite"
-            TreeNode2.Text = "数据集映射"
-            TreeNode3.Name = "Executor"
-            TreeNode3.Text = "执行设置"
-            TreeNode4.Name = "LocalDataSource"
-            TreeNode4.Text = "本地数据源"
-            TreeNode5.Name = "RemoteDataSource"
-            TreeNode5.Text = "外部数据源"
-            TreeNode6.Name = "Root"
-            TreeNode6.Text = "VijosNT"
-            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode6})
+            TreeNode19.Name = "Compiler"
+            TreeNode19.Text = "编译器映射"
+            TreeNode20.Name = "TestSuite"
+            TreeNode20.Text = "数据集映射"
+            TreeNode21.Name = "Executor"
+            TreeNode21.Text = "执行设置"
+            TreeNode22.Name = "LocalDataSource"
+            TreeNode22.Text = "本地数据源"
+            TreeNode23.Name = "RemoteDataSource"
+            TreeNode23.Text = "外部数据源"
+            TreeNode24.Name = "Root"
+            TreeNode24.Text = "VijosNT"
+            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode24})
             Me.NavigationTree.Size = New System.Drawing.Size(189, 515)
             Me.NavigationTree.TabIndex = 0
             '
@@ -320,6 +320,7 @@
             Me.InstallButton.Name = "InstallButton"
             Me.InstallButton.Size = New System.Drawing.Size(72, 22)
             Me.InstallButton.Text = "安装服务(&I)"
+            Me.InstallButton.ToolTipText = "安装并启动 VijosNT 测评服务"
             '
             'UninstallButton
             '
@@ -329,6 +330,7 @@
             Me.UninstallButton.Name = "UninstallButton"
             Me.UninstallButton.Size = New System.Drawing.Size(77, 22)
             Me.UninstallButton.Text = "卸载服务(&U)"
+            Me.UninstallButton.ToolTipText = "停止并卸载 VijosNT 测评服务"
             '
             'CompilerPage
             '
@@ -417,6 +419,7 @@
             Me.AddCompilerButton.Name = "AddCompilerButton"
             Me.AddCompilerButton.Size = New System.Drawing.Size(64, 22)
             Me.AddCompilerButton.Text = "添加(&A)"
+            Me.AddCompilerButton.ToolTipText = "添加编译器映射"
             '
             'NewCompilerMenu
             '
@@ -458,14 +461,33 @@
             'MscMenu
             '
             Me.MscMenu.Name = "MscMenu"
-            Me.MscMenu.Size = New System.Drawing.Size(152, 22)
+            Me.MscMenu.Size = New System.Drawing.Size(142, 22)
             Me.MscMenu.Text = "C 编译器"
             '
             'MscppMenu
             '
             Me.MscppMenu.Name = "MscppMenu"
-            Me.MscppMenu.Size = New System.Drawing.Size(152, 22)
+            Me.MscppMenu.Size = New System.Drawing.Size(142, 22)
             Me.MscppMenu.Text = "C++ 编译器"
+            '
+            'NetfxMenu
+            '
+            Me.NetfxMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MscsMenu, Me.MsvbMenu})
+            Me.NetfxMenu.Name = "NetfxMenu"
+            Me.NetfxMenu.Size = New System.Drawing.Size(211, 22)
+            Me.NetfxMenu.Text = ".NET Framework"
+            '
+            'MscsMenu
+            '
+            Me.MscsMenu.Name = "MscsMenu"
+            Me.MscsMenu.Size = New System.Drawing.Size(159, 22)
+            Me.MscsMenu.Text = "C# 编译器"
+            '
+            'MsvbMenu
+            '
+            Me.MsvbMenu.Name = "MsvbMenu"
+            Me.MsvbMenu.Size = New System.Drawing.Size(159, 22)
+            Me.MsvbMenu.Text = "VB.NET 编译器"
             '
             'JavaMenu
             '
@@ -488,6 +510,7 @@
             Me.RemoveCompilerButton.Name = "RemoveCompilerButton"
             Me.RemoveCompilerButton.Size = New System.Drawing.Size(52, 22)
             Me.RemoveCompilerButton.Text = "移除(&R)"
+            Me.RemoveCompilerButton.ToolTipText = "移除编译器映射"
             '
             'CompilerSeperator0
             '
@@ -503,6 +526,7 @@
             Me.MoveUpCompilerButton.Name = "MoveUpCompilerButton"
             Me.MoveUpCompilerButton.Size = New System.Drawing.Size(53, 22)
             Me.MoveUpCompilerButton.Text = "上移(&U)"
+            Me.MoveUpCompilerButton.ToolTipText = "向上移动编译器映射"
             '
             'MoveDownCompilerButton
             '
@@ -513,6 +537,7 @@
             Me.MoveDownCompilerButton.Name = "MoveDownCompilerButton"
             Me.MoveDownCompilerButton.Size = New System.Drawing.Size(53, 22)
             Me.MoveDownCompilerButton.Text = "下移(&D)"
+            Me.MoveDownCompilerButton.ToolTipText = "向下移动编译器映射"
             '
             'CompilerSeperator1
             '
@@ -528,6 +553,7 @@
             Me.ApplyCompilerButton.Name = "ApplyCompilerButton"
             Me.ApplyCompilerButton.Size = New System.Drawing.Size(52, 22)
             Me.ApplyCompilerButton.Text = "应用(&A)"
+            Me.ApplyCompilerButton.ToolTipText = "将编译器映射设置立即应用到正在运行的服务"
             '
             'TestSuitePage
             '
@@ -621,6 +647,7 @@
             Me.AddTestSuiteButton.Name = "AddTestSuiteButton"
             Me.AddTestSuiteButton.Size = New System.Drawing.Size(64, 22)
             Me.AddTestSuiteButton.Text = "添加(&A)"
+            Me.AddTestSuiteButton.ToolTipText = "添加数据集映射"
             '
             'NewTestSuiteMenu
             '
@@ -648,6 +675,7 @@
             Me.RemoveTestSuiteButton.Name = "RemoveTestSuiteButton"
             Me.RemoveTestSuiteButton.Size = New System.Drawing.Size(52, 22)
             Me.RemoveTestSuiteButton.Text = "移除(&R)"
+            Me.RemoveTestSuiteButton.ToolTipText = "移除数据集映射"
             '
             'TestSuiteSeperator0
             '
@@ -663,6 +691,7 @@
             Me.MoveUpTestSuiteButton.Name = "MoveUpTestSuiteButton"
             Me.MoveUpTestSuiteButton.Size = New System.Drawing.Size(53, 22)
             Me.MoveUpTestSuiteButton.Text = "上移(&U)"
+            Me.MoveUpTestSuiteButton.ToolTipText = "向上移动数据集映射"
             '
             'MoveDownTestSuiteButton
             '
@@ -673,6 +702,7 @@
             Me.MoveDownTestSuiteButton.Name = "MoveDownTestSuiteButton"
             Me.MoveDownTestSuiteButton.Size = New System.Drawing.Size(53, 22)
             Me.MoveDownTestSuiteButton.Text = "下移(&D)"
+            Me.MoveDownTestSuiteButton.ToolTipText = "向下移动数据集映射"
             '
             'TestSuiteSeperator1
             '
@@ -688,6 +718,7 @@
             Me.ApplyTestSuiteButton.Name = "ApplyTestSuiteButton"
             Me.ApplyTestSuiteButton.Size = New System.Drawing.Size(52, 22)
             Me.ApplyTestSuiteButton.Text = "应用(&A)"
+            Me.ApplyTestSuiteButton.ToolTipText = "将数据集映射设置立即应用到正在运行的服务"
             '
             'ExecutorPage
             '
@@ -751,6 +782,7 @@
             Me.ExecutorSlotsText.AutoSize = False
             Me.ExecutorSlotsText.Name = "ExecutorSlotsText"
             Me.ExecutorSlotsText.Size = New System.Drawing.Size(30, 25)
+            Me.ExecutorSlotsText.ToolTipText = "允许同时进行的任务数量, 推荐区间为 [CPU 的个数, CPU 的个数*2]"
             '
             'ExecutorSeperator0
             '
@@ -770,6 +802,7 @@
             Me.ExecutorSecurityCombo.Items.AddRange(New Object() {"启用", "禁用"})
             Me.ExecutorSecurityCombo.Name = "ExecutorSecurityCombo"
             Me.ExecutorSecurityCombo.Size = New System.Drawing.Size(48, 25)
+            Me.ExecutorSecurityCombo.ToolTipText = "是否启用安全, 启用安全会略微降低效率, 但可以避免评测代码对计算机造成破坏"
             '
             'ExecutorSeperator1
             '
@@ -784,6 +817,7 @@
             Me.AddSecurityButton.Name = "AddSecurityButton"
             Me.AddSecurityButton.Size = New System.Drawing.Size(52, 22)
             Me.AddSecurityButton.Text = "添加(&A)"
+            Me.AddSecurityButton.ToolTipText = "添加不可信执行环境"
             '
             'RemoveSecurityButton
             '
@@ -793,6 +827,7 @@
             Me.RemoveSecurityButton.Name = "RemoveSecurityButton"
             Me.RemoveSecurityButton.Size = New System.Drawing.Size(52, 22)
             Me.RemoveSecurityButton.Text = "移除(&R)"
+            Me.RemoveSecurityButton.ToolTipText = "移除不可信执行环境"
             '
             'CheckSecurityButton
             '
@@ -802,6 +837,7 @@
             Me.CheckSecurityButton.Name = "CheckSecurityButton"
             Me.CheckSecurityButton.Size = New System.Drawing.Size(76, 22)
             Me.CheckSecurityButton.Text = "安全检查(&C)"
+            Me.CheckSecurityButton.ToolTipText = "对当前的设置进行基本的安全检查 (推荐)"
             '
             'ExecutorSeperator2
             '
@@ -817,6 +853,7 @@
             Me.ApplyExecutorButton.Name = "ApplyExecutorButton"
             Me.ApplyExecutorButton.Size = New System.Drawing.Size(52, 22)
             Me.ApplyExecutorButton.Text = "应用(&A)"
+            Me.ApplyExecutorButton.ToolTipText = "提交更改并将当前的设置应用到正在运行的服务"
             '
             'LocalDataSourcePage
             '
@@ -889,8 +926,8 @@
             Me.RefershLocalButton.Image = CType(resources.GetObject("RefershLocalButton.Image"), System.Drawing.Image)
             Me.RefershLocalButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.RefershLocalButton.Name = "RefershLocalButton"
-            Me.RefershLocalButton.Size = New System.Drawing.Size(52, 22)
-            Me.RefershLocalButton.Text = "刷新(&R)"
+            Me.RefershLocalButton.Size = New System.Drawing.Size(84, 22)
+            Me.RefershLocalButton.Text = "刷新页面显示"
             '
             'LocalSourceSeperator0
             '
@@ -903,8 +940,8 @@
             Me.ClearLocalButton.Image = CType(resources.GetObject("ClearLocalButton.Image"), System.Drawing.Image)
             Me.ClearLocalButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.ClearLocalButton.Name = "ClearLocalButton"
-            Me.ClearLocalButton.Size = New System.Drawing.Size(52, 22)
-            Me.ClearLocalButton.Text = "清除(&C)"
+            Me.ClearLocalButton.Size = New System.Drawing.Size(132, 22)
+            Me.ClearLocalButton.Text = "清除本页面的所有数据"
             '
             'RemoteDataSourcePage
             '
@@ -919,25 +956,6 @@
             'ServiceTimer
             '
             Me.ServiceTimer.Interval = 500
-            '
-            'NetfxMenu
-            '
-            Me.NetfxMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MscsMenu, Me.MsvbMenu})
-            Me.NetfxMenu.Name = "NetfxMenu"
-            Me.NetfxMenu.Size = New System.Drawing.Size(211, 22)
-            Me.NetfxMenu.Text = ".NET Framework"
-            '
-            'MscsMenu
-            '
-            Me.MscsMenu.Name = "MscsMenu"
-            Me.MscsMenu.Size = New System.Drawing.Size(159, 22)
-            Me.MscsMenu.Text = "C# 编译器"
-            '
-            'MsvbMenu
-            '
-            Me.MsvbMenu.Name = "MsvbMenu"
-            Me.MsvbMenu.Size = New System.Drawing.Size(159, 22)
-            Me.MsvbMenu.Text = "VB.NET 编译器"
             '
             'ConsoleForm
             '
