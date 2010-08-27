@@ -2,9 +2,9 @@
     Friend Class VijosTestSuite
         Inherits TestSuite
 
-        Protected Const DefaultMemoryQuota As Int64 = 64 * 1024 * 1024
+        Private Const DefaultMemoryQuota As Int64 = 128 * 1024 * 1024
 
-        Protected Structure Config
+        Private Structure Config
             Public Sub New(ByVal Index As Int32, ByVal InputFileName As String, ByVal AnswerFileName As String, ByVal TimeQuota As Int64, ByVal Weight As Int32)
                 Me.Index = Index
                 Me.InputFileName = InputFileName
@@ -20,7 +20,7 @@
             Dim Weight As Int32
         End Structure
 
-        Protected m_Root As String
+        Private m_Root As String
 
         Public Sub New(ByVal Root As String)
             m_Root = Root
@@ -39,7 +39,7 @@
             End Try
         End Function
 
-        Protected Shared Function LoadConfig(ByVal ProblemRoot As String) As IEnumerable(Of Config)
+        Private Shared Function LoadConfig(ByVal ProblemRoot As String) As IEnumerable(Of Config)
             Using Reader As New StreamReader(Path.Combine(ProblemRoot, "Config.ini"))
                 Dim Count As Int32 = Int32.Parse(Reader.ReadLine())
                 Dim Result As New List(Of Config)
@@ -52,7 +52,7 @@
             End Using
         End Function
 
-        Protected Shared Function LoadTestCase(ByVal ProblemRoot As String, ByVal Config As Config) As TestCase
+        Private Shared Function LoadTestCase(ByVal ProblemRoot As String, ByVal Config As Config) As TestCase
             Return New LocalTestCase(Config.Index, Config.Weight, Path.Combine(ProblemRoot, Config.InputFileName), Path.Combine(ProblemRoot, Config.AnswerFileName), Config.TimeQuota, DefaultMemoryQuota)
         End Function
     End Class
