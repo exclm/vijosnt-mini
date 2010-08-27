@@ -67,6 +67,13 @@ Namespace My.Resources
             End Get
         End Property
         
+        Friend ReadOnly Property BlueVBmp() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("BlueVBmp", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         '''<summary>
         '''  查找类似 VijosNT Service 的本地化字符串。
         '''</summary>
@@ -83,6 +90,13 @@ Namespace My.Resources
             End Get
         End Property
         
+        Friend ReadOnly Property GreenVBmp() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("GreenVBmp", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         '''<summary>
         '''  查找类似 \\.\pipe\vijosnt 的本地化字符串。
         '''</summary>
@@ -96,6 +110,13 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("RedV", resourceCulture)
                 Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property RedVBmp() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("RedVBmp", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
