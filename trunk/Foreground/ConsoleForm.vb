@@ -453,5 +453,12 @@ Namespace Foreground
                 RefreshPage("CompilerPage")
             End If
         End Sub
+
+        Private Sub ClearLocalButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ClearLocalButton.Click
+            If MessageBox.Show("确定要清除所有记录吗?", "确认", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+                Record.Clear()
+                RefreshPage("LocalDataSourcePage")
+            End If
+        End Sub
     End Class
 End Namespace
