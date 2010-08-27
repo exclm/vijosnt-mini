@@ -86,6 +86,7 @@
                 Patterns.Add(Path.Combine(Parent, ExecutableName))
             Next
             Patterns.Add("C:\MinGW\*\" & ExecutableName)
+            Patterns.Add("C:\MinGW32\*\" & ExecutableName)
             Patterns.Add("C:\MinGW64\*\" & ExecutableName)
             Return DetectCompiler(Patterns, ExecutableName)
         End Function
