@@ -26,7 +26,7 @@
         Public Function Create(ByVal ServiceName As String, ByVal DisplayName As String, ByVal BinaryPathName As String) As Service
             Dim Handle As IntPtr = CreateService(GetHandleUnsafe(), ServiceName, DisplayName, _
                 ServiceAccess.SERVICE_ALL_ACCESS, ServiceType.SERVICE_WIN32_OWN_PROCESS, ServiceStartType.SERVICE_AUTO_START, _
-                ServiceErrorControl.SERVICE_ERROR_NORMAL, BinaryPathName, Nothing, 0, Nothing, Nothing, Nothing)
+                ServiceErrorControl.SERVICE_ERROR_NORMAL, BinaryPathName, Nothing, IntPtr.Zero, Nothing, Nothing, Nothing)
 
             Win32True(Handle <> IntPtr.Zero)
             Return New Service(Handle)
