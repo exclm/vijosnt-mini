@@ -24,18 +24,18 @@
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
-            Me.ContextMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
+            Me.MyContextMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
             Me.TransparentMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.ContextBar0 = New System.Windows.Forms.ToolStripSeparator()
             Me.CloseMenu = New System.Windows.Forms.ToolStripMenuItem()
-            Me.ContextMenu.SuspendLayout()
+            Me.MyContextMenu.SuspendLayout()
             Me.SuspendLayout()
             '
-            'ContextMenu
+            'MyContextMenu
             '
-            Me.ContextMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TransparentMenu, Me.ContextBar0, Me.CloseMenu})
-            Me.ContextMenu.Name = "ContextMenu"
-            Me.ContextMenu.Size = New System.Drawing.Size(153, 76)
+            Me.MyContextMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TransparentMenu, Me.ContextBar0, Me.CloseMenu})
+            Me.MyContextMenu.Name = "ContextMenu"
+            Me.MyContextMenu.Size = New System.Drawing.Size(153, 76)
             '
             'TransparentMenu
             '
@@ -61,18 +61,18 @@
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.BackColor = System.Drawing.SystemColors.Control
             Me.ClientSize = New System.Drawing.Size(221, 199)
-            Me.ContextMenuStrip = Me.ContextMenu
+            Me.ContextMenuStrip = Me.MyContextMenu
             Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
             Me.Name = "FloatingForm"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
             Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
             Me.TopMost = True
-            Me.ContextMenu.ResumeLayout(False)
+            Me.MyContextMenu.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub
-        Friend WithEvents ContextMenu As System.Windows.Forms.ContextMenuStrip
+        Friend WithEvents MyContextMenu As System.Windows.Forms.ContextMenuStrip
         Friend WithEvents TransparentMenu As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents ContextBar0 As System.Windows.Forms.ToolStripSeparator
         Friend WithEvents CloseMenu As System.Windows.Forms.ToolStripMenuItem
