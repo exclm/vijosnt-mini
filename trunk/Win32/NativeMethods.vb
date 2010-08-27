@@ -526,6 +526,10 @@
             ByVal NamedPipeHandle As IntPtr, _
             ByRef lpOverlapped As NativeOverlapped) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
+        Public Declare Auto Function IsWow64Process Lib "kernel32.dll" ( _
+            ByVal ProcessHandle As IntPtr, _
+            <MarshalAs(UnmanagedType.Bool)> ByRef Wow64Process As Boolean) As <MarshalAs(UnmanagedType.Bool)> Boolean
+
         Public Enum CreateFileAccess As Int32
             GENERIC_ALL = &H10000000
             GENERIC_READ = &H80000000
