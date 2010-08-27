@@ -287,6 +287,7 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
+    <None Include="publish.bat" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
