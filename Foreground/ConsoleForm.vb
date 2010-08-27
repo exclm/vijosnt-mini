@@ -372,18 +372,20 @@ Namespace Foreground
             Dim Include As String = Nothing
             Dim [Lib] As String = Nothing
             Dim ClPath As String = DetectMscl(Ide, Include, [Lib])
-            Dim SdkPath As String = DetectMssdk()
-            If ClPath IsNot Nothing AndAlso SdkPath IsNot Nothing Then
-                Dim EnvironmentVariables As New List(Of String)
-                If Ide IsNot Nothing Then _
-                    EnvironmentVariables.Add("PATH=" & Ide & ";%PATH%")
-                If Include IsNot Nothing Then _
-                    EnvironmentVariables.Add("INCLUDE=" & Include & ";" & Path.Combine(SdkPath, "Include") & ";%INCLUDE%")
-                If [Lib] IsNot Nothing Then _
-                    EnvironmentVariables.Add("LIB=" & [Lib] & ";" & Path.Combine(SdkPath, "Lib") & ";%LIB%")
-                CompilerMapping.Add(".c", ClPath, "cl /O2 /TC /Fefoo.exe foo.c", Join(EnvironmentVariables.ToArray(), "|"), 15000 * 10000, Nothing, Nothing, "foo.c", "foo.exe", String.Empty, String.Empty)
-                ApplyCompilerButton.Enabled = True
-                RefreshPage("CompilerPage")
+            If ClPath IsNot Nothing Then
+                Dim SdkPath As String = DetectMssdk()
+                If SdkPath IsNot Nothing Then
+                    Dim EnvironmentVariables As New List(Of String)
+                    If Ide IsNot Nothing Then _
+                        EnvironmentVariables.Add("PATH=" & Ide & ";%PATH%")
+                    If Include IsNot Nothing Then _
+                        EnvironmentVariables.Add("INCLUDE=" & Include & ";" & Path.Combine(SdkPath, "Include") & ";%INCLUDE%")
+                    If [Lib] IsNot Nothing Then _
+                        EnvironmentVariables.Add("LIB=" & [Lib] & ";" & Path.Combine(SdkPath, "Lib") & ";%LIB%")
+                    CompilerMapping.Add(".c", ClPath, "cl /O2 /TC /Fefoo.exe foo.c", Join(EnvironmentVariables.ToArray(), "|"), 15000 * 10000, Nothing, Nothing, "foo.c", "foo.exe", String.Empty, String.Empty)
+                    ApplyCompilerButton.Enabled = True
+                    RefreshPage("CompilerPage")
+                End If
             End If
         End Sub
 
@@ -392,18 +394,20 @@ Namespace Foreground
             Dim Include As String = Nothing
             Dim [Lib] As String = Nothing
             Dim ClPath As String = DetectMscl(Ide, Include, [Lib])
-            Dim SdkPath As String = DetectMssdk()
-            If ClPath IsNot Nothing AndAlso SdkPath IsNot Nothing Then
-                Dim EnvironmentVariables As New List(Of String)
-                If Ide IsNot Nothing Then _
-                    EnvironmentVariables.Add("PATH=" & Ide & ";%PATH%")
-                If Include IsNot Nothing Then _
-                    EnvironmentVariables.Add("INCLUDE=" & Include & ";" & Path.Combine(SdkPath, "Include") & ";%INCLUDE%")
-                If [Lib] IsNot Nothing Then _
-                    EnvironmentVariables.Add("LIB=" & [Lib] & ";" & Path.Combine(SdkPath, "Lib") & ";%LIB%")
-                CompilerMapping.Add(".cpp;.cxx;.cc", ClPath, "cl /O2 /TP /Fefoo.exe foo.cpp", Join(EnvironmentVariables.ToArray(), "|"), 15000 * 10000, Nothing, Nothing, "foo.cpp", "foo.exe", String.Empty, String.Empty)
-                ApplyCompilerButton.Enabled = True
-                RefreshPage("CompilerPage")
+            If ClPath IsNot Nothing Then
+                Dim SdkPath As String = DetectMssdk()
+                If SdkPath IsNot Nothing Then
+                    Dim EnvironmentVariables As New List(Of String)
+                    If Ide IsNot Nothing Then _
+                        EnvironmentVariables.Add("PATH=" & Ide & ";%PATH%")
+                    If Include IsNot Nothing Then _
+                        EnvironmentVariables.Add("INCLUDE=" & Include & ";" & Path.Combine(SdkPath, "Include") & ";%INCLUDE%")
+                    If [Lib] IsNot Nothing Then _
+                        EnvironmentVariables.Add("LIB=" & [Lib] & ";" & Path.Combine(SdkPath, "Lib") & ";%LIB%")
+                    CompilerMapping.Add(".cpp;.cxx;.cc", ClPath, "cl /O2 /TP /Fefoo.exe foo.cpp", Join(EnvironmentVariables.ToArray(), "|"), 15000 * 10000, Nothing, Nothing, "foo.cpp", "foo.exe", String.Empty, String.Empty)
+                    ApplyCompilerButton.Enabled = True
+                    RefreshPage("CompilerPage")
+                End If
             End If
         End Sub
 
@@ -427,6 +431,22 @@ Namespace Foreground
 
         Private Sub NotImplementedHandler() Handles AddSecurityButton.Click, RemoveSecurityButton.Click, CheckSecurityButton.Click
             MessageBox.Show("还没写代码 O(∩_∩)O", "友情提示", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        End Sub
+
+        Private Sub JavaMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles JavaMenu.Click
+            Dim Javac As String = DetectJdk("javac.exe")
+            If Javac IsNot Nothing Then
+                Dim Java As String = DetectJdk("java.exe")
+                If Java IsNot Nothing Then
+                    CompilerMapping.Add(".java", Javac, "javac -g:none Main.java", String.Empty, 15000 * 10000, Nothing, Nothing, "Main.java", "Main.class", Java, "java Main")
+                    ApplyCompilerButton.Enabled = True
+                    RefreshPage("CompilerPage")
+                End If
+            End If
+        End Sub
+
+        Private Sub PythonMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PythonMenu.Click
+
         End Sub
     End Class
 End Namespace
