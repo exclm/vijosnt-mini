@@ -8,7 +8,7 @@ Namespace Foreground
 
         Private m_ServiceManager As ServiceManager
         Private m_LastColor As Color
-        Private m_Icon As Icon
+        Private m_Bitmap As Bitmap
         Private m_NotifyIcon As NotifyIcon
         Private m_Console As ConsoleForm
         Private m_ServiceTimer As System.Timers.Timer
@@ -75,15 +75,17 @@ Namespace Foreground
                 m_LastColor = Color
                 Select Case Color
                     Case Color.Red
-                        m_Icon = My.Resources.RedV
+                        m_NotifyIcon.Icon = My.Resources.RedV
+                        m_Bitmap = My.Resources.RedVBmp
                     Case Color.Green
-                        m_Icon = My.Resources.GreenV
+                        m_NotifyIcon.Icon = My.Resources.GreenV
+                        m_Bitmap = My.Resources.GreenVBmp
                     Case Color.Blue
-                        m_Icon = My.Resources.BlueV
+                        m_NotifyIcon.Icon = My.Resources.BlueV
+                        m_Bitmap = My.Resources.BlueVBmp
                 End Select
-                m_NotifyIcon.Icon = m_Icon
                 If m_Floating IsNot Nothing Then
-                    m_Floating.SetIcon(m_Icon)
+                    m_Floating.SetBitmap(m_Bitmap)
                     m_Floating.Invalidate()
                 End If
             End If
@@ -105,7 +107,7 @@ Namespace Foreground
         Public Sub OnFloating(ByVal sender As Object, ByVal e As EventArgs)
             If m_Floating Is Nothing Then
                 m_Floating = New FloatingForm(Me)
-                m_Floating.SetIcon(m_Icon)
+                m_Floating.SetBitmap(m_Bitmap)
                 AddHandler m_Floating.FormClosing, AddressOf OnFloatingClosing
                 AddHandler m_Floating.FormClosed, AddressOf OnFloatingClosed
                 m_Floating.Show()

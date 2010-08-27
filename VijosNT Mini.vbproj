@@ -291,8 +291,11 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="Artwork\BlueV.bmp" />
     <Content Include="Artwork\BlueV.ico" />
+    <Content Include="Artwork\GreenV.bmp" />
     <Content Include="Artwork\GreenV.ico" />
+    <Content Include="Artwork\RedV.bmp" />
     <Content Include="Artwork\RedV.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

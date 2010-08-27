@@ -4,7 +4,7 @@ Imports VijosNT.Win32
 Namespace Foreground
     Friend Class FloatingForm
         Private m_Daemon As Daemon
-        Private m_Icon As Icon
+        Private m_Bitmap As Bitmap
 
         Private Sub FloatingForm_DragDrop(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles Me.DragDrop
             Dim Files As String() = e.Data.GetData(DataFormats.FileDrop)
@@ -30,8 +30,8 @@ Namespace Foreground
             BackColor = Color.White
             Left = Config.FloatingLeft
             Top = Config.FloatingTop
-            Width = 40
-            Height = 40
+            Width = 48
+            Height = 48
             SetTransparent(Config.FloatingTransparent)
         End Sub
 
@@ -45,10 +45,10 @@ Namespace Foreground
 
         Private Sub FloatingForm_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Me.Paint
             With e.Graphics
-                .DrawRectangle(Pens.Black, New Rectangle(0, 0, 39, 39))
-                Dim Icon As Icon = m_Icon
-                If Icon IsNot Nothing Then _
-                    .DrawIcon(m_Icon, 4, 4)
+                Dim Bitmap As Bitmap = m_Bitmap
+                If Bitmap IsNot Nothing Then _
+                    .DrawImage(Bitmap, 0, 0)
+                .DrawRectangle(Pens.Black, New Rectangle(0, 0, 47, 47))
             End With
         End Sub
 
@@ -61,8 +61,8 @@ Namespace Foreground
             ' 在 InitializeComponent() 调用之后添加任何初始化。
         End Sub
 
-        Public Sub SetIcon(ByVal Icon As Icon)
-            m_Icon = Icon
+        Public Sub SetBitmap(ByVal Bitmap As Bitmap)
+            m_Bitmap = Bitmap
         End Sub
 
         Private Sub CloseMenu_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles CloseMenu.Click
