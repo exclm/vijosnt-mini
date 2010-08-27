@@ -24,12 +24,12 @@
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
-            Dim TreeNode19 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
-            Dim TreeNode20 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
-            Dim TreeNode21 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("执行设置")
-            Dim TreeNode22 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("本地数据源")
-            Dim TreeNode23 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("外部数据源")
-            Dim TreeNode24 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode19, TreeNode20, TreeNode21, TreeNode22, TreeNode23})
+            Dim TreeNode25 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
+            Dim TreeNode26 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
+            Dim TreeNode27 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("执行设置")
+            Dim TreeNode28 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("本地数据源")
+            Dim TreeNode29 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("外部数据源")
+            Dim TreeNode30 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode25, TreeNode26, TreeNode27, TreeNode28, TreeNode29})
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ConsoleForm))
             Me.MenuStrip = New System.Windows.Forms.MenuStrip()
             Me.FileMenu = New System.Windows.Forms.ToolStripMenuItem()
@@ -260,19 +260,19 @@
             Me.NavigationTree.Location = New System.Drawing.Point(0, 0)
             Me.NavigationTree.Margin = New System.Windows.Forms.Padding(2)
             Me.NavigationTree.Name = "NavigationTree"
-            TreeNode19.Name = "Compiler"
-            TreeNode19.Text = "编译器映射"
-            TreeNode20.Name = "TestSuite"
-            TreeNode20.Text = "数据集映射"
-            TreeNode21.Name = "Executor"
-            TreeNode21.Text = "执行设置"
-            TreeNode22.Name = "LocalDataSource"
-            TreeNode22.Text = "本地数据源"
-            TreeNode23.Name = "RemoteDataSource"
-            TreeNode23.Text = "外部数据源"
-            TreeNode24.Name = "Root"
-            TreeNode24.Text = "VijosNT"
-            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode24})
+            TreeNode25.Name = "Compiler"
+            TreeNode25.Text = "编译器映射"
+            TreeNode26.Name = "TestSuite"
+            TreeNode26.Text = "数据集映射"
+            TreeNode27.Name = "Executor"
+            TreeNode27.Text = "执行设置"
+            TreeNode28.Name = "LocalDataSource"
+            TreeNode28.Text = "本地数据源"
+            TreeNode29.Name = "RemoteDataSource"
+            TreeNode29.Text = "外部数据源"
+            TreeNode30.Name = "Root"
+            TreeNode30.Text = "VijosNT"
+            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode30})
             Me.NavigationTree.Size = New System.Drawing.Size(189, 515)
             Me.NavigationTree.TabIndex = 0
             '
@@ -802,7 +802,7 @@
             Me.ExecutorSecurityCombo.Items.AddRange(New Object() {"启用", "禁用"})
             Me.ExecutorSecurityCombo.Name = "ExecutorSecurityCombo"
             Me.ExecutorSecurityCombo.Size = New System.Drawing.Size(48, 25)
-            Me.ExecutorSecurityCombo.ToolTipText = "是否启用安全, 启用安全会略微降低效率, 但可以避免评测代码对计算机造成破坏"
+            Me.ExecutorSecurityCombo.ToolTipText = "启用安全会略微降低执行效率, 但可以避免评测代码对计算机造成破坏"
             '
             'ExecutorSeperator1
             '
@@ -926,8 +926,8 @@
             Me.RefershLocalButton.Image = CType(resources.GetObject("RefershLocalButton.Image"), System.Drawing.Image)
             Me.RefershLocalButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.RefershLocalButton.Name = "RefershLocalButton"
-            Me.RefershLocalButton.Size = New System.Drawing.Size(84, 22)
-            Me.RefershLocalButton.Text = "刷新页面显示"
+            Me.RefershLocalButton.Size = New System.Drawing.Size(52, 22)
+            Me.RefershLocalButton.Text = "刷新(&R)"
             '
             'LocalSourceSeperator0
             '
@@ -940,8 +940,8 @@
             Me.ClearLocalButton.Image = CType(resources.GetObject("ClearLocalButton.Image"), System.Drawing.Image)
             Me.ClearLocalButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.ClearLocalButton.Name = "ClearLocalButton"
-            Me.ClearLocalButton.Size = New System.Drawing.Size(132, 22)
-            Me.ClearLocalButton.Text = "清除本页面的所有数据"
+            Me.ClearLocalButton.Size = New System.Drawing.Size(52, 22)
+            Me.ClearLocalButton.Text = "清除(&C)"
             '
             'RemoteDataSourcePage
             '
