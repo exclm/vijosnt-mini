@@ -153,6 +153,9 @@
     <Compile Include="Feeding\LocalDataSource.vb" />
     <Compile Include="Feeding\DataSourceRecord.vb" />
     <Compile Include="Foreground\CompilerDetection.vb" />
+    <Compile Include="Foreground\DoubleBufferedListView.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Foreground\FloatingForm.Designer.vb">
       <DependentUpon>FloatingForm.vb</DependentUpon>
     </Compile>
