@@ -446,7 +446,12 @@ Namespace Foreground
         End Sub
 
         Private Sub PythonMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PythonMenu.Click
-
+            Dim Path As String = DetectPython()
+            If Path IsNot Nothing Then
+                CompilerMapping.Add(".py", String.Empty, String.Empty, String.Empty, 15000 * 10000, Nothing, Nothing, "foo.py", "foo.py", Path, "python -O foo.py")
+                ApplyCompilerButton.Enabled = True
+                RefreshPage("CompilerPage")
+            End If
         End Sub
     End Class
 End Namespace
