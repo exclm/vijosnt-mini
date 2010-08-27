@@ -2,6 +2,7 @@
 Imports VijosNT.Executing
 Imports VijosNT.Testing
 Imports VijosNT.Utility
+Imports VijosNT.Win32
 
 Namespace Feeding
     Friend Class Runner
@@ -156,16 +157,26 @@ Namespace Feeding
                 Return True
             End If
 
-            Try
-                m_Executor.Queue(New CompilerExecutee(m_WatchDog, m_ProcessMonitor, Context.Compiler, SourceCode, AddressOf TestCompileCompletion, Context))
-            Catch ex As Exception
-                If Context.Completion IsNot Nothing Then
-                    Context.Completion.Invoke(New TestResult(Context.CompletionState, TestResultFlag.InternalError, ex.ToString(), 0, 0, 0, Nothing))
+            With Context.Compiler
+                If .ApplicationName Is Nothing OrElse .ApplicationName.Length = 0 Then
+                    Dim Result As New CompilerExecuteeResult
+                    Result.State = Context
+                    Result.ExitStatus = NTSTATUS.STATUS_SUCCESS
+                    Result.Target = .CreateInstance(SourceCode).OpenTarget()
+                    TestCompileCompletion(Result)
+                Else
+                    Try
+                        m_Executor.Queue(New CompilerExecutee(m_WatchDog, m_ProcessMonitor, Context.Compiler, SourceCode, AddressOf TestCompileCompletion, Context))
+                    Catch ex As Exception
+                        If Context.Completion IsNot Nothing Then
+                            Context.Completion.Invoke(New TestResult(Context.CompletionState, TestResultFlag.InternalError, ex.ToString(), 0, 0, 0, Nothing))
+                        End If
+                        If Interlocked.Decrement(m_Running) = 0 Then _
+                            m_CanExit.Set()
+                        Return True
+                    End Try
                 End If
-                If Interlocked.Decrement(m_Running) = 0 Then _
-                    m_CanExit.Set()
-                Return True
-            End Try
+            End With
 
             Return True
         End Function

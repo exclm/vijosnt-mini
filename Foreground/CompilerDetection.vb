@@ -194,5 +194,13 @@
             Patterns.Add(ProgramFilesX86Path & "\java\jre*\bin\" & ExecutableName)
             Return DetectCompiler(Patterns, ExecutableName)
         End Function
+
+        Public Function DetectPython() As String
+            Dim Patterns As New List(Of String)
+            Patterns.Add("C:\Python27\python.exe")
+            Patterns.Add("C:\Python26\python.exe")
+            Patterns.Add("C:\Python25\python.exe")
+            Return DetectCompiler(Patterns, "python.exe")
+        End Function
     End Module
 End Namespace
