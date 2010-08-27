@@ -18,6 +18,7 @@ Namespace Executing
         Private m_TimeQuota As Nullable(Of Int64)
         Private m_MemoryQuota As Nullable(Of Int64)
         Private m_ActiveProcessQuota As Nullable(Of Int32)
+        Private m_EnableUIRestrictions As Boolean
         Private m_Remaining As Int32
         Private m_Completion As ProcessExecuteeCompletion
         Private m_Result As ProcessExecuteeResult
@@ -30,16 +31,18 @@ Namespace Executing
             ByVal ApplicationName As String, ByVal CommandLine As String, _
             ByVal EnvironmentVariables As IEnumerable(Of String), ByVal CurrentDirectory As String, _
             ByVal StdInput As KernelObject, ByVal StdOutput As KernelObject, ByVal StdError As KernelObject, _
-            ByVal TimeQuota As Nullable(Of Int64), ByVal MemoryQuota As Nullable(Of Int64), ByVal ActiveProcessQuota As Nullable(Of Int32), _
+            ByVal TimeQuota As Nullable(Of Int64), ByVal MemoryQuota As Nullable(Of Int64), _
+            ByVal ActiveProcessQuota As Nullable(Of Int32), ByVal EnableUIRestrictions As Boolean, _
             ByVal Completion As ProcessExecuteeCompletion, ByVal State As Object)
-            FinalConstruct(WatchDog, ProcessMonitor, ApplicationName, CommandLine, EnvironmentVariables, CurrentDirectory, StdInput, StdOutput, StdError, TimeQuota, MemoryQuota, ActiveProcessQuota, Completion, State)
+            FinalConstruct(WatchDog, ProcessMonitor, ApplicationName, CommandLine, EnvironmentVariables, CurrentDirectory, StdInput, StdOutput, StdError, TimeQuota, MemoryQuota, ActiveProcessQuota, EnableUIRestrictions, Completion, State)
         End Sub
 
         Protected Sub FinalConstruct(ByVal WatchDog As WatchDog, ByVal ProcessMonitor As ProcessMonitor, _
             ByVal ApplicationName As String, ByVal CommandLine As String, _
             ByVal EnvironmentVariables As IEnumerable(Of String), ByVal CurrentDirectory As String, _
             ByVal StdInput As KernelObject, ByVal StdOutput As KernelObject, ByVal StdError As KernelObject, _
-            ByVal TimeQuota As Nullable(Of Int64), ByVal MemoryQuota As Nullable(Of Int64), ByVal ActiveProcessQuota As Nullable(Of Int32), _
+            ByVal TimeQuota As Nullable(Of Int64), ByVal MemoryQuota As Nullable(Of Int64), _
+            ByVal ActiveProcessQuota As Nullable(Of Int32), ByVal EnableUIRestrictions As Boolean, _
             ByVal Completion As ProcessExecuteeCompletion, ByVal State As Object)
 
             m_WatchDog = WatchDog
@@ -54,6 +57,7 @@ Namespace Executing
             m_TimeQuota = TimeQuota
             m_MemoryQuota = MemoryQuota
             m_ActiveProcessQuota = ActiveProcessQuota
+            m_EnableUIRestrictions = EnableUIRestrictions
             m_Completion = Completion
             m_Result.State = State
         End Sub
@@ -115,7 +119,20 @@ Namespace Executing
                     .DieOnUnhandledException = True
                     .Commit()
                 End With
-                ' TODO: UI Limit
+
+                If m_EnableUIRestrictions Then
+                    With m_JobObject.UIRestrictions
+                        .Handles = True
+                        .ReadClipboard = True
+                        .WriteClipboard = True
+                        .SystemParameters = True
+                        .DisplaySettings = True
+                        .GlobalAtoms = True
+                        .Desktop = True
+                        .ExitWindows = True
+                        .Commit()
+                    End With
+                End If
 
                 m_Remaining = 2
 

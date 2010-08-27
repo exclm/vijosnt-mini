@@ -26,7 +26,28 @@ Namespace Feeding
 
         Public Overrides Sub Untake(ByVal Id As Int32, ByVal Result As TestResult)
             ' TODO: Serialize details into byte array
-            Record.UpdateFinal(Id, Result.Flag.ToString(), Result.Score, Result.TimeUsage, Result.MemoryUsage, Nothing)
+            Using Stream As New MemoryStream()
+                Using Writer As New BinaryWriter(Stream)
+                    If Result.Warning Is Nothing Then
+                        Writer.Write(String.Empty)
+                    Else
+                        Writer.Write(Result.Warning)
+                    End If
+                    For Each Entry As TestResultEntry In Result.Entries
+                        Writer.Write(Entry.Index)
+                        Writer.Write(Entry.Flag)
+                        Writer.Write(Entry.Score)
+                        Writer.Write(Entry.TimeUsage)
+                        Writer.Write(Entry.MemoryUsage)
+                        If Entry.Warning Is Nothing Then
+                            Writer.Write(String.Empty)
+                        Else
+                            Writer.Write(Entry.Warning)
+                        End If
+                    Next
+                End Using
+                Record.UpdateFinal(Id, Result.Flag.ToString(), Result.Score, Result.TimeUsage, Result.MemoryUsage, Stream.ToArray())
+            End Using
         End Sub
     End Class
 End Namespace

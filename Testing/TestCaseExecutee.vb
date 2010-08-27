@@ -29,7 +29,7 @@ Namespace Testing
 
             FinalConstruct(WatchDog, ProcessMonitor, TargetInstance.ApplicationName, TargetInstance.CommandLine, TargetInstance.EnvironmentVariables, TargetInstance.WorkingDirectory, _
                 TestCase.OpenInput(), TestCase.OpenOutput(), StdErrorHandle, _
-                TestCase.TimeQuota, TestCase.MemoryQuota, 1, AddressOf ProcessExecuteeCompletion, Nothing)
+                TestCase.TimeQuota, TestCase.MemoryQuota, 1, True, AddressOf ProcessExecuteeCompletion, Nothing)
         End Sub
 
         Public Overrides ReadOnly Property RequiredEnvironment() As EnvironmentTag
