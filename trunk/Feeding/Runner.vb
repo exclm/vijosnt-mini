@@ -195,8 +195,12 @@ Namespace Feeding
                 ' TODO: Compiler raised an exception
                 Warning = "编译器发生异常"
             ElseIf Result.ExitStatus <> Win32.NTSTATUS.STATUS_SUCCESS Then
-                ' TODO: Compile error, get information from stderr
-                Warning = "编译器返回非 0 值 (编译失败)"
+                Warning = "编译失败, 返回值为 " & DirectCast(Result.ExitStatus.Value, Int32).ToString()
+                If Result.StdErrorMessage Is Nothing Then
+                    Warning += ", 编译器无输出"
+                Else
+                    Warning += ", 编译器输出如下" & vbCrLf & vbCrLf & Result.StdErrorMessage
+                End If
             ElseIf Result.Target Is Nothing Then
                 Warning = "编译器出现未知错误"
             Else
@@ -237,10 +241,14 @@ Namespace Feeding
                     Entry.Warning = "发生异常"
                 Else
                     If Result.ExitStatus <> Win32.NTSTATUS.STATUS_SUCCESS Then
-                        Entry.Warning = "程序返回值非零 (" & DirectCast(Result.ExitStatus.Value, Int32).ToString() & ")"
-                    Else
-                        ' TODO: Collect data from stderr and make warning
-                        Entry.Warning = Nothing
+                        Entry.Warning = "运行失败, 程序返回值为 " & DirectCast(Result.ExitStatus.Value, Int32).ToString()
+                        If Result.StdErrorMessage Is Nothing Then
+                            Entry.Warning += ", 无标准错误输出"
+                        Else
+                            Entry.Warning += ", 标准错误输出如下" & vbCrLf & vbCrLf & Result.StdErrorMessage
+                        End If
+                    ElseIf Result.StdErrorMessage IsNot Nothing Then
+                        Entry.Warning = "标准错误输出如下" & vbCrLf & vbCrLf & Result.StdErrorMessage
                     End If
 
                     If Not Result.Score.HasValue Then
