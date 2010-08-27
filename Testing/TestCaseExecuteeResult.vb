@@ -5,6 +5,7 @@ Namespace Testing
         Dim State As Object
         Dim Index As Int32
         Dim ExitStatus As Nullable(Of NTSTATUS)
+        Dim StdErrorMessage As String
         Dim Score As Nullable(Of Int32)
         Dim TimeQuotaUsage As Int64
         Dim MemoryQuotaUsage As Int64
