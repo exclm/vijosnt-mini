@@ -4,11 +4,11 @@ Namespace Utility
     Friend Class ProcessMonitor
         Public Delegate Sub Callback(ByVal Result As Result)
 
-        Protected m_DebugObject As DebugObject
-        Protected m_Thread As Thread
-        Protected m_Contexts As Dictionary(Of Int32, Context)
+        Private m_DebugObject As DebugObject
+        Private m_Thread As Thread
+        Private m_Contexts As Dictionary(Of Int32, Context)
 
-        Protected Class Context
+        Private Class Context
             Implements IDisposable
 
             Public Sub New(ByVal Process As KernelObject, ByVal Callback As Callback, ByVal State As Object)
@@ -46,10 +46,10 @@ Namespace Utility
                 End Set
             End Property
 
-            Protected m_Process As KernelObject
-            Protected m_Callback As Callback
-            Protected m_CallbackState As Object
-            Protected m_Exception As Nullable(Of EXCEPTION_RECORD)
+            Private m_Process As KernelObject
+            Private m_Callback As Callback
+            Private m_CallbackState As Object
+            Private m_Exception As Nullable(Of EXCEPTION_RECORD)
 
 #Region "IDisposable Support"
             Private disposedValue As Boolean ' 检测冗余的调用
@@ -112,13 +112,13 @@ Namespace Utility
             End SyncLock
         End Sub
 
-        Protected Sub ThreadEntry()
+        Private Sub ThreadEntry()
             While m_DebugObject.WaitForEvent()
                 ' Do nothing
             End While
         End Sub
 
-        Protected Sub ExitProcessHandler(ByVal Header As DebugObject.Header, ByVal Info As DebugObject.ExitProcessInfo, ByRef ContinueStatus As NTSTATUS)
+        Private Sub ExitProcessHandler(ByVal Header As DebugObject.Header, ByVal Info As DebugObject.ExitProcessInfo, ByRef ContinueStatus As NTSTATUS)
             Dim Context As Context
             SyncLock m_Contexts
                 Context = m_Contexts(Header.AppClientId.UniqueProcess)
@@ -128,7 +128,7 @@ Namespace Utility
             Context.Dispose()
         End Sub
 
-        Protected Sub ExceptionHandler(ByVal Header As DebugObject.Header, ByVal Info As DebugObject.ExceptionInfo, ByRef ContinueStatus As NTSTATUS)
+        Private Sub ExceptionHandler(ByVal Header As DebugObject.Header, ByVal Info As DebugObject.ExceptionInfo, ByRef ContinueStatus As NTSTATUS)
             If Info.FirstChance = 0 Then
                 Dim Context As Context
                 SyncLock m_Contexts
@@ -136,6 +136,8 @@ Namespace Utility
                 End SyncLock
                 Context.Exception = Info.ExceptionRecord
                 Win32True(TerminateProcess(Context.Process.GetHandleUnsafe(), Info.ExceptionRecord.ExceptionCode))
+                ContinueStatus = NTSTATUS.DBG_EXCEPTION_HANDLED
+            ElseIf Info.ExceptionRecord.ExceptionCode = ExceptionCode.EXCEPTION_BREAKPOINT Then
                 ContinueStatus = NTSTATUS.DBG_EXCEPTION_HANDLED
             End If
         End Sub
