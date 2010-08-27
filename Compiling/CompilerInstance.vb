@@ -4,12 +4,7 @@
 
         Public MustOverride ReadOnly Property WorkingDirectory() As String
         Public MustOverride Function OpenTarget() As Target
-
-        Public Overridable ReadOnly Property EnvironmentVariables() As IEnumerable(Of String)
-            Get
-                Return Nothing
-            End Get
-        End Property
+        Public MustOverride ReadOnly Property Compiler() As Compiler
 
 #Region "IDisposable Support"
         ' IDisposable

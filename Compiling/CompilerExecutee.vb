@@ -28,7 +28,7 @@ Namespace Compiling
 
             m_Remaining = 2
             FinalConstruct(WatchDog, ProcessMonitor, _
-                Compiler.ApplicationName, Compiler.CommandLine, CompilerInstance.EnvironmentVariables, CompilerInstance.WorkingDirectory, _
+                Compiler.ApplicationName, Compiler.CommandLine, Compiler.EnvironmentVariables, CompilerInstance.WorkingDirectory, _
                 Nothing, StdOutputHandle, StdErrorHandle, Compiler.TimeQuota, Compiler.MemoryQuota, Compiler.ActiveProcessQuota, _
                 AddressOf ProcessExecuteeCompletion, CompilerInstance)
         End Sub

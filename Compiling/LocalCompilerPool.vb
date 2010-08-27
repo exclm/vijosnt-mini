@@ -29,8 +29,10 @@ Namespace Compiling
                         DbToLocalInt64(Reader("TimeQuota")), _
                         DbToLocalInt64(Reader("MemoryQuota")), _
                         DbToLocalInt32(Reader("ActiveProcessQuota")), _
-                        Reader("SourceFileName"), Reader("TargetFileName"))
-                    ' TODO: TargetApplicationName and TargetCommandLine
+                        Reader("SourceFileName"), _
+                        Reader("TargetFileName"), _
+                        Reader("TargetApplicationName"), _
+                        Reader("TargetCommandLine"))
                     Result.Add(Entry)
                 End While
             End Using
