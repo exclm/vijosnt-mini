@@ -21,7 +21,7 @@ Namespace Testing
             m_TestCase = TestCase
 
             m_Remaining = 2
-            FinalConstruct(WatchDog, ProcessMonitor, TargetInstance.ApplicationName, Nothing, Nothing, Nothing, _
+            FinalConstruct(WatchDog, ProcessMonitor, TargetInstance.ApplicationName, TargetInstance.CommandLine, TargetInstance.EnvironmentVariables, TargetInstance.WorkingDirectory, _
                 TestCase.OpenInput(), TestCase.OpenOutput(), Nothing, _
                 TestCase.TimeQuota, TestCase.MemoryQuota, 1, AddressOf ProcessExecuteeCompletion, Nothing)
         End Sub

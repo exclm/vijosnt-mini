@@ -13,10 +13,13 @@ Namespace Compiling
         Private m_ActiveProcessQuota As Nullable(Of Int32)
         Private m_SourceFileName As String
         Private m_TargetFileName As String
+        Private m_TargetApplicationName As String
+        Private m_TargetCommandLine As String
 
         Public Sub New(ByVal TempPathServer As TempPathServer, ByVal ApplicationName As String, ByVal CommandLine As String, ByVal EnvironmentVariables As IEnumerable(Of String), _
             ByVal TimeQuota As Nullable(Of Int64), ByVal MemoryQuota As Nullable(Of Int64), ByVal ActiveProcessQuota As Nullable(Of Int64), _
-            ByVal SourceFileName As String, ByVal TargetFileName As String)
+            ByVal SourceFileName As String, ByVal TargetFileName As String, _
+            ByVal TargetApplicationName As String, ByVal TargetCommandLine As String)
 
             m_TempPathServer = TempPathServer
             m_ApplicationName = ApplicationName
@@ -27,14 +30,22 @@ Namespace Compiling
             m_ActiveProcessQuota = ActiveProcessQuota
             m_SourceFileName = SourceFileName
             m_TargetFileName = TargetFileName
+            m_TargetApplicationName = TargetApplicationName
+            m_TargetCommandLine = TargetCommandLine
         End Sub
+
+        Public ReadOnly Property TempPathServer() As TempPathServer
+            Get
+                Return m_TempPathServer
+            End Get
+        End Property
 
         Public Overrides Function CreateInstance(ByVal SourceCode As Stream) As CompilerInstance
             Dim TempPath As TempPath = m_TempPathServer.CreateTempPath()
             Using SourceFile As New FileStream(TempPath.Combine(m_SourceFileName), FileMode.CreateNew, FileAccess.Write, FileShare.None)
                 BufferedCopy(SourceCode, SourceFile)
             End Using
-            Return New LocalCompilerInstance(TempPath, m_TargetFileName, m_TempPathServer, m_EnvironmentVariables)
+            Return New LocalCompilerInstance(TempPath, Me)
         End Function
 
         Public Overrides ReadOnly Property ApplicationName() As String
@@ -49,13 +60,13 @@ Namespace Compiling
             End Get
         End Property
 
-        Public Overrides ReadOnly Property EnvironmentVariables As String()
+        Public Overrides ReadOnly Property EnvironmentVariables As IEnumerable(Of String)
             Get
                 Return m_EnvironmentVariables
             End Get
         End Property
 
-        Public Overrides ReadOnly Property TimeQuota As Nullable(Of Int64)
+        Public Overrides ReadOnly Property TimeQuota() As Nullable(Of Int64)
             Get
                 Return m_TimeQuota
             End Get
@@ -70,6 +81,30 @@ Namespace Compiling
         Public Overrides ReadOnly Property ActiveProcessQuota() As Nullable(Of Int32)
             Get
                 Return m_ActiveProcessQuota
+            End Get
+        End Property
+
+        Public Overrides ReadOnly Property SourceFileName() As String
+            Get
+                Return m_SourceFileName
+            End Get
+        End Property
+
+        Public Overrides ReadOnly Property TargetFileName() As String
+            Get
+                Return m_TargetFileName
+            End Get
+        End Property
+
+        Public Overrides ReadOnly Property TargetApplicationName() As String
+            Get
+                Return m_TargetApplicationName
+            End Get
+        End Property
+
+        Public Overrides ReadOnly Property TargetCommandLine() As String
+            Get
+                Return m_TargetCommandLine
             End Get
         End Property
     End Class

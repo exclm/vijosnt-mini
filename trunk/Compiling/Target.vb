@@ -2,6 +2,7 @@
     Friend MustInherit Class Target
         Implements IDisposable
 
+        Public MustOverride ReadOnly Property CompilerInstance() As CompilerInstance
         Public MustOverride Function CreateInstance() As TargetInstance
 
 #Region "IDisposable Support"

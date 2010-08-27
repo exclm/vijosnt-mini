@@ -5,22 +5,27 @@ Namespace Compiling
         Inherits Target
         Implements IDisposable
 
-        Private m_TempPathServer As TempPathServer
         Private m_TargetStream As Stream
         Private m_CompilerInstance As LocalCompilerInstance
 
-        Public Sub New(ByVal TempPathServer As TempPathServer, ByVal TargetStream As Stream, ByVal CompilerInstance As LocalCompilerInstance)
-            m_TempPathServer = TempPathServer
+        Public Sub New(ByVal TargetStream As Stream, ByVal CompilerInstance As LocalCompilerInstance)
             m_TargetStream = TargetStream
             m_CompilerInstance = CompilerInstance
         End Sub
 
+        Public Overrides ReadOnly Property CompilerInstance() As CompilerInstance
+            Get
+                Return m_CompilerInstance
+            End Get
+        End Property
+
         Public Overrides Function CreateInstance() As TargetInstance
-            Dim TempPath As TempPath = m_TempPathServer.CreateTempPath()
-            Using DestinationStream As New FileStream(TempPath.Combine("Target.exe"), FileMode.CreateNew, FileAccess.Write, FileShare.None)
+            Dim Compiler As LocalCompiler = DirectCast(m_CompilerInstance.Compiler, LocalCompiler)
+            Dim TempPath As TempPath = Compiler.TempPathServer.CreateTempPath()
+            Using DestinationStream As New FileStream(TempPath.Combine(Compiler.TargetFileName), FileMode.CreateNew, FileAccess.Write, FileShare.None)
                 BufferedCopySeek0(m_TargetStream, DestinationStream)
             End Using
-            Return New LocalTargetInstance(TempPath)
+            Return New LocalTargetInstance(TempPath, Me)
         End Function
 
 #Region "IDisposable Support"
@@ -38,6 +43,5 @@ Namespace Compiling
             MyBase.Dispose(disposing)
         End Sub
 #End Region
-
     End Class
 End Namespace

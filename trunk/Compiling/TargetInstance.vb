@@ -3,6 +3,9 @@
         Implements IDisposable
 
         Public MustOverride ReadOnly Property ApplicationName() As String
+        Public MustOverride ReadOnly Property CommandLine() As String
+        Public MustOverride ReadOnly Property EnvironmentVariables() As IEnumerable(Of String)
+        Public MustOverride ReadOnly Property WorkingDirectory() As String
 
 #Region "IDisposable Support"
         ' IDisposable
