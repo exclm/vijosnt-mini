@@ -6,15 +6,13 @@ Namespace Compiling
     Friend Class CompilerExecutee
         Inherits ProcessExecutee
 
-        Private m_TempPathServer As TempPathServer
         Private m_StreamRecorder As StreamRecorder
         Private m_Completion As CompilerExecuteeCompletion
         Private m_Result As CompilerExecuteeResult
         Private m_Remaining As Int32
 
-        Public Sub New(ByVal WatchDog As WatchDog, ByVal ProcessMonitor As ProcessMonitor, ByVal TempPathServer As TempPathServer, ByVal Compiler As Compiler, ByVal SourceCode As Stream, ByVal Completion As CompilerExecuteeCompletion, ByVal State As Object)
+        Public Sub New(ByVal WatchDog As WatchDog, ByVal ProcessMonitor As ProcessMonitor, ByVal Compiler As Compiler, ByVal SourceCode As Stream, ByVal Completion As CompilerExecuteeCompletion, ByVal State As Object)
             Dim CompilerInstance As CompilerInstance = Compiler.CreateInstance(SourceCode)
-            m_TempPathServer = TempPathServer
             Dim StdOutputHandle As KernelObject
             Dim StdErrorHandle As KernelObject
             Using OutputPipe As New Pipe()

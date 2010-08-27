@@ -119,6 +119,7 @@ Namespace Executing
                 ' TODO: UI Limit
 
                 m_Remaining = 2
+
                 m_ProcessMonitor.Attach(Suspended, AddressOf ProcessMonitorCallback, Nothing)
                 m_WatchDog.SetWatch(Suspended.Resume(), m_TimeQuota, AddressOf WatchDogCallback, Nothing)
             Finally
