@@ -69,6 +69,7 @@
             Me.MscppMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.MscsMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.MsvbMenu = New System.Windows.Forms.ToolStripMenuItem()
+            Me.JavaMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.RemoveCompilerButton = New System.Windows.Forms.ToolStripButton()
             Me.CompilerSeperator0 = New System.Windows.Forms.ToolStripSeparator()
             Me.MoveUpCompilerButton = New System.Windows.Forms.ToolStripButton()
@@ -123,6 +124,7 @@
             Me.RefershLocalButton = New System.Windows.Forms.ToolStripButton()
             Me.RemoteDataSourcePage = New System.Windows.Forms.TabPage()
             Me.ServiceTimer = New System.Windows.Forms.Timer(Me.components)
+            Me.PythonMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.MenuStrip.SuspendLayout()
             Me.StatusStrip.SuspendLayout()
             Me.SplitContainer.Panel1.SuspendLayout()
@@ -406,7 +408,7 @@
             'AddCompilerButton
             '
             Me.AddCompilerButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            Me.AddCompilerButton.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewCompilerMenu, Me.AddCompilerBar0, Me.MingwMenu, Me.MsvsMenu})
+            Me.AddCompilerButton.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewCompilerMenu, Me.AddCompilerBar0, Me.MingwMenu, Me.MsvsMenu, Me.JavaMenu, Me.PythonMenu})
             Me.AddCompilerButton.Image = CType(resources.GetObject("AddCompilerButton.Image"), System.Drawing.Image)
             Me.AddCompilerButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.AddCompilerButton.Name = "AddCompilerButton"
@@ -434,13 +436,13 @@
             'GccMenu
             '
             Me.GccMenu.Name = "GccMenu"
-            Me.GccMenu.Size = New System.Drawing.Size(142, 22)
+            Me.GccMenu.Size = New System.Drawing.Size(152, 22)
             Me.GccMenu.Text = "C 编译器"
             '
             'GppMenu
             '
             Me.GppMenu.Name = "GppMenu"
-            Me.GppMenu.Size = New System.Drawing.Size(142, 22)
+            Me.GppMenu.Size = New System.Drawing.Size(152, 22)
             Me.GppMenu.Text = "C++ 编译器"
             '
             'MsvsMenu
@@ -473,6 +475,12 @@
             Me.MsvbMenu.Name = "MsvbMenu"
             Me.MsvbMenu.Size = New System.Drawing.Size(159, 22)
             Me.MsvbMenu.Text = "VB.NET 编译器"
+            '
+            'JavaMenu
+            '
+            Me.JavaMenu.Name = "JavaMenu"
+            Me.JavaMenu.Size = New System.Drawing.Size(211, 22)
+            Me.JavaMenu.Text = "Java"
             '
             'RemoveCompilerButton
             '
@@ -901,6 +909,12 @@
             '
             Me.ServiceTimer.Interval = 500
             '
+            'PythonMenu
+            '
+            Me.PythonMenu.Name = "PythonMenu"
+            Me.PythonMenu.Size = New System.Drawing.Size(211, 22)
+            Me.PythonMenu.Text = "Python"
+            '
             'ConsoleForm
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
@@ -1044,5 +1058,7 @@
         Friend WithEvents NewTestSuiteMenu As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents AddTestSuiteBar0 As System.Windows.Forms.ToolStripSeparator
         Friend WithEvents AddAPlusBMenu As System.Windows.Forms.ToolStripMenuItem
+        Friend WithEvents JavaMenu As System.Windows.Forms.ToolStripMenuItem
+        Friend WithEvents PythonMenu As System.Windows.Forms.ToolStripMenuItem
     End Class
 End Namespace

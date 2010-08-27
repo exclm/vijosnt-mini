@@ -1,16 +1,45 @@
 ﻿Namespace Foreground
     Friend Module CompilerDetection
-        Private Function FindFile(ByVal SearchList As IEnumerable(Of String), ByVal ExecutableName As String) As String
-            For Each SearchPath As String In SearchList
-                Try
-                    Dim Directory As New DirectoryInfo(SearchPath)
-                    If Not Directory.Exists Then Continue For
-                    Dim Files As FileInfo() = Directory.GetFiles(ExecutableName, SearchOption.TopDirectoryOnly)
-                    If Files.Length <> 0 Then _
+        Private Structure FindFileContext
+            Public Sub New(ByVal Root As DirectoryInfo, ByVal Depth As Int32)
+                Me.Root = Root
+                Me.Depth = Depth
+            End Sub
+
+            Dim Root As DirectoryInfo
+            Dim Depth As Int32
+        End Structure
+
+        Private Function FindFile(ByVal Pattern As String) As String
+            Dim Patterns As String() = Pattern.Split(New Char() {"\"c})
+            If Patterns(0).Length <> 2 OrElse (Not Char.IsLetter(Patterns(0)(0))) OrElse (Patterns(0)(1) <> ":"c) Then _
+                Return Nothing
+            Dim Stack As New Stack(Of FindFileContext)()
+            Stack.Push(New FindFileContext(New DirectoryInfo(Patterns(0) & "\"c), 0))
+            While Stack.Count <> 0
+                Dim Context As FindFileContext = Stack.Pop()
+                Dim NextDepth As Int32 = Context.Depth + 1
+                Dim CurrentPattern As String = Patterns(NextDepth)
+                If NextDepth + 1 = Patterns.Length Then
+                    Dim Files As FileInfo() = Context.Root.GetFiles(CurrentPattern)
+                    If Files.Length <> 0 Then
                         Return Files(0).FullName
-                Catch ex As Exception
-                    ' Do nothing
-                End Try
+                    End If
+                Else
+                    Dim Directories As DirectoryInfo() = Context.Root.GetDirectories(CurrentPattern)
+                    For Each Directory As DirectoryInfo In Directories
+                        Stack.Push(New FindFileContext(Directory, NextDepth))
+                    Next
+                End If
+            End While
+            Return Nothing
+        End Function
+
+        Private Function FindFile(ByVal Patterns As IEnumerable(Of String)) As String
+            For Each Pattern As String In Patterns
+                Dim Result As String = FindFile(Pattern)
+                If Result IsNot Nothing Then _
+                    Return Result
             Next
             Return Nothing
         End Function
@@ -41,8 +70,8 @@
             End Using
         End Function
 
-        Private Function DetectCompiler(ByVal SearchList As IEnumerable(Of String), ByVal ExecutableName As String) As String
-            Dim Result As String = FindFile(SearchList, ExecutableName)
+        Private Function DetectCompiler(ByVal Patterns As IEnumerable(Of String), ByVal ExecutableName As String) As String
+            Dim Result As String = FindFile(Patterns)
             If Result IsNot Nothing AndAlso _
                 MessageBox.Show("编译器路径: " & Result & vbCrLf & vbCrLf & "此信息是否正确?", "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then _
                 Result = Nothing
@@ -52,11 +81,13 @@
         End Function
 
         Public Function DetectMingw(ByVal ExecutableName As String) As String
-            Dim SearchList As New List(Of String)
-            SearchList.AddRange(Environment.GetEnvironmentVariable("path").Split(New Char() {";"c}))
-            SearchList.Add("C:\MinGW")
-            SearchList.Add("C:\MinGW64")
-            Return DetectCompiler(SearchList, ExecutableName)
+            Dim Patterns As New List(Of String)
+            For Each Parent As String In Environment.GetEnvironmentVariable("path").Split(New Char() {";"c})
+                Patterns.Add(Path.Combine(Parent, ExecutableName))
+            Next
+            Patterns.Add("C:\MinGW\*\" & ExecutableName)
+            Patterns.Add("C:\MinGW64\*\" & ExecutableName)
+            Return DetectCompiler(Patterns, ExecutableName)
         End Function
 
         Public Function DetectMssdk() As String
@@ -90,11 +121,11 @@
             Dim ProgramFilesPath As String = Environment.GetEnvironmentVariable("ProgramFiles(x86)")
             If ProgramFilesPath Is Nothing Then _
                 ProgramFilesPath = Environment.GetEnvironmentVariable("ProgramFiles")
-            Dim SearchList As New List(Of String)
-            SearchList.Add(Path.Combine(ProgramFilesPath, "Microsoft Visual Studio 10.0\VC\bin"))
-            SearchList.Add(Path.Combine(ProgramFilesPath, "Microsoft Visual Studio 9.0\VC\bin"))
-            SearchList.Add(Path.Combine(ProgramFilesPath, "Microsoft Visual Studio 8\VC\bin"))
-            Dim Result As String = DetectCompiler(SearchList, "cl.exe")
+            Dim Patterns As New List(Of String)
+            Patterns.Add(Path.Combine(ProgramFilesPath, "Microsoft Visual Studio 10.0\VC\bin\cl.exe"))
+            Patterns.Add(Path.Combine(ProgramFilesPath, "Microsoft Visual Studio 9.0\VC\bin\cl.exe"))
+            Patterns.Add(Path.Combine(ProgramFilesPath, "Microsoft Visual Studio 8\VC\bin\cl.exe"))
+            Dim Result As String = DetectCompiler(Patterns, "cl.exe")
             If Result Is Nothing Then Return Nothing
             Dim Binary As New FileInfo(Result)
             Dim Directory As DirectoryInfo = Binary.Directory
@@ -151,6 +182,17 @@
             If Result Is Nothing Then _
                 Result = ShowOpen("查找 " & ExecutableName, ExecutableName & "|" & ExecutableName & "|所有文件 (*.*)|*.*")
             Return Result
+        End Function
+
+        Public Function DetectJdk(ByVal ExecutableName As String) As String
+            Dim ProgramFilesPath As String = Environment.GetEnvironmentVariable("ProgramFiles")
+            Dim ProgramFilesX86Path As String = Environment.GetEnvironmentVariable("ProgramFiles(x86)")
+            Dim Patterns As New List(Of String)
+            Patterns.Add(ProgramFilesPath & "\java\jdk*\bin\" & ExecutableName)
+            Patterns.Add(ProgramFilesPath & "\java\jre*\bin\" & ExecutableName)
+            Patterns.Add(ProgramFilesX86Path & "\java\jdk*\bin\" & ExecutableName)
+            Patterns.Add(ProgramFilesX86Path & "\java\jre*\bin\" & ExecutableName)
+            Return DetectCompiler(Patterns, ExecutableName)
         End Function
     End Module
 End Namespace
