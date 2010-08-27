@@ -24,12 +24,12 @@
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
-            Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
-            Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
-            Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("执行设置")
-            Dim TreeNode10 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("本地数据源")
-            Dim TreeNode11 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("外部数据源")
-            Dim TreeNode12 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode7, TreeNode8, TreeNode9, TreeNode10, TreeNode11})
+            Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
+            Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
+            Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("执行设置")
+            Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("本地数据源")
+            Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("外部数据源")
+            Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2, TreeNode3, TreeNode4, TreeNode5})
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ConsoleForm))
             Me.MenuStrip = New System.Windows.Forms.MenuStrip()
             Me.FileMenu = New System.Windows.Forms.ToolStripMenuItem()
@@ -67,8 +67,6 @@
             Me.MsvsMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.MscMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.MscppMenu = New System.Windows.Forms.ToolStripMenuItem()
-            Me.MscsMenu = New System.Windows.Forms.ToolStripMenuItem()
-            Me.MsvbMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.JavaMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.PythonMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.RemoveCompilerButton = New System.Windows.Forms.ToolStripButton()
@@ -123,10 +121,13 @@
             Me.LocalSourceDateHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.LocalSourceToolStrip = New System.Windows.Forms.ToolStrip()
             Me.RefershLocalButton = New System.Windows.Forms.ToolStripButton()
-            Me.RemoteDataSourcePage = New System.Windows.Forms.TabPage()
-            Me.ServiceTimer = New System.Windows.Forms.Timer(Me.components)
             Me.LocalSourceSeperator0 = New System.Windows.Forms.ToolStripSeparator()
             Me.ClearLocalButton = New System.Windows.Forms.ToolStripButton()
+            Me.RemoteDataSourcePage = New System.Windows.Forms.TabPage()
+            Me.ServiceTimer = New System.Windows.Forms.Timer(Me.components)
+            Me.NetfxMenu = New System.Windows.Forms.ToolStripMenuItem()
+            Me.MscsMenu = New System.Windows.Forms.ToolStripMenuItem()
+            Me.MsvbMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.MenuStrip.SuspendLayout()
             Me.StatusStrip.SuspendLayout()
             Me.SplitContainer.Panel1.SuspendLayout()
@@ -259,19 +260,19 @@
             Me.NavigationTree.Location = New System.Drawing.Point(0, 0)
             Me.NavigationTree.Margin = New System.Windows.Forms.Padding(2)
             Me.NavigationTree.Name = "NavigationTree"
-            TreeNode7.Name = "Compiler"
-            TreeNode7.Text = "编译器映射"
-            TreeNode8.Name = "TestSuite"
-            TreeNode8.Text = "数据集映射"
-            TreeNode9.Name = "Executor"
-            TreeNode9.Text = "执行设置"
-            TreeNode10.Name = "LocalDataSource"
-            TreeNode10.Text = "本地数据源"
-            TreeNode11.Name = "RemoteDataSource"
-            TreeNode11.Text = "外部数据源"
-            TreeNode12.Name = "Root"
-            TreeNode12.Text = "VijosNT"
-            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode12})
+            TreeNode1.Name = "Compiler"
+            TreeNode1.Text = "编译器映射"
+            TreeNode2.Name = "TestSuite"
+            TreeNode2.Text = "数据集映射"
+            TreeNode3.Name = "Executor"
+            TreeNode3.Text = "执行设置"
+            TreeNode4.Name = "LocalDataSource"
+            TreeNode4.Text = "本地数据源"
+            TreeNode5.Name = "RemoteDataSource"
+            TreeNode5.Text = "外部数据源"
+            TreeNode6.Name = "Root"
+            TreeNode6.Text = "VijosNT"
+            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode6})
             Me.NavigationTree.Size = New System.Drawing.Size(189, 515)
             Me.NavigationTree.TabIndex = 0
             '
@@ -410,7 +411,7 @@
             'AddCompilerButton
             '
             Me.AddCompilerButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            Me.AddCompilerButton.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewCompilerMenu, Me.AddCompilerBar0, Me.MingwMenu, Me.MsvsMenu, Me.JavaMenu, Me.PythonMenu})
+            Me.AddCompilerButton.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewCompilerMenu, Me.AddCompilerBar0, Me.MingwMenu, Me.MsvsMenu, Me.NetfxMenu, Me.JavaMenu, Me.PythonMenu})
             Me.AddCompilerButton.Image = CType(resources.GetObject("AddCompilerButton.Image"), System.Drawing.Image)
             Me.AddCompilerButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.AddCompilerButton.Name = "AddCompilerButton"
@@ -449,7 +450,7 @@
             '
             'MsvsMenu
             '
-            Me.MsvsMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MscMenu, Me.MscppMenu, Me.MscsMenu, Me.MsvbMenu})
+            Me.MsvsMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MscMenu, Me.MscppMenu})
             Me.MsvsMenu.Name = "MsvsMenu"
             Me.MsvsMenu.Size = New System.Drawing.Size(211, 22)
             Me.MsvsMenu.Text = "Microsoft Visual Studio"
@@ -457,26 +458,14 @@
             'MscMenu
             '
             Me.MscMenu.Name = "MscMenu"
-            Me.MscMenu.Size = New System.Drawing.Size(159, 22)
+            Me.MscMenu.Size = New System.Drawing.Size(152, 22)
             Me.MscMenu.Text = "C 编译器"
             '
             'MscppMenu
             '
             Me.MscppMenu.Name = "MscppMenu"
-            Me.MscppMenu.Size = New System.Drawing.Size(159, 22)
+            Me.MscppMenu.Size = New System.Drawing.Size(152, 22)
             Me.MscppMenu.Text = "C++ 编译器"
-            '
-            'MscsMenu
-            '
-            Me.MscsMenu.Name = "MscsMenu"
-            Me.MscsMenu.Size = New System.Drawing.Size(159, 22)
-            Me.MscsMenu.Text = "C# 编译器"
-            '
-            'MsvbMenu
-            '
-            Me.MsvbMenu.Name = "MsvbMenu"
-            Me.MsvbMenu.Size = New System.Drawing.Size(159, 22)
-            Me.MsvbMenu.Text = "VB.NET 编译器"
             '
             'JavaMenu
             '
@@ -903,6 +892,20 @@
             Me.RefershLocalButton.Size = New System.Drawing.Size(52, 22)
             Me.RefershLocalButton.Text = "刷新(&R)"
             '
+            'LocalSourceSeperator0
+            '
+            Me.LocalSourceSeperator0.Name = "LocalSourceSeperator0"
+            Me.LocalSourceSeperator0.Size = New System.Drawing.Size(6, 25)
+            '
+            'ClearLocalButton
+            '
+            Me.ClearLocalButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.ClearLocalButton.Image = CType(resources.GetObject("ClearLocalButton.Image"), System.Drawing.Image)
+            Me.ClearLocalButton.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.ClearLocalButton.Name = "ClearLocalButton"
+            Me.ClearLocalButton.Size = New System.Drawing.Size(52, 22)
+            Me.ClearLocalButton.Text = "清除(&C)"
+            '
             'RemoteDataSourcePage
             '
             Me.RemoteDataSourcePage.Location = New System.Drawing.Point(4, 22)
@@ -917,19 +920,24 @@
             '
             Me.ServiceTimer.Interval = 500
             '
-            'LocalSourceSeperator0
+            'NetfxMenu
             '
-            Me.LocalSourceSeperator0.Name = "LocalSourceSeperator0"
-            Me.LocalSourceSeperator0.Size = New System.Drawing.Size(6, 25)
+            Me.NetfxMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MscsMenu, Me.MsvbMenu})
+            Me.NetfxMenu.Name = "NetfxMenu"
+            Me.NetfxMenu.Size = New System.Drawing.Size(211, 22)
+            Me.NetfxMenu.Text = ".NET Framework"
             '
-            'ClearLocalButton
+            'MscsMenu
             '
-            Me.ClearLocalButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            Me.ClearLocalButton.Image = CType(resources.GetObject("ClearLocalButton.Image"), System.Drawing.Image)
-            Me.ClearLocalButton.ImageTransparentColor = System.Drawing.Color.Magenta
-            Me.ClearLocalButton.Name = "ClearLocalButton"
-            Me.ClearLocalButton.Size = New System.Drawing.Size(52, 22)
-            Me.ClearLocalButton.Text = "清除(&C)"
+            Me.MscsMenu.Name = "MscsMenu"
+            Me.MscsMenu.Size = New System.Drawing.Size(159, 22)
+            Me.MscsMenu.Text = "C# 编译器"
+            '
+            'MsvbMenu
+            '
+            Me.MsvbMenu.Name = "MsvbMenu"
+            Me.MsvbMenu.Size = New System.Drawing.Size(159, 22)
+            Me.MsvbMenu.Text = "VB.NET 编译器"
             '
             'ConsoleForm
             '
@@ -1069,8 +1077,6 @@
         Friend WithEvents MsvsMenu As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents MscMenu As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents MscppMenu As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents MscsMenu As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents MsvbMenu As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents NewTestSuiteMenu As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents AddTestSuiteBar0 As System.Windows.Forms.ToolStripSeparator
         Friend WithEvents AddAPlusBMenu As System.Windows.Forms.ToolStripMenuItem
@@ -1078,5 +1084,8 @@
         Friend WithEvents PythonMenu As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents LocalSourceSeperator0 As System.Windows.Forms.ToolStripSeparator
         Friend WithEvents ClearLocalButton As System.Windows.Forms.ToolStripButton
+        Friend WithEvents NetfxMenu As System.Windows.Forms.ToolStripMenuItem
+        Friend WithEvents MscsMenu As System.Windows.Forms.ToolStripMenuItem
+        Friend WithEvents MsvbMenu As System.Windows.Forms.ToolStripMenuItem
     End Class
 End Namespace
