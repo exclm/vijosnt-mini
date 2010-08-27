@@ -7,6 +7,7 @@
         Private Shared m_UpdateTakenCommand As SQLiteCommand
         Private Shared m_UpdateUntakeCommand As SQLiteCommand
         Private Shared m_UpdateFinalCommand As SQLiteCommand
+        Private Shared m_DeleteCommand As SQLiteCommand
 
         Shared Sub New()
             Using Command As SQLiteCommand = Database.CreateCommand( _
@@ -39,6 +40,8 @@
                 "UPDATE Record SET Taken = 0 WHERE Id = @Id")
             m_UpdateFinalCommand = Database.CreateCommand( _
                 "UPDATE Record SET Taken = 1, Flag = @Flag, Score = @Score, TimeUsage = @TimeUsage, MemoryUsage = @MemoryUsage, Details = @Details WHERE Id = @Id")
+            m_DeleteCommand = Database.CreateCommand( _
+                "DELETE FROM Record")
         End Sub
 
         Public Shared Sub Add(ByVal FileName As String, ByVal SourceCode As String)
@@ -98,6 +101,12 @@
                     .AddWithValue("@MemoryUsage", MemoryUsage)
                     .AddWithValue("@Details", Details)
                 End With
+                Command.ExecuteNonQuery()
+            End Using
+        End Sub
+
+        Public Shared Sub Clear()
+            Using Command As SQLiteCommand = m_DeleteCommand.Clone()
                 Command.ExecuteNonQuery()
             End Using
         End Sub

@@ -24,12 +24,12 @@
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
-            Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
-            Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
-            Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("执行设置")
-            Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("本地数据源")
-            Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("外部数据源")
-            Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2, TreeNode3, TreeNode4, TreeNode5})
+            Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
+            Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
+            Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("执行设置")
+            Dim TreeNode10 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("本地数据源")
+            Dim TreeNode11 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("外部数据源")
+            Dim TreeNode12 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode7, TreeNode8, TreeNode9, TreeNode10, TreeNode11})
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ConsoleForm))
             Me.MenuStrip = New System.Windows.Forms.MenuStrip()
             Me.FileMenu = New System.Windows.Forms.ToolStripMenuItem()
@@ -53,7 +53,7 @@
             Me.UninstallButton = New System.Windows.Forms.ToolStripButton()
             Me.CompilerPage = New System.Windows.Forms.TabPage()
             Me.CompilerSplit = New System.Windows.Forms.SplitContainer()
-            Me.CompilerList = New DoubleBufferedListView()
+            Me.CompilerList = New System.Windows.Forms.ListView()
             Me.CompilerPatternHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.CompilerCommandLineHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.CompilerProperty = New System.Windows.Forms.PropertyGrid()
@@ -70,6 +70,7 @@
             Me.MscsMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.MsvbMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.JavaMenu = New System.Windows.Forms.ToolStripMenuItem()
+            Me.PythonMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.RemoveCompilerButton = New System.Windows.Forms.ToolStripButton()
             Me.CompilerSeperator0 = New System.Windows.Forms.ToolStripSeparator()
             Me.MoveUpCompilerButton = New System.Windows.Forms.ToolStripButton()
@@ -78,7 +79,7 @@
             Me.ApplyCompilerButton = New System.Windows.Forms.ToolStripButton()
             Me.TestSuitePage = New System.Windows.Forms.TabPage()
             Me.TestSuiteSplit = New System.Windows.Forms.SplitContainer()
-            Me.TestSuiteList = New DoubleBufferedListView()
+            Me.TestSuiteList = New System.Windows.Forms.ListView()
             Me.TestSuitePatternHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.TestSuiteClassHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.TestSuiteParameterHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -95,7 +96,7 @@
             Me.TestSuiteSeperator1 = New System.Windows.Forms.ToolStripSeparator()
             Me.ApplyTestSuiteButton = New System.Windows.Forms.ToolStripButton()
             Me.ExecutorPage = New System.Windows.Forms.TabPage()
-            Me.SecurityList = New DoubleBufferedListView()
+            Me.SecurityList = New System.Windows.Forms.ListView()
             Me.SecurityDesktopNameHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.SecurityUserNameHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.SecurityPasswordHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -105,14 +106,14 @@
             Me.ExecutorSeperator0 = New System.Windows.Forms.ToolStripSeparator()
             Me.ExecutorSecurityLabel = New System.Windows.Forms.ToolStripLabel()
             Me.ExecutorSecurityCombo = New System.Windows.Forms.ToolStripComboBox()
-            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+            Me.ExecutorSeperator1 = New System.Windows.Forms.ToolStripSeparator()
             Me.AddSecurityButton = New System.Windows.Forms.ToolStripButton()
             Me.RemoveSecurityButton = New System.Windows.Forms.ToolStripButton()
             Me.CheckSecurityButton = New System.Windows.Forms.ToolStripButton()
-            Me.ExecutorSeperator1 = New System.Windows.Forms.ToolStripSeparator()
+            Me.ExecutorSeperator2 = New System.Windows.Forms.ToolStripSeparator()
             Me.ApplyExecutorButton = New System.Windows.Forms.ToolStripButton()
             Me.LocalDataSourcePage = New System.Windows.Forms.TabPage()
-            Me.LocalSourceList = New DoubleBufferedListView()
+            Me.LocalSourceList = New System.Windows.Forms.ListView()
             Me.LocalSourceIdHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.LocalSourceFlagHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.LocalSourceFileNameHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -124,7 +125,8 @@
             Me.RefershLocalButton = New System.Windows.Forms.ToolStripButton()
             Me.RemoteDataSourcePage = New System.Windows.Forms.TabPage()
             Me.ServiceTimer = New System.Windows.Forms.Timer(Me.components)
-            Me.PythonMenu = New System.Windows.Forms.ToolStripMenuItem()
+            Me.LocalSourceSeperator0 = New System.Windows.Forms.ToolStripSeparator()
+            Me.ClearLocalButton = New System.Windows.Forms.ToolStripButton()
             Me.MenuStrip.SuspendLayout()
             Me.StatusStrip.SuspendLayout()
             Me.SplitContainer.Panel1.SuspendLayout()
@@ -257,19 +259,19 @@
             Me.NavigationTree.Location = New System.Drawing.Point(0, 0)
             Me.NavigationTree.Margin = New System.Windows.Forms.Padding(2)
             Me.NavigationTree.Name = "NavigationTree"
-            TreeNode1.Name = "Compiler"
-            TreeNode1.Text = "编译器映射"
-            TreeNode2.Name = "TestSuite"
-            TreeNode2.Text = "数据集映射"
-            TreeNode3.Name = "Executor"
-            TreeNode3.Text = "执行设置"
-            TreeNode4.Name = "LocalDataSource"
-            TreeNode4.Text = "本地数据源"
-            TreeNode5.Name = "RemoteDataSource"
-            TreeNode5.Text = "外部数据源"
-            TreeNode6.Name = "Root"
-            TreeNode6.Text = "VijosNT"
-            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode6})
+            TreeNode7.Name = "Compiler"
+            TreeNode7.Text = "编译器映射"
+            TreeNode8.Name = "TestSuite"
+            TreeNode8.Text = "数据集映射"
+            TreeNode9.Name = "Executor"
+            TreeNode9.Text = "执行设置"
+            TreeNode10.Name = "LocalDataSource"
+            TreeNode10.Text = "本地数据源"
+            TreeNode11.Name = "RemoteDataSource"
+            TreeNode11.Text = "外部数据源"
+            TreeNode12.Name = "Root"
+            TreeNode12.Text = "VijosNT"
+            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode12})
             Me.NavigationTree.Size = New System.Drawing.Size(189, 515)
             Me.NavigationTree.TabIndex = 0
             '
@@ -436,13 +438,13 @@
             'GccMenu
             '
             Me.GccMenu.Name = "GccMenu"
-            Me.GccMenu.Size = New System.Drawing.Size(152, 22)
+            Me.GccMenu.Size = New System.Drawing.Size(142, 22)
             Me.GccMenu.Text = "C 编译器"
             '
             'GppMenu
             '
             Me.GppMenu.Name = "GppMenu"
-            Me.GppMenu.Size = New System.Drawing.Size(152, 22)
+            Me.GppMenu.Size = New System.Drawing.Size(142, 22)
             Me.GppMenu.Text = "C++ 编译器"
             '
             'MsvsMenu
@@ -481,6 +483,12 @@
             Me.JavaMenu.Name = "JavaMenu"
             Me.JavaMenu.Size = New System.Drawing.Size(211, 22)
             Me.JavaMenu.Text = "Java"
+            '
+            'PythonMenu
+            '
+            Me.PythonMenu.Name = "PythonMenu"
+            Me.PythonMenu.Size = New System.Drawing.Size(211, 22)
+            Me.PythonMenu.Text = "Python"
             '
             'RemoveCompilerButton
             '
@@ -737,7 +745,7 @@
             '
             'ExecutorToolStrip
             '
-            Me.ExecutorToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ExecutorSlotsLabel, Me.ExecutorSlotsText, Me.ExecutorSeperator0, Me.ExecutorSecurityLabel, Me.ExecutorSecurityCombo, Me.ToolStripSeparator1, Me.AddSecurityButton, Me.RemoveSecurityButton, Me.CheckSecurityButton, Me.ExecutorSeperator1, Me.ApplyExecutorButton})
+            Me.ExecutorToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ExecutorSlotsLabel, Me.ExecutorSlotsText, Me.ExecutorSeperator0, Me.ExecutorSecurityLabel, Me.ExecutorSecurityCombo, Me.ExecutorSeperator1, Me.AddSecurityButton, Me.RemoveSecurityButton, Me.CheckSecurityButton, Me.ExecutorSeperator2, Me.ApplyExecutorButton})
             Me.ExecutorToolStrip.Location = New System.Drawing.Point(2, 2)
             Me.ExecutorToolStrip.Name = "ExecutorToolStrip"
             Me.ExecutorToolStrip.Size = New System.Drawing.Size(580, 25)
@@ -774,10 +782,10 @@
             Me.ExecutorSecurityCombo.Name = "ExecutorSecurityCombo"
             Me.ExecutorSecurityCombo.Size = New System.Drawing.Size(48, 25)
             '
-            'ToolStripSeparator1
+            'ExecutorSeperator1
             '
-            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-            Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 25)
+            Me.ExecutorSeperator1.Name = "ExecutorSeperator1"
+            Me.ExecutorSeperator1.Size = New System.Drawing.Size(6, 25)
             '
             'AddSecurityButton
             '
@@ -806,10 +814,10 @@
             Me.CheckSecurityButton.Size = New System.Drawing.Size(76, 22)
             Me.CheckSecurityButton.Text = "安全检查(&C)"
             '
-            'ExecutorSeperator1
+            'ExecutorSeperator2
             '
-            Me.ExecutorSeperator1.Name = "ExecutorSeperator1"
-            Me.ExecutorSeperator1.Size = New System.Drawing.Size(6, 25)
+            Me.ExecutorSeperator2.Name = "ExecutorSeperator2"
+            Me.ExecutorSeperator2.Size = New System.Drawing.Size(6, 25)
             '
             'ApplyExecutorButton
             '
@@ -880,7 +888,7 @@
             '
             'LocalSourceToolStrip
             '
-            Me.LocalSourceToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RefershLocalButton})
+            Me.LocalSourceToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RefershLocalButton, Me.LocalSourceSeperator0, Me.ClearLocalButton})
             Me.LocalSourceToolStrip.Location = New System.Drawing.Point(3, 3)
             Me.LocalSourceToolStrip.Name = "LocalSourceToolStrip"
             Me.LocalSourceToolStrip.Size = New System.Drawing.Size(578, 25)
@@ -909,11 +917,19 @@
             '
             Me.ServiceTimer.Interval = 500
             '
-            'PythonMenu
+            'LocalSourceSeperator0
             '
-            Me.PythonMenu.Name = "PythonMenu"
-            Me.PythonMenu.Size = New System.Drawing.Size(211, 22)
-            Me.PythonMenu.Text = "Python"
+            Me.LocalSourceSeperator0.Name = "LocalSourceSeperator0"
+            Me.LocalSourceSeperator0.Size = New System.Drawing.Size(6, 25)
+            '
+            'ClearLocalButton
+            '
+            Me.ClearLocalButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.ClearLocalButton.Image = CType(resources.GetObject("ClearLocalButton.Image"), System.Drawing.Image)
+            Me.ClearLocalButton.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.ClearLocalButton.Name = "ClearLocalButton"
+            Me.ClearLocalButton.Size = New System.Drawing.Size(52, 22)
+            Me.ClearLocalButton.Text = "清除(&C)"
             '
             'ConsoleForm
             '
@@ -1026,8 +1042,8 @@
         Friend WithEvents ExecutorSecurityCombo As System.Windows.Forms.ToolStripComboBox
         Friend WithEvents ApplyExecutorButton As System.Windows.Forms.ToolStripButton
         Friend WithEvents ExecutorSeperator0 As System.Windows.Forms.ToolStripSeparator
+        Friend WithEvents ExecutorSeperator2 As System.Windows.Forms.ToolStripSeparator
         Friend WithEvents ExecutorSeperator1 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
         Friend WithEvents AddSecurityButton As System.Windows.Forms.ToolStripButton
         Friend WithEvents RemoveSecurityButton As System.Windows.Forms.ToolStripButton
         Friend WithEvents CheckSecurityButton As System.Windows.Forms.ToolStripButton
@@ -1060,5 +1076,7 @@
         Friend WithEvents AddAPlusBMenu As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents JavaMenu As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents PythonMenu As System.Windows.Forms.ToolStripMenuItem
+        Friend WithEvents LocalSourceSeperator0 As System.Windows.Forms.ToolStripSeparator
+        Friend WithEvents ClearLocalButton As System.Windows.Forms.ToolStripButton
     End Class
 End Namespace
