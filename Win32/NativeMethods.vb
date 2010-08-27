@@ -139,7 +139,7 @@
             ByVal dwErrorControl As ServiceErrorControl, _
             ByVal BinaryPathName As String, _
             ByVal LoadOrderGroup As String, _
-            ByVal lpdwTagId As Int32, _
+            ByVal lpdwTagId As IntPtr, _
             ByVal Dependencies As String, _
             ByVal ServiceStartName As String, _
             ByVal Password As String) As IntPtr
@@ -360,7 +360,10 @@
             ByVal hDesktop As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
         Public Declare Auto Function SendMessage Lib "user32.dll" ( _
-            ByVal hWnd As IntPtr, ByVal Msg As Int32, ByVal wParam As Int32, ByVal lParam As Int32) As Int32
+            ByVal hWnd As IntPtr, _
+            ByVal Msg As Int32, _
+            ByVal wParam As IntPtr, _
+            ByVal lParam As IntPtr) As IntPtr
 
         Public Declare Auto Function ReleaseCapture Lib "user32.dll" () As <MarshalAs(UnmanagedType.Bool)> Boolean
 

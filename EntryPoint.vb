@@ -20,6 +20,7 @@ Public Class EntryPoint
         End If
         If Environment.UserInteractive Then
             AddHandler AppDomain.CurrentDomain.UnhandledException, AddressOf OnUnhandledException
+            Application.EnableVisualStyles()
             Dim CreatedNew As Boolean
             Using Mutex As New Mutex(True, "VijosNT Daemon Mutex", CreatedNew)
                 If Not CreatedNew Then
