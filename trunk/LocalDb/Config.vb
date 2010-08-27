@@ -85,6 +85,22 @@
             End Set
         End Property
 
+        Public Shared Property FloatingTransparent() As Boolean
+            Get
+                Dim Value As String = [Get]("FloatingTransparent")
+                If Value Is Nothing Then
+                    Put("FloatingTransparent", True)
+                    Return True
+                Else
+                    Return Boolean.Parse(Value)
+                End If
+            End Get
+
+            Set(ByVal Value As Boolean)
+                Put("FloatingTransparent", Value.ToString())
+            End Set
+        End Property
+
         Public Shared Property FloatingLeft() As Int32
             Get
                 Dim Value As String = [Get]("FloatingLeft")
