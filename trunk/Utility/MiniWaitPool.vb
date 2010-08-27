@@ -121,7 +121,7 @@
                     End If
                 End If
 
-                Dim Source As Int32 = WaitHandle.WaitAny(WaitHandles, TimeoutValue)
+                Dim Source As Int32 = WaitHandle.WaitAny(WaitHandles, TimeoutValue, False)
 
                 If Source <> WaitHandle.WaitTimeout Then
                     DispatchEntry(Entries(Source), False)
