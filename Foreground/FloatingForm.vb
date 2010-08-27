@@ -32,11 +32,15 @@ Namespace Foreground
             Top = Config.FloatingTop
             Width = 40
             Height = 40
+            SetTransparent(Config.FloatingTransparent)
         End Sub
 
         Private Sub FloatingForm_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseDown
-            ReleaseCapture()
-            SendMessage(Me.Handle, WM_SYSCOMMAND, SC_MOVE Or HT_CAPTION, 0)
+            Select e.Button
+                Case MouseButtons.Left
+                    ReleaseCapture()
+                    SendMessage(Me.Handle, WM_SYSCOMMAND, SC_MOVE Or HT_CAPTION, 0)
+            End Select
         End Sub
 
         Private Sub FloatingForm_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Me.Paint
@@ -59,6 +63,25 @@ Namespace Foreground
 
         Public Sub SetIcon(ByVal Icon As Icon)
             m_Icon = Icon
+        End Sub
+
+        Private Sub CloseMenu_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles CloseMenu.Click
+            Close()
+        End Sub
+
+        Private Sub TransparentMenu_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles TransparentMenu.Click
+            Dim Enable As Boolean = Not TransparentMenu.Checked
+            Config.FloatingTransparent = Enable
+            SetTransparent(Enable)
+        End Sub
+
+        Private Sub SetTransparent(ByVal Enable As Boolean)
+            TransparentMenu.Checked = Enable
+            If Enable Then
+                Opacity = 0.5
+            Else
+                Opacity = 1.0
+            End If
         End Sub
     End Class
 End Namespace
