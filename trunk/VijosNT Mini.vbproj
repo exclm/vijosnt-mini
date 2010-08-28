@@ -98,6 +98,9 @@
   <PropertyGroup>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Artwork\VijosNT.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -298,6 +301,7 @@
     <Content Include="Artwork\GreenV.ico" />
     <Content Include="Artwork\RedV.bmp" />
     <Content Include="Artwork\RedV.ico" />
+    <Content Include="Artwork\VijosNT.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
