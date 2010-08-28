@@ -181,6 +181,28 @@ Namespace Feeding
             Return True
         End Function
 
+        Private Function FormatException(ByVal Exception As EXCEPTION_RECORD) As String
+            Dim Builder As New StringBuilder()
+            Select Case Exception.ExceptionCode
+                Case ExceptionCode.EXCEPTION_ACCESS_VIOLATION
+                    Select Case Exception.ExceptionInformation(0)
+                        Case 0
+                            Builder.Append("读取")
+                        Case 1
+                            Builder.Append("写入")
+                        Case 8
+                            Builder.Append("执行")
+                    End Select
+                    Builder.Append("访问违规, 地址: 0x")
+                    Builder.Append(Exception.ExceptionInformation(1).ToString("x8"))
+                Case Else
+                    ' TODO: Make more common exceptions parsed
+                    Builder.Append("异常代码: ")
+                    Builder.Append(Exception.ToString())
+            End Select
+            Return Builder.ToString()
+        End Function
+
         Private Sub TestCompileCompletion(ByVal Result As CompilerExecuteeResult)
             Dim Context As TestContext = DirectCast(Result.State, TestContext)
             Dim Warning As String = Nothing
@@ -192,8 +214,7 @@ Namespace Feeding
             ElseIf Context.Compiler.TimeQuota.HasValue AndAlso Result.TimeQuotaUsage > Context.Compiler.TimeQuota Then
                 Warning = "编译器超出时间限制"
             ElseIf Result.Exception.HasValue Then
-                ' TODO: Compiler raised an exception
-                Warning = "编译器发生异常"
+                Warning = FormatException(Result.Exception.Value)
             ElseIf Result.ExitStatus <> Win32.NTSTATUS.STATUS_SUCCESS Then
                 Warning = "编译失败, 返回值为 " & DirectCast(Result.ExitStatus.Value, Int32).ToString()
                 If Result.StdErrorMessage Is Nothing Then
@@ -237,8 +258,7 @@ Namespace Feeding
             Else
                 If Result.Exception.HasValue Then
                     Entry.Flag = TestResultFlag.RuntimeError
-                    ' TODO: Target raised an exception, try addr2line it
-                    Entry.Warning = "发生异常"
+                    Entry.Warning = FormatException(Result.Exception.Value)
                 Else
                     If Result.ExitStatus <> Win32.NTSTATUS.STATUS_SUCCESS Then
                         Entry.Warning = "运行失败, 程序返回值为 " & DirectCast(Result.ExitStatus.Value, Int32).ToString()
