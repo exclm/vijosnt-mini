@@ -2,8 +2,6 @@
     Friend Class VijosTestSuite
         Inherits TestSuite
 
-        Private Const DefaultMemoryQuota As Int64 = 128 * 1024 * 1024
-
         Private Structure Config
             Public Sub New(ByVal Index As Int32, ByVal InputFileName As String, ByVal AnswerFileName As String, ByVal TimeQuota As Int64, ByVal Weight As Int32)
                 Me.Index = Index
@@ -21,9 +19,23 @@
         End Structure
 
         Private m_Root As String
+        Private m_MemoryQuota As Int64
 
-        Public Sub New(ByVal Root As String)
-            m_Root = Root
+        Public Sub New(ByVal Parameters As String)
+            For Each Parameter As String In Parameters.Split(New Char() {";"c})
+                Dim Position As Int32 = Parameter.IndexOf("="c)
+                If Position = -1 Then Continue For
+                Dim Key As String = Parameter.Substring(0, Position)
+                Dim Value As String = Parameter.Substring(Position + 1)
+                Select Case Key.ToLower()
+                    Case "root"
+                        m_Root = Value
+                    Case "memoryquota"
+                        Int64.TryParse(Value, m_MemoryQuota)
+                End Select
+            Next
+            If m_Root Is Nothing Then Throw New ArgumentNullException()
+            If m_MemoryQuota = 0 Then m_MemoryQuota = 128 * 1024 * 1024
         End Sub
 
         Public Overrides Function TryLoad(ByVal Id As String) As IEnumerable(Of TestCase)
@@ -39,7 +51,7 @@
             End Try
         End Function
 
-        Private Shared Function LoadConfig(ByVal ProblemRoot As String) As IEnumerable(Of Config)
+        Private Function LoadConfig(ByVal ProblemRoot As String) As IEnumerable(Of Config)
             Using Reader As New StreamReader(Path.Combine(ProblemRoot, "Config.ini"))
                 Dim Count As Int32 = Int32.Parse(Reader.ReadLine())
                 Dim Result As New List(Of Config)
@@ -52,8 +64,8 @@
             End Using
         End Function
 
-        Private Shared Function LoadTestCase(ByVal ProblemRoot As String, ByVal Config As Config) As TestCase
-            Return New LocalTestCase(Config.Index, Config.Weight, Path.Combine(ProblemRoot, Config.InputFileName), Path.Combine(ProblemRoot, Config.AnswerFileName), Config.TimeQuota, DefaultMemoryQuota)
+        Private Function LoadTestCase(ByVal ProblemRoot As String, ByVal Config As Config) As TestCase
+            Return New LocalTestCase(Config.Index, Config.Weight, Path.Combine(ProblemRoot, Config.InputFileName), Path.Combine(ProblemRoot, Config.AnswerFileName), Config.TimeQuota, m_MemoryQuota)
         End Function
     End Class
 End Namespace

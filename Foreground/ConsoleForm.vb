@@ -420,6 +420,17 @@ Namespace Foreground
             RefreshPage()
         End Sub
 
+        Private Sub AddVijosSuiteMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddVijosSuiteMenu.Click
+            Using Dialog As New FolderBrowserDialog
+                Dialog.Description = "请选择包含 Vijos 格式数据集的目录"
+                If Dialog.ShowDialog() = DialogResult.OK Then
+                    TestSuiteMapping.Add("*", "Vijos", "Root=" & Dialog.SelectedPath & ";MemoryQuota=134217728")
+                    ApplyTestSuiteButton.Enabled = True
+                    RefreshPage()
+                End If
+            End Using
+        End Sub
+
         Private Sub RemoveTestSuiteButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RemoveTestSuiteButton.Click
             TestSuiteMapping.Remove(TestSuiteList.SelectedItems.Item(0).Tag)
             ApplyTestSuiteButton.Enabled = True
