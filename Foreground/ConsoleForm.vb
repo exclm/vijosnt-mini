@@ -360,18 +360,18 @@ Namespace Foreground
         End Sub
 
         Private Sub GccMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GccMenu.Click
-            Dim Path As String = DetectMingw("gcc.exe")
-            If Path IsNot Nothing Then
-                CompilerMapping.Add(".c", Path, "gcc -O2 -s -o foo.exe foo.c -lm", String.Empty, 15000 * 10000, Nothing, Nothing, "foo.c", "foo.exe", String.Empty, String.Empty)
+            Dim Gcc As String = DetectMingw("gcc.exe")
+            If Gcc IsNot Nothing Then
+                CompilerMapping.Add(".c", Gcc, "gcc -O2 -s -o foo.exe foo.c -lm", "PATH=" & Path.GetDirectoryName(Gcc) & ";%PATH%", 15000 * 10000, Nothing, Nothing, "foo.c", "foo.exe", String.Empty, String.Empty)
                 ApplyCompilerButton.Enabled = True
                 RefreshPage("CompilerPage")
             End If
         End Sub
 
         Private Sub GppMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GppMenu.Click
-            Dim Path As String = DetectMingw("g++.exe")
-            If Path IsNot Nothing Then
-                CompilerMapping.Add(".cpp;.cxx;.cc", Path, "g++ -O2 -s -o foo.exe foo.cpp -lm", String.Empty, 15000 * 10000, Nothing, Nothing, "foo.cpp", "foo.exe", String.Empty, String.Empty)
+            Dim Gpp As String = DetectMingw("g++.exe")
+            If Gpp IsNot Nothing Then
+                CompilerMapping.Add(".cpp;.cxx;.cc", Gpp, "g++ -O2 -s -o foo.exe foo.cpp -lm", "PATH=" & Path.GetDirectoryName(Gpp) & ";%PATH%", 15000 * 10000, Nothing, Nothing, "foo.cpp", "foo.exe", String.Empty, String.Empty)
                 ApplyCompilerButton.Enabled = True
                 RefreshPage("CompilerPage")
             End If
@@ -387,7 +387,7 @@ Namespace Foreground
                 If SdkPath IsNot Nothing Then
                     Dim EnvironmentVariables As New List(Of String)
                     If Ide IsNot Nothing Then _
-                        EnvironmentVariables.Add("PATH=" & Ide & ";%PATH%")
+                        EnvironmentVariables.Add("PATH=" & Path.GetDirectoryName(ClPath) & ";" & Ide & ";%PATH%")
                     If Include IsNot Nothing Then _
                         EnvironmentVariables.Add("INCLUDE=" & Include & ";" & Path.Combine(SdkPath, "Include") & ";%INCLUDE%")
                     If [Lib] IsNot Nothing Then _
@@ -409,7 +409,7 @@ Namespace Foreground
                 If SdkPath IsNot Nothing Then
                     Dim EnvironmentVariables As New List(Of String)
                     If Ide IsNot Nothing Then _
-                        EnvironmentVariables.Add("PATH=" & Ide & ";%PATH%")
+                        EnvironmentVariables.Add("PATH=" & Path.GetDirectoryName(ClPath) & ";" & Ide & ";%PATH%")
                     If Include IsNot Nothing Then _
                         EnvironmentVariables.Add("INCLUDE=" & Include & ";" & Path.Combine(SdkPath, "Include") & ";%INCLUDE%")
                     If [Lib] IsNot Nothing Then _
@@ -422,18 +422,18 @@ Namespace Foreground
         End Sub
 
         Private Sub MscsMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MscsMenu.Click
-            Dim Path As String = DetectNetfx("csc.exe")
-            If Path IsNot Nothing Then
-                CompilerMapping.Add(".cs", Path, "csc /debug- /optimize+ /checked- /unsafe+ /out:foo.exe foo.cs", String.Empty, 15000 * 10000, Nothing, Nothing, "foo.cs", "foo.exe", String.Empty, String.Empty)
+            Dim Csc As String = DetectNetfx("csc.exe")
+            If Csc IsNot Nothing Then
+                CompilerMapping.Add(".cs", Csc, "csc /debug- /optimize+ /checked- /unsafe+ /out:foo.exe foo.cs", "PATH=" & Path.GetDirectoryName(Csc) & ";%PATH%", 15000 * 10000, Nothing, Nothing, "foo.cs", "foo.exe", String.Empty, String.Empty)
                 ApplyCompilerButton.Enabled = True
                 RefreshPage("CompilerPage")
             End If
         End Sub
 
         Private Sub MsvbMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MsvbMenu.Click
-            Dim Path As String = DetectNetfx("vbc.exe")
-            If Path IsNot Nothing Then
-                CompilerMapping.Add(".vb", Path, "vbc /debug- /optimize+ /removeintchecks+ /out:foo.exe foo.vb", String.Empty, 15000 * 10000, Nothing, Nothing, "foo.vb", "foo.exe", String.Empty, String.Empty)
+            Dim Vbc As String = DetectNetfx("vbc.exe")
+            If Vbc IsNot Nothing Then
+                CompilerMapping.Add(".vb", Vbc, "vbc /debug- /optimize+ /removeintchecks+ /out:foo.exe foo.vb", "PATH=" & Path.GetDirectoryName(Vbc) & ";%PATH%", 15000 * 10000, Nothing, Nothing, "foo.vb", "foo.exe", String.Empty, String.Empty)
                 ApplyCompilerButton.Enabled = True
                 RefreshPage("CompilerPage")
             End If
@@ -448,7 +448,11 @@ Namespace Foreground
             If Javac IsNot Nothing Then
                 Dim Java As String = DetectJdk("java.exe")
                 If Java IsNot Nothing Then
-                    CompilerMapping.Add(".java", Javac, "javac -g:none Main.java", String.Empty, 15000 * 10000, Nothing, Nothing, "Main.java", "Main.class", Java, "java Main")
+                    Dim JavacPath As String = Path.GetDirectoryName(Javac)
+                    Dim JavaPath = Path.GetDirectoryName(Java)
+                    If JavacPath <> JavaPath Then _
+                        JavacPath &= ";" & JavaPath
+                    CompilerMapping.Add(".java", Javac, "javac -g:none Main.java", "PATH=" & JavacPath & ";%PATH%", 15000 * 10000, Nothing, Nothing, "Main.java", "Main.class", Java, "java Main")
                     ApplyCompilerButton.Enabled = True
                     RefreshPage("CompilerPage")
                 End If
@@ -456,9 +460,9 @@ Namespace Foreground
         End Sub
 
         Private Sub PythonMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PythonMenu.Click
-            Dim Path As String = DetectPython()
-            If Path IsNot Nothing Then
-                CompilerMapping.Add(".py", String.Empty, String.Empty, String.Empty, 15000 * 10000, Nothing, Nothing, "foo.py", "foo.py", Path, "python -O foo.py")
+            Dim Python As String = DetectPython()
+            If Python IsNot Nothing Then
+                CompilerMapping.Add(".py", String.Empty, String.Empty, "PATH=" & Path.GetDirectoryName(Python) & ";%PATH%", 15000 * 10000, Nothing, Nothing, "foo.py", "foo.py", Python, "python -O foo.py")
                 ApplyCompilerButton.Enabled = True
                 RefreshPage("CompilerPage")
             End If
