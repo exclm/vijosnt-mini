@@ -22,7 +22,12 @@ Namespace Remoting
                     OnDisconnected()
                     Me.Dispose()
                 End If
-                OnReceived(Length)
+                Try
+                    OnReceived(Length)
+                Catch ex As Exception
+                    EventLog.WriteEntry(My.Resources.ServiceName, ex.ToString(), EventLogEntryType.Error)
+                    Environment.Exit(1)
+                End Try
                 m_Stream.BeginRead(m_Buffer, 0, m_Buffer.Length, AddressOf OnRead, Nothing)
             Catch ex As Exception
                 OnDisconnected()

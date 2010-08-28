@@ -2,15 +2,17 @@
     Friend Class TempPathServer
         Implements IDisposable
 
-        Protected Const m_SleepTime As Int32 = 30 * 1000
-        Protected Const m_TempPathLength As Int32 = 16
+        Private Const m_SleepTime As Int32 = 30 * 1000
+        Private Const m_TempPathLength As Int32 = 16
 
-        Protected m_Root As DirectoryInfo
-        Protected m_Pendings As List(Of DirectoryInfo)
-        Protected m_CleanupThread As Thread
-        Protected m_RandomString As RandomString
+        Private m_SyncRoot As Object
+        Private m_Root As DirectoryInfo
+        Private m_Pendings As List(Of DirectoryInfo)
+        Private m_CleanupThread As Thread
+        Private m_RandomString As RandomString
 
         Public Sub New()
+            m_SyncRoot = New Object()
             Dim AppPath As New AppPath()
             m_Root = AppPath.GetDirectoryInfo().CreateSubdirectory("Temp")
             m_Pendings = New List(Of DirectoryInfo)(m_Root.GetDirectories())
@@ -23,7 +25,7 @@
 
         Public Function CreateTempPath() As TempPath
             Dim Dir As DirectoryInfo
-            SyncLock m_Root
+            SyncLock m_SyncRoot
                 Dim Path As String = m_RandomString.Next(m_TempPathLength)
                 Dir = m_Root.CreateSubdirectory(Path)
             End SyncLock
