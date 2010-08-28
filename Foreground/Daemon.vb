@@ -146,6 +146,8 @@ Namespace Foreground
             Config.FloatingLeft = m_Floating.Left
             m_Floating = Nothing
             m_FloatingMenu.Checked = False
+            If m_Console IsNot Nothing Then _
+                m_Console.FloatingFormButton.Checked = False
         End Sub
 
         Private Sub OnExit(ByVal sender As Object, ByVal e As EventArgs)
