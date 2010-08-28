@@ -269,6 +269,8 @@ Namespace Feeding
                         End If
                     ElseIf Result.StdErrorMessage IsNot Nothing Then
                         Entry.Warning = "标准错误输出如下" & vbCrLf & vbCrLf & Result.StdErrorMessage
+                    Else
+                        Entry.Warning = Nothing
                     End If
 
                     If Not Result.Score.HasValue Then
