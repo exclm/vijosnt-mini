@@ -32,18 +32,20 @@ Namespace Feeding
                     Else
                         Writer.Write(Result.Warning)
                     End If
-                    For Each Entry As TestResultEntry In Result.Entries
-                        Writer.Write(Entry.Index)
-                        Writer.Write(Entry.Flag)
-                        Writer.Write(Entry.Score)
-                        Writer.Write(Entry.TimeUsage)
-                        Writer.Write(Entry.MemoryUsage)
-                        If Entry.Warning Is Nothing Then
-                            Writer.Write(String.Empty)
-                        Else
-                            Writer.Write(Entry.Warning)
-                        End If
-                    Next
+                    If Result.Entries IsNot Nothing Then
+                        For Each Entry As TestResultEntry In Result.Entries
+                            Writer.Write(Entry.Index)
+                            Writer.Write(Entry.Flag)
+                            Writer.Write(Entry.Score)
+                            Writer.Write(Entry.TimeUsage)
+                            Writer.Write(Entry.MemoryUsage)
+                            If Entry.Warning Is Nothing Then
+                                Writer.Write(String.Empty)
+                            Else
+                                Writer.Write(Entry.Warning)
+                            End If
+                        Next
+                    End If
                 End Using
                 Record.UpdateFinal(Id, Result.Flag.ToString(), Result.Score, Result.TimeUsage, Result.MemoryUsage, Stream.ToArray())
             End Using
