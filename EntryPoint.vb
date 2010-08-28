@@ -1,4 +1,5 @@
-﻿Imports VijosNT.Win32
+﻿Imports VijosNT.Utility
+Imports VijosNT.Win32
 
 Public Class EntryPoint
     Private Shared Sub OnUnhandledException(ByVal sender As Object, ByVal e As UnhandledExceptionEventArgs)
@@ -7,8 +8,7 @@ Public Class EntryPoint
     End Sub
 
     Private Shared Sub OnUnhandledExceptionService(ByVal sender As Object, ByVal e As UnhandledExceptionEventArgs)
-        EventLog.WriteEntry(My.Resources.ServiceName, e.ExceptionObject.ToString(), EventLogEntryType.Error)
-        Environment.Exit(1)
+        ServiceUnhandledException(e.ExceptionObject)
     End Sub
 
     Public Shared Sub Main()

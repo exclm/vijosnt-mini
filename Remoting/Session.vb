@@ -1,4 +1,5 @@
 ﻿Imports VijosNT.Feeding
+Imports VijosNT.Utility
 
 Namespace Remoting
     Friend Class Session
@@ -22,12 +23,7 @@ Namespace Remoting
                     OnDisconnected()
                     Me.Dispose()
                 End If
-                Try
-                    OnReceived(Length)
-                Catch ex As Exception
-                    EventLog.WriteEntry(My.Resources.ServiceName, ex.ToString(), EventLogEntryType.Error)
-                    Environment.Exit(1)
-                End Try
+                OnReceived(Length)
                 m_Stream.BeginRead(m_Buffer, 0, m_Buffer.Length, AddressOf OnRead, Nothing)
             Catch ex As Exception
                 OnDisconnected()
@@ -57,37 +53,57 @@ Namespace Remoting
                 Dim Message As ClientMessage = Reader.ReadInt32()
                 Select Case Message
                     Case ClientMessage.ReloadCompiler
-                        OnReloadCompiler(Reader)
+                        OnReloadCompiler()
                     Case ClientMessage.ReloadTestSuite
-                        OnReloadTestSuite(Reader)
+                        OnReloadTestSuite()
                     Case ClientMessage.ReloadExecutor
-                        OnReloadExecutor(Reader)
+                        OnReloadExecutor()
                     Case ClientMessage.ReloadDataSource
-                        OnReloadDataSource(Reader)
+                        OnReloadDataSource()
                     Case ClientMessage.FeedDataSource
-                        OnFeedDataSource(Reader)
+                        OnFeedDataSource(Reader.ReadString())
                 End Select
             End Using
         End Sub
 
-        Private Sub OnReloadCompiler(ByVal Reader As BinaryReader)
-            m_Runner.ReloadCompiler()
+        Private Sub OnReloadCompiler()
+            Try
+                m_Runner.ReloadCompiler()
+            Catch ex As Exception
+                ServiceUnhandledException(ex)
+            End Try
         End Sub
 
-        Private Sub OnReloadTestSuite(ByVal Reader As BinaryReader)
-            m_Runner.ReloadTestSuite()
+        Private Sub OnReloadTestSuite()
+            Try
+                m_Runner.ReloadTestSuite()
+            Catch ex As Exception
+                ServiceUnhandledException(ex)
+            End Try
         End Sub
 
-        Private Sub OnReloadExecutor(ByVal Reader As BinaryReader)
-            m_Runner.ReloadExecutor()
+        Private Sub OnReloadExecutor()
+            Try
+                m_Runner.ReloadExecutor()
+            Catch ex As Exception
+                ServiceUnhandledException(ex)
+            End Try
         End Sub
 
-        Private Sub OnReloadDataSource(ByVal Reader As BinaryReader)
-            m_Runner.ReloadDataSource()
+        Private Sub OnReloadDataSource()
+            Try
+                m_Runner.ReloadDataSource()
+            Catch ex As Exception
+                ServiceUnhandledException(ex)
+            End Try
         End Sub
 
-        Private Sub OnFeedDataSource(ByVal Reader As BinaryReader)
-            m_Runner.Feed(Reader.ReadString(), Int32.MaxValue)
+        Private Sub OnFeedDataSource(ByVal DataSourceName As String)
+            Try
+                m_Runner.Feed(DataSourceName, Int32.MaxValue)
+            Catch ex As Exception
+                ServiceUnhandledException(ex)
+            End Try
         End Sub
 
         Private Sub OnDisconnected()
