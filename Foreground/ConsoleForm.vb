@@ -25,6 +25,7 @@ Namespace Foreground
 
             m_RootNode = NavigationTree.Nodes.Item("Root")
             NavigationTree.ExpandAll()
+            FloatingFormButton.Checked = m_Daemon.ShowFloating
         End Sub
 #End Region
 
@@ -148,12 +149,12 @@ Namespace Foreground
 #Region "Root page"
         Private Sub RefreshServiceStatus()
             If m_Service Is Nothing Then
-                InstallButton.Enabled = True
-                UninstallButton.Enabled = False
+                StartButton.Enabled = True
+                StopButton.Enabled = False
                 StatusLabel.Text = "VijosNT 服务未安装"
             Else
-                InstallButton.Enabled = False
-                UninstallButton.Enabled = True
+                StartButton.Enabled = False
+                StopButton.Enabled = True
                 Dim State As ServiceState = m_Service.State
                 Select Case State
                     Case ServiceState.SERVICE_START_PENDING
@@ -176,14 +177,14 @@ Namespace Foreground
             End Using
         End Sub
 
-        Private Sub InstallButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles InstallButton.Click
+        Private Sub StartButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles StartButton.Click
             m_Service = m_Daemon.CreateService()
             m_Service.Start()
             m_Daemon.ServiceInstalled = True
             RefreshServiceStatus()
         End Sub
 
-        Private Sub UninstallButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles UninstallButton.Click
+        Private Sub StopButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles StopButton.Click
             m_Service.Stop()
             m_Service.Delete()
             m_Service.Close()
@@ -193,6 +194,12 @@ Namespace Foreground
 
         Private Sub ServiceTimer_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ServiceTimer.Tick
             RefreshServiceStatus()
+        End Sub
+
+        Private Sub FloatingFormButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles FloatingFormButton.Click
+            Dim Value As Boolean = Not m_Daemon.ShowFloating
+            m_Daemon.ShowFloating = Value
+            FloatingFormButton.Checked = Value
         End Sub
 
         Private Sub RefreshLocalButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RefershLocalButton.Click

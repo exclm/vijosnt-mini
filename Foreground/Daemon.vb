@@ -67,7 +67,7 @@ Namespace Foreground
 
         Private Sub CreateFloating()
             If Config.DisplayFloating Then _
-                OnFloating(Nothing, Nothing)
+                ShowFloating = True
         End Sub
 
         Public Sub SetIconColor(ByVal Color As Color)
@@ -104,21 +104,32 @@ Namespace Foreground
             m_Console = Nothing
         End Sub
 
-        Public Sub OnFloating(ByVal sender As Object, ByVal e As EventArgs)
-            If m_Floating Is Nothing Then
-                m_Floating = New FloatingForm(Me)
-                m_Floating.SetBitmap(m_Bitmap)
-                AddHandler m_Floating.FormClosing, AddressOf OnFloatingClosing
-                AddHandler m_Floating.FormClosed, AddressOf OnFloatingClosed
-                m_Floating.Show()
-                m_FloatingMenu.Checked = True
-                Config.DisplayFloating = True
-            Else
-                m_Floating.Close()
-                m_Floating = Nothing
-                m_FloatingMenu.Checked = False
-                Config.DisplayFloating = False
-            End If
+        Public Property ShowFloating() As Boolean
+            Get
+                Return m_Floating IsNot Nothing
+            End Get
+
+            Set(ByVal Value As Boolean)
+                If Value = ShowFloating Then Return
+                If Value Then
+                    m_Floating = New FloatingForm(Me)
+                    m_Floating.SetBitmap(m_Bitmap)
+                    AddHandler m_Floating.FormClosing, AddressOf OnFloatingClosing
+                    AddHandler m_Floating.FormClosed, AddressOf OnFloatingClosed
+                    m_Floating.Show()
+                Else
+                    m_Floating.Close()
+                    m_Floating = Nothing
+                End If
+                m_FloatingMenu.Checked = Value
+                Config.DisplayFloating = Value
+                If m_Console IsNot Nothing Then _
+                    m_Console.FloatingFormButton.Checked = Value
+            End Set
+        End Property
+
+        Private Sub OnFloating(ByVal sender As Object, ByVal e As EventArgs)
+            ShowFloating = Not ShowFloating()
         End Sub
 
         Private Sub OnFloatingClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs)
