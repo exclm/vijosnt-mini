@@ -73,6 +73,12 @@ Namespace Foreground
                         m_Service.Close()
                         m_Service = Nothing
                     End If
+                Case "CompilerPage"
+                    ApplyCompilerButton.PerformClick()
+                Case "TestSuitePage"
+                    ApplyTestSuiteButton.PerformClick()
+                Case "ExecutorPage"
+                    ApplyExecutorButton.PerformClick()
             End Select
             StatusLabel.Text = Nothing
         End Sub
@@ -152,7 +158,9 @@ Namespace Foreground
                     End Using
                     TestSuiteList_SelectedIndexChanged(Nothing, Nothing)
                 Case "ExecutorPage"
+                    RemoveHandler ExecutorSlotsText.TextChanged, AddressOf ExecutorSlotsText_TextChanged
                     ExecutorSlotsText.Text = Config.ExecutorSlots
+                    AddHandler ExecutorSlotsText.TextChanged, AddressOf ExecutorSlotsText_TextChanged
                     If Config.EnableSecurity Then
                         ExecutorSecurityCombo.SelectedIndex = 0
                     Else
@@ -331,6 +339,8 @@ Namespace Foreground
                 End If
             Catch ex As Exception
                 MessageBox.Show("并发数必须为 1-16 之间的整数。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                RefreshPage("ExecutorPage")
+                ApplyExecutorButton.Enabled = False
                 Return
             End Try
 
@@ -459,6 +469,14 @@ Namespace Foreground
                 Record.Clear()
                 RefreshPage("LocalDataSourcePage")
             End If
+        End Sub
+
+        Private Sub ConsoleForm_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
+            With TabControl.TabPages
+                If .Count <> 0 Then
+                    LeavePage(.Item(0).Name)
+                End If
+            End With
         End Sub
     End Class
 End Namespace
