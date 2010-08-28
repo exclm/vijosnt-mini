@@ -24,12 +24,12 @@
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
-            Dim TreeNode25 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
-            Dim TreeNode26 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
-            Dim TreeNode27 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("执行设置")
-            Dim TreeNode28 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("本地数据源")
-            Dim TreeNode29 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("外部数据源")
-            Dim TreeNode30 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode25, TreeNode26, TreeNode27, TreeNode28, TreeNode29})
+            Dim TreeNode13 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
+            Dim TreeNode14 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
+            Dim TreeNode15 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("执行设置")
+            Dim TreeNode16 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("本地数据源")
+            Dim TreeNode17 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("外部数据源")
+            Dim TreeNode18 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode13, TreeNode14, TreeNode15, TreeNode16, TreeNode17})
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ConsoleForm))
             Me.MenuStrip = New System.Windows.Forms.MenuStrip()
             Me.FileMenu = New System.Windows.Forms.ToolStripMenuItem()
@@ -260,19 +260,19 @@
             Me.NavigationTree.Location = New System.Drawing.Point(0, 0)
             Me.NavigationTree.Margin = New System.Windows.Forms.Padding(2)
             Me.NavigationTree.Name = "NavigationTree"
-            TreeNode25.Name = "Compiler"
-            TreeNode25.Text = "编译器映射"
-            TreeNode26.Name = "TestSuite"
-            TreeNode26.Text = "数据集映射"
-            TreeNode27.Name = "Executor"
-            TreeNode27.Text = "执行设置"
-            TreeNode28.Name = "LocalDataSource"
-            TreeNode28.Text = "本地数据源"
-            TreeNode29.Name = "RemoteDataSource"
-            TreeNode29.Text = "外部数据源"
-            TreeNode30.Name = "Root"
-            TreeNode30.Text = "VijosNT"
-            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode30})
+            TreeNode13.Name = "Compiler"
+            TreeNode13.Text = "编译器映射"
+            TreeNode14.Name = "TestSuite"
+            TreeNode14.Text = "数据集映射"
+            TreeNode15.Name = "Executor"
+            TreeNode15.Text = "执行设置"
+            TreeNode16.Name = "LocalDataSource"
+            TreeNode16.Text = "本地数据源"
+            TreeNode17.Name = "RemoteDataSource"
+            TreeNode17.Text = "外部数据源"
+            TreeNode18.Name = "Root"
+            TreeNode18.Text = "VijosNT"
+            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode18})
             Me.NavigationTree.Size = New System.Drawing.Size(189, 515)
             Me.NavigationTree.TabIndex = 0
             '
@@ -884,12 +884,11 @@
             'LocalSourceIdHeader
             '
             Me.LocalSourceIdHeader.Text = "Id"
-            Me.LocalSourceIdHeader.Width = 59
             '
             'LocalSourceFlagHeader
             '
             Me.LocalSourceFlagHeader.Text = "Flag"
-            Me.LocalSourceFlagHeader.Width = 78
+            Me.LocalSourceFlagHeader.Width = 120
             '
             'LocalSourceFileNameHeader
             '
@@ -898,6 +897,7 @@
             'LocalSourceScoreHeader
             '
             Me.LocalSourceScoreHeader.Text = "得分"
+            Me.LocalSourceScoreHeader.Width = 45
             '
             'LocalSourceTimeUsageHeader
             '
@@ -906,11 +906,12 @@
             'LocalSourceMemoryUsageHeader
             '
             Me.LocalSourceMemoryUsageHeader.Text = "内存"
+            Me.LocalSourceMemoryUsageHeader.Width = 75
             '
             'LocalSourceDateHeader
             '
             Me.LocalSourceDateHeader.Text = "日期"
-            Me.LocalSourceDateHeader.Width = 124
+            Me.LocalSourceDateHeader.Width = 120
             '
             'LocalSourceToolStrip
             '

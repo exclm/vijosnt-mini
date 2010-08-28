@@ -96,7 +96,20 @@ Namespace Executing
                 StdErrorHandle = m_StdError.GetHandleUnsafe()
 
             Try
-                ' TODO: Check PE (Static memory limit)
+                If m_MemoryQuota.HasValue Then
+                    Dim VirtualSize As Int64
+                    Using Executable As New PortableExecutable(m_ApplicationName)
+                        VirtualSize = Executable.VirtualSize
+                    End Using
+                    If VirtualSize > m_MemoryQuota.Value Then
+                        m_Result.ExitStatus = ERROR_NOT_ENOUGH_QUOTA
+                        m_Result.MemoryQuotaUsage = VirtualSize
+                        m_Remaining = 1
+                        WorkCompleted()
+                        Return
+                    End If
+                End If
+
                 Environment.GiveAccess(m_CurrentDirectory)
 
                 Dim Suspended As ProcessEx.Suspended
