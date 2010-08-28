@@ -260,14 +260,7 @@ Namespace Feeding
                     Entry.Flag = TestResultFlag.RuntimeError
                     Entry.Warning = FormatException(Result.Exception.Value)
                 Else
-                    If Result.ExitStatus <> Win32.NTSTATUS.STATUS_SUCCESS Then
-                        Entry.Warning = "运行失败, 程序返回值为 " & DirectCast(Result.ExitStatus.Value, Int32).ToString()
-                        If Result.StdErrorMessage Is Nothing Then
-                            Entry.Warning += ", 无标准错误输出"
-                        Else
-                            Entry.Warning += ", 标准错误输出如下" & vbCrLf & vbCrLf & Result.StdErrorMessage
-                        End If
-                    ElseIf Result.StdErrorMessage IsNot Nothing Then
+                    If Result.StdErrorMessage IsNot Nothing Then
                         Entry.Warning = "标准错误输出如下" & vbCrLf & vbCrLf & Result.StdErrorMessage
                     Else
                         Entry.Warning = Nothing
@@ -287,10 +280,10 @@ Namespace Feeding
                             Entry.Flag = TestResultFlag.WrongAnswer
                         End If
                     End If
-                    Entry.TimeUsage = Result.TimeQuotaUsage
-                    Entry.MemoryUsage = Result.MemoryQuotaUsage
                 End If
             End If
+            Entry.TimeUsage = Result.TimeQuotaUsage
+            Entry.MemoryUsage = Result.MemoryQuotaUsage
 
             SyncLock Context.TestContext
                 Context.TestContext.TestResults.Add(Entry.Index, Entry)
