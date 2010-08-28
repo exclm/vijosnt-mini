@@ -45,7 +45,7 @@ Namespace Foreground
         Private Function CreateMenu() As ContextMenuStrip
             Dim Result As New ContextMenuStrip()
             With Result.Items
-                With .Add("控制台(&C)", Nothing, AddressOf OnConsole)
+                With .Add("启动控制台(&C)", Nothing, AddressOf OnConsole)
                     .Font = New Font(.Font, FontStyle.Bold)
                 End With
                 m_FloatingMenu = DirectCast(.Add("悬浮窗(&F)", Nothing, AddressOf OnFloating), ToolStripMenuItem)
@@ -91,13 +91,17 @@ Namespace Foreground
             End If
         End Sub
 
-        Private Sub OnConsole(ByVal sender As Object, ByVal e As EventArgs)
+        Public Sub ShowConsole()
             If m_Console Is Nothing Then
                 m_Console = New ConsoleForm(Me)
                 AddHandler m_Console.FormClosed, AddressOf OnConsoleClosed
             End If
             m_Console.Show()
             m_Console.Activate()
+        End Sub
+
+        Private Sub OnConsole(ByVal sender As Object, ByVal e As EventArgs)
+            ShowConsole()
         End Sub
 
         Private Sub OnConsoleClosed(ByVal sender As Object, ByVal e As EventArgs)

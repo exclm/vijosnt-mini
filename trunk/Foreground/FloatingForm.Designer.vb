@@ -25,34 +25,42 @@
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
             Me.MyContextMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
-            Me.TransparentMenu = New System.Windows.Forms.ToolStripMenuItem()
+            Me.StartConsoleMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.ContextBar0 = New System.Windows.Forms.ToolStripSeparator()
+            Me.TransparentMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.CloseMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.MyContextMenu.SuspendLayout()
             Me.SuspendLayout()
             '
             'MyContextMenu
             '
-            Me.MyContextMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TransparentMenu, Me.ContextBar0, Me.CloseMenu})
+            Me.MyContextMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.StartConsoleMenu, Me.TransparentMenu, Me.ContextBar0, Me.CloseMenu})
             Me.MyContextMenu.Name = "ContextMenu"
-            Me.MyContextMenu.Size = New System.Drawing.Size(153, 76)
+            Me.MyContextMenu.Size = New System.Drawing.Size(155, 98)
             '
-            'TransparentMenu
+            'StartConsoleMenu
             '
-            Me.TransparentMenu.Name = "TransparentMenu"
-            Me.TransparentMenu.Size = New System.Drawing.Size(152, 22)
-            Me.TransparentMenu.Text = "半透明(&T)"
+            Me.StartConsoleMenu.Font = New System.Drawing.Font("微软雅黑", 9.0!, System.Drawing.FontStyle.Bold)
+            Me.StartConsoleMenu.Name = "StartConsoleMenu"
+            Me.StartConsoleMenu.Size = New System.Drawing.Size(154, 22)
+            Me.StartConsoleMenu.Text = "启动控制台(&C)"
             '
             'ContextBar0
             '
             Me.ContextBar0.Name = "ContextBar0"
-            Me.ContextBar0.Size = New System.Drawing.Size(149, 6)
+            Me.ContextBar0.Size = New System.Drawing.Size(151, 6)
+            '
+            'TransparentMenu
+            '
+            Me.TransparentMenu.Name = "TransparentMenu"
+            Me.TransparentMenu.Size = New System.Drawing.Size(154, 22)
+            Me.TransparentMenu.Text = "半透明(&T)"
             '
             'CloseMenu
             '
             Me.CloseMenu.Name = "CloseMenu"
-            Me.CloseMenu.Size = New System.Drawing.Size(152, 22)
-            Me.CloseMenu.Text = "关闭(&C)"
+            Me.CloseMenu.Size = New System.Drawing.Size(154, 22)
+            Me.CloseMenu.Text = "关闭悬浮窗(&C)"
             '
             'FloatingForm
             '
@@ -76,5 +84,6 @@
         Friend WithEvents TransparentMenu As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents ContextBar0 As System.Windows.Forms.ToolStripSeparator
         Friend WithEvents CloseMenu As System.Windows.Forms.ToolStripMenuItem
+        Friend WithEvents StartConsoleMenu As System.Windows.Forms.ToolStripMenuItem
     End Class
 End Namespace

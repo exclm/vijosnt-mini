@@ -36,11 +36,14 @@ Namespace Foreground
         End Sub
 
         Private Sub FloatingForm_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseDown
-            Select e.Button
-                Case MouseButtons.Left
+            If e.Button = MouseButtons.Left Then
+                If e.Clicks = 1 Then
                     ReleaseCapture()
                     SendMessage(Me.Handle, WM_SYSCOMMAND, SC_MOVE Or HT_CAPTION, 0)
-            End Select
+                ElseIf e.Clicks = 2 Then
+                    m_Daemon.ShowConsole()
+                End If
+            End If
         End Sub
 
         Private Sub FloatingForm_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Me.Paint
@@ -82,6 +85,10 @@ Namespace Foreground
             Else
                 Opacity = 1.0
             End If
+        End Sub
+
+        Private Sub StartConsoleMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles StartConsoleMenu.Click
+            m_Daemon.ShowConsole()
         End Sub
     End Class
 End Namespace
