@@ -138,5 +138,36 @@
                 Return DataReader(Name)
             End If
         End Function
+
+        Public Sub RefreshListView(ByVal ListView As ListView, ByVal DataReader As IDataReader, ByVal IdColumnName As String, ByVal FirstColumnName As String, ByVal ParamArray RestColumnNames As String())
+            ListView.BeginUpdate()
+            Try
+                Dim SelectedId As Int32 = -1
+                With ListView.SelectedItems
+                    If .Count <> 0 Then
+                        SelectedId = .Item(0).Tag
+                    End If
+                End With
+                With ListView.Items
+                    .Clear()
+                    While DataReader.Read()
+                        Dim Id As Int32 = DataReader(IdColumnName)
+                        With .Add(CType(ReadData(DataReader, FirstColumnName), String))
+                            .Tag = Id
+                            With .SubItems
+                                For Each ColumnName As String In RestColumnNames
+                                    .Add(CType(ReadData(DataReader, ColumnName), String))
+                                Next
+                            End With
+                            If Id = SelectedId Then
+                                .Selected = True
+                            End If
+                        End With
+                    End While
+                End With
+            Finally
+                ListView.EndUpdate()
+            End Try
+        End Sub
     End Module
 End Namespace

@@ -24,12 +24,11 @@
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
-            Dim TreeNode13 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
-            Dim TreeNode14 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
-            Dim TreeNode15 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("执行设置")
-            Dim TreeNode16 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("本地数据源")
-            Dim TreeNode17 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("外部数据源")
-            Dim TreeNode18 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode13, TreeNode14, TreeNode15, TreeNode16, TreeNode17})
+            Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
+            Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
+            Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("执行设置")
+            Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据源")
+            Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2, TreeNode3, TreeNode4})
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ConsoleForm))
             Me.MenuStrip = New System.Windows.Forms.MenuStrip()
             Me.FileMenu = New System.Windows.Forms.ToolStripMenuItem()
@@ -48,7 +47,7 @@
             Me.NavigationTree = New System.Windows.Forms.TreeView()
             Me.TabControl = New System.Windows.Forms.TabControl()
             Me.RootPage = New System.Windows.Forms.TabPage()
-            Me.ServiceToolStrip = New System.Windows.Forms.ToolStrip()
+            Me.RootToolStrip = New System.Windows.Forms.ToolStrip()
             Me.InstallButton = New System.Windows.Forms.ToolStripButton()
             Me.UninstallButton = New System.Windows.Forms.ToolStripButton()
             Me.CompilerPage = New System.Windows.Forms.TabPage()
@@ -113,7 +112,8 @@
             Me.CheckSecurityButton = New System.Windows.Forms.ToolStripButton()
             Me.ExecutorSeperator2 = New System.Windows.Forms.ToolStripSeparator()
             Me.ApplyExecutorButton = New System.Windows.Forms.ToolStripButton()
-            Me.LocalDataSourcePage = New System.Windows.Forms.TabPage()
+            Me.DataSourcePage = New System.Windows.Forms.TabPage()
+            Me.ServiceTimer = New System.Windows.Forms.Timer(Me.components)
             Me.LocalSourceList = New System.Windows.Forms.ListView()
             Me.LocalSourceIdHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.LocalSourceFlagHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -122,12 +122,9 @@
             Me.LocalSourceTimeUsageHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.LocalSourceMemoryUsageHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.LocalSourceDateHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-            Me.LocalSourceToolStrip = New System.Windows.Forms.ToolStrip()
             Me.RefershLocalButton = New System.Windows.Forms.ToolStripButton()
-            Me.LocalSourceSeperator0 = New System.Windows.Forms.ToolStripSeparator()
+            Me.RootSeperator0 = New System.Windows.Forms.ToolStripSeparator()
             Me.ClearLocalButton = New System.Windows.Forms.ToolStripButton()
-            Me.RemoteDataSourcePage = New System.Windows.Forms.TabPage()
-            Me.ServiceTimer = New System.Windows.Forms.Timer(Me.components)
             Me.MenuStrip.SuspendLayout()
             Me.StatusStrip.SuspendLayout()
             Me.SplitContainer.Panel1.SuspendLayout()
@@ -135,7 +132,7 @@
             Me.SplitContainer.SuspendLayout()
             Me.TabControl.SuspendLayout()
             Me.RootPage.SuspendLayout()
-            Me.ServiceToolStrip.SuspendLayout()
+            Me.RootToolStrip.SuspendLayout()
             Me.CompilerPage.SuspendLayout()
             Me.CompilerSplit.Panel1.SuspendLayout()
             Me.CompilerSplit.Panel2.SuspendLayout()
@@ -148,8 +145,6 @@
             Me.TestSuiteToolStrip.SuspendLayout()
             Me.ExecutorPage.SuspendLayout()
             Me.ExecutorToolStrip.SuspendLayout()
-            Me.LocalDataSourcePage.SuspendLayout()
-            Me.LocalSourceToolStrip.SuspendLayout()
             Me.SuspendLayout()
             '
             'MenuStrip
@@ -260,19 +255,17 @@
             Me.NavigationTree.Location = New System.Drawing.Point(0, 0)
             Me.NavigationTree.Margin = New System.Windows.Forms.Padding(2)
             Me.NavigationTree.Name = "NavigationTree"
-            TreeNode13.Name = "Compiler"
-            TreeNode13.Text = "编译器映射"
-            TreeNode14.Name = "TestSuite"
-            TreeNode14.Text = "数据集映射"
-            TreeNode15.Name = "Executor"
-            TreeNode15.Text = "执行设置"
-            TreeNode16.Name = "LocalDataSource"
-            TreeNode16.Text = "本地数据源"
-            TreeNode17.Name = "RemoteDataSource"
-            TreeNode17.Text = "外部数据源"
-            TreeNode18.Name = "Root"
-            TreeNode18.Text = "VijosNT"
-            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode18})
+            TreeNode1.Name = "Compiler"
+            TreeNode1.Text = "编译器映射"
+            TreeNode2.Name = "TestSuite"
+            TreeNode2.Text = "数据集映射"
+            TreeNode3.Name = "Executor"
+            TreeNode3.Text = "执行设置"
+            TreeNode4.Name = "DataSource"
+            TreeNode4.Text = "数据源"
+            TreeNode5.Name = "Root"
+            TreeNode5.Text = "VijosNT"
+            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode5})
             Me.NavigationTree.Size = New System.Drawing.Size(189, 515)
             Me.NavigationTree.TabIndex = 0
             '
@@ -282,8 +275,7 @@
             Me.TabControl.Controls.Add(Me.CompilerPage)
             Me.TabControl.Controls.Add(Me.TestSuitePage)
             Me.TabControl.Controls.Add(Me.ExecutorPage)
-            Me.TabControl.Controls.Add(Me.LocalDataSourcePage)
-            Me.TabControl.Controls.Add(Me.RemoteDataSourcePage)
+            Me.TabControl.Controls.Add(Me.DataSourcePage)
             Me.TabControl.Dock = System.Windows.Forms.DockStyle.Fill
             Me.TabControl.Location = New System.Drawing.Point(0, 0)
             Me.TabControl.Margin = New System.Windows.Forms.Padding(2)
@@ -294,23 +286,24 @@
             '
             'RootPage
             '
-            Me.RootPage.Controls.Add(Me.ServiceToolStrip)
+            Me.RootPage.Controls.Add(Me.LocalSourceList)
+            Me.RootPage.Controls.Add(Me.RootToolStrip)
             Me.RootPage.Location = New System.Drawing.Point(4, 22)
             Me.RootPage.Margin = New System.Windows.Forms.Padding(2)
             Me.RootPage.Name = "RootPage"
             Me.RootPage.Padding = New System.Windows.Forms.Padding(2)
             Me.RootPage.Size = New System.Drawing.Size(584, 489)
             Me.RootPage.TabIndex = 0
-            Me.RootPage.Text = "服务"
+            Me.RootPage.Text = "VijosNT"
             Me.RootPage.UseVisualStyleBackColor = True
             '
-            'ServiceToolStrip
+            'RootToolStrip
             '
-            Me.ServiceToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.InstallButton, Me.UninstallButton})
-            Me.ServiceToolStrip.Location = New System.Drawing.Point(2, 2)
-            Me.ServiceToolStrip.Name = "ServiceToolStrip"
-            Me.ServiceToolStrip.Size = New System.Drawing.Size(580, 25)
-            Me.ServiceToolStrip.TabIndex = 2
+            Me.RootToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.InstallButton, Me.UninstallButton, Me.RootSeperator0, Me.RefershLocalButton, Me.ClearLocalButton})
+            Me.RootToolStrip.Location = New System.Drawing.Point(2, 2)
+            Me.RootToolStrip.Name = "RootToolStrip"
+            Me.RootToolStrip.Size = New System.Drawing.Size(580, 25)
+            Me.RootToolStrip.TabIndex = 2
             '
             'InstallButton
             '
@@ -855,17 +848,19 @@
             Me.ApplyExecutorButton.Text = "应用(&A)"
             Me.ApplyExecutorButton.ToolTipText = "提交更改并将当前的设置应用到正在运行的服务"
             '
-            'LocalDataSourcePage
+            'DataSourcePage
             '
-            Me.LocalDataSourcePage.Controls.Add(Me.LocalSourceList)
-            Me.LocalDataSourcePage.Controls.Add(Me.LocalSourceToolStrip)
-            Me.LocalDataSourcePage.Location = New System.Drawing.Point(4, 22)
-            Me.LocalDataSourcePage.Name = "LocalDataSourcePage"
-            Me.LocalDataSourcePage.Padding = New System.Windows.Forms.Padding(3)
-            Me.LocalDataSourcePage.Size = New System.Drawing.Size(584, 489)
-            Me.LocalDataSourcePage.TabIndex = 4
-            Me.LocalDataSourcePage.Text = "本地数据源"
-            Me.LocalDataSourcePage.UseVisualStyleBackColor = True
+            Me.DataSourcePage.Location = New System.Drawing.Point(4, 22)
+            Me.DataSourcePage.Name = "DataSourcePage"
+            Me.DataSourcePage.Padding = New System.Windows.Forms.Padding(3)
+            Me.DataSourcePage.Size = New System.Drawing.Size(584, 489)
+            Me.DataSourcePage.TabIndex = 5
+            Me.DataSourcePage.Text = "数据源"
+            Me.DataSourcePage.UseVisualStyleBackColor = True
+            '
+            'ServiceTimer
+            '
+            Me.ServiceTimer.Interval = 500
             '
             'LocalSourceList
             '
@@ -873,11 +868,11 @@
             Me.LocalSourceList.Dock = System.Windows.Forms.DockStyle.Fill
             Me.LocalSourceList.FullRowSelect = True
             Me.LocalSourceList.HideSelection = False
-            Me.LocalSourceList.Location = New System.Drawing.Point(3, 28)
+            Me.LocalSourceList.Location = New System.Drawing.Point(2, 27)
             Me.LocalSourceList.MultiSelect = False
             Me.LocalSourceList.Name = "LocalSourceList"
-            Me.LocalSourceList.Size = New System.Drawing.Size(578, 458)
-            Me.LocalSourceList.TabIndex = 3
+            Me.LocalSourceList.Size = New System.Drawing.Size(580, 460)
+            Me.LocalSourceList.TabIndex = 4
             Me.LocalSourceList.UseCompatibleStateImageBehavior = False
             Me.LocalSourceList.View = System.Windows.Forms.View.Details
             '
@@ -913,14 +908,6 @@
             Me.LocalSourceDateHeader.Text = "日期"
             Me.LocalSourceDateHeader.Width = 120
             '
-            'LocalSourceToolStrip
-            '
-            Me.LocalSourceToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RefershLocalButton, Me.LocalSourceSeperator0, Me.ClearLocalButton})
-            Me.LocalSourceToolStrip.Location = New System.Drawing.Point(3, 3)
-            Me.LocalSourceToolStrip.Name = "LocalSourceToolStrip"
-            Me.LocalSourceToolStrip.Size = New System.Drawing.Size(578, 25)
-            Me.LocalSourceToolStrip.TabIndex = 2
-            '
             'RefershLocalButton
             '
             Me.RefershLocalButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
@@ -930,10 +917,10 @@
             Me.RefershLocalButton.Size = New System.Drawing.Size(52, 22)
             Me.RefershLocalButton.Text = "刷新(&R)"
             '
-            'LocalSourceSeperator0
+            'RootSeperator0
             '
-            Me.LocalSourceSeperator0.Name = "LocalSourceSeperator0"
-            Me.LocalSourceSeperator0.Size = New System.Drawing.Size(6, 25)
+            Me.RootSeperator0.Name = "RootSeperator0"
+            Me.RootSeperator0.Size = New System.Drawing.Size(6, 25)
             '
             'ClearLocalButton
             '
@@ -944,20 +931,6 @@
             Me.ClearLocalButton.Size = New System.Drawing.Size(52, 22)
             Me.ClearLocalButton.Text = "清除(&C)"
             '
-            'RemoteDataSourcePage
-            '
-            Me.RemoteDataSourcePage.Location = New System.Drawing.Point(4, 22)
-            Me.RemoteDataSourcePage.Name = "RemoteDataSourcePage"
-            Me.RemoteDataSourcePage.Padding = New System.Windows.Forms.Padding(3)
-            Me.RemoteDataSourcePage.Size = New System.Drawing.Size(584, 489)
-            Me.RemoteDataSourcePage.TabIndex = 5
-            Me.RemoteDataSourcePage.Text = "外部数据源"
-            Me.RemoteDataSourcePage.UseVisualStyleBackColor = True
-            '
-            'ServiceTimer
-            '
-            Me.ServiceTimer.Interval = 500
-            '
             'ConsoleForm
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
@@ -966,6 +939,7 @@
             Me.Controls.Add(Me.SplitContainer)
             Me.Controls.Add(Me.StatusStrip)
             Me.Controls.Add(Me.MenuStrip)
+            Me.KeyPreview = True
             Me.MainMenuStrip = Me.MenuStrip
             Me.Margin = New System.Windows.Forms.Padding(2)
             Me.Name = "ConsoleForm"
@@ -980,8 +954,8 @@
             Me.TabControl.ResumeLayout(False)
             Me.RootPage.ResumeLayout(False)
             Me.RootPage.PerformLayout()
-            Me.ServiceToolStrip.ResumeLayout(False)
-            Me.ServiceToolStrip.PerformLayout()
+            Me.RootToolStrip.ResumeLayout(False)
+            Me.RootToolStrip.PerformLayout()
             Me.CompilerPage.ResumeLayout(False)
             Me.CompilerPage.PerformLayout()
             Me.CompilerSplit.Panel1.ResumeLayout(False)
@@ -1000,10 +974,6 @@
             Me.ExecutorPage.PerformLayout()
             Me.ExecutorToolStrip.ResumeLayout(False)
             Me.ExecutorToolStrip.PerformLayout()
-            Me.LocalDataSourcePage.ResumeLayout(False)
-            Me.LocalDataSourcePage.PerformLayout()
-            Me.LocalSourceToolStrip.ResumeLayout(False)
-            Me.LocalSourceToolStrip.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -1029,8 +999,7 @@
         Friend WithEvents WikiToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents CheckUpdateMenu As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents HelpStrip1 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents LocalDataSourcePage As System.Windows.Forms.TabPage
-        Friend WithEvents RemoteDataSourcePage As System.Windows.Forms.TabPage
+        Friend WithEvents DataSourcePage As System.Windows.Forms.TabPage
         Friend WithEvents ReportIssue As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents CompilerToolStrip As System.Windows.Forms.ToolStrip
         Friend WithEvents RemoveCompilerButton As System.Windows.Forms.ToolStripButton
@@ -1045,7 +1014,7 @@
         Friend WithEvents CompilerProperty As System.Windows.Forms.PropertyGrid
         Friend WithEvents CompilerSeperator0 As System.Windows.Forms.ToolStripSeparator
         Friend WithEvents CompilerSeperator1 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents ServiceToolStrip As System.Windows.Forms.ToolStrip
+        Friend WithEvents RootToolStrip As System.Windows.Forms.ToolStrip
         Friend WithEvents InstallButton As System.Windows.Forms.ToolStripButton
         Friend WithEvents UninstallButton As System.Windows.Forms.ToolStripButton
         Friend WithEvents TestSuiteToolStrip As System.Windows.Forms.ToolStrip
@@ -1078,16 +1047,6 @@
         Friend WithEvents SecurityDesktopNameHeader As System.Windows.Forms.ColumnHeader
         Friend WithEvents SecurityUserNameHeader As System.Windows.Forms.ColumnHeader
         Friend WithEvents SecurityPasswordHeader As System.Windows.Forms.ColumnHeader
-        Friend WithEvents LocalSourceToolStrip As System.Windows.Forms.ToolStrip
-        Friend WithEvents RefershLocalButton As System.Windows.Forms.ToolStripButton
-        Friend WithEvents LocalSourceList As System.Windows.Forms.ListView
-        Friend WithEvents LocalSourceIdHeader As System.Windows.Forms.ColumnHeader
-        Friend WithEvents LocalSourceFlagHeader As System.Windows.Forms.ColumnHeader
-        Friend WithEvents LocalSourceFileNameHeader As System.Windows.Forms.ColumnHeader
-        Friend WithEvents LocalSourceScoreHeader As System.Windows.Forms.ColumnHeader
-        Friend WithEvents LocalSourceTimeUsageHeader As System.Windows.Forms.ColumnHeader
-        Friend WithEvents LocalSourceMemoryUsageHeader As System.Windows.Forms.ColumnHeader
-        Friend WithEvents LocalSourceDateHeader As System.Windows.Forms.ColumnHeader
         Friend WithEvents NewCompilerMenu As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents AddCompilerBar0 As System.Windows.Forms.ToolStripSeparator
         Friend WithEvents MingwMenu As System.Windows.Forms.ToolStripMenuItem
@@ -1101,10 +1060,19 @@
         Friend WithEvents AddAPlusBMenu As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents JavaMenu As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents PythonMenu As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents LocalSourceSeperator0 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents ClearLocalButton As System.Windows.Forms.ToolStripButton
         Friend WithEvents NetfxMenu As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents MscsMenu As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents MsvbMenu As System.Windows.Forms.ToolStripMenuItem
+        Friend WithEvents LocalSourceList As System.Windows.Forms.ListView
+        Friend WithEvents LocalSourceIdHeader As System.Windows.Forms.ColumnHeader
+        Friend WithEvents LocalSourceFlagHeader As System.Windows.Forms.ColumnHeader
+        Friend WithEvents LocalSourceFileNameHeader As System.Windows.Forms.ColumnHeader
+        Friend WithEvents LocalSourceScoreHeader As System.Windows.Forms.ColumnHeader
+        Friend WithEvents LocalSourceTimeUsageHeader As System.Windows.Forms.ColumnHeader
+        Friend WithEvents LocalSourceMemoryUsageHeader As System.Windows.Forms.ColumnHeader
+        Friend WithEvents LocalSourceDateHeader As System.Windows.Forms.ColumnHeader
+        Friend WithEvents RootSeperator0 As System.Windows.Forms.ToolStripSeparator
+        Friend WithEvents RefershLocalButton As System.Windows.Forms.ToolStripButton
+        Friend WithEvents ClearLocalButton As System.Windows.Forms.ToolStripButton
     End Class
 End Namespace
