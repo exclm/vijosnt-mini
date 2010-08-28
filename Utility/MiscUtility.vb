@@ -111,6 +111,14 @@
             End If
         End Function
 
+        Public Function DbToLocalByteArray(ByVal Value As Object) As Byte()
+            If IsDBNull(Value) Then
+                Return Nothing
+            Else
+                Return DirectCast(Value, Byte())
+            End If
+        End Function
+
         Public Function ReadData(ByVal DataReader As IDataReader, ByVal Name As String) As Object
             If Name.StartsWith("$") Then
                 Return DbToLocalString(DataReader(Name.Substring(1)))
@@ -134,6 +142,8 @@
                 Else
                     Return Nothing
                 End If
+            ElseIf Name.StartsWith(".") Then
+                Return DbToLocalByteArray(DataReader(Name.Substring(1)))
             Else
                 Return DataReader(Name)
             End If

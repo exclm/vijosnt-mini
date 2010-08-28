@@ -1,5 +1,6 @@
 ﻿Namespace LocalDb
     Friend Class Record
+        Private Shared m_SelectReportCommand As SQLiteCommand
         Private Shared m_SelectHeaderCommand As SQLiteCommand
         Private Shared m_SelectPendingCommand As SQLiteCommand
         Private Shared m_SelectCodeCommand As SQLiteCommand
@@ -25,6 +26,8 @@
                 Command.ExecuteNonQuery()
             End Using
 
+            m_SelectReportCommand = Database.CreateCommand( _
+                "SELECT Id, FileName, SourceCode, Date, Flag, Score, TimeUsage, MemoryUsage, Details FROM Record WHERE Id = @Id")
             m_SelectHeaderCommand = Database.CreateCommand( _
                 "SELECT Id, FileName, Date, Taken, Flag, Score, TimeUsage, MemoryUsage FROM Record ORDER BY Id DESC")
             m_SelectPendingCommand = Database.CreateCommand( _
@@ -83,6 +86,13 @@
                 Command.ExecuteNonQuery()
             End Using
         End Sub
+
+        Public Shared Function GetReport(ByVal Id As Int32) As IDataReader
+            Using Command As SQLiteCommand = m_SelectReportCommand.Clone()
+                Command.Parameters.AddWithValue("@Id", Id)
+                Return Command.ExecuteReader()
+            End Using
+        End Function
 
         Public Shared Function GetSourceCode(ByVal Id As Int32) As IDataReader
             Using Command As SQLiteCommand = m_SelectCodeCommand.Clone()
