@@ -7,7 +7,6 @@ Namespace Executing
 
         Private m_WatchDog As WatchDog
         Private m_ProcessMonitor As ProcessMonitor
-        Private m_JobObject As JobObject
         Private m_ApplicationName As String
         Private m_CommandLine As String
         Private m_EnvironmentVariables As IEnumerable(Of String)
@@ -72,8 +71,11 @@ Namespace Executing
         End Sub
 
         Private Sub WatchDogCallback(ByVal Result As WatchDog.Result)
+            Dim JobObject As JobObject = DirectCast(Result.State, JobObject)
             m_Result.TimeQuotaUsage = Result.QuotaUsage
-            m_Result.MemoryQuotaUsage = m_JobObject.Limits.PeakProcessMemoryUsed
+            m_Result.MemoryQuotaUsage = JobObject.Limits.PeakProcessMemoryUsed
+            JobObject.Close()
+            JobObject = Nothing
             WorkCompleted()
         End Sub
 
@@ -124,9 +126,9 @@ Namespace Executing
                     Return
                 End Try
 
-                m_JobObject = New JobObject()
-                m_JobObject.Assign(Suspended.GetHandleUnsafe())
-                With m_JobObject.Limits
+                Dim JobObject As New JobObject()
+                JobObject.Assign(Suspended.GetHandleUnsafe())
+                With JobObject.Limits
                     .ProcessMemory = m_MemoryQuota
                     .ActiveProcess = m_ActiveProcessQuota
                     .DieOnUnhandledException = True
@@ -134,7 +136,7 @@ Namespace Executing
                 End With
 
                 If m_EnableUIRestrictions Then
-                    With m_JobObject.UIRestrictions
+                    With JobObject.UIRestrictions
                         .Handles = True
                         .ReadClipboard = True
                         .WriteClipboard = True
@@ -150,7 +152,7 @@ Namespace Executing
                 m_Remaining = 2
 
                 m_ProcessMonitor.Attach(Suspended, AddressOf ProcessMonitorCallback, Nothing)
-                m_WatchDog.SetWatch(Suspended.Resume(), m_TimeQuota, AddressOf WatchDogCallback, Nothing)
+                m_WatchDog.SetWatch(Suspended.Resume(), m_TimeQuota, AddressOf WatchDogCallback, JobObject)
             Finally
                 If m_StdInput IsNot Nothing Then _
                     m_StdInput.Close()
