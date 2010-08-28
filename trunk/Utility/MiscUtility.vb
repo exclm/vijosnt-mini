@@ -169,5 +169,10 @@
                 ListView.EndUpdate()
             End Try
         End Sub
+
+        Public Sub ServiceUnhandledException(ByVal ex As Exception)
+            EventLog.WriteEntry(My.Resources.ServiceName, ex.ToString(), EventLogEntryType.Error)
+            Environment.Exit(1)
+        End Sub
     End Module
 End Namespace
