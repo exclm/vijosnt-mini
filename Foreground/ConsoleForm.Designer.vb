@@ -24,11 +24,11 @@
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
-            Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
-            Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
-            Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("执行设置")
-            Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据源")
-            Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2, TreeNode3, TreeNode4})
+            Dim TreeNode31 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
+            Dim TreeNode32 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
+            Dim TreeNode33 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("执行设置")
+            Dim TreeNode34 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据源")
+            Dim TreeNode35 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode31, TreeNode32, TreeNode33, TreeNode34})
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ConsoleForm))
             Me.MenuStrip = New System.Windows.Forms.MenuStrip()
             Me.FileMenu = New System.Windows.Forms.ToolStripMenuItem()
@@ -261,17 +261,17 @@
             Me.NavigationTree.Location = New System.Drawing.Point(0, 0)
             Me.NavigationTree.Margin = New System.Windows.Forms.Padding(2)
             Me.NavigationTree.Name = "NavigationTree"
-            TreeNode1.Name = "Compiler"
-            TreeNode1.Text = "编译器映射"
-            TreeNode2.Name = "TestSuite"
-            TreeNode2.Text = "数据集映射"
-            TreeNode3.Name = "Executor"
-            TreeNode3.Text = "执行设置"
-            TreeNode4.Name = "DataSource"
-            TreeNode4.Text = "数据源"
-            TreeNode5.Name = "Root"
-            TreeNode5.Text = "VijosNT"
-            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode5})
+            TreeNode31.Name = "Compiler"
+            TreeNode31.Text = "编译器映射"
+            TreeNode32.Name = "TestSuite"
+            TreeNode32.Text = "数据集映射"
+            TreeNode33.Name = "Executor"
+            TreeNode33.Text = "执行设置"
+            TreeNode34.Name = "DataSource"
+            TreeNode34.Text = "数据源"
+            TreeNode35.Name = "Root"
+            TreeNode35.Text = "VijosNT"
+            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode35})
             Me.NavigationTree.Size = New System.Drawing.Size(189, 515)
             Me.NavigationTree.TabIndex = 0
             '
@@ -457,7 +457,7 @@
             '
             Me.CompilerSplit.Panel2.Controls.Add(Me.CompilerProperty)
             Me.CompilerSplit.Size = New System.Drawing.Size(580, 460)
-            Me.CompilerSplit.SplitterDistance = 121
+            Me.CompilerSplit.SplitterDistance = 160
             Me.CompilerSplit.SplitterWidth = 3
             Me.CompilerSplit.TabIndex = 8
             '
@@ -471,7 +471,7 @@
             Me.CompilerList.Margin = New System.Windows.Forms.Padding(2)
             Me.CompilerList.MultiSelect = False
             Me.CompilerList.Name = "CompilerList"
-            Me.CompilerList.Size = New System.Drawing.Size(580, 121)
+            Me.CompilerList.Size = New System.Drawing.Size(580, 160)
             Me.CompilerList.TabIndex = 1
             Me.CompilerList.UseCompatibleStateImageBehavior = False
             Me.CompilerList.View = System.Windows.Forms.View.Details
@@ -494,7 +494,7 @@
             Me.CompilerProperty.Margin = New System.Windows.Forms.Padding(2)
             Me.CompilerProperty.Name = "CompilerProperty"
             Me.CompilerProperty.PropertySort = System.Windows.Forms.PropertySort.Categorized
-            Me.CompilerProperty.Size = New System.Drawing.Size(580, 336)
+            Me.CompilerProperty.Size = New System.Drawing.Size(580, 297)
             Me.CompilerProperty.TabIndex = 6
             Me.CompilerProperty.ToolbarVisible = False
             '
@@ -686,7 +686,7 @@
             '
             Me.TestSuiteSplit.Panel2.Controls.Add(Me.TestSuiteProperty)
             Me.TestSuiteSplit.Size = New System.Drawing.Size(580, 460)
-            Me.TestSuiteSplit.SplitterDistance = 196
+            Me.TestSuiteSplit.SplitterDistance = 160
             Me.TestSuiteSplit.SplitterWidth = 3
             Me.TestSuiteSplit.TabIndex = 11
             '
@@ -700,7 +700,7 @@
             Me.TestSuiteList.Margin = New System.Windows.Forms.Padding(2)
             Me.TestSuiteList.MultiSelect = False
             Me.TestSuiteList.Name = "TestSuiteList"
-            Me.TestSuiteList.Size = New System.Drawing.Size(580, 196)
+            Me.TestSuiteList.Size = New System.Drawing.Size(580, 160)
             Me.TestSuiteList.TabIndex = 1
             Me.TestSuiteList.UseCompatibleStateImageBehavior = False
             Me.TestSuiteList.View = System.Windows.Forms.View.Details
@@ -728,7 +728,7 @@
             Me.TestSuiteProperty.Margin = New System.Windows.Forms.Padding(2)
             Me.TestSuiteProperty.Name = "TestSuiteProperty"
             Me.TestSuiteProperty.PropertySort = System.Windows.Forms.PropertySort.Categorized
-            Me.TestSuiteProperty.Size = New System.Drawing.Size(580, 261)
+            Me.TestSuiteProperty.Size = New System.Drawing.Size(580, 297)
             Me.TestSuiteProperty.TabIndex = 6
             Me.TestSuiteProperty.ToolbarVisible = False
             '
@@ -754,24 +754,24 @@
             'NewTestSuiteMenu
             '
             Me.NewTestSuiteMenu.Name = "NewTestSuiteMenu"
-            Me.NewTestSuiteMenu.Size = New System.Drawing.Size(152, 22)
+            Me.NewTestSuiteMenu.Size = New System.Drawing.Size(148, 22)
             Me.NewTestSuiteMenu.Text = "新数据集映射"
             '
             'AddTestSuiteBar0
             '
             Me.AddTestSuiteBar0.Name = "AddTestSuiteBar0"
-            Me.AddTestSuiteBar0.Size = New System.Drawing.Size(149, 6)
+            Me.AddTestSuiteBar0.Size = New System.Drawing.Size(145, 6)
             '
             'AddAPlusBMenu
             '
             Me.AddAPlusBMenu.Name = "AddAPlusBMenu"
-            Me.AddAPlusBMenu.Size = New System.Drawing.Size(152, 22)
+            Me.AddAPlusBMenu.Size = New System.Drawing.Size(148, 22)
             Me.AddAPlusBMenu.Text = "A+B"
             '
             'AddVijosSuiteMenu
             '
             Me.AddVijosSuiteMenu.Name = "AddVijosSuiteMenu"
-            Me.AddVijosSuiteMenu.Size = New System.Drawing.Size(152, 22)
+            Me.AddVijosSuiteMenu.Size = New System.Drawing.Size(148, 22)
             Me.AddVijosSuiteMenu.Text = "Vijos 格式"
             '
             'RemoveTestSuiteButton
@@ -985,6 +985,7 @@
             Me.Controls.Add(Me.SplitContainer)
             Me.Controls.Add(Me.StatusStrip)
             Me.Controls.Add(Me.MenuStrip)
+            Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
             Me.KeyPreview = True
             Me.MainMenuStrip = Me.MenuStrip
             Me.Margin = New System.Windows.Forms.Padding(2)
