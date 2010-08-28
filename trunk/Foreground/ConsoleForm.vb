@@ -212,6 +212,19 @@ Namespace Foreground
                 RefreshLocalDataSource()
             End If
         End Sub
+
+        Private Sub LocalSourceList_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles LocalSourceList.DoubleClick
+            With LocalSourceList.SelectedItems
+                If .Count = 0 Then _
+                    Return
+
+                Using Reader As New StringReader(LoadTestResultXml(.Item(0).Tag())), _
+                    XmlReader As New XmlTextReader(Reader), _
+                    Dialog As New TestResultForm(XmlReader)
+                    Dialog.ShowDialog()
+                End Using
+            End With
+        End Sub
 #End Region
 
 #Region "Compiler page"

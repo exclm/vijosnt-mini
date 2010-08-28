@@ -117,36 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="BlueV" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\artwork\bluev.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="BlueVBmp" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\artwork\bluev.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="DisplayName" xml:space="preserve">
-    <value>VijosNT Service</value>
-  </data>
-  <data name="GreenV" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\artwork\greenv.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="GreenVBmp" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\artwork\greenv.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="PipeName" xml:space="preserve">
-    <value>\\.\pipe\vijosnt</value>
-  </data>
-  <data name="RedV" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\artwork\redv.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="RedVBmp" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\artwork\redv.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ServiceName" xml:space="preserve">
-    <value>vjntsvc</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="TestReport" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\foreground\testreport.xslt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
 </root>

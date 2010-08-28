@@ -9,7 +9,8 @@
     </SchemaVersion>
     <ProjectGuid>{14264ECC-994C-4D8E-985C-CA7B57076454}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>VijosNT.EntryPoint</StartupObject>
+    <StartupObject>
+    </StartupObject>
     <RootNamespace>VijosNT</RootNamespace>
     <AssemblyName>VijosNT Mini</AssemblyName>
     <FileAlignment>512</FileAlignment>
@@ -136,6 +137,9 @@
     <Import Include="System.Threading" />
     <Import Include="System.Timers" />
     <Import Include="System.Windows.Forms" />
+    <Import Include="System.Xml" />
+    <Import Include="System.Xml.XPath" />
+    <Import Include="System.Xml.Xsl" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compiling\Compiler.vb" />
@@ -161,6 +165,13 @@
       <DependentUpon>FloatingForm.vb</DependentUpon>
     </Compile>
     <Compile Include="Foreground\FloatingForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Foreground\TestReport.vb" />
+    <Compile Include="Foreground\TestResultForm.Designer.vb">
+      <DependentUpon>TestResultForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Foreground\TestResultForm.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="LocalDb\Record.vb" />
@@ -273,6 +284,9 @@
     <EmbeddedResource Include="Foreground\FloatingForm.resx">
       <DependentUpon>FloatingForm.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Foreground\TestResultForm.resx">
+      <DependentUpon>TestResultForm.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
@@ -302,6 +316,7 @@
     <Content Include="Artwork\RedV.bmp" />
     <Content Include="Artwork\RedV.ico" />
     <Content Include="Artwork\VijosNT.ico" />
+    <Content Include="Foreground\TestReport.xslt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

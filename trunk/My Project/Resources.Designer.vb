@@ -128,5 +128,26 @@ Namespace My.Resources
                 Return ResourceManager.GetString("ServiceName", resourceCulture)
             End Get
         End Property
+        
+        '''<summary>
+        '''  查找类似 &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+        '''&lt;xsl:stylesheet version=&quot;1.0&quot; xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot;&gt;
+        '''  &lt;xsl:output method=&quot;html&quot; /&gt;
+        '''
+        '''  &lt;xsl:template match=&quot;/&quot;&gt;
+        '''    &lt;html&gt;
+        '''      &lt;body&gt;
+        '''        &lt;h2&gt;Hello world!&lt;/h2&gt;
+        '''      &lt;/body&gt;
+        '''    &lt;/html&gt;
+        '''  &lt;/xsl:template&gt;
+        '''&lt;/xsl:stylesheet&gt;
+        ''' 的本地化字符串。
+        '''</summary>
+        Friend ReadOnly Property TestReport() As String
+            Get
+                Return ResourceManager.GetString("TestReport", resourceCulture)
+            End Get
+        End Property
     End Module
 End Namespace
