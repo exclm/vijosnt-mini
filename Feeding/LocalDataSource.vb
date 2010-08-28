@@ -25,7 +25,6 @@ Namespace Feeding
         End Sub
 
         Public Overrides Sub Untake(ByVal Id As Int32, ByVal Result As TestResult)
-            ' TODO: Serialize details into byte array
             Using Stream As New MemoryStream()
                 Using Writer As New BinaryWriter(Stream)
                     If Result.Warning Is Nothing Then
