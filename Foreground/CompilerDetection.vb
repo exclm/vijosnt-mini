@@ -91,6 +91,16 @@
             Return DetectCompiler(Patterns, ExecutableName)
         End Function
 
+        Public Function DetectFpc() As String
+            Dim Patterns As New List(Of String)
+            For Each Parent As String In Environment.GetEnvironmentVariable("path").Split(New Char() {";"c})
+                Patterns.Add(Path.Combine(Parent, "fpc.exe"))
+            Next
+            Patterns.Add("C:\FPC\*\bin\*\fpc.exe")
+            Patterns.Add("C:\FPC\*\bin\fpc.exe")
+            Return DetectCompiler(Patterns, "fpc.exe")
+        End Function
+
         Public Function DetectMssdk() As String
             Dim ProgramFilesPath As String = Environment.GetEnvironmentVariable("ProgramFiles(x86)")
             If ProgramFilesPath Is Nothing Then _

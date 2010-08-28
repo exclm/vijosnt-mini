@@ -24,11 +24,11 @@
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
-            Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
-            Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
-            Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("执行设置")
-            Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据源")
-            Dim TreeNode10 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode6, TreeNode7, TreeNode8, TreeNode9})
+            Dim TreeNode16 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
+            Dim TreeNode17 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
+            Dim TreeNode18 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("执行设置")
+            Dim TreeNode19 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据源")
+            Dim TreeNode20 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode16, TreeNode17, TreeNode18, TreeNode19})
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ConsoleForm))
             Me.MenuStrip = New System.Windows.Forms.MenuStrip()
             Me.FileMenu = New System.Windows.Forms.ToolStripMenuItem()
@@ -59,6 +59,10 @@
             Me.StartButton = New System.Windows.Forms.ToolStripButton()
             Me.StopButton = New System.Windows.Forms.ToolStripButton()
             Me.RootSeperator0 = New System.Windows.Forms.ToolStripSeparator()
+            Me.FloatingFormLabel0 = New System.Windows.Forms.ToolStripLabel()
+            Me.FloatingFormButton = New System.Windows.Forms.ToolStripButton()
+            Me.FloatingFormLabel1 = New System.Windows.Forms.ToolStripLabel()
+            Me.RootSeperator1 = New System.Windows.Forms.ToolStripSeparator()
             Me.RefershLocalButton = New System.Windows.Forms.ToolStripButton()
             Me.ClearLocalButton = New System.Windows.Forms.ToolStripButton()
             Me.CompilerPage = New System.Windows.Forms.TabPage()
@@ -74,6 +78,7 @@
             Me.MingwMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.GccMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.GppMenu = New System.Windows.Forms.ToolStripMenuItem()
+            Me.FpcMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.MsvsMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.MscMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.MscppMenu = New System.Windows.Forms.ToolStripMenuItem()
@@ -125,10 +130,6 @@
             Me.ApplyExecutorButton = New System.Windows.Forms.ToolStripButton()
             Me.DataSourcePage = New System.Windows.Forms.TabPage()
             Me.ServiceTimer = New System.Windows.Forms.Timer(Me.components)
-            Me.RootSeperator1 = New System.Windows.Forms.ToolStripSeparator()
-            Me.FloatingFormLabel0 = New System.Windows.Forms.ToolStripLabel()
-            Me.FloatingFormButton = New System.Windows.Forms.ToolStripButton()
-            Me.FloatingFormLabel1 = New System.Windows.Forms.ToolStripLabel()
             Me.MenuStrip.SuspendLayout()
             Me.StatusStrip.SuspendLayout()
             Me.SplitContainer.Panel1.SuspendLayout()
@@ -259,17 +260,17 @@
             Me.NavigationTree.Location = New System.Drawing.Point(0, 0)
             Me.NavigationTree.Margin = New System.Windows.Forms.Padding(2)
             Me.NavigationTree.Name = "NavigationTree"
-            TreeNode6.Name = "Compiler"
-            TreeNode6.Text = "编译器映射"
-            TreeNode7.Name = "TestSuite"
-            TreeNode7.Text = "数据集映射"
-            TreeNode8.Name = "Executor"
-            TreeNode8.Text = "执行设置"
-            TreeNode9.Name = "DataSource"
-            TreeNode9.Text = "数据源"
-            TreeNode10.Name = "Root"
-            TreeNode10.Text = "VijosNT"
-            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode10})
+            TreeNode16.Name = "Compiler"
+            TreeNode16.Text = "编译器映射"
+            TreeNode17.Name = "TestSuite"
+            TreeNode17.Text = "数据集映射"
+            TreeNode18.Name = "Executor"
+            TreeNode18.Text = "执行设置"
+            TreeNode19.Name = "DataSource"
+            TreeNode19.Text = "数据源"
+            TreeNode20.Name = "Root"
+            TreeNode20.Text = "VijosNT"
+            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode20})
             Me.NavigationTree.Size = New System.Drawing.Size(189, 515)
             Me.NavigationTree.TabIndex = 0
             '
@@ -318,6 +319,7 @@
             'LocalSourceIdHeader
             '
             Me.LocalSourceIdHeader.Text = "Id"
+            Me.LocalSourceIdHeader.Width = 45
             '
             'LocalSourceFlagHeader
             '
@@ -327,6 +329,7 @@
             'LocalSourceFileNameHeader
             '
             Me.LocalSourceFileNameHeader.Text = "文件名"
+            Me.LocalSourceFileNameHeader.Width = 75
             '
             'LocalSourceScoreHeader
             '
@@ -379,6 +382,32 @@
             '
             Me.RootSeperator0.Name = "RootSeperator0"
             Me.RootSeperator0.Size = New System.Drawing.Size(6, 25)
+            '
+            'FloatingFormLabel0
+            '
+            Me.FloatingFormLabel0.Name = "FloatingFormLabel0"
+            Me.FloatingFormLabel0.Size = New System.Drawing.Size(80, 22)
+            Me.FloatingFormLabel0.Text = "将文件拖动到"
+            '
+            'FloatingFormButton
+            '
+            Me.FloatingFormButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.FloatingFormButton.Image = CType(resources.GetObject("FloatingFormButton.Image"), System.Drawing.Image)
+            Me.FloatingFormButton.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.FloatingFormButton.Name = "FloatingFormButton"
+            Me.FloatingFormButton.Size = New System.Drawing.Size(48, 22)
+            Me.FloatingFormButton.Text = "悬浮窗"
+            '
+            'FloatingFormLabel1
+            '
+            Me.FloatingFormLabel1.Name = "FloatingFormLabel1"
+            Me.FloatingFormLabel1.Size = New System.Drawing.Size(68, 22)
+            Me.FloatingFormLabel1.Text = "中进行评测"
+            '
+            'RootSeperator1
+            '
+            Me.RootSeperator1.Name = "RootSeperator1"
+            Me.RootSeperator1.Size = New System.Drawing.Size(6, 25)
             '
             'RefershLocalButton
             '
@@ -479,7 +508,7 @@
             'AddCompilerButton
             '
             Me.AddCompilerButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            Me.AddCompilerButton.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewCompilerMenu, Me.AddCompilerBar0, Me.MingwMenu, Me.MsvsMenu, Me.NetfxMenu, Me.JavaMenu, Me.PythonMenu})
+            Me.AddCompilerButton.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewCompilerMenu, Me.AddCompilerBar0, Me.MingwMenu, Me.FpcMenu, Me.MsvsMenu, Me.NetfxMenu, Me.JavaMenu, Me.PythonMenu})
             Me.AddCompilerButton.Image = CType(resources.GetObject("AddCompilerButton.Image"), System.Drawing.Image)
             Me.AddCompilerButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.AddCompilerButton.Name = "AddCompilerButton"
@@ -516,6 +545,12 @@
             Me.GppMenu.Name = "GppMenu"
             Me.GppMenu.Size = New System.Drawing.Size(142, 22)
             Me.GppMenu.Text = "C++ 编译器"
+            '
+            'FpcMenu
+            '
+            Me.FpcMenu.Name = "FpcMenu"
+            Me.FpcMenu.Size = New System.Drawing.Size(211, 22)
+            Me.FpcMenu.Text = "Free Pascal"
             '
             'MsvsMenu
             '
@@ -935,32 +970,6 @@
             '
             Me.ServiceTimer.Interval = 500
             '
-            'RootSeperator1
-            '
-            Me.RootSeperator1.Name = "RootSeperator1"
-            Me.RootSeperator1.Size = New System.Drawing.Size(6, 25)
-            '
-            'FloatingFormLabel0
-            '
-            Me.FloatingFormLabel0.Name = "FloatingFormLabel0"
-            Me.FloatingFormLabel0.Size = New System.Drawing.Size(80, 22)
-            Me.FloatingFormLabel0.Text = "将文件拖动到"
-            '
-            'FloatingFormButton
-            '
-            Me.FloatingFormButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            Me.FloatingFormButton.Image = CType(resources.GetObject("FloatingFormButton.Image"), System.Drawing.Image)
-            Me.FloatingFormButton.ImageTransparentColor = System.Drawing.Color.Magenta
-            Me.FloatingFormButton.Name = "FloatingFormButton"
-            Me.FloatingFormButton.Size = New System.Drawing.Size(48, 22)
-            Me.FloatingFormButton.Text = "悬浮窗"
-            '
-            'FloatingFormLabel1
-            '
-            Me.FloatingFormLabel1.Name = "FloatingFormLabel1"
-            Me.FloatingFormLabel1.Size = New System.Drawing.Size(68, 22)
-            Me.FloatingFormLabel1.Text = "中进行评测"
-            '
             'ConsoleForm
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
@@ -1108,5 +1117,6 @@
         Friend WithEvents FloatingFormLabel0 As System.Windows.Forms.ToolStripLabel
         Friend WithEvents FloatingFormButton As System.Windows.Forms.ToolStripButton
         Friend WithEvents FloatingFormLabel1 As System.Windows.Forms.ToolStripLabel
+        Friend WithEvents FpcMenu As System.Windows.Forms.ToolStripMenuItem
     End Class
 End Namespace

@@ -277,7 +277,7 @@ Namespace Foreground
         Private Sub GccMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GccMenu.Click
             Dim Gcc As String = DetectMingw("gcc.exe")
             If Gcc IsNot Nothing Then
-                CompilerMapping.Add(".c", Gcc, "gcc -O2 -s -o foo.exe foo.c -lm", "PATH=" & Path.GetDirectoryName(Gcc) & ";%PATH%", 15000 * 10000, Nothing, Nothing, "foo.c", "foo.exe", String.Empty, String.Empty)
+                CompilerMapping.Add(".c", Gcc, "gcc -O2 -s -ofoo.exe foo.c -lm", "PATH=" & Path.GetDirectoryName(Gcc) & ";%PATH%", 15000 * 10000, Nothing, Nothing, "foo.c", "foo.exe", String.Empty, String.Empty)
                 ApplyCompilerButton.Enabled = True
                 RefreshPage()
             End If
@@ -286,7 +286,16 @@ Namespace Foreground
         Private Sub GppMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GppMenu.Click
             Dim Gpp As String = DetectMingw("g++.exe")
             If Gpp IsNot Nothing Then
-                CompilerMapping.Add(".cpp;.cxx;.cc", Gpp, "g++ -O2 -s -o foo.exe foo.cpp -lm", "PATH=" & Path.GetDirectoryName(Gpp) & ";%PATH%", 15000 * 10000, Nothing, Nothing, "foo.cpp", "foo.exe", String.Empty, String.Empty)
+                CompilerMapping.Add(".cpp;.cxx;.cc", Gpp, "g++ -O2 -s -ofoo.exe foo.cpp -lm", "PATH=" & Path.GetDirectoryName(Gpp) & ";%PATH%", 15000 * 10000, Nothing, Nothing, "foo.cpp", "foo.exe", String.Empty, String.Empty)
+                ApplyCompilerButton.Enabled = True
+                RefreshPage()
+            End If
+        End Sub
+
+        Private Sub FpcMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles FpcMenu.Click
+            Dim Fpc As String = DetectFpc()
+            If Fpc IsNot Nothing Then
+                CompilerMapping.Add(".pas", Fpc, "fpc -O2 -ofoo.exe foo.pas", "PATH=" & Path.GetDirectoryName(Fpc) & ";%PATH%", 15000 * 10000, Nothing, Nothing, "foo.pas", "foo.exe", String.Empty, String.Empty)
                 ApplyCompilerButton.Enabled = True
                 RefreshPage()
             End If
