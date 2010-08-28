@@ -45,18 +45,15 @@ Namespace Compiling
             For Each Variable As DictionaryEntry In Environment.GetEnvironmentVariables()
                 Map.Add(Variable.Key, Variable.Value)
             Next
-            Dim Delta As String() = Value.Split(New Char() {"|"c})
-            For Index As Int32 = 0 To Delta.Length - 1
-                With Delta(Index)
-                    Dim Position As Int32 = .IndexOf("="c)
-                    If Position = -1 Then Continue For
-                    Dim Name As String = .Substring(0, Position)
-                    Dim Parameter As String = .Substring(Position + 1)
-                    If Map.ContainsKey(Name) Then _
-                        Map.Remove(Name)
-                    If Parameter.Length <> 0 Then _
-                        Map.Add(Name, Environment.ExpandEnvironmentVariables(Parameter))
-                End With
+            For Each Variable As String In Value.Split(New Char() {"|"c})
+                Dim Position As Int32 = Variable.IndexOf("="c)
+                If Position = -1 Then Continue For
+                Dim Name As String = Variable.Substring(0, Position)
+                Dim Parameter As String = Variable.Substring(Position + 1)
+                If Map.ContainsKey(Name) Then _
+                    Map.Remove(Name)
+                If Parameter.Length <> 0 Then _
+                    Map.Add(Name, Environment.ExpandEnvironmentVariables(Parameter))
             Next
             Dim Result As New List(Of String)
             For Each KeyValue As KeyValuePair(Of String, String) In Map
