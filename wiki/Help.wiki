@@ -2,9 +2,9 @@
 =欢迎使用VijosNT-Mini信息学测评系统=
 <br>
 <br>
-VijosNT-Mini是VijosNT的一个实验性分支，主要目标在于提高性能以及降低使用难度，在 VijosNT 的基础上重写了所有的代码，特别针对配置较差（CPU 数量小于 8，内存小于 16GB）的计算机进行了优化（大量使用完成函数代替线程等待），并实现了一个友好的用户界面。
+VijosNT-Mini是VijosNT的一个实验性分支, 主要目标在于提高性能以及降低使用难度, 在:http://code.google.com/p/vijosnt VijosNT] 的基础上重写了所有的代码, 特别针对配置较差（CPU 数量小于 8，内存小于 16GB）的计算机进行了优化（大量使用完成函数代替线程等待）, 并实现了一个友好的用户界面。
 <br>
-初次使用VijosNT-Mini前，请先阅读使用帮助<br>
+初次使用VijosNT-Mini前，请先仔细阅读使用帮助, 以免发生意外。<br>
 <br>
 =使用帮助=
 <wiki:toc max_depth="3"/> 
@@ -51,14 +51,14 @@ Python<br>*
 此处以C,C++和Free Pascal为例<br>
 <br>
 ===C===
-点击右侧“添加旁边的小箭头”选择MiniGW菜单下的C。若VijosNT-Mini能找到编译器路径，将弹出窗口询问编译器路径是否正确。如该路径正确，点击是；反之，点击否。此时，请浏览到您的MiniGW C路径，选择gcc.exe文件。
+点击右侧“添加旁边的小箭头”选择MinGW菜单下的C。若VijosNT-Mini能找到编译器路径，将弹出窗口询问编译器路径是否正确。如该路径正确，点击是；反之，点击否。此时，请浏览到您的MinGW C路径，选择gcc.exe文件。
 <br>
 ===C++===
-点击右侧“添加旁边的小箭头”选择MiniGW菜单下的C++。若VijosNT-Mini能找到编译器路径，将弹出窗口询问编译器路径是否正确。如该路径正确，点击是；反之，点击否。此时，请浏览到您的MiniGW C++路径，选择g++.exe文件。
+点击右侧“添加旁边的小箭头”选择MinGW菜单下的C++。若VijosNT-Mini能找到编译器路径，将弹出窗口询问编译器路径是否正确。如该路径正确，点击是；反之，点击否。此时，请浏览到您的MinGW C++路径，选择g++.exe文件。
 <br>
 ===Free Pascal===
 点击右侧“添加旁边的小箭头”选择FreePascal。若VijosNT-Mini能找到编译器路径，将弹出窗口询问编译器路径是否正确。如该路径正确，点击是；反之，点击否。此时，请浏览到您的Free Pascal 路径，选择fpc.exe文件。<br>
-使用Free Pascal，必须保证您的编译器是32位或64位版本，不是16位版本。Free Pascal for NOI是16位版本。
+使用Free Pascal，必须保证您的编译器是32位或64位版本，而非16位版本。Free Pascal for NOI是16位版本，不能在VijosNT-Mini中使用。
 <br>
 ===不被列出的编译器或修改编译器设置===
 *以下以BAT为例*<br>
@@ -92,7 +92,7 @@ Vijos 参数为题目目录路径，Vijos数据格式<br>
 <br>
 点击左边的数据集映射，点击右边“添加旁边的小箭头”，选择A+B，添加了一道A+B题目，文件名匹配为”A+B”，则文件名必须为A+B编译器后缀，例如A+B.cpp才能被转到该题，此处同样支持后缀名，并自上到下匹配。多个文件名可使用“;”分割，如A+B;APlusB。<br>
 <br>
-===Vijos数据格式===
+===标准Vijos数据格式===
 Vijos题目目录<br>
 Input\<br>
 Output\<br>
@@ -134,8 +134,10 @@ input9.txt|output9.txt|1|10|<br>
 此处用于与SQL数据库连接，目前没有功能可用。<br>
 <br>
 ==进行测评==
-将待测评的文件拖放到VijosNT Mini悬浮窗上进行测评，拖上去后，打开控制台，点击左边的VijosNT，右边就会有测评结果，目前暂不能查看详细信息。<br>
+将待测评的文件拖放到VijosNT-Mini悬浮窗上进行测评，拖上去后，打开控制台，点击左边的VijosNT，右边就会有测评结果，目前暂不能查看详细信息。<br>
 <br>
 ==删除VijosNT-Mini==
 当您不想使用VijosNT-Mini时，可以删除服务以节省系统资源，在控制台界面中，点击左边VijosNT，点击右边“停止”，即可卸载系统服务，此时可以方便的删除VijosNT-Mini。<br>
-<br><br><br><br><br><br><br>VijosNT Mini使用帮助 Write by BML
+==特别注意==
+每项设置完毕后都需要点击"应用", 如果发现VijosNT-Mini运行不正常, 请先看看是不是每项都点了"应用"。
+<br><br><br><br><br><br><br>VijosNT Mini使用帮助 Write by BML,twd2
