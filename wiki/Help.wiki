@@ -49,9 +49,8 @@ C#
 Visual Basic.Net
 JAVA
 Python*
-
-此处以C,C++和Free Pascal为例, 说明如何添加编译器
 ===添加编译器===
+此处以C,C++和Free Pascal为例添加编译器。
 
 ====添加C的编译器====
 点击右侧“添加旁边的小箭头”选择MinGW菜单下的C。若VijosNT-Mini能找到编译器路径，将弹出窗口询问编译器路径是否正确。如该路径正确，点击是；反之，点击否。此时，请浏览到您的MinGW C路径，选择gcc.exe文件。
