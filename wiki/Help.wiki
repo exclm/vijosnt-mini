@@ -7,7 +7,7 @@ VijosNT-Mini是VijosNT的一个实验性分支，主要目标在于提高性能�
 初次使用VijosNT-Mini前，请先阅读使用帮助<br>
 <br>
 =使用帮助=
-[Help#文件说明 文件说明]
+<wiki:toc max_depth="3"/> 
 ==获得VijosNT-Mini==
 如您需要使用VijosNT-Mini，请先下载一个合适您计算机的版本或下载源代码自行编译。<br>
 使用前必须安装.Net Framework2.0和.Net Framework3.5<br>
