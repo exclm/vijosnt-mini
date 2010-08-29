@@ -99,11 +99,16 @@ Namespace Foreground
                     RemoveHandler ExecutorSlotsText.TextChanged, AddressOf ExecutorSlotsText_TextChanged
                     ExecutorSlotsText.Text = Config.ExecutorSlots
                     AddHandler ExecutorSlotsText.TextChanged, AddressOf ExecutorSlotsText_TextChanged
+                    RemoveHandler ExecutorSecurityCombo.SelectedIndexChanged, AddressOf ExecutorSecurityCombo_SelectedIndexChanged
                     If Config.EnableSecurity Then
                         ExecutorSecurityCombo.SelectedIndex = 0
+                        SecurityList.Enabled = True
                     Else
                         ExecutorSecurityCombo.SelectedIndex = 1
+                        SecurityList.Enabled = False
                     End If
+                    AddHandler ExecutorSecurityCombo.SelectedIndexChanged, AddressOf ExecutorSecurityCombo_SelectedIndexChanged
+                    RefreshSecurity()
             End Select
         End Sub
 #End Region
@@ -308,6 +313,11 @@ Namespace Foreground
             RefreshPage()
         End Sub
 
+        Private Sub ApplyCompilerButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ApplyCompilerButton.Click
+            m_Daemon.ReloadCompiler()
+            ApplyCompilerButton.Enabled = False
+        End Sub
+
         Private Sub GccMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GccMenu.Click
             Dim Gcc As String = DetectMingw("gcc.exe")
             If Gcc IsNot Nothing Then
@@ -495,6 +505,11 @@ Namespace Foreground
             RefreshPage()
         End Sub
 
+        Private Sub ApplyTestSuiteButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ApplyTestSuiteButton.Click
+            m_Daemon.ReloadTestSuite()
+            ApplyTestSuiteButton.Enabled = False
+        End Sub
+
         Private Sub TestSuiteProperty_PropertyValueChanged(ByVal s As Object, ByVal e As System.Windows.Forms.PropertyValueChangedEventArgs) Handles TestSuiteProperty.PropertyValueChanged
             ApplyTestSuiteButton.Enabled = True
             RefreshPage()
@@ -506,14 +521,11 @@ Namespace Foreground
             ApplyExecutorButton.Enabled = True
         End Sub
 
-        Private Sub ApplyCompilerButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ApplyCompilerButton.Click
-            m_Daemon.ReloadCompiler()
-            ApplyCompilerButton.Enabled = False
-        End Sub
-
-        Private Sub ApplyTestSuiteButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ApplyTestSuiteButton.Click
-            m_Daemon.ReloadTestSuite()
-            ApplyTestSuiteButton.Enabled = False
+        Private Sub RefreshSecurity()
+            Using Reader As IDataReader = UntrustedEnvironments.GetAll()
+                RefreshListView(SecurityList, Reader, "Id", "UserName", "Password")
+            End Using
+            SecurityList_SelectedIndexChanged(Nothing, Nothing)
         End Sub
 
         Private Sub ApplyExecutorButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ApplyExecutorButton.Click
@@ -530,20 +542,76 @@ Namespace Foreground
                 Return
             End Try
 
+            If ExecutorSecurityCombo.SelectedIndex = 0 Then
+                If SecurityList.Items.Count <> 0 Then
+                    Config.EnableSecurity = True
+                Else
+                    MessageBox.Show("安全已被禁用, 因为没有提供任何供不可信程序执行的环境。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                    Config.EnableSecurity = False
+                End If
+            Else
+                Config.EnableSecurity = False
+            End If
             Config.ExecutorSlots = ExecutorSlots
+
             m_Daemon.ReloadExecutor()
             ApplyExecutorButton.Enabled = False
+            RefreshPage()
         End Sub
 
         Private Sub ExecutorSecurityCombo_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ExecutorSecurityCombo.SelectedIndexChanged
-            Dim EnableSecurity As Boolean = ExecutorSecurityCombo.SelectedIndex = 0
-            Config.EnableSecurity = EnableSecurity
+            Dim EnableSecurity As Boolean = (ExecutorSecurityCombo.SelectedIndex = 0)
             SecurityList.Enabled = EnableSecurity
+            AddSecurityButton.Enabled = EnableSecurity
+            CheckSecurityButton.Enabled = EnableSecurity
+            ApplyExecutorButton.Enabled = True
+        End Sub
+
+        Private Sub AddSecurityButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles AddSecurityButton.Click
+            Dim UserName As String = Nothing
+            Dim Password As String = Nothing
+
+            If PromptForCredentials(Handle, "请输入一组 Windows 用户名和密码用于不可信程序的执行", "VijosNT", UserName, Password) <> DialogResult.OK Then _
+                Return
+
+            Dim LoginSucceeded As Boolean
+            Try
+                Using Token As New Token(UserName, Password)
+                    ' Do nothing
+                End Using
+                LoginSucceeded = True
+            Catch ex As Win32Exception
+                LoginSucceeded = False
+            End Try
+
+            If Not LoginSucceeded AndAlso _
+                MessageBox.Show("登录失败, 使用错误的用户名和密码会使服务无法正常运行, 确定要继续吗?", "询问", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) = DialogResult.No Then _
+                Return
+
+            Dim RandomString As New RandomString()
+            UntrustedEnvironments.Add(RandomString.Next(16), UserName, Password)
+            RefreshSecurity()
+            ApplyExecutorButton.Enabled = True
+        End Sub
+
+        Private Sub RemoveSecurityButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles RemoveSecurityButton.Click
+            With SecurityList.SelectedItems
+                If .Count <> 0 Then
+                    UntrustedEnvironments.Delete(.Item(0).Tag)
+                    RefreshSecurity()
+                    ApplyExecutorButton.Enabled = True
+                End If
+            End With
+        End Sub
+
+        Private Sub SecurityList_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles SecurityList.SelectedIndexChanged
+            RemoveSecurityButton.Enabled = (SecurityList.SelectedItems.Count <> 0)
         End Sub
 #End Region
 
-        Private Sub NotImplementedHandler() Handles AddSecurityButton.Click, RemoveSecurityButton.Click, CheckSecurityButton.Click
+        Private Sub NotImplementedHandler() Handles CheckSecurityButton.Click
             MessageBox.Show("还没写代码 O(∩_∩)O", "友情提示", MessageBoxButtons.OK, MessageBoxIcon.Information)
         End Sub
+
     End Class
 End Namespace

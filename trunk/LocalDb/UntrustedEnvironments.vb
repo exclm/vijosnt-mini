@@ -2,11 +2,13 @@
     Friend Class UntrustedEnvironments
         Private Shared m_SelectCommand As SQLiteCommand
         Private Shared m_InsertCommand As SQLiteCommand
+        Private Shared m_DeleteCommand As SQLiteCommand
 
         Shared Sub New()
             Using Command As SQLiteCommand = Database.CreateCommand( _
                     "CREATE TABLE IF NOT EXISTS UntrustedEnvironments (" & _
-                    "DesktopName TEXT PRIMARY KEY UNIQUE, " & _
+                    "Id INTEGER PRIMARY KEY AUTOINCREMENT, " & _
+                    "DesktopName TEXT, " & _
                     "UserName TEXT, " & _
                     "Password TEXT)")
                 Command.ExecuteNonQuery()
@@ -15,7 +17,9 @@
             m_SelectCommand = Database.CreateCommand( _
                 "SELECT * FROM UntrustedEnvironments")
             m_InsertCommand = Database.CreateCommand( _
-                "INSERT INTO UntrustedEnvironments (DesktopName, UserName, Password) VALUES (@DesktopName, @UserName, @Password)")
+                "INSERT INTO UntrustedEnvironments (Id, DesktopName, UserName, Password) VALUES (NULL, @DesktopName, @UserName, @Password)")
+            m_DeleteCommand = Database.CreateCommand( _
+                "DELETE FROM UntrustedEnvironments WHERE Id = @Id")
         End Sub
 
         Public Shared Function GetAll() As IDataReader
@@ -30,6 +34,15 @@
                     .AddWithValue("@DesktopName", DesktopName)
                     .AddWithValue("@UserName", UserName)
                     .AddWithValue("@Password", Password)
+                End With
+                Command.ExecuteNonQuery()
+            End Using
+        End Sub
+
+        Public Shared Sub Delete(ByVal Id As Int32)
+            Using Command As SQLiteCommand = m_DeleteCommand.Clone()
+                With Command.Parameters
+                    .AddWithValue("@Id", Id)
                 End With
                 Command.ExecuteNonQuery()
             End Using

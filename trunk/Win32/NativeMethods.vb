@@ -1,6 +1,36 @@
 ﻿Namespace Win32
     Friend Module NativeMethods
 
+#Region "credui.dll"
+        Public Structure CREDUI_INFO
+            Dim cbSize As Int32
+            Dim hwndParent As IntPtr
+            <MarshalAs(UnmanagedType.LPTStr)> _
+            Dim MessageText As String
+            <MarshalAs(UnmanagedType.LPTStr)> _
+            Dim CaptionText As String
+            Dim hbmBanner As IntPtr
+        End Structure
+
+        Public Declare Auto Function CredUIPromptForCredentials Lib "credui.dll" ( _
+            ByRef UiInfo As CREDUI_INFO, _
+            ByVal TargetName As String, _
+            ByVal Reserved As IntPtr, _
+            ByVal dwAuthError As Int32, _
+            ByVal pszUserName As IntPtr, _
+            ByVal ulUserNameMaxChars As Int32, _
+            ByVal pszPassword As IntPtr, _
+            ByVal ulPasswordMaxChars As Int32, _
+            ByRef pfSave As Boolean, _
+            ByVal dwFlags As CredUIFlags) As Int32
+
+        Public Enum CredUIFlags As Int32
+            CREDUI_FLAGS_DO_NOT_PERSIST = &H2
+            CREDUI_FLAGS_ALWAYS_SHOW_UI = &H80
+            CREDUI_FLAGS_GENERIC_CREDENTIALS = &H40000
+        End Enum
+#End Region
+
 #Region "advapi32.dll"
         Public Declare Auto Function OpenProcessToken Lib "advapi32.dll" ( _
             ByVal ProcessHandle As IntPtr, _
@@ -912,6 +942,7 @@
         Public Const ERROR_SERVICE_DOES_NOT_EXIST As Int32 = 1060
         Public Const ERROR_SERVICE_NOT_ACTIVE As Int32 = 1062
         Public Const ERROR_SERVICE_MARKED_FOR_DELETE As Int32 = 1072
+        Public Const ERROR_CANCELLED As Int32 = 1223
         Public Const ERROR_NOT_ENOUGH_QUOTA As Int32 = 1816
         Public Const SE_GROUP_LOGON_ID As Int32 = &HC0000000
         Public Const SECURITY_DESCRIPTOR_REVISION As Int32 = 1
