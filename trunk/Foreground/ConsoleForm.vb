@@ -215,16 +215,35 @@ Namespace Foreground
             End If
         End Sub
 
-        Private Sub LocalSourceList_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles LocalSourceList.DoubleClick
+        Private Sub GenerateReport(ByVal sender As Object, ByVal e As System.EventArgs) Handles LocalSourceList.DoubleClick, GenerateReportMenu.Click
             With LocalSourceList.SelectedItems
                 If .Count = 0 Then _
                     Return
 
                 Using Reader As New StringReader(LoadTestResultXml(.Item(0).Tag())), _
-                    XmlReader As New XmlTextReader(Reader), _
-                    Dialog As New TestResultForm(XmlReader)
-                    Dialog.ShowDialog()
+                    XmlReader As New XmlTextReader(Reader)
+                    Dim Dialog As New TestResultForm(XmlReader)
+                    Dialog.Show()
                 End Using
+            End With
+        End Sub
+
+        Private Sub RetestRecordMenu_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles RetestRecordMenu.Click
+            With LocalSourceList.SelectedItems
+                If .Count = 0 Then _
+                    Return
+                Record.Retest(.Item(0).Tag())
+                m_Daemon.FeedDataSource(String.Empty)
+                RefreshLocalRecord()
+            End With
+        End Sub
+
+        Private Sub DeleteRecord_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles DeleteRecord.Click
+            With LocalSourceList.SelectedItems
+                If .Count = 0 Then _
+                    Return
+                Record.Delete(.Item(0).Tag())
+                RefreshLocalRecord()
             End With
         End Sub
 #End Region

@@ -24,11 +24,11 @@
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
-            Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
-            Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
-            Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("执行设置")
-            Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据源")
-            Dim TreeNode10 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode6, TreeNode7, TreeNode8, TreeNode9})
+            Dim TreeNode11 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
+            Dim TreeNode12 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
+            Dim TreeNode13 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("执行设置")
+            Dim TreeNode14 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据源")
+            Dim TreeNode15 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode11, TreeNode12, TreeNode13, TreeNode14})
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ConsoleForm))
             Me.MenuStrip = New System.Windows.Forms.MenuStrip()
             Me.FileMenu = New System.Windows.Forms.ToolStripMenuItem()
@@ -131,6 +131,11 @@
             Me.ApplyExecutorButton = New System.Windows.Forms.ToolStripButton()
             Me.DataSourcePage = New System.Windows.Forms.TabPage()
             Me.ServiceTimer = New System.Windows.Forms.Timer(Me.components)
+            Me.LocalRecordMenuStrip = New System.Windows.Forms.ContextMenuStrip(Me.components)
+            Me.GenerateReportMenu = New System.Windows.Forms.ToolStripMenuItem()
+            Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripSeparator()
+            Me.RetestRecordMenu = New System.Windows.Forms.ToolStripMenuItem()
+            Me.DeleteRecord = New System.Windows.Forms.ToolStripMenuItem()
             Me.MenuStrip.SuspendLayout()
             Me.StatusStrip.SuspendLayout()
             Me.SplitContainer.Panel1.SuspendLayout()
@@ -151,6 +156,7 @@
             Me.TestSuiteToolStrip.SuspendLayout()
             Me.ExecutorPage.SuspendLayout()
             Me.ExecutorToolStrip.SuspendLayout()
+            Me.LocalRecordMenuStrip.SuspendLayout()
             Me.SuspendLayout()
             '
             'MenuStrip
@@ -261,17 +267,17 @@
             Me.NavigationTree.Location = New System.Drawing.Point(0, 0)
             Me.NavigationTree.Margin = New System.Windows.Forms.Padding(2)
             Me.NavigationTree.Name = "NavigationTree"
-            TreeNode6.Name = "Compiler"
-            TreeNode6.Text = "编译器映射"
-            TreeNode7.Name = "TestSuite"
-            TreeNode7.Text = "数据集映射"
-            TreeNode8.Name = "Executor"
-            TreeNode8.Text = "执行设置"
-            TreeNode9.Name = "DataSource"
-            TreeNode9.Text = "数据源"
-            TreeNode10.Name = "Root"
-            TreeNode10.Text = "VijosNT"
-            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode10})
+            TreeNode11.Name = "Compiler"
+            TreeNode11.Text = "编译器映射"
+            TreeNode12.Name = "TestSuite"
+            TreeNode12.Text = "数据集映射"
+            TreeNode13.Name = "Executor"
+            TreeNode13.Text = "执行设置"
+            TreeNode14.Name = "DataSource"
+            TreeNode14.Text = "数据源"
+            TreeNode15.Name = "Root"
+            TreeNode15.Text = "VijosNT"
+            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode15})
             Me.NavigationTree.Size = New System.Drawing.Size(189, 515)
             Me.NavigationTree.TabIndex = 0
             '
@@ -306,6 +312,7 @@
             'LocalSourceList
             '
             Me.LocalSourceList.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.LocalSourceIdHeader, Me.LocalSourceFlagHeader, Me.LocalSourceFileNameHeader, Me.LocalSourceScoreHeader, Me.LocalSourceTimeUsageHeader, Me.LocalSourceMemoryUsageHeader, Me.LocalSourceDateHeader})
+            Me.LocalSourceList.ContextMenuStrip = Me.LocalRecordMenuStrip
             Me.LocalSourceList.Dock = System.Windows.Forms.DockStyle.Fill
             Me.LocalSourceList.FullRowSelect = True
             Me.LocalSourceList.HideSelection = False
@@ -977,6 +984,36 @@
             '
             Me.ServiceTimer.Interval = 500
             '
+            'LocalRecordMenuStrip
+            '
+            Me.LocalRecordMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.GenerateReportMenu, Me.ToolStripMenuItem1, Me.RetestRecordMenu, Me.DeleteRecord})
+            Me.LocalRecordMenuStrip.Name = "LocalRecordMenuStrip"
+            Me.LocalRecordMenuStrip.Size = New System.Drawing.Size(168, 98)
+            '
+            'GenerateReportMenu
+            '
+            Me.GenerateReportMenu.Font = New System.Drawing.Font("微软雅黑", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
+            Me.GenerateReportMenu.Name = "GenerateReportMenu"
+            Me.GenerateReportMenu.Size = New System.Drawing.Size(167, 22)
+            Me.GenerateReportMenu.Text = "生成测试报告(&G)"
+            '
+            'ToolStripMenuItem1
+            '
+            Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
+            Me.ToolStripMenuItem1.Size = New System.Drawing.Size(162, 6)
+            '
+            'RetestRecordMenu
+            '
+            Me.RetestRecordMenu.Name = "RetestRecordMenu"
+            Me.RetestRecordMenu.Size = New System.Drawing.Size(165, 22)
+            Me.RetestRecordMenu.Text = "重新评测(&R)"
+            '
+            'DeleteRecord
+            '
+            Me.DeleteRecord.Name = "DeleteRecord"
+            Me.DeleteRecord.Size = New System.Drawing.Size(165, 22)
+            Me.DeleteRecord.Text = "删除(&D)"
+            '
             'ConsoleForm
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
@@ -1021,6 +1058,7 @@
             Me.ExecutorPage.PerformLayout()
             Me.ExecutorToolStrip.ResumeLayout(False)
             Me.ExecutorToolStrip.PerformLayout()
+            Me.LocalRecordMenuStrip.ResumeLayout(False)
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -1127,5 +1165,10 @@
         Friend WithEvents FloatingFormLabel1 As System.Windows.Forms.ToolStripLabel
         Friend WithEvents FpcMenu As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents AddVijosSuiteMenu As System.Windows.Forms.ToolStripMenuItem
+        Friend WithEvents LocalRecordMenuStrip As System.Windows.Forms.ContextMenuStrip
+        Friend WithEvents GenerateReportMenu As System.Windows.Forms.ToolStripMenuItem
+        Friend WithEvents ToolStripMenuItem1 As System.Windows.Forms.ToolStripSeparator
+        Friend WithEvents RetestRecordMenu As System.Windows.Forms.ToolStripMenuItem
+        Friend WithEvents DeleteRecord As System.Windows.Forms.ToolStripMenuItem
     End Class
 End Namespace
