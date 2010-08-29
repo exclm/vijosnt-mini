@@ -7,6 +7,7 @@ VijosNT-Mini是VijosNT的一个实验性分支, 主要目标在于提高性能�
 初次使用VijosNT-Mini前，请先仔细阅读使用帮助, 以免发生意外。<br>
 <br>
 =使用帮助=
+==目录==
 <wiki:toc max_depth="3"/> 
 ==获得VijosNT-Mini==
 如您需要使用VijosNT-Mini，请先下载一个合适您计算机的版本或下载源代码自行编译。<br>
