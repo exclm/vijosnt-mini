@@ -229,6 +229,7 @@
     <Compile Include="Testing\TestSuitePool.vb" />
     <Compile Include="Testing\VijosTestSuite.vb" />
     <Compile Include="Utility\AppPath.vb" />
+    <Compile Include="Utility\MiniThreadPool.vb" />
     <Compile Include="Utility\MiscUtility.vb" />
     <Compile Include="Utility\ProcessMonitor.vb" />
     <Compile Include="Utility\PathEx.vb" />
