@@ -2,21 +2,21 @@
 =使用帮助=
 ==目录==
 <wiki:toc max_depth="3"/> 
-==关于本系统==
-
-
-VijosNT-Mini是VijosNT的一个实验性分支, 主要目标在于提高性能以及降低使用难度, 在 [http://code.google.com/p/vijosnt VijosNT] 的基础上重写了所有的代码, 特别针对配置较差（CPU 数量小于 8，内存小于 16GB）的计算机进行了优化（大量使用完成函数代替线程等待）, 并实现了一个友好的用户界面。
+==关于Vijos-Mini==
+VijosNT-Mini是VijosNT的一个实验性分支, 主要目标在于提高性能以及降低使用难度, 在 [http://code.google.com/p/vijosnt VijosNT] 的基础上重写了所有的代码, 特别针对配置较差（CPU 数量小于 8，内存小于 16GB）的计算机进行了优化(大量使用完成函数代替线程等待), 并实现了一个友好的用户界面。
 
 初次使用VijosNT-Mini前，请先仔细阅读使用帮助, 以免发生意外。
 
 ==获得VijosNT-Mini==
 如您需要使用VijosNT-Mini，请先下载一个合适您计算机的版本或下载源代码自行编译。
-使用前必须安装 .Net Framework 2.0 或[http://www.microsoft.com/downloads/details.aspx?displaylang=zh-cn&FamilyID=9cfb2d51-5ff4-4491-b0e5-b386f32c0992 以上版本]
-下载地址:[http://code.google.com/p/vijosnt-mini/downloads/list VijosNT-Mini下载列表](早期不开放下载)
-源代码下载地址：[http://vijosnt-mini.googlecode.com/svn/trunk/ VijosNT-Mini源代码SVN](您可以使用TortoiseSVN等SVN软件自行下载源代码并使用Visual Basic .NET 2010及以上版本编译，编译前，请先安装[http://sqlite.phxsoftware.com/ SQLite.Net])
 
-下载后，您将得到两个版本的文件，分别是x86和x64，请根据您的操作系统位数选择合适的版本，32位系统请使用x86版本，64位系统请使用x64版本。如您自行下载源代码编译，请根据您的操作系统位数自行选择编译x86版本还是先x64版本。
+使用前必须安装 [http://www.microsoft.com/downloads/details.aspx?displaylang=zh-cn&FamilyID=0856eacb-4362-4b0d-8edd-aab15c5e04f5 .Net Framework 2.0] 或[http://www.microsoft.com/downloads/details.aspx?displaylang=zh-cn&FamilyID=9cfb2d51-5ff4-4491-b0e5-b386f32c0992 更高版本]。
 
+Vijos-Mini程序下载地址:[http://code.google.com/p/vijosnt-mini/downloads/list VijosNT-Mini下载列表](早期不开放下载)
+
+Vijos-Mini源代码下载地址: [http://vijosnt-mini.googlecode.com/svn/trunk/](您可以使用TortoiseSVN等SVN软件自行下载源代码并使用Visual Basic .NET 2010及以上版本编译，编译前，请先安装[http://sqlite.phxsoftware.com/ SQLite.Net])
+
+下载Vijos-Mini后，您将解压缩得到两个版本的文件，分别是x86和x64，请根据您的操作系统选择合适的版本，32位系统请使用x86版本，64位系统请使用x64版本。如您自行下载源代码编译，请运行publish.bat。
 
 ==文件说明==
 *第一次使用需要两个文件*
@@ -24,7 +24,7 @@ System.Data.SQLite.dll
 VijosNT Mini.exe
 其中
 System.Data.SQLite.dll是SQLite运行必备的
-VijosNT Mini.exe是VijosNT Mini的主程序
+VijosNT Mini.exe是VijosNT-Mini的主程序
 
 *初次使用之后，可能会产生以下两个文件(夹)*
 VijosNT.db3
