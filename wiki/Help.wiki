@@ -257,6 +257,6 @@ A：现在已经可以完成测评工作，但是功能部分目前没有写完�
 
 Q：那图标是什么东西？黑黑的一坨。
 
-A：那是我们伟大的VijosNT，VijosNT-Mini作者——能闭着眼睛写程序的Win7首个安全漏洞发现者之一——图灵转世的[http://hi.baidu.com/iceboy_ IceBoy]童鞋的专用头像！严禁侮辱！违者重大50大板！
+A：那是我们伟大的VijosNT-Mini作者——能闭着眼睛写程序的Win7首个安全漏洞发现者之一——图灵转世的[http://hi.baidu.com/iceboy_ IceBoy]童鞋的专用头像！严禁侮辱！违者重大50大板！
 
 VijosNT Mini使用帮助 Written by BML,twd2
