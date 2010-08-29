@@ -1,4 +1,5 @@
 ﻿Imports VijosNT.Feeding
+Imports VijosNT.Notification
 Imports VijosNT.Utility
 
 Namespace Remoting
@@ -14,6 +15,26 @@ Namespace Remoting
             m_Buffer = New Byte(0 To 4095) {}
             m_Runner = Runner
             m_Stream.BeginRead(m_Buffer, 0, m_Buffer.Length, AddressOf OnRead, Nothing)
+            Notifier.Register("RunnerStatusChanged", AddressOf OnRunnerStatusChanged)
+            Notifier.Register("LocalRecordChanged", AddressOf OnLocalRecordChanged)
+        End Sub
+
+        Private Sub OnRunnerStatusChanged(ByVal Param As Object)
+            Try
+                Write(ServerMessage.RunnerStatusChanged, DirectCast(Param, Boolean))
+            Catch ex As Exception
+                OnDisconnected()
+                Me.Dispose()
+            End Try
+        End Sub
+
+        Private Sub OnLocalRecordChanged(ByVal Param As Object)
+            Try
+                Write(ServerMessage.LocalRecordChanged)
+            Catch ex As Exception
+                OnDisconnected()
+                Me.Dispose()
+            End Try
         End Sub
 
         Private Sub OnRead(ByVal Result As IAsyncResult)
@@ -31,12 +52,16 @@ Namespace Remoting
             End Try
         End Sub
 
-        Private Sub Write(ByVal Buffer As Byte())
-            Write(Buffer, 0, Buffer.Length)
-        End Sub
-
-        Private Sub Write(ByVal Buffer As Byte(), ByVal Index As Int32, ByVal Length As Int32)
-            m_Stream.BeginWrite(Buffer, Index, Length, AddressOf OnWrite, Nothing)
+        Public Sub Write(ByVal ParamArray Params As Object())
+            Using Stream As New MemoryStream()
+                Using Writer As New BinaryWriter(Stream)
+                    For Each Param As Object In Params
+                        Writer.Write(Param)
+                    Next
+                End Using
+                Dim Buffer As Byte() = Stream.ToArray()
+                m_Stream.BeginWrite(Buffer, 0, Buffer.Length, AddressOf OnWrite, Nothing)
+            End Using
         End Sub
 
         Private Sub OnWrite(ByVal Result As IAsyncResult)
@@ -107,7 +132,8 @@ Namespace Remoting
         End Sub
 
         Private Sub OnDisconnected()
-
+            Notifier.Unregister("RunnerStatusChanged", AddressOf OnRunnerStatusChanged)
+            Notifier.Unregister("LocalRecordChanged", AddressOf OnLocalRecordChanged)
         End Sub
 
 #Region "IDisposable Support"
