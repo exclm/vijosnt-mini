@@ -184,5 +184,14 @@
             EventLog.WriteEntry(My.Resources.ServiceName, ex.ToString(), EventLogEntryType.Error)
             Environment.Exit(1)
         End Sub
+
+        Public Sub SetDoubleBuffered(ByVal Control As Control)
+            If SystemInformation.TerminalServerSession Then
+                Return
+            End If
+
+            Dim [Property] As PropertyInfo = GetType(Control).GetProperty("DoubleBuffered", BindingFlags.NonPublic Or BindingFlags.Instance)
+            [Property].SetValue(Control, True, Nothing)
+        End Sub
     End Module
 End Namespace

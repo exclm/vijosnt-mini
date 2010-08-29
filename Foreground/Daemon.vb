@@ -40,6 +40,7 @@ Namespace Foreground
             m_NotifyIcon.ContextMenuStrip = CreateMenu()
             m_NotifyIcon.Visible = True
             AddHandler m_NotifyIcon.DoubleClick, AddressOf OnConsole
+            AddHandler m_NotifyIcon.BalloonTipClicked, AddressOf OnConsole
         End Sub
 
         Private Function CreateMenu() As ContextMenuStrip
@@ -62,6 +63,8 @@ Namespace Foreground
 
         Private Sub CreatePipeClient()
             m_PipeClient = New PipeClient()
+            AddHandler m_PipeClient.RunnerStatusChanged, AddressOf OnRunnerStatusChanged
+            AddHandler m_PipeClient.LocalRecordChanged, AddressOf OnLocalRecordChanged
             AddHandler m_PipeClient.Disconnected, AddressOf OnPipeDisconnect
         End Sub
 
@@ -181,6 +184,33 @@ Namespace Foreground
                 m_ServiceTimer.Stop()
             Else
                 SetIconColor(Color.Red)
+            End If
+        End Sub
+
+        Private Sub OnRunnerStatusChanged(ByVal Busy As Boolean)
+            If Busy Then
+                SetIconColor(Color.Blue)
+            Else
+                SetIconColor(Color.Green)
+            End If
+        End Sub
+
+        Private Sub OnLocalRecordChanged()
+            Dim Invoker As New MethodInvoker(AddressOf OnLocalRecordChangedUnsafe)
+            Invoker.Invoke()
+        End Sub
+
+        Private Sub OnLocalRecordChangedUnsafe()
+            If m_Console IsNot Nothing Then
+                m_Console.RefreshLocalRecord()
+            Else
+                m_NotifyIcon.ShowBalloonTip(3000, "VijosNT", "测试完毕, 点击此气泡查看测试结果", ToolTipIcon.Info)
+            End If
+        End Sub
+
+        Public Sub RefreshLocalRecord()
+            If m_Console IsNot Nothing Then
+                m_Console.RefreshLocalRecord()
             End If
         End Sub
 

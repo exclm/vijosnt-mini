@@ -26,6 +26,8 @@ Namespace Foreground
             m_RootNode = NavigationTree.Nodes.Item("Root")
             NavigationTree.ExpandAll()
             FloatingFormButton.Checked = m_Daemon.ShowFloating
+
+            SetDoubleBuffered(LocalSourceList)
         End Sub
 #End Region
 
@@ -82,7 +84,7 @@ Namespace Foreground
             Select Case CurrentPage
                 Case "RootPage"
                     RefreshServiceStatus()
-                    RefreshLocalDataSource()
+                    RefreshLocalRecord()
                 Case "CompilerPage"
                     Using Reader As IDataReader = CompilerMapping.GetHeaders()
                         RefreshListView(CompilerList, Reader, "Id", "Pattern", "CommandLine")
@@ -171,7 +173,7 @@ Namespace Foreground
             End If
         End Sub
 
-        Private Sub RefreshLocalDataSource()
+        Public Sub RefreshLocalRecord()
             Using Reader As IDataReader = Record.GetHeaders()
                 RefreshListView(LocalSourceList, Reader, "Id", "Id", "$Flag", "FileName", "%Score", "!TimeUsage", "@MemoryUsage", "#Date")
             End Using
@@ -203,13 +205,13 @@ Namespace Foreground
         End Sub
 
         Private Sub RefreshLocalButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RefershLocalButton.Click
-            RefreshLocalDataSource()
+            RefreshLocalRecord()
         End Sub
 
         Private Sub ClearLocalButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ClearLocalButton.Click
             If MessageBox.Show("确定要清除所有记录吗?", "确认", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                 Record.Clear()
-                RefreshLocalDataSource()
+                RefreshLocalRecord()
             End If
         End Sub
 

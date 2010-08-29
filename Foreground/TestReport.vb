@@ -13,6 +13,7 @@ Namespace Foreground
                 Dim Details As Byte()
                 Using Reader As IDataReader = Record.GetReport(Id)
                     Writer.WriteElementString("FileName", ReadData(Reader, "$FileName"))
+                    Writer.WriteElementString("Extension", Path.GetExtension(ReadData(Reader, "$FileName")).Substring(1))
                     Writer.WriteElementString("SourceCode", ReadData(Reader, "$SourceCode"))
                     Writer.WriteElementString("Date", ReadData(Reader, "#Date"))
                     Writer.WriteElementString("Flag", ReadData(Reader, "$Flag"))

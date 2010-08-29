@@ -1,4 +1,5 @@
 ﻿Imports VijosNT.LocalDb
+Imports VijosNT.Notification
 
 Namespace Feeding
     Friend Class LocalDataSource
@@ -48,6 +49,7 @@ Namespace Feeding
                     End If
                 End Using
                 Record.UpdateFinal(Id, Result.Flag.ToString(), Result.Score, Result.TimeUsage, Result.MemoryUsage, Stream.ToArray())
+                Notifier.Invoke("LocalRecordChanged", Nothing)
             End Using
         End Sub
     End Class

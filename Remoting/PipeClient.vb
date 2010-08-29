@@ -5,7 +5,8 @@ Namespace Remoting
         Private m_Stream As Stream
         Private m_Buffer As Byte()
 
-        Public Event Received(ByVal Buffer As Byte())
+        Public Event RunnerStatusChanged(ByVal Busy As Boolean)
+        Public Event LocalRecordChanged()
         Public Event Disconnected()
 
         Public Sub New()
@@ -75,9 +76,24 @@ Namespace Remoting
         End Sub
 
         Private Sub OnReceive(ByVal Length As Int32)
-            Dim Block As Byte() = New Byte(0 To Length - 1) {}
-            Buffer.BlockCopy(m_Buffer, 0, Block, 0, Length)
-            RaiseEvent Received(Block)
+            Using Stream As New MemoryStream(m_Buffer, 0, Length), _
+                Reader As New BinaryReader(Stream)
+                Dim Message As ServerMessage = Reader.ReadInt32()
+                Select Case Message
+                    Case ServerMessage.RunnerStatusChanged
+                        OnRunnerStatusChanged(Reader.ReadBoolean())
+                    Case ServerMessage.LocalRecordChanged
+                        OnLocalRecordChanged()
+                End Select
+            End Using
+        End Sub
+
+        Private Sub OnRunnerStatusChanged(ByVal Busy As Boolean)
+            RaiseEvent RunnerStatusChanged(Busy)
+        End Sub
+
+        Private Sub OnLocalRecordChanged()
+            RaiseEvent LocalRecordChanged()
         End Sub
 
         Private Sub OnDisconnected()

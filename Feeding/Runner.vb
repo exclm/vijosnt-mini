@@ -1,5 +1,6 @@
 ﻿Imports VijosNT.Compiling
 Imports VijosNT.Executing
+Imports VijosNT.Notification
 Imports VijosNT.Testing
 Imports VijosNT.Utility
 Imports VijosNT.Win32
@@ -120,11 +121,15 @@ Namespace Feeding
                 Return False
 
             m_CanExit.Reset()
-            Interlocked.Increment(m_Running)
+            If Interlocked.Increment(m_Running) = 1 Then
+                Notifier.Invoke("RunnerStatusChanged", True)
+            End If
 
             If Not m_AllowQueuing Then
-                If Interlocked.Decrement(m_Running) = 0 Then _
+                If Interlocked.Decrement(m_Running) = 0 Then
+                    Notifier.Invoke("RunnerStatusChanged", False)
                     m_CanExit.Set()
+                End If
                 Return False
             End If
 
@@ -143,8 +148,10 @@ Namespace Feeding
                 If Context.Completion IsNot Nothing Then
                     Context.Completion.Invoke(New TestResult(Context.CompletionState, TestResultFlag.CompilerNotFound, Nothing, 0, 0, 0, Nothing))
                 End If
-                If Interlocked.Decrement(m_Running) = 0 Then _
+                If Interlocked.Decrement(m_Running) = 0 Then
+                    Notifier.Invoke("RunnerStatusChanged", False)
                     m_CanExit.Set()
+                End If
                 Return True
             End If
 
@@ -152,8 +159,10 @@ Namespace Feeding
                 If Context.Completion IsNot Nothing Then
                     Context.Completion.Invoke(New TestResult(Context.CompletionState, TestResultFlag.TestSuiteNotFound, Nothing, 0, 0, 0, Nothing))
                 End If
-                If Interlocked.Decrement(m_Running) = 0 Then _
+                If Interlocked.Decrement(m_Running) = 0 Then
+                    Notifier.Invoke("RunnerStatusChanged", False)
                     m_CanExit.Set()
+                End If
                 Return True
             End If
 
@@ -171,8 +180,10 @@ Namespace Feeding
                         If Context.Completion IsNot Nothing Then
                             Context.Completion.Invoke(New TestResult(Context.CompletionState, TestResultFlag.InternalError, ex.ToString(), 0, 0, 0, Nothing))
                         End If
-                        If Interlocked.Decrement(m_Running) = 0 Then _
+                        If Interlocked.Decrement(m_Running) = 0 Then
+                            Notifier.Invoke("RunnerStatusChanged", False)
                             m_CanExit.Set()
+                        End If
                         Return True
                     End Try
                 End If
@@ -241,8 +252,10 @@ Namespace Feeding
             If Context.Completion IsNot Nothing Then
                 Context.Completion.Invoke(New TestResult(Context.CompletionState, TestResultFlag.CompileError, Warning, 0, 0, 0, Nothing))
             End If
-            If Interlocked.Decrement(m_Running) = 0 Then _
+            If Interlocked.Decrement(m_Running) = 0 Then
+                Notifier.Invoke("RunnerStatusChanged", False)
                 m_CanExit.Set()
+            End If
         End Sub
 
         Private Sub TestExecuteCompletion(ByVal Result As TestCaseExecuteeResult)
@@ -303,8 +316,10 @@ Namespace Feeding
                 If Context.Completion IsNot Nothing Then
                     Context.Completion.Invoke(New TestResult(Context.CompletionState, Context.Flag, Nothing, Context.Score, Context.TimeUsage, Context.MemoryUsage, Context.TestResults.Values))
                 End If
-                If Interlocked.Decrement(m_Running) = 0 Then _
+                If Interlocked.Decrement(m_Running) = 0 Then
+                    Notifier.Invoke("RunnerStatusChanged", False)
                     m_CanExit.Set()
+                End If
             End If
         End Sub
 
