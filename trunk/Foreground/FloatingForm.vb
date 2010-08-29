@@ -19,7 +19,7 @@ Namespace Foreground
                 End Using
             Next
             m_Daemon.FeedDataSource(String.Empty)
-            m_Daemon.RefreshLocalRecord()
+            m_Daemon.RefreshLocalRecordUnsafe()
         End Sub
 
         Private Sub FloatingForm_DragEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles Me.DragEnter

@@ -174,6 +174,7 @@ Namespace Foreground
             Catch ex As Exception
                 Return False
             End Try
+            RefreshLocalRecord()
             Return True
         End Function
 
@@ -209,6 +210,11 @@ Namespace Foreground
         End Sub
 
         Public Sub RefreshLocalRecord()
+            Dim Invoker As New MethodInvoker(AddressOf RefreshLocalRecordUnsafe)
+            Invoker.Invoke()
+        End Sub
+
+        Public Sub RefreshLocalRecordUnsafe()
             If m_Console IsNot Nothing Then
                 m_Console.RefreshLocalRecord()
             End If
