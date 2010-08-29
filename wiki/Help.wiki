@@ -30,13 +30,6 @@ System.Data.SQLite.dll是SQLite运行必备的
 
 VijosNT Mini.exe是VijosNT-Mini的主程序
 
-*初次使用之后，可能会产生以下两个文件(夹)*
-VijosNT.db3
-
-Temp目录
-
-其中VijosNT.db3是本地数据库文件，用于存储本地测数据信息以及配置
-Temp目录中存放临时文件，一般用完即删，不会积累很多文件
 
 ==首次使用==
 打开VijosNT Mini.exe
