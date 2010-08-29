@@ -3,12 +3,12 @@
 ==目录==
 <wiki:toc max_depth="3"/> 
 ==关于本系统==
-<br>
-<br>
+
+
 VijosNT-Mini是VijosNT的一个实验性分支, 主要目标在于提高性能以及降低使用难度, 在 [http://code.google.com/p/vijosnt VijosNT] 的基础上重写了所有的代码, 特别针对配置较差（CPU 数量小于 8，内存小于 16GB）的计算机进行了优化（大量使用完成函数代替线程等待）, 并实现了一个友好的用户界面。
-<br>
-初次使用VijosNT-Mini前，请先仔细阅读使用帮助, 以免发生意外。<br>
-<br>
+
+初次使用VijosNT-Mini前，请先仔细阅读使用帮助, 以免发生意外。
+
 ==获得VijosNT-Mini==
 如您需要使用VijosNT-Mini，请先下载一个合适您计算机的版本或下载源代码自行编译。<br>
 使用前必须安装 .Net Framework 2.0 或[http://www.microsoft.com/downloads/details.aspx?displaylang=zh-cn&FamilyID=9cfb2d51-5ff4-4491-b0e5-b386f32c0992 以上版本]<br>
