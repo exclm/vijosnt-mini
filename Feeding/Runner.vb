@@ -209,7 +209,7 @@ Namespace Feeding
                 Case Else
                     ' TODO: Make more common exceptions parsed
                     Builder.Append("异常代码: ")
-                    Builder.Append(Exception.ToString())
+                    Builder.Append(Exception.ExceptionCode.ToString())
             End Select
             Return Builder.ToString()
         End Function
