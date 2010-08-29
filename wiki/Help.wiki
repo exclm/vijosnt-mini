@@ -1,4 +1,4 @@
-#labels VijosNT,Vijos,Mini,VijosNT-Mini,VijosNTMini,Judger
+#labels Featured,Phase-Deploy
 =使用帮助=
 ==目录==
 <wiki:toc max_depth="3"/> 
