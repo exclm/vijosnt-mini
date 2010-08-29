@@ -8,7 +8,9 @@
         Private Shared m_UpdateTakenCommand As SQLiteCommand
         Private Shared m_UpdateUntakeCommand As SQLiteCommand
         Private Shared m_UpdateFinalCommand As SQLiteCommand
+        Private Shared m_UpdateRetestCommand As SQLiteCommand
         Private Shared m_DeleteCommand As SQLiteCommand
+        Private Shared m_DeleteOneCommand As SQLiteCommand
 
         Shared Sub New()
             Using Command As SQLiteCommand = Database.CreateCommand( _
@@ -43,8 +45,12 @@
                 "UPDATE Record SET Taken = 0 WHERE Id = @Id")
             m_UpdateFinalCommand = Database.CreateCommand( _
                 "UPDATE Record SET Taken = 1, Flag = @Flag, Score = @Score, TimeUsage = @TimeUsage, MemoryUsage = @MemoryUsage, Details = @Details WHERE Id = @Id")
+            m_UpdateRetestCommand = Database.CreateCommand( _
+                "UPDATE Record SET Taken = 0, Flag = 'None' WHERE Id = @Id")
             m_DeleteCommand = Database.CreateCommand( _
                 "DELETE FROM Record")
+            m_DeleteOneCommand = Database.CreateCommand( _
+                "DELETE FROM Record WHERE Id = @Id")
         End Sub
 
         Public Shared Sub Add(ByVal FileName As String, ByVal SourceCode As String)
@@ -117,6 +123,20 @@
 
         Public Shared Sub Clear()
             Using Command As SQLiteCommand = m_DeleteCommand.Clone()
+                Command.ExecuteNonQuery()
+            End Using
+        End Sub
+
+        Public Shared Sub Delete(ByVal Id As Int32)
+            Using Command As SQLiteCommand = m_DeleteOneCommand.Clone()
+                Command.Parameters.AddWithValue("@Id", Id)
+                Command.ExecuteNonQuery()
+            End Using
+        End Sub
+
+        Public Shared Sub Retest(ByVal Id As Int32)
+            Using Command As SQLiteCommand = m_UpdateRetestCommand.Clone()
+                Command.Parameters.AddWithValue("@Id", Id)
                 Command.ExecuteNonQuery()
             End Using
         End Sub
