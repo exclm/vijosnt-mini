@@ -209,25 +209,25 @@ input9.txt|output9.txt|1|10|
 
 None目前没有结果，可能没有打开测评服务或等待测评。
 
-Accept测试通过，所有测试点正确
+Accept测试通过，所有测试点正确。
 
-WrongAnswer答案错误，至少一个测试点出现了输出错误
+WrongAnswer答案错误，至少一个测试点出现了输出错误。
 
-RuntimeError运行是错误，至少一个测试点出现了运行时错误
+RuntimeError运行是错误，至少一个测试点出现了运行时错误。
 
-CompileError编译错误，程序不能通过编译，请检查程序和编译器设置
+CompileError编译错误，程序不能通过编译，请检查程序和编译器设置。
 
-TestSuiteNotFound找不到测试数据，请检查测试数据设置和程序文件名
+TestSuiteNotFound找不到测试数据，请检查测试数据设置和程序文件名。
 
-TimeLimitExceeded超时，至少一个测试点超出时间限制
+TimeLimitExceeded超时，至少一个测试点超出时间限制。
 
-MemoryLimitExceeded超内存，至少一个测试点超出内存限制
+MemoryLimitExceeded超内存，至少一个测试点超出内存限制。
 
-JudgerError测评系统错误
+JudgerError测评系统错误。
 
-InternalError内部错误
+InternalError内部错误。
 
-CompilerNotFound找不到编译器，请检查编译器设置及目录权限
+CompilerNotFound找不到编译器，请检查编译器设置及目录权限。
 
 ==卸载VijosNT-Mini==
 
