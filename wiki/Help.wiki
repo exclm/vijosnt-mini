@@ -20,6 +20,7 @@ Vijos-Mini源代码下载地址: [http://vijosnt-mini.googlecode.com/svn/trunk/]
 
 ==文件说明==
 *第一次使用需要两个文件*
+
 System.Data.SQLite.dll
 
 VijosNT Mini.exe
@@ -38,6 +39,7 @@ VijosNT Mini.exe是VijosNT-Mini的主程序
 点击右侧的“启动”启动VijosNT Mini服务，期间杀毒软件可能提示有程序正在加载服务或驱动，请点击允许。此时悬浮窗以及通知区域图标变为绿色，表示服务安装成功。
 
 *初次使用之后，可能会产生以下两个文件(夹)*
+
 VijosNT.db3
 
 Temp目录
@@ -49,14 +51,23 @@ Temp目录中存放临时文件，一般用完即删，不会积累很多文件
 点击控制台左边的“编译器映射”，点击右侧的“添加旁边的小箭头”添加编译器
 ===目前支持直接添加的编译器的语言===
 *C
+
 C++
+
 Free Pascal
+
 Visual C
+
 Visual C++
+
 C#
+
 Visual Basic.Net
+
 JAVA
+
 Python*
+
 ===添加编译器===
 此处以C,C++和Free Pascal为例添加编译器。
 
@@ -67,7 +78,7 @@ Python*
 点击右侧“添加旁边的小箭头”选择MinGW菜单下的C++。若VijosNT-Mini能找到编译器路径，将弹出窗口询问编译器路径是否正确。如该路径正确，点击是；反之，点击否。此时，请浏览到您的MinGW C++路径，选择g++.exe文件。
 
 ====添加Free Pascal的编译器====
-点击右侧“添加旁边的小箭头”选择FreePascal。若VijosNT-Mini能找到编译器路径，将弹出窗口询问编译器路径是否正确。如该路径正确，点击是；反之，点击否。此时，请浏览到您的Free Pascal 路径，选择fpc.exe文件。
+点击右侧“添加旁边的小箭头”选择Free Pascal。若VijosNT-Mini能找到编译器路径，将弹出窗口询问编译器路径是否正确。如该路径正确，点击是；反之，点击否。此时，请浏览到您的Free Pascal 路径，选择fpc.exe文件。
 使用Free Pascal，必须保证您的编译器是32位或64位版本，而非16位版本。Free Pascal for NOI是16位版本，不能在VijosNT-Mini中使用。
 
 ===不被列出的编译器或修改编译器设置===
@@ -147,6 +158,7 @@ Config.ini格式:
 例如
 ----
 10
+
 input0.txt|output0.txt|1|10|在这里我们可以写上测试点的提示信息
 
 input1.txt|output1.txt|1|10|这里是第二个测试点的提示信息
@@ -173,20 +185,27 @@ input9.txt|output9.txt|1|10|
 数据集设置完成，点击“应用”。
 
 ==执行设置==
-此设置用于进行执行时的线程数和安全等级等信息。目前只能设置线程数。<br>
-您可以在“并发数”右边的框中输入测评线程数。<br>
-注意：Free Pascal编译器在多线程的时候可能发生不稳定的Compile Error情况。<br>
-<br>
-执行设置完成，点击“应用”<br>
-<br>
+
+此设置用于进行执行时的线程数和安全等级等信息。目前只能设置线程数。
+
+您可以在“并发数”右边的框中输入测评线程数。
+
+注意：Free Pascal编译器在多线程的时候可能发生不稳定的Compile Error情况。
+
+执行设置完成，点击“应用”
+
 ==数据源设置==
-此处用于与SQL数据库连接，目前没有功能可用。<br>
-<br>
+
+此处用于与SQL数据库连接，目前没有功能可用。
+
 ==进行测评==
-将待测评的文件拖放到VijosNT-Mini悬浮窗上进行测评，拖上去后，打开控制台，点击左边的VijosNT，右边就会有测评结果，目前暂不能查看详细信息。<br>
-<br>
-==删除VijosNT-Mini==
-当您不想使用VijosNT-Mini时，可以删除服务以节省系统资源，在控制台界面中，点击左边VijosNT，点击右边“停止”，即可卸载系统服务，此时可以方便的删除VijosNT-Mini。<br>
+
+将待测评的文件拖放到VijosNT-Mini悬浮窗上进行测评，拖上去后，打开控制台，点击左边的VijosNT，右边就会有测评结果，双击测评队列中的一个记录，将显示详细测评结果。
+
+==卸载VijosNT-Mini==
+
+当您不想使用VijosNT-Mini时，可以卸载VijosNT-Mini以节省系统资源，在控制台界面中，点击左边VijosNT，点击右边“停止”，即可卸载系统服务，此时可以方便的删除VijosNT-Mini。
+
 ==特别注意==
 每项设置完毕后都需要点击"应用", 如果发现VijosNT-Mini运行不正常, 请先看看是不是每项都点了"应用"。
 
