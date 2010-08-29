@@ -24,11 +24,11 @@
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
-            Dim TreeNode11 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
-            Dim TreeNode12 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
-            Dim TreeNode13 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("执行设置")
-            Dim TreeNode14 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据源")
-            Dim TreeNode15 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode11, TreeNode12, TreeNode13, TreeNode14})
+            Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
+            Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
+            Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("执行设置")
+            Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据源")
+            Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2, TreeNode3, TreeNode4})
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ConsoleForm))
             Me.MenuStrip = New System.Windows.Forms.MenuStrip()
             Me.FileMenu = New System.Windows.Forms.ToolStripMenuItem()
@@ -55,6 +55,11 @@
             Me.LocalSourceTimeUsageHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.LocalSourceMemoryUsageHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.LocalSourceDateHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.LocalRecordMenuStrip = New System.Windows.Forms.ContextMenuStrip(Me.components)
+            Me.GenerateReportMenu = New System.Windows.Forms.ToolStripMenuItem()
+            Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripSeparator()
+            Me.RetestRecordMenu = New System.Windows.Forms.ToolStripMenuItem()
+            Me.DeleteRecord = New System.Windows.Forms.ToolStripMenuItem()
             Me.RootToolStrip = New System.Windows.Forms.ToolStrip()
             Me.StartButton = New System.Windows.Forms.ToolStripButton()
             Me.StopButton = New System.Windows.Forms.ToolStripButton()
@@ -131,11 +136,6 @@
             Me.ApplyExecutorButton = New System.Windows.Forms.ToolStripButton()
             Me.DataSourcePage = New System.Windows.Forms.TabPage()
             Me.ServiceTimer = New System.Windows.Forms.Timer(Me.components)
-            Me.LocalRecordMenuStrip = New System.Windows.Forms.ContextMenuStrip(Me.components)
-            Me.GenerateReportMenu = New System.Windows.Forms.ToolStripMenuItem()
-            Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripSeparator()
-            Me.RetestRecordMenu = New System.Windows.Forms.ToolStripMenuItem()
-            Me.DeleteRecord = New System.Windows.Forms.ToolStripMenuItem()
             Me.MenuStrip.SuspendLayout()
             Me.StatusStrip.SuspendLayout()
             Me.SplitContainer.Panel1.SuspendLayout()
@@ -143,6 +143,7 @@
             Me.SplitContainer.SuspendLayout()
             Me.TabControl.SuspendLayout()
             Me.RootPage.SuspendLayout()
+            Me.LocalRecordMenuStrip.SuspendLayout()
             Me.RootToolStrip.SuspendLayout()
             Me.CompilerPage.SuspendLayout()
             Me.CompilerSplit.Panel1.SuspendLayout()
@@ -156,7 +157,6 @@
             Me.TestSuiteToolStrip.SuspendLayout()
             Me.ExecutorPage.SuspendLayout()
             Me.ExecutorToolStrip.SuspendLayout()
-            Me.LocalRecordMenuStrip.SuspendLayout()
             Me.SuspendLayout()
             '
             'MenuStrip
@@ -165,67 +165,67 @@
             Me.MenuStrip.Location = New System.Drawing.Point(0, 0)
             Me.MenuStrip.Name = "MenuStrip"
             Me.MenuStrip.Padding = New System.Windows.Forms.Padding(4, 2, 0, 2)
-            Me.MenuStrip.Size = New System.Drawing.Size(784, 25)
+            Me.MenuStrip.Size = New System.Drawing.Size(784, 24)
             Me.MenuStrip.TabIndex = 0
             '
             'FileMenu
             '
             Me.FileMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ExitMenu})
             Me.FileMenu.Name = "FileMenu"
-            Me.FileMenu.Size = New System.Drawing.Size(58, 21)
+            Me.FileMenu.Size = New System.Drawing.Size(55, 20)
             Me.FileMenu.Text = "文件(&F)"
             '
             'ExitMenu
             '
             Me.ExitMenu.Name = "ExitMenu"
-            Me.ExitMenu.Size = New System.Drawing.Size(116, 22)
+            Me.ExitMenu.Size = New System.Drawing.Size(109, 22)
             Me.ExitMenu.Text = "退出(&X)"
             '
             'HelpMenu
             '
             Me.HelpMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.WikiToolStripMenuItem, Me.HelpStrip0, Me.HomePageMenu, Me.CheckUpdateMenu, Me.ReportIssue, Me.HelpStrip1, Me.AboutMenu})
             Me.HelpMenu.Name = "HelpMenu"
-            Me.HelpMenu.Size = New System.Drawing.Size(61, 21)
+            Me.HelpMenu.Size = New System.Drawing.Size(56, 20)
             Me.HelpMenu.Text = "帮助(&H)"
             '
             'WikiToolStripMenuItem
             '
             Me.WikiToolStripMenuItem.Name = "WikiToolStripMenuItem"
-            Me.WikiToolStripMenuItem.Size = New System.Drawing.Size(141, 22)
+            Me.WikiToolStripMenuItem.Size = New System.Drawing.Size(134, 22)
             Me.WikiToolStripMenuItem.Text = "&Wiki"
             '
             'HelpStrip0
             '
             Me.HelpStrip0.Name = "HelpStrip0"
-            Me.HelpStrip0.Size = New System.Drawing.Size(138, 6)
+            Me.HelpStrip0.Size = New System.Drawing.Size(131, 6)
             '
             'HomePageMenu
             '
             Me.HomePageMenu.Name = "HomePageMenu"
-            Me.HomePageMenu.Size = New System.Drawing.Size(141, 22)
+            Me.HomePageMenu.Size = New System.Drawing.Size(134, 22)
             Me.HomePageMenu.Text = "主页(&H)"
             '
             'CheckUpdateMenu
             '
             Me.CheckUpdateMenu.Name = "CheckUpdateMenu"
-            Me.CheckUpdateMenu.Size = New System.Drawing.Size(141, 22)
+            Me.CheckUpdateMenu.Size = New System.Drawing.Size(134, 22)
             Me.CheckUpdateMenu.Text = "检查更新(&U)"
             '
             'ReportIssue
             '
             Me.ReportIssue.Name = "ReportIssue"
-            Me.ReportIssue.Size = New System.Drawing.Size(141, 22)
+            Me.ReportIssue.Size = New System.Drawing.Size(134, 22)
             Me.ReportIssue.Text = "报告问题(&R)"
             '
             'HelpStrip1
             '
             Me.HelpStrip1.Name = "HelpStrip1"
-            Me.HelpStrip1.Size = New System.Drawing.Size(138, 6)
+            Me.HelpStrip1.Size = New System.Drawing.Size(131, 6)
             '
             'AboutMenu
             '
             Me.AboutMenu.Name = "AboutMenu"
-            Me.AboutMenu.Size = New System.Drawing.Size(141, 22)
+            Me.AboutMenu.Size = New System.Drawing.Size(134, 22)
             Me.AboutMenu.Text = "关于(&A)"
             '
             'StatusStrip
@@ -245,7 +245,7 @@
             'SplitContainer
             '
             Me.SplitContainer.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.SplitContainer.Location = New System.Drawing.Point(0, 25)
+            Me.SplitContainer.Location = New System.Drawing.Point(0, 24)
             Me.SplitContainer.Margin = New System.Windows.Forms.Padding(2)
             Me.SplitContainer.Name = "SplitContainer"
             '
@@ -256,7 +256,7 @@
             'SplitContainer.Panel2
             '
             Me.SplitContainer.Panel2.Controls.Add(Me.TabControl)
-            Me.SplitContainer.Size = New System.Drawing.Size(784, 515)
+            Me.SplitContainer.Size = New System.Drawing.Size(784, 516)
             Me.SplitContainer.SplitterDistance = 189
             Me.SplitContainer.SplitterWidth = 3
             Me.SplitContainer.TabIndex = 3
@@ -267,18 +267,18 @@
             Me.NavigationTree.Location = New System.Drawing.Point(0, 0)
             Me.NavigationTree.Margin = New System.Windows.Forms.Padding(2)
             Me.NavigationTree.Name = "NavigationTree"
-            TreeNode11.Name = "Compiler"
-            TreeNode11.Text = "编译器映射"
-            TreeNode12.Name = "TestSuite"
-            TreeNode12.Text = "数据集映射"
-            TreeNode13.Name = "Executor"
-            TreeNode13.Text = "执行设置"
-            TreeNode14.Name = "DataSource"
-            TreeNode14.Text = "数据源"
-            TreeNode15.Name = "Root"
-            TreeNode15.Text = "VijosNT"
-            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode15})
-            Me.NavigationTree.Size = New System.Drawing.Size(189, 515)
+            TreeNode1.Name = "Compiler"
+            TreeNode1.Text = "编译器映射"
+            TreeNode2.Name = "TestSuite"
+            TreeNode2.Text = "数据集映射"
+            TreeNode3.Name = "Executor"
+            TreeNode3.Text = "执行设置"
+            TreeNode4.Name = "DataSource"
+            TreeNode4.Text = "数据源"
+            TreeNode5.Name = "Root"
+            TreeNode5.Text = "VijosNT"
+            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode5})
+            Me.NavigationTree.Size = New System.Drawing.Size(189, 516)
             Me.NavigationTree.TabIndex = 0
             '
             'TabControl
@@ -293,18 +293,18 @@
             Me.TabControl.Margin = New System.Windows.Forms.Padding(2)
             Me.TabControl.Name = "TabControl"
             Me.TabControl.SelectedIndex = 0
-            Me.TabControl.Size = New System.Drawing.Size(592, 515)
+            Me.TabControl.Size = New System.Drawing.Size(592, 516)
             Me.TabControl.TabIndex = 0
             '
             'RootPage
             '
             Me.RootPage.Controls.Add(Me.LocalSourceList)
             Me.RootPage.Controls.Add(Me.RootToolStrip)
-            Me.RootPage.Location = New System.Drawing.Point(4, 22)
+            Me.RootPage.Location = New System.Drawing.Point(4, 21)
             Me.RootPage.Margin = New System.Windows.Forms.Padding(2)
             Me.RootPage.Name = "RootPage"
             Me.RootPage.Padding = New System.Windows.Forms.Padding(2)
-            Me.RootPage.Size = New System.Drawing.Size(584, 489)
+            Me.RootPage.Size = New System.Drawing.Size(584, 491)
             Me.RootPage.TabIndex = 0
             Me.RootPage.Text = "VijosNT"
             Me.RootPage.UseVisualStyleBackColor = True
@@ -319,7 +319,7 @@
             Me.LocalSourceList.Location = New System.Drawing.Point(2, 27)
             Me.LocalSourceList.MultiSelect = False
             Me.LocalSourceList.Name = "LocalSourceList"
-            Me.LocalSourceList.Size = New System.Drawing.Size(580, 460)
+            Me.LocalSourceList.Size = New System.Drawing.Size(580, 462)
             Me.LocalSourceList.TabIndex = 4
             Me.LocalSourceList.UseCompatibleStateImageBehavior = False
             Me.LocalSourceList.View = System.Windows.Forms.View.Details
@@ -358,6 +358,36 @@
             Me.LocalSourceDateHeader.Text = "日期"
             Me.LocalSourceDateHeader.Width = 120
             '
+            'LocalRecordMenuStrip
+            '
+            Me.LocalRecordMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.GenerateReportMenu, Me.ToolStripMenuItem1, Me.RetestRecordMenu, Me.DeleteRecord})
+            Me.LocalRecordMenuStrip.Name = "LocalRecordMenuStrip"
+            Me.LocalRecordMenuStrip.Size = New System.Drawing.Size(168, 98)
+            '
+            'GenerateReportMenu
+            '
+            Me.GenerateReportMenu.Font = New System.Drawing.Font("微软雅黑", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
+            Me.GenerateReportMenu.Name = "GenerateReportMenu"
+            Me.GenerateReportMenu.Size = New System.Drawing.Size(167, 22)
+            Me.GenerateReportMenu.Text = "生成测试报告(&G)"
+            '
+            'ToolStripMenuItem1
+            '
+            Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
+            Me.ToolStripMenuItem1.Size = New System.Drawing.Size(162, 6)
+            '
+            'RetestRecordMenu
+            '
+            Me.RetestRecordMenu.Name = "RetestRecordMenu"
+            Me.RetestRecordMenu.Size = New System.Drawing.Size(165, 22)
+            Me.RetestRecordMenu.Text = "重新评测(&R)"
+            '
+            'DeleteRecord
+            '
+            Me.DeleteRecord.Name = "DeleteRecord"
+            Me.DeleteRecord.Size = New System.Drawing.Size(165, 22)
+            Me.DeleteRecord.Text = "删除(&D)"
+            '
             'RootToolStrip
             '
             Me.RootToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.StartButton, Me.StopButton, Me.RootSeperator0, Me.FloatingFormLabel0, Me.FloatingFormButton, Me.FloatingFormLabel1, Me.RootSeperator1, Me.RefershLocalButton, Me.ClearLocalButton})
@@ -372,7 +402,7 @@
             Me.StartButton.Image = CType(resources.GetObject("StartButton.Image"), System.Drawing.Image)
             Me.StartButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.StartButton.Name = "StartButton"
-            Me.StartButton.Size = New System.Drawing.Size(51, 22)
+            Me.StartButton.Size = New System.Drawing.Size(47, 22)
             Me.StartButton.Text = "启动(&S)"
             Me.StartButton.ToolTipText = "安装并启动 VijosNT 测评服务"
             '
@@ -382,7 +412,7 @@
             Me.StopButton.Image = CType(resources.GetObject("StopButton.Image"), System.Drawing.Image)
             Me.StopButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.StopButton.Name = "StopButton"
-            Me.StopButton.Size = New System.Drawing.Size(51, 22)
+            Me.StopButton.Size = New System.Drawing.Size(47, 22)
             Me.StopButton.Text = "停止(&T)"
             Me.StopButton.ToolTipText = "停止并卸载 VijosNT 测评服务"
             '
@@ -394,7 +424,7 @@
             'FloatingFormLabel0
             '
             Me.FloatingFormLabel0.Name = "FloatingFormLabel0"
-            Me.FloatingFormLabel0.Size = New System.Drawing.Size(80, 22)
+            Me.FloatingFormLabel0.Size = New System.Drawing.Size(77, 22)
             Me.FloatingFormLabel0.Text = "将文件拖动到"
             '
             'FloatingFormButton
@@ -403,13 +433,13 @@
             Me.FloatingFormButton.Image = CType(resources.GetObject("FloatingFormButton.Image"), System.Drawing.Image)
             Me.FloatingFormButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.FloatingFormButton.Name = "FloatingFormButton"
-            Me.FloatingFormButton.Size = New System.Drawing.Size(48, 22)
+            Me.FloatingFormButton.Size = New System.Drawing.Size(45, 22)
             Me.FloatingFormButton.Text = "悬浮窗"
             '
             'FloatingFormLabel1
             '
             Me.FloatingFormLabel1.Name = "FloatingFormLabel1"
-            Me.FloatingFormLabel1.Size = New System.Drawing.Size(68, 22)
+            Me.FloatingFormLabel1.Size = New System.Drawing.Size(65, 22)
             Me.FloatingFormLabel1.Text = "中进行评测"
             '
             'RootSeperator1
@@ -423,7 +453,7 @@
             Me.RefershLocalButton.Image = CType(resources.GetObject("RefershLocalButton.Image"), System.Drawing.Image)
             Me.RefershLocalButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.RefershLocalButton.Name = "RefershLocalButton"
-            Me.RefershLocalButton.Size = New System.Drawing.Size(52, 22)
+            Me.RefershLocalButton.Size = New System.Drawing.Size(48, 22)
             Me.RefershLocalButton.Text = "刷新(&R)"
             '
             'ClearLocalButton
@@ -432,18 +462,18 @@
             Me.ClearLocalButton.Image = CType(resources.GetObject("ClearLocalButton.Image"), System.Drawing.Image)
             Me.ClearLocalButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.ClearLocalButton.Name = "ClearLocalButton"
-            Me.ClearLocalButton.Size = New System.Drawing.Size(52, 22)
+            Me.ClearLocalButton.Size = New System.Drawing.Size(48, 22)
             Me.ClearLocalButton.Text = "清除(&C)"
             '
             'CompilerPage
             '
             Me.CompilerPage.Controls.Add(Me.CompilerSplit)
             Me.CompilerPage.Controls.Add(Me.CompilerToolStrip)
-            Me.CompilerPage.Location = New System.Drawing.Point(4, 22)
+            Me.CompilerPage.Location = New System.Drawing.Point(4, 21)
             Me.CompilerPage.Margin = New System.Windows.Forms.Padding(2)
             Me.CompilerPage.Name = "CompilerPage"
             Me.CompilerPage.Padding = New System.Windows.Forms.Padding(2)
-            Me.CompilerPage.Size = New System.Drawing.Size(584, 489)
+            Me.CompilerPage.Size = New System.Drawing.Size(584, 490)
             Me.CompilerPage.TabIndex = 1
             Me.CompilerPage.Text = "编译器映射"
             Me.CompilerPage.UseVisualStyleBackColor = True
@@ -463,7 +493,7 @@
             'CompilerSplit.Panel2
             '
             Me.CompilerSplit.Panel2.Controls.Add(Me.CompilerProperty)
-            Me.CompilerSplit.Size = New System.Drawing.Size(580, 460)
+            Me.CompilerSplit.Size = New System.Drawing.Size(580, 461)
             Me.CompilerSplit.SplitterDistance = 160
             Me.CompilerSplit.SplitterWidth = 3
             Me.CompilerSplit.TabIndex = 8
@@ -501,7 +531,7 @@
             Me.CompilerProperty.Margin = New System.Windows.Forms.Padding(2)
             Me.CompilerProperty.Name = "CompilerProperty"
             Me.CompilerProperty.PropertySort = System.Windows.Forms.PropertySort.Categorized
-            Me.CompilerProperty.Size = New System.Drawing.Size(580, 297)
+            Me.CompilerProperty.Size = New System.Drawing.Size(580, 298)
             Me.CompilerProperty.TabIndex = 6
             Me.CompilerProperty.ToolbarVisible = False
             '
@@ -520,94 +550,94 @@
             Me.AddCompilerButton.Image = CType(resources.GetObject("AddCompilerButton.Image"), System.Drawing.Image)
             Me.AddCompilerButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.AddCompilerButton.Name = "AddCompilerButton"
-            Me.AddCompilerButton.Size = New System.Drawing.Size(64, 22)
+            Me.AddCompilerButton.Size = New System.Drawing.Size(60, 22)
             Me.AddCompilerButton.Text = "添加(&A)"
             Me.AddCompilerButton.ToolTipText = "添加编译器映射"
             '
             'NewCompilerMenu
             '
             Me.NewCompilerMenu.Name = "NewCompilerMenu"
-            Me.NewCompilerMenu.Size = New System.Drawing.Size(211, 22)
+            Me.NewCompilerMenu.Size = New System.Drawing.Size(193, 22)
             Me.NewCompilerMenu.Text = "新编译器映射"
             '
             'AddCompilerBar0
             '
             Me.AddCompilerBar0.Name = "AddCompilerBar0"
-            Me.AddCompilerBar0.Size = New System.Drawing.Size(208, 6)
+            Me.AddCompilerBar0.Size = New System.Drawing.Size(190, 6)
             '
             'MingwMenu
             '
             Me.MingwMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.GccMenu, Me.GppMenu})
             Me.MingwMenu.Name = "MingwMenu"
-            Me.MingwMenu.Size = New System.Drawing.Size(211, 22)
+            Me.MingwMenu.Size = New System.Drawing.Size(193, 22)
             Me.MingwMenu.Text = "MinGW"
             '
             'GccMenu
             '
             Me.GccMenu.Name = "GccMenu"
-            Me.GccMenu.Size = New System.Drawing.Size(142, 22)
+            Me.GccMenu.Size = New System.Drawing.Size(133, 22)
             Me.GccMenu.Text = "C 编译器"
             '
             'GppMenu
             '
             Me.GppMenu.Name = "GppMenu"
-            Me.GppMenu.Size = New System.Drawing.Size(142, 22)
+            Me.GppMenu.Size = New System.Drawing.Size(133, 22)
             Me.GppMenu.Text = "C++ 编译器"
             '
             'FpcMenu
             '
             Me.FpcMenu.Name = "FpcMenu"
-            Me.FpcMenu.Size = New System.Drawing.Size(211, 22)
+            Me.FpcMenu.Size = New System.Drawing.Size(193, 22)
             Me.FpcMenu.Text = "Free Pascal"
             '
             'MsvsMenu
             '
             Me.MsvsMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MscMenu, Me.MscppMenu})
             Me.MsvsMenu.Name = "MsvsMenu"
-            Me.MsvsMenu.Size = New System.Drawing.Size(211, 22)
+            Me.MsvsMenu.Size = New System.Drawing.Size(193, 22)
             Me.MsvsMenu.Text = "Microsoft Visual Studio"
             '
             'MscMenu
             '
             Me.MscMenu.Name = "MscMenu"
-            Me.MscMenu.Size = New System.Drawing.Size(142, 22)
+            Me.MscMenu.Size = New System.Drawing.Size(133, 22)
             Me.MscMenu.Text = "C 编译器"
             '
             'MscppMenu
             '
             Me.MscppMenu.Name = "MscppMenu"
-            Me.MscppMenu.Size = New System.Drawing.Size(142, 22)
+            Me.MscppMenu.Size = New System.Drawing.Size(133, 22)
             Me.MscppMenu.Text = "C++ 编译器"
             '
             'NetfxMenu
             '
             Me.NetfxMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MscsMenu, Me.MsvbMenu})
             Me.NetfxMenu.Name = "NetfxMenu"
-            Me.NetfxMenu.Size = New System.Drawing.Size(211, 22)
+            Me.NetfxMenu.Size = New System.Drawing.Size(193, 22)
             Me.NetfxMenu.Text = ".NET Framework"
             '
             'MscsMenu
             '
             Me.MscsMenu.Name = "MscsMenu"
-            Me.MscsMenu.Size = New System.Drawing.Size(159, 22)
+            Me.MscsMenu.Size = New System.Drawing.Size(148, 22)
             Me.MscsMenu.Text = "C# 编译器"
             '
             'MsvbMenu
             '
             Me.MsvbMenu.Name = "MsvbMenu"
-            Me.MsvbMenu.Size = New System.Drawing.Size(159, 22)
+            Me.MsvbMenu.Size = New System.Drawing.Size(148, 22)
             Me.MsvbMenu.Text = "VB.NET 编译器"
             '
             'JavaMenu
             '
             Me.JavaMenu.Name = "JavaMenu"
-            Me.JavaMenu.Size = New System.Drawing.Size(211, 22)
+            Me.JavaMenu.Size = New System.Drawing.Size(193, 22)
             Me.JavaMenu.Text = "Java"
             '
             'PythonMenu
             '
             Me.PythonMenu.Name = "PythonMenu"
-            Me.PythonMenu.Size = New System.Drawing.Size(211, 22)
+            Me.PythonMenu.Size = New System.Drawing.Size(193, 22)
             Me.PythonMenu.Text = "Python"
             '
             'RemoveCompilerButton
@@ -617,7 +647,7 @@
             Me.RemoveCompilerButton.Image = CType(resources.GetObject("RemoveCompilerButton.Image"), System.Drawing.Image)
             Me.RemoveCompilerButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.RemoveCompilerButton.Name = "RemoveCompilerButton"
-            Me.RemoveCompilerButton.Size = New System.Drawing.Size(52, 22)
+            Me.RemoveCompilerButton.Size = New System.Drawing.Size(48, 22)
             Me.RemoveCompilerButton.Text = "移除(&R)"
             Me.RemoveCompilerButton.ToolTipText = "移除编译器映射"
             '
@@ -633,7 +663,7 @@
             Me.MoveUpCompilerButton.Image = CType(resources.GetObject("MoveUpCompilerButton.Image"), System.Drawing.Image)
             Me.MoveUpCompilerButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.MoveUpCompilerButton.Name = "MoveUpCompilerButton"
-            Me.MoveUpCompilerButton.Size = New System.Drawing.Size(53, 22)
+            Me.MoveUpCompilerButton.Size = New System.Drawing.Size(49, 22)
             Me.MoveUpCompilerButton.Text = "上移(&U)"
             Me.MoveUpCompilerButton.ToolTipText = "向上移动编译器映射"
             '
@@ -644,7 +674,7 @@
             Me.MoveDownCompilerButton.Image = CType(resources.GetObject("MoveDownCompilerButton.Image"), System.Drawing.Image)
             Me.MoveDownCompilerButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.MoveDownCompilerButton.Name = "MoveDownCompilerButton"
-            Me.MoveDownCompilerButton.Size = New System.Drawing.Size(53, 22)
+            Me.MoveDownCompilerButton.Size = New System.Drawing.Size(49, 22)
             Me.MoveDownCompilerButton.Text = "下移(&D)"
             Me.MoveDownCompilerButton.ToolTipText = "向下移动编译器映射"
             '
@@ -660,7 +690,7 @@
             Me.ApplyCompilerButton.Image = CType(resources.GetObject("ApplyCompilerButton.Image"), System.Drawing.Image)
             Me.ApplyCompilerButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.ApplyCompilerButton.Name = "ApplyCompilerButton"
-            Me.ApplyCompilerButton.Size = New System.Drawing.Size(52, 22)
+            Me.ApplyCompilerButton.Size = New System.Drawing.Size(48, 22)
             Me.ApplyCompilerButton.Text = "应用(&A)"
             Me.ApplyCompilerButton.ToolTipText = "将编译器映射设置立即应用到正在运行的服务"
             '
@@ -668,11 +698,11 @@
             '
             Me.TestSuitePage.Controls.Add(Me.TestSuiteSplit)
             Me.TestSuitePage.Controls.Add(Me.TestSuiteToolStrip)
-            Me.TestSuitePage.Location = New System.Drawing.Point(4, 22)
+            Me.TestSuitePage.Location = New System.Drawing.Point(4, 21)
             Me.TestSuitePage.Margin = New System.Windows.Forms.Padding(2)
             Me.TestSuitePage.Name = "TestSuitePage"
             Me.TestSuitePage.Padding = New System.Windows.Forms.Padding(2)
-            Me.TestSuitePage.Size = New System.Drawing.Size(584, 489)
+            Me.TestSuitePage.Size = New System.Drawing.Size(584, 490)
             Me.TestSuitePage.TabIndex = 2
             Me.TestSuitePage.Text = "数据集映射"
             Me.TestSuitePage.UseVisualStyleBackColor = True
@@ -692,7 +722,7 @@
             'TestSuiteSplit.Panel2
             '
             Me.TestSuiteSplit.Panel2.Controls.Add(Me.TestSuiteProperty)
-            Me.TestSuiteSplit.Size = New System.Drawing.Size(580, 460)
+            Me.TestSuiteSplit.Size = New System.Drawing.Size(580, 461)
             Me.TestSuiteSplit.SplitterDistance = 160
             Me.TestSuiteSplit.SplitterWidth = 3
             Me.TestSuiteSplit.TabIndex = 11
@@ -735,7 +765,7 @@
             Me.TestSuiteProperty.Margin = New System.Windows.Forms.Padding(2)
             Me.TestSuiteProperty.Name = "TestSuiteProperty"
             Me.TestSuiteProperty.PropertySort = System.Windows.Forms.PropertySort.Categorized
-            Me.TestSuiteProperty.Size = New System.Drawing.Size(580, 297)
+            Me.TestSuiteProperty.Size = New System.Drawing.Size(580, 298)
             Me.TestSuiteProperty.TabIndex = 6
             Me.TestSuiteProperty.ToolbarVisible = False
             '
@@ -754,31 +784,31 @@
             Me.AddTestSuiteButton.Image = CType(resources.GetObject("AddTestSuiteButton.Image"), System.Drawing.Image)
             Me.AddTestSuiteButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.AddTestSuiteButton.Name = "AddTestSuiteButton"
-            Me.AddTestSuiteButton.Size = New System.Drawing.Size(64, 22)
+            Me.AddTestSuiteButton.Size = New System.Drawing.Size(60, 22)
             Me.AddTestSuiteButton.Text = "添加(&A)"
             Me.AddTestSuiteButton.ToolTipText = "添加数据集映射"
             '
             'NewTestSuiteMenu
             '
             Me.NewTestSuiteMenu.Name = "NewTestSuiteMenu"
-            Me.NewTestSuiteMenu.Size = New System.Drawing.Size(148, 22)
+            Me.NewTestSuiteMenu.Size = New System.Drawing.Size(142, 22)
             Me.NewTestSuiteMenu.Text = "新数据集映射"
             '
             'AddTestSuiteBar0
             '
             Me.AddTestSuiteBar0.Name = "AddTestSuiteBar0"
-            Me.AddTestSuiteBar0.Size = New System.Drawing.Size(145, 6)
+            Me.AddTestSuiteBar0.Size = New System.Drawing.Size(139, 6)
             '
             'AddAPlusBMenu
             '
             Me.AddAPlusBMenu.Name = "AddAPlusBMenu"
-            Me.AddAPlusBMenu.Size = New System.Drawing.Size(148, 22)
+            Me.AddAPlusBMenu.Size = New System.Drawing.Size(142, 22)
             Me.AddAPlusBMenu.Text = "A+B"
             '
             'AddVijosSuiteMenu
             '
             Me.AddVijosSuiteMenu.Name = "AddVijosSuiteMenu"
-            Me.AddVijosSuiteMenu.Size = New System.Drawing.Size(148, 22)
+            Me.AddVijosSuiteMenu.Size = New System.Drawing.Size(142, 22)
             Me.AddVijosSuiteMenu.Text = "Vijos 格式"
             '
             'RemoveTestSuiteButton
@@ -788,7 +818,7 @@
             Me.RemoveTestSuiteButton.Image = CType(resources.GetObject("RemoveTestSuiteButton.Image"), System.Drawing.Image)
             Me.RemoveTestSuiteButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.RemoveTestSuiteButton.Name = "RemoveTestSuiteButton"
-            Me.RemoveTestSuiteButton.Size = New System.Drawing.Size(52, 22)
+            Me.RemoveTestSuiteButton.Size = New System.Drawing.Size(48, 22)
             Me.RemoveTestSuiteButton.Text = "移除(&R)"
             Me.RemoveTestSuiteButton.ToolTipText = "移除数据集映射"
             '
@@ -804,7 +834,7 @@
             Me.MoveUpTestSuiteButton.Image = CType(resources.GetObject("MoveUpTestSuiteButton.Image"), System.Drawing.Image)
             Me.MoveUpTestSuiteButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.MoveUpTestSuiteButton.Name = "MoveUpTestSuiteButton"
-            Me.MoveUpTestSuiteButton.Size = New System.Drawing.Size(53, 22)
+            Me.MoveUpTestSuiteButton.Size = New System.Drawing.Size(49, 22)
             Me.MoveUpTestSuiteButton.Text = "上移(&U)"
             Me.MoveUpTestSuiteButton.ToolTipText = "向上移动数据集映射"
             '
@@ -815,7 +845,7 @@
             Me.MoveDownTestSuiteButton.Image = CType(resources.GetObject("MoveDownTestSuiteButton.Image"), System.Drawing.Image)
             Me.MoveDownTestSuiteButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.MoveDownTestSuiteButton.Name = "MoveDownTestSuiteButton"
-            Me.MoveDownTestSuiteButton.Size = New System.Drawing.Size(53, 22)
+            Me.MoveDownTestSuiteButton.Size = New System.Drawing.Size(49, 22)
             Me.MoveDownTestSuiteButton.Text = "下移(&D)"
             Me.MoveDownTestSuiteButton.ToolTipText = "向下移动数据集映射"
             '
@@ -831,7 +861,7 @@
             Me.ApplyTestSuiteButton.Image = CType(resources.GetObject("ApplyTestSuiteButton.Image"), System.Drawing.Image)
             Me.ApplyTestSuiteButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.ApplyTestSuiteButton.Name = "ApplyTestSuiteButton"
-            Me.ApplyTestSuiteButton.Size = New System.Drawing.Size(52, 22)
+            Me.ApplyTestSuiteButton.Size = New System.Drawing.Size(48, 22)
             Me.ApplyTestSuiteButton.Text = "应用(&A)"
             Me.ApplyTestSuiteButton.ToolTipText = "将数据集映射设置立即应用到正在运行的服务"
             '
@@ -839,11 +869,11 @@
             '
             Me.ExecutorPage.Controls.Add(Me.SecurityList)
             Me.ExecutorPage.Controls.Add(Me.ExecutorToolStrip)
-            Me.ExecutorPage.Location = New System.Drawing.Point(4, 22)
+            Me.ExecutorPage.Location = New System.Drawing.Point(4, 21)
             Me.ExecutorPage.Margin = New System.Windows.Forms.Padding(2)
             Me.ExecutorPage.Name = "ExecutorPage"
             Me.ExecutorPage.Padding = New System.Windows.Forms.Padding(2)
-            Me.ExecutorPage.Size = New System.Drawing.Size(584, 489)
+            Me.ExecutorPage.Size = New System.Drawing.Size(584, 490)
             Me.ExecutorPage.TabIndex = 3
             Me.ExecutorPage.Text = "执行设置"
             Me.ExecutorPage.UseVisualStyleBackColor = True
@@ -858,7 +888,7 @@
             Me.SecurityList.Margin = New System.Windows.Forms.Padding(2)
             Me.SecurityList.MultiSelect = False
             Me.SecurityList.Name = "SecurityList"
-            Me.SecurityList.Size = New System.Drawing.Size(580, 460)
+            Me.SecurityList.Size = New System.Drawing.Size(580, 461)
             Me.SecurityList.TabIndex = 11
             Me.SecurityList.UseCompatibleStateImageBehavior = False
             Me.SecurityList.View = System.Windows.Forms.View.Details
@@ -889,7 +919,7 @@
             'ExecutorSlotsLabel
             '
             Me.ExecutorSlotsLabel.Name = "ExecutorSlotsLabel"
-            Me.ExecutorSlotsLabel.Size = New System.Drawing.Size(47, 22)
+            Me.ExecutorSlotsLabel.Size = New System.Drawing.Size(44, 22)
             Me.ExecutorSlotsLabel.Text = "并发数:"
             '
             'ExecutorSlotsText
@@ -907,7 +937,7 @@
             'ExecutorSecurityLabel
             '
             Me.ExecutorSecurityLabel.Name = "ExecutorSecurityLabel"
-            Me.ExecutorSecurityLabel.Size = New System.Drawing.Size(35, 22)
+            Me.ExecutorSecurityLabel.Size = New System.Drawing.Size(32, 22)
             Me.ExecutorSecurityLabel.Text = "安全:"
             '
             'ExecutorSecurityCombo
@@ -916,7 +946,7 @@
             Me.ExecutorSecurityCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.ExecutorSecurityCombo.Items.AddRange(New Object() {"启用", "禁用"})
             Me.ExecutorSecurityCombo.Name = "ExecutorSecurityCombo"
-            Me.ExecutorSecurityCombo.Size = New System.Drawing.Size(48, 25)
+            Me.ExecutorSecurityCombo.Size = New System.Drawing.Size(48, 20)
             Me.ExecutorSecurityCombo.ToolTipText = "启用安全会略微降低执行效率, 但可以避免评测代码对计算机造成破坏"
             '
             'ExecutorSeperator1
@@ -930,7 +960,7 @@
             Me.AddSecurityButton.Image = CType(resources.GetObject("AddSecurityButton.Image"), System.Drawing.Image)
             Me.AddSecurityButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.AddSecurityButton.Name = "AddSecurityButton"
-            Me.AddSecurityButton.Size = New System.Drawing.Size(52, 22)
+            Me.AddSecurityButton.Size = New System.Drawing.Size(48, 22)
             Me.AddSecurityButton.Text = "添加(&A)"
             Me.AddSecurityButton.ToolTipText = "添加不可信执行环境"
             '
@@ -940,7 +970,7 @@
             Me.RemoveSecurityButton.Image = CType(resources.GetObject("RemoveSecurityButton.Image"), System.Drawing.Image)
             Me.RemoveSecurityButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.RemoveSecurityButton.Name = "RemoveSecurityButton"
-            Me.RemoveSecurityButton.Size = New System.Drawing.Size(52, 22)
+            Me.RemoveSecurityButton.Size = New System.Drawing.Size(48, 22)
             Me.RemoveSecurityButton.Text = "移除(&R)"
             Me.RemoveSecurityButton.ToolTipText = "移除不可信执行环境"
             '
@@ -950,7 +980,7 @@
             Me.CheckSecurityButton.Image = CType(resources.GetObject("CheckSecurityButton.Image"), System.Drawing.Image)
             Me.CheckSecurityButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.CheckSecurityButton.Name = "CheckSecurityButton"
-            Me.CheckSecurityButton.Size = New System.Drawing.Size(76, 22)
+            Me.CheckSecurityButton.Size = New System.Drawing.Size(72, 22)
             Me.CheckSecurityButton.Text = "安全检查(&C)"
             Me.CheckSecurityButton.ToolTipText = "对当前的设置进行基本的安全检查 (推荐)"
             '
@@ -966,16 +996,16 @@
             Me.ApplyExecutorButton.Image = CType(resources.GetObject("ApplyExecutorButton.Image"), System.Drawing.Image)
             Me.ApplyExecutorButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.ApplyExecutorButton.Name = "ApplyExecutorButton"
-            Me.ApplyExecutorButton.Size = New System.Drawing.Size(52, 22)
+            Me.ApplyExecutorButton.Size = New System.Drawing.Size(48, 22)
             Me.ApplyExecutorButton.Text = "应用(&A)"
             Me.ApplyExecutorButton.ToolTipText = "提交更改并将当前的设置应用到正在运行的服务"
             '
             'DataSourcePage
             '
-            Me.DataSourcePage.Location = New System.Drawing.Point(4, 22)
+            Me.DataSourcePage.Location = New System.Drawing.Point(4, 21)
             Me.DataSourcePage.Name = "DataSourcePage"
             Me.DataSourcePage.Padding = New System.Windows.Forms.Padding(3)
-            Me.DataSourcePage.Size = New System.Drawing.Size(584, 489)
+            Me.DataSourcePage.Size = New System.Drawing.Size(584, 490)
             Me.DataSourcePage.TabIndex = 5
             Me.DataSourcePage.Text = "数据源"
             Me.DataSourcePage.UseVisualStyleBackColor = True
@@ -983,36 +1013,6 @@
             'ServiceTimer
             '
             Me.ServiceTimer.Interval = 500
-            '
-            'LocalRecordMenuStrip
-            '
-            Me.LocalRecordMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.GenerateReportMenu, Me.ToolStripMenuItem1, Me.RetestRecordMenu, Me.DeleteRecord})
-            Me.LocalRecordMenuStrip.Name = "LocalRecordMenuStrip"
-            Me.LocalRecordMenuStrip.Size = New System.Drawing.Size(168, 98)
-            '
-            'GenerateReportMenu
-            '
-            Me.GenerateReportMenu.Font = New System.Drawing.Font("微软雅黑", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
-            Me.GenerateReportMenu.Name = "GenerateReportMenu"
-            Me.GenerateReportMenu.Size = New System.Drawing.Size(167, 22)
-            Me.GenerateReportMenu.Text = "生成测试报告(&G)"
-            '
-            'ToolStripMenuItem1
-            '
-            Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-            Me.ToolStripMenuItem1.Size = New System.Drawing.Size(162, 6)
-            '
-            'RetestRecordMenu
-            '
-            Me.RetestRecordMenu.Name = "RetestRecordMenu"
-            Me.RetestRecordMenu.Size = New System.Drawing.Size(165, 22)
-            Me.RetestRecordMenu.Text = "重新评测(&R)"
-            '
-            'DeleteRecord
-            '
-            Me.DeleteRecord.Name = "DeleteRecord"
-            Me.DeleteRecord.Size = New System.Drawing.Size(165, 22)
-            Me.DeleteRecord.Text = "删除(&D)"
             '
             'ConsoleForm
             '
@@ -1038,6 +1038,7 @@
             Me.TabControl.ResumeLayout(False)
             Me.RootPage.ResumeLayout(False)
             Me.RootPage.PerformLayout()
+            Me.LocalRecordMenuStrip.ResumeLayout(False)
             Me.RootToolStrip.ResumeLayout(False)
             Me.RootToolStrip.PerformLayout()
             Me.CompilerPage.ResumeLayout(False)
@@ -1058,7 +1059,6 @@
             Me.ExecutorPage.PerformLayout()
             Me.ExecutorToolStrip.ResumeLayout(False)
             Me.ExecutorToolStrip.PerformLayout()
-            Me.LocalRecordMenuStrip.ResumeLayout(False)
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
