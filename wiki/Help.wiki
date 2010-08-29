@@ -157,6 +157,7 @@ Config.ini格式:
 
 例如
 ----
+
 10
 
 input0.txt|output0.txt|1|10|在这里我们可以写上测试点的提示信息
