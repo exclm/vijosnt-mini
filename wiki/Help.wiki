@@ -191,4 +191,4 @@ input9.txt|output9.txt|1|10|
 每项设置完毕后都需要点击"应用", 如果发现VijosNT-Mini运行不正常, 请先看看是不是每项都点了"应用"。
 
 
-VijosNT Mini使用帮助 Write by BML,twd2
+VijosNT Mini使用帮助 Written by BML,twd2
