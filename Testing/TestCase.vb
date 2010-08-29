@@ -98,7 +98,7 @@ Namespace Testing
         End Sub
 
         Public Sub QueueJudgeWorker(ByVal Completion As TestCaseCompletion, ByVal State As Object)
-            ThreadPool.QueueUserWorkItem(AddressOf JudgeWorker, New Context(m_ReadStream, OpenAnswerStream(), Completion, State))
+            MiniThreadPool.Queue(AddressOf JudgeWorker, New Context(m_ReadStream, OpenAnswerStream(), Completion, State))
         End Sub
     End Class
 End Namespace
