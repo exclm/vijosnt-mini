@@ -23,22 +23,24 @@
         End Sub
 
         Public Sub Start()
-            m_Stream.BeginRead(m_Buffer, m_Length, m_Buffer.Length - m_Length, AddressOf OnRead, Nothing)
+            MiniThreadPool.Queue(AddressOf OnTransfer, Nothing)
         End Sub
 
-        Private Sub OnRead(ByVal Result As IAsyncResult)
+        Private Sub OnTransfer(ByVal State As Object)
             Try
-                Dim Length As Int32 = m_Stream.EndRead(Result)
-                If Length = 0 Then
-                    InvokeCompletion(True)
-                Else
-                    m_Length += Length
-                    If m_Length >= m_Buffer.Length Then
-                        InvokeCompletion(False)
+                While True
+                    Dim Length As Int32 = m_Stream.Read(m_Buffer, m_Length, m_Buffer.Length - m_Length)
+                    If Length = 0 Then
+                        InvokeCompletion(True)
+                        Exit While
                     Else
-                        Start()
+                        m_Length += Length
+                        If m_Length >= m_Buffer.Length Then
+                            InvokeCompletion(False)
+                            Exit While
+                        End If
                     End If
-                End If
+                End While
             Catch ex As Exception
                 InvokeCompletion(False)
             End Try
