@@ -30,6 +30,7 @@ Namespace Executing
             Dim Info As New DirectoryInfo(DirectoryName)
             Dim Security As DirectorySecurity = Info.GetAccessControl()
             Security.AddAccessRule(New FileSystemAccessRule(m_UserName, FileSystemRights.Modify Or FileSystemRights.Synchronize, InheritanceFlags.ContainerInherit Or InheritanceFlags.ObjectInherit, PropagationFlags.None, AccessControlType.Allow))
+            Info.SetAccessControl(Security)
         End Sub
 
         Public Overrides ReadOnly Property DesktopName() As String

@@ -57,7 +57,7 @@
             Me.LocalSourceDateHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.LocalRecordMenuStrip = New System.Windows.Forms.ContextMenuStrip(Me.components)
             Me.GenerateReportMenu = New System.Windows.Forms.ToolStripMenuItem()
-            Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripSeparator()
+            Me.LocalRecordBar0 = New System.Windows.Forms.ToolStripSeparator()
             Me.RetestRecordMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.DeleteRecord = New System.Windows.Forms.ToolStripMenuItem()
             Me.RootToolStrip = New System.Windows.Forms.ToolStrip()
@@ -119,7 +119,6 @@
             Me.ApplyTestSuiteButton = New System.Windows.Forms.ToolStripButton()
             Me.ExecutorPage = New System.Windows.Forms.TabPage()
             Me.SecurityList = New System.Windows.Forms.ListView()
-            Me.SecurityDesktopNameHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.SecurityUserNameHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.SecurityPasswordHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.ExecutorToolStrip = New System.Windows.Forms.ToolStrip()
@@ -360,7 +359,7 @@
             '
             'LocalRecordMenuStrip
             '
-            Me.LocalRecordMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.GenerateReportMenu, Me.ToolStripMenuItem1, Me.RetestRecordMenu, Me.DeleteRecord})
+            Me.LocalRecordMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.GenerateReportMenu, Me.LocalRecordBar0, Me.RetestRecordMenu, Me.DeleteRecord})
             Me.LocalRecordMenuStrip.Name = "LocalRecordMenuStrip"
             Me.LocalRecordMenuStrip.Size = New System.Drawing.Size(168, 98)
             '
@@ -371,10 +370,10 @@
             Me.GenerateReportMenu.Size = New System.Drawing.Size(167, 22)
             Me.GenerateReportMenu.Text = "生成测试报告(&G)"
             '
-            'ToolStripMenuItem1
+            'LocalRecordBar0
             '
-            Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-            Me.ToolStripMenuItem1.Size = New System.Drawing.Size(164, 6)
+            Me.LocalRecordBar0.Name = "LocalRecordBar0"
+            Me.LocalRecordBar0.Size = New System.Drawing.Size(164, 6)
             '
             'RetestRecordMenu
             '
@@ -880,7 +879,7 @@
             '
             'SecurityList
             '
-            Me.SecurityList.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.SecurityDesktopNameHeader, Me.SecurityUserNameHeader, Me.SecurityPasswordHeader})
+            Me.SecurityList.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.SecurityUserNameHeader, Me.SecurityPasswordHeader})
             Me.SecurityList.Dock = System.Windows.Forms.DockStyle.Fill
             Me.SecurityList.FullRowSelect = True
             Me.SecurityList.HideSelection = False
@@ -893,20 +892,15 @@
             Me.SecurityList.UseCompatibleStateImageBehavior = False
             Me.SecurityList.View = System.Windows.Forms.View.Details
             '
-            'SecurityDesktopNameHeader
-            '
-            Me.SecurityDesktopNameHeader.Text = "桌面名称"
-            Me.SecurityDesktopNameHeader.Width = 129
-            '
             'SecurityUserNameHeader
             '
             Me.SecurityUserNameHeader.Text = "用户名"
-            Me.SecurityUserNameHeader.Width = 122
+            Me.SecurityUserNameHeader.Width = 200
             '
             'SecurityPasswordHeader
             '
             Me.SecurityPasswordHeader.Text = "密码"
-            Me.SecurityPasswordHeader.Width = 154
+            Me.SecurityPasswordHeader.Width = 200
             '
             'ExecutorToolStrip
             '
@@ -1129,7 +1123,6 @@
         Friend WithEvents RemoveSecurityButton As System.Windows.Forms.ToolStripButton
         Friend WithEvents CheckSecurityButton As System.Windows.Forms.ToolStripButton
         Friend WithEvents SecurityList As System.Windows.Forms.ListView
-        Friend WithEvents SecurityDesktopNameHeader As System.Windows.Forms.ColumnHeader
         Friend WithEvents SecurityUserNameHeader As System.Windows.Forms.ColumnHeader
         Friend WithEvents SecurityPasswordHeader As System.Windows.Forms.ColumnHeader
         Friend WithEvents NewCompilerMenu As System.Windows.Forms.ToolStripMenuItem
@@ -1167,7 +1160,7 @@
         Friend WithEvents AddVijosSuiteMenu As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents LocalRecordMenuStrip As System.Windows.Forms.ContextMenuStrip
         Friend WithEvents GenerateReportMenu As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents ToolStripMenuItem1 As System.Windows.Forms.ToolStripSeparator
+        Friend WithEvents LocalRecordBar0 As System.Windows.Forms.ToolStripSeparator
         Friend WithEvents RetestRecordMenu As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents DeleteRecord As System.Windows.Forms.ToolStripMenuItem
     End Class
