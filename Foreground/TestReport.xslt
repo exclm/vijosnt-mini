@@ -453,7 +453,9 @@ function CLASS_HIGHLIGHT(code,syntax)
             内存: <xsl:value-of select="MemoryUsage" />
           </li>
           <li>
-            警告: <xsl:value-of select="Warning" />
+            警告: <pre>
+              <xsl:value-of select="Warning" />
+            </pre>
           </li>
         </ul>
         <h3>详细信息</h3>
