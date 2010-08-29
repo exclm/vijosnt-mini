@@ -21,21 +21,36 @@ Vijos-Mini源代码下载地址: [http://vijosnt-mini.googlecode.com/svn/trunk/]
 ==文件说明==
 *第一次使用需要两个文件*
 System.Data.SQLite.dll
+
 VijosNT Mini.exe
+
 其中
+
 System.Data.SQLite.dll是SQLite运行必备的
+
 VijosNT Mini.exe是VijosNT-Mini的主程序
 
 *初次使用之后，可能会产生以下两个文件(夹)*
 VijosNT.db3
+
 Temp目录
+
 其中VijosNT.db3是本地数据库文件，用于存储本地测数据信息以及配置
 Temp目录中存放临时文件，一般用完即删，不会积累很多文件
 
 ==首次使用==
 打开VijosNT Mini.exe
+
 双击悬浮窗或通知区域图标打开控制台界面，也可以右键悬浮窗或控制台点击“启动控制台”
 点击右侧的“启动”启动VijosNT Mini服务，期间杀毒软件可能提示有程序正在加载服务或驱动，请点击允许。此时悬浮窗以及通知区域图标变为绿色，表示服务安装成功。
+
+*初次使用之后，可能会产生以下两个文件(夹)*
+VijosNT.db3
+
+Temp目录
+
+其中VijosNT.db3是本地数据库文件，用于存储本地测数据信息以及配置
+Temp目录中存放临时文件，一般用完即删，不会积累很多文件
 
 ==配置编译器==
 点击控制台左边的“编译器映射”，点击右侧的“添加旁边的小箭头”添加编译器
