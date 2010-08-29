@@ -12,7 +12,7 @@ VijosNT-Mini是VijosNT的一个实验性分支, 主要目标在于提高性能�
 
 使用前必须安装 [http://www.microsoft.com/downloads/details.aspx?displaylang=zh-cn&FamilyID=0856eacb-4362-4b0d-8edd-aab15c5e04f5 .Net Framework 2.0] 或[http://www.microsoft.com/downloads/details.aspx?displaylang=zh-cn&FamilyID=9cfb2d51-5ff4-4491-b0e5-b386f32c0992 更高版本]。
 
-Vijos-Mini程序下载地址:[http://code.google.com/p/vijosnt-mini/downloads/list VijosNT-Mini下载列表](早期不开放下载)
+Vijos-Mini程序下载地址:[http://code.google.com/p/vijosnt-mini/downloads/list](早期不开放下载)
 
 Vijos-Mini源代码下载地址: [http://vijosnt-mini.googlecode.com/svn/trunk/](您可以使用TortoiseSVN等SVN软件自行下载源代码并使用Visual Basic .NET 2010及以上版本编译，编译前，请先安装[http://sqlite.phxsoftware.com/ SQLite.Net])
 
