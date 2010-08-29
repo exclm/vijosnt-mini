@@ -1,17 +1,17 @@
 #labels VijosNT,Vijos,Mini,VijosNT-Mini,VijosNTMini,Judger
-=欢迎使用VijosNT-Mini信息学测评系统=
+=使用帮助=
+==目录==
+<wiki:toc max_depth="3"/> 
+==关于本系统==
 <br>
 <br>
 VijosNT-Mini是VijosNT的一个实验性分支, 主要目标在于提高性能以及降低使用难度, 在 [http://code.google.com/p/vijosnt VijosNT] 的基础上重写了所有的代码, 特别针对配置较差（CPU 数量小于 8，内存小于 16GB）的计算机进行了优化（大量使用完成函数代替线程等待）, 并实现了一个友好的用户界面。
 <br>
 初次使用VijosNT-Mini前，请先仔细阅读使用帮助, 以免发生意外。<br>
 <br>
-=使用帮助=
-==目录==
-<wiki:toc max_depth="3"/> 
 ==获得VijosNT-Mini==
 如您需要使用VijosNT-Mini，请先下载一个合适您计算机的版本或下载源代码自行编译。<br>
-使用前必须安装.Net Framework2.0和.Net Framework3.5<br>
+使用前必须安装 [http://www.microsoft.com/downloads/details.aspx?FamilyID=333325fd-ae52-4e35-b531-508d977d32a6&displaylang=zh-cn .Net Framework 3.5] 或以上版本<br>
 下载地址：[http://code.google.com/p/vijosnt-mini/downloads/list VijosNT-Mini下载列表]（早期不开放下载）<br>
 源代码下载地址：[http://vijosnt-mini.googlecode.com/svn/trunk/ VijosNT-Mini源代码SVN]（您可以使用TortoiseSVN等SVN软件自行下载源代码并使用Visual Studio 7及以上版本编译，编译前，请先安装SQLite.Net）<br>
 <br>
