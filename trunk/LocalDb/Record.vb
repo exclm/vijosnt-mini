@@ -48,7 +48,7 @@
             m_UpdateRetestCommand = Database.CreateCommand( _
                 "UPDATE Record SET Taken = 0, Flag = 'None' WHERE Id = @Id")
             m_DeleteCommand = Database.CreateCommand( _
-                "TRUNCATE TABLE Record")
+                "DELETE FROM Record")
             m_DeleteOneCommand = Database.CreateCommand( _
                 "DELETE FROM Record WHERE Id = @Id")
         End Sub
