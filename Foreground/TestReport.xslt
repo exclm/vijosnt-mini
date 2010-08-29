@@ -456,6 +456,7 @@ function CLASS_HIGHLIGHT(code,syntax)
             警告: <xsl:value-of select="Warning" />
           </li>
         </ul>
+        <h3>详细信息</h3>
         <table border="1" cellspacing="0">
           <tr>
             <th>序号</th>
@@ -488,7 +489,7 @@ function CLASS_HIGHLIGHT(code,syntax)
             </tr>
           </xsl:for-each>
         </table>
-        <h3>源代码:</h3>
+        <h3>源代码</h3>
         <span id="codeFrame"></span>
         <textarea id="code" style="display:none">
           <xsl:value-of select="SourceCode" />
