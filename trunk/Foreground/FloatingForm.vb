@@ -91,5 +91,9 @@ Namespace Foreground
         Private Sub StartConsoleMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles StartConsoleMenu.Click
             m_Daemon.ShowConsole()
         End Sub
+
+        Private Sub ExitProgramMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ExitProgramMenu.Click
+            Application.Exit()
+        End Sub
     End Class
 End Namespace
