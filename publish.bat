@@ -1,5 +1,4 @@
 @echo off
-color 0a
 if not defined ProgramFiles(x86) set ProgramFiles(x86)=%ProgramFiles%
 echo VijosNT Mini Publishing Tool
 echo.
@@ -20,7 +19,10 @@ copy "%ProgramFiles(x86)%\SQLite.NET\bin\System.Data.SQLite.dll" pub\x86 > nul
 md pub\x64
 copy "bin\x64\release\VijosNT Mini.exe" pub\x64 > nul
 copy "%ProgramFiles(x86)%\SQLite.NET\bin\x64\System.Data.SQLite.dll" pub\x64 > nul
-start /wait "" "%ProgramFiles%\WinRAR\WinRAR.exe" a pub.rar pub
+cd pub
+"%ProgramFiles%\WinRAR\Rar.exe" a -r pub.rar
+cd..
+copy pub\pub.rar
 Rem rd pub /s /q
 echo All works done.
 echo.
