@@ -24,11 +24,11 @@
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
-            Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
-            Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
-            Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("执行设置")
-            Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据源")
-            Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2, TreeNode3, TreeNode4})
+            Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
+            Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
+            Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("执行设置")
+            Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据源")
+            Dim TreeNode10 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode6, TreeNode7, TreeNode8, TreeNode9})
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ConsoleForm))
             Me.MenuStrip = New System.Windows.Forms.MenuStrip()
             Me.FileMenu = New System.Windows.Forms.ToolStripMenuItem()
@@ -45,6 +45,7 @@
             Me.StatusLabel = New System.Windows.Forms.ToolStripStatusLabel()
             Me.SplitContainer = New System.Windows.Forms.SplitContainer()
             Me.NavigationTree = New System.Windows.Forms.TreeView()
+            Me.ImageList = New System.Windows.Forms.ImageList(Me.components)
             Me.TabControl = New System.Windows.Forms.TabControl()
             Me.RootPage = New System.Windows.Forms.TabPage()
             Me.LocalSourceList = New System.Windows.Forms.ListView()
@@ -194,7 +195,7 @@
             'ExitMenu
             '
             Me.ExitMenu.Name = "ExitMenu"
-            Me.ExitMenu.Size = New System.Drawing.Size(116, 22)
+            Me.ExitMenu.Size = New System.Drawing.Size(152, 22)
             Me.ExitMenu.Text = "退出(&X)"
             '
             'HelpMenu
@@ -280,22 +281,45 @@
             'NavigationTree
             '
             Me.NavigationTree.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.NavigationTree.ImageIndex = 0
+            Me.NavigationTree.ImageList = Me.ImageList
             Me.NavigationTree.Location = New System.Drawing.Point(0, 0)
             Me.NavigationTree.Margin = New System.Windows.Forms.Padding(2)
             Me.NavigationTree.Name = "NavigationTree"
-            TreeNode1.Name = "Compiler"
-            TreeNode1.Text = "编译器映射"
-            TreeNode2.Name = "TestSuite"
-            TreeNode2.Text = "数据集映射"
-            TreeNode3.Name = "Executor"
-            TreeNode3.Text = "执行设置"
-            TreeNode4.Name = "DataSource"
-            TreeNode4.Text = "数据源"
-            TreeNode5.Name = "Root"
-            TreeNode5.Text = "VijosNT"
-            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode5})
+            TreeNode6.ImageKey = "Compiler.png"
+            TreeNode6.Name = "Compiler"
+            TreeNode6.SelectedImageKey = "Compiler.png"
+            TreeNode6.Text = "编译器映射"
+            TreeNode7.ImageKey = "TestSuite.png"
+            TreeNode7.Name = "TestSuite"
+            TreeNode7.SelectedImageKey = "TestSuite.png"
+            TreeNode7.Text = "数据集映射"
+            TreeNode8.ImageKey = "Executor.png"
+            TreeNode8.Name = "Executor"
+            TreeNode8.SelectedImageKey = "Executor.png"
+            TreeNode8.Text = "执行设置"
+            TreeNode9.ImageKey = "DataSource.png"
+            TreeNode9.Name = "DataSource"
+            TreeNode9.SelectedImageKey = "DataSource.png"
+            TreeNode9.Text = "数据源"
+            TreeNode10.ImageKey = "Console.png"
+            TreeNode10.Name = "Root"
+            TreeNode10.SelectedImageKey = "Console.png"
+            TreeNode10.Text = "VijosNT"
+            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode10})
+            Me.NavigationTree.SelectedImageIndex = 0
             Me.NavigationTree.Size = New System.Drawing.Size(189, 515)
             Me.NavigationTree.TabIndex = 0
+            '
+            'ImageList
+            '
+            Me.ImageList.ImageStream = CType(resources.GetObject("ImageList.ImageStream"), System.Windows.Forms.ImageListStreamer)
+            Me.ImageList.TransparentColor = System.Drawing.Color.Transparent
+            Me.ImageList.Images.SetKeyName(0, "Console.png")
+            Me.ImageList.Images.SetKeyName(1, "Compiler.png")
+            Me.ImageList.Images.SetKeyName(2, "TestSuite.png")
+            Me.ImageList.Images.SetKeyName(3, "Executor.png")
+            Me.ImageList.Images.SetKeyName(4, "DataSource.png")
             '
             'TabControl
             '
@@ -378,7 +402,7 @@
             '
             Me.LocalRecordMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.GenerateReportMenu, Me.LocalRecordBar0, Me.RetestRecordMenu, Me.DeleteRecord})
             Me.LocalRecordMenuStrip.Name = "LocalRecordMenuStrip"
-            Me.LocalRecordMenuStrip.Size = New System.Drawing.Size(168, 98)
+            Me.LocalRecordMenuStrip.Size = New System.Drawing.Size(168, 76)
             '
             'GenerateReportMenu
             '
@@ -414,21 +438,21 @@
             '
             'StartButton
             '
-            Me.StartButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.StartButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             Me.StartButton.Image = CType(resources.GetObject("StartButton.Image"), System.Drawing.Image)
             Me.StartButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.StartButton.Name = "StartButton"
-            Me.StartButton.Size = New System.Drawing.Size(51, 22)
+            Me.StartButton.Size = New System.Drawing.Size(23, 22)
             Me.StartButton.Text = "启动(&S)"
             Me.StartButton.ToolTipText = "安装并启动 VijosNT 测评服务"
             '
             'StopButton
             '
-            Me.StopButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.StopButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             Me.StopButton.Image = CType(resources.GetObject("StopButton.Image"), System.Drawing.Image)
             Me.StopButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.StopButton.Name = "StopButton"
-            Me.StopButton.Size = New System.Drawing.Size(51, 22)
+            Me.StopButton.Size = New System.Drawing.Size(23, 22)
             Me.StopButton.Text = "停止(&T)"
             Me.StopButton.ToolTipText = "停止并卸载 VijosNT 测评服务"
             '
@@ -465,20 +489,20 @@
             '
             'RefershLocalButton
             '
-            Me.RefershLocalButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.RefershLocalButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             Me.RefershLocalButton.Image = CType(resources.GetObject("RefershLocalButton.Image"), System.Drawing.Image)
             Me.RefershLocalButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.RefershLocalButton.Name = "RefershLocalButton"
-            Me.RefershLocalButton.Size = New System.Drawing.Size(52, 22)
+            Me.RefershLocalButton.Size = New System.Drawing.Size(23, 22)
             Me.RefershLocalButton.Text = "刷新(&R)"
             '
             'ClearLocalButton
             '
-            Me.ClearLocalButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.ClearLocalButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             Me.ClearLocalButton.Image = CType(resources.GetObject("ClearLocalButton.Image"), System.Drawing.Image)
             Me.ClearLocalButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.ClearLocalButton.Name = "ClearLocalButton"
-            Me.ClearLocalButton.Size = New System.Drawing.Size(52, 22)
+            Me.ClearLocalButton.Size = New System.Drawing.Size(23, 22)
             Me.ClearLocalButton.Text = "清除(&C)"
             '
             'CompilerPage
@@ -561,12 +585,12 @@
             '
             'AddCompilerButton
             '
-            Me.AddCompilerButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.AddCompilerButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             Me.AddCompilerButton.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewCompilerMenu, Me.AddCompilerBar0, Me.MingwMenu, Me.FpcMenu, Me.MsvsMenu, Me.NetfxMenu, Me.JavaMenu, Me.PythonMenu})
             Me.AddCompilerButton.Image = CType(resources.GetObject("AddCompilerButton.Image"), System.Drawing.Image)
             Me.AddCompilerButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.AddCompilerButton.Name = "AddCompilerButton"
-            Me.AddCompilerButton.Size = New System.Drawing.Size(64, 22)
+            Me.AddCompilerButton.Size = New System.Drawing.Size(32, 22)
             Me.AddCompilerButton.Text = "添加(&A)"
             Me.AddCompilerButton.ToolTipText = "添加编译器映射"
             '
@@ -658,12 +682,12 @@
             '
             'RemoveCompilerButton
             '
-            Me.RemoveCompilerButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.RemoveCompilerButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             Me.RemoveCompilerButton.Enabled = False
             Me.RemoveCompilerButton.Image = CType(resources.GetObject("RemoveCompilerButton.Image"), System.Drawing.Image)
             Me.RemoveCompilerButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.RemoveCompilerButton.Name = "RemoveCompilerButton"
-            Me.RemoveCompilerButton.Size = New System.Drawing.Size(52, 22)
+            Me.RemoveCompilerButton.Size = New System.Drawing.Size(23, 22)
             Me.RemoveCompilerButton.Text = "移除(&R)"
             Me.RemoveCompilerButton.ToolTipText = "移除编译器映射"
             '
@@ -674,23 +698,23 @@
             '
             'MoveUpCompilerButton
             '
-            Me.MoveUpCompilerButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.MoveUpCompilerButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             Me.MoveUpCompilerButton.Enabled = False
             Me.MoveUpCompilerButton.Image = CType(resources.GetObject("MoveUpCompilerButton.Image"), System.Drawing.Image)
             Me.MoveUpCompilerButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.MoveUpCompilerButton.Name = "MoveUpCompilerButton"
-            Me.MoveUpCompilerButton.Size = New System.Drawing.Size(53, 22)
+            Me.MoveUpCompilerButton.Size = New System.Drawing.Size(23, 22)
             Me.MoveUpCompilerButton.Text = "上移(&U)"
             Me.MoveUpCompilerButton.ToolTipText = "向上移动编译器映射"
             '
             'MoveDownCompilerButton
             '
-            Me.MoveDownCompilerButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.MoveDownCompilerButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             Me.MoveDownCompilerButton.Enabled = False
             Me.MoveDownCompilerButton.Image = CType(resources.GetObject("MoveDownCompilerButton.Image"), System.Drawing.Image)
             Me.MoveDownCompilerButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.MoveDownCompilerButton.Name = "MoveDownCompilerButton"
-            Me.MoveDownCompilerButton.Size = New System.Drawing.Size(53, 22)
+            Me.MoveDownCompilerButton.Size = New System.Drawing.Size(23, 22)
             Me.MoveDownCompilerButton.Text = "下移(&D)"
             Me.MoveDownCompilerButton.ToolTipText = "向下移动编译器映射"
             '
@@ -701,12 +725,12 @@
             '
             'ApplyCompilerButton
             '
-            Me.ApplyCompilerButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.ApplyCompilerButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             Me.ApplyCompilerButton.Enabled = False
             Me.ApplyCompilerButton.Image = CType(resources.GetObject("ApplyCompilerButton.Image"), System.Drawing.Image)
             Me.ApplyCompilerButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.ApplyCompilerButton.Name = "ApplyCompilerButton"
-            Me.ApplyCompilerButton.Size = New System.Drawing.Size(52, 22)
+            Me.ApplyCompilerButton.Size = New System.Drawing.Size(23, 22)
             Me.ApplyCompilerButton.Text = "应用(&A)"
             Me.ApplyCompilerButton.ToolTipText = "将编译器映射设置立即应用到正在运行的服务"
             '
@@ -795,46 +819,46 @@
             '
             'AddTestSuiteButton
             '
-            Me.AddTestSuiteButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.AddTestSuiteButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             Me.AddTestSuiteButton.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewTestSuiteMenu, Me.AddTestSuiteBar0, Me.AddAPlusBMenu, Me.AddVijosSuiteMenu})
             Me.AddTestSuiteButton.Image = CType(resources.GetObject("AddTestSuiteButton.Image"), System.Drawing.Image)
             Me.AddTestSuiteButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.AddTestSuiteButton.Name = "AddTestSuiteButton"
-            Me.AddTestSuiteButton.Size = New System.Drawing.Size(64, 22)
+            Me.AddTestSuiteButton.Size = New System.Drawing.Size(32, 22)
             Me.AddTestSuiteButton.Text = "添加(&A)"
             Me.AddTestSuiteButton.ToolTipText = "添加数据集映射"
             '
             'NewTestSuiteMenu
             '
             Me.NewTestSuiteMenu.Name = "NewTestSuiteMenu"
-            Me.NewTestSuiteMenu.Size = New System.Drawing.Size(148, 22)
+            Me.NewTestSuiteMenu.Size = New System.Drawing.Size(152, 22)
             Me.NewTestSuiteMenu.Text = "新数据集映射"
             '
             'AddTestSuiteBar0
             '
             Me.AddTestSuiteBar0.Name = "AddTestSuiteBar0"
-            Me.AddTestSuiteBar0.Size = New System.Drawing.Size(145, 6)
+            Me.AddTestSuiteBar0.Size = New System.Drawing.Size(149, 6)
             '
             'AddAPlusBMenu
             '
             Me.AddAPlusBMenu.Name = "AddAPlusBMenu"
-            Me.AddAPlusBMenu.Size = New System.Drawing.Size(148, 22)
+            Me.AddAPlusBMenu.Size = New System.Drawing.Size(152, 22)
             Me.AddAPlusBMenu.Text = "A+B"
             '
             'AddVijosSuiteMenu
             '
             Me.AddVijosSuiteMenu.Name = "AddVijosSuiteMenu"
-            Me.AddVijosSuiteMenu.Size = New System.Drawing.Size(148, 22)
+            Me.AddVijosSuiteMenu.Size = New System.Drawing.Size(152, 22)
             Me.AddVijosSuiteMenu.Text = "Vijos 格式"
             '
             'RemoveTestSuiteButton
             '
-            Me.RemoveTestSuiteButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.RemoveTestSuiteButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             Me.RemoveTestSuiteButton.Enabled = False
             Me.RemoveTestSuiteButton.Image = CType(resources.GetObject("RemoveTestSuiteButton.Image"), System.Drawing.Image)
             Me.RemoveTestSuiteButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.RemoveTestSuiteButton.Name = "RemoveTestSuiteButton"
-            Me.RemoveTestSuiteButton.Size = New System.Drawing.Size(52, 22)
+            Me.RemoveTestSuiteButton.Size = New System.Drawing.Size(23, 22)
             Me.RemoveTestSuiteButton.Text = "移除(&R)"
             Me.RemoveTestSuiteButton.ToolTipText = "移除数据集映射"
             '
@@ -845,23 +869,23 @@
             '
             'MoveUpTestSuiteButton
             '
-            Me.MoveUpTestSuiteButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.MoveUpTestSuiteButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             Me.MoveUpTestSuiteButton.Enabled = False
             Me.MoveUpTestSuiteButton.Image = CType(resources.GetObject("MoveUpTestSuiteButton.Image"), System.Drawing.Image)
             Me.MoveUpTestSuiteButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.MoveUpTestSuiteButton.Name = "MoveUpTestSuiteButton"
-            Me.MoveUpTestSuiteButton.Size = New System.Drawing.Size(53, 22)
+            Me.MoveUpTestSuiteButton.Size = New System.Drawing.Size(23, 22)
             Me.MoveUpTestSuiteButton.Text = "上移(&U)"
             Me.MoveUpTestSuiteButton.ToolTipText = "向上移动数据集映射"
             '
             'MoveDownTestSuiteButton
             '
-            Me.MoveDownTestSuiteButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.MoveDownTestSuiteButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             Me.MoveDownTestSuiteButton.Enabled = False
             Me.MoveDownTestSuiteButton.Image = CType(resources.GetObject("MoveDownTestSuiteButton.Image"), System.Drawing.Image)
             Me.MoveDownTestSuiteButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.MoveDownTestSuiteButton.Name = "MoveDownTestSuiteButton"
-            Me.MoveDownTestSuiteButton.Size = New System.Drawing.Size(53, 22)
+            Me.MoveDownTestSuiteButton.Size = New System.Drawing.Size(23, 22)
             Me.MoveDownTestSuiteButton.Text = "下移(&D)"
             Me.MoveDownTestSuiteButton.ToolTipText = "向下移动数据集映射"
             '
@@ -872,12 +896,12 @@
             '
             'ApplyTestSuiteButton
             '
-            Me.ApplyTestSuiteButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.ApplyTestSuiteButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             Me.ApplyTestSuiteButton.Enabled = False
             Me.ApplyTestSuiteButton.Image = CType(resources.GetObject("ApplyTestSuiteButton.Image"), System.Drawing.Image)
             Me.ApplyTestSuiteButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.ApplyTestSuiteButton.Name = "ApplyTestSuiteButton"
-            Me.ApplyTestSuiteButton.Size = New System.Drawing.Size(52, 22)
+            Me.ApplyTestSuiteButton.Size = New System.Drawing.Size(23, 22)
             Me.ApplyTestSuiteButton.Text = "应用(&A)"
             Me.ApplyTestSuiteButton.ToolTipText = "将数据集映射设置立即应用到正在运行的服务"
             '
@@ -967,21 +991,21 @@
             '
             'AddSecurityButton
             '
-            Me.AddSecurityButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.AddSecurityButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             Me.AddSecurityButton.Image = CType(resources.GetObject("AddSecurityButton.Image"), System.Drawing.Image)
             Me.AddSecurityButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.AddSecurityButton.Name = "AddSecurityButton"
-            Me.AddSecurityButton.Size = New System.Drawing.Size(52, 22)
+            Me.AddSecurityButton.Size = New System.Drawing.Size(23, 22)
             Me.AddSecurityButton.Text = "添加(&A)"
             Me.AddSecurityButton.ToolTipText = "添加不可信执行环境"
             '
             'RemoveSecurityButton
             '
-            Me.RemoveSecurityButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.RemoveSecurityButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             Me.RemoveSecurityButton.Image = CType(resources.GetObject("RemoveSecurityButton.Image"), System.Drawing.Image)
             Me.RemoveSecurityButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.RemoveSecurityButton.Name = "RemoveSecurityButton"
-            Me.RemoveSecurityButton.Size = New System.Drawing.Size(52, 22)
+            Me.RemoveSecurityButton.Size = New System.Drawing.Size(23, 22)
             Me.RemoveSecurityButton.Text = "移除(&R)"
             Me.RemoveSecurityButton.ToolTipText = "移除不可信执行环境"
             '
@@ -992,12 +1016,12 @@
             '
             'ApplyExecutorButton
             '
-            Me.ApplyExecutorButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.ApplyExecutorButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             Me.ApplyExecutorButton.Enabled = False
             Me.ApplyExecutorButton.Image = CType(resources.GetObject("ApplyExecutorButton.Image"), System.Drawing.Image)
             Me.ApplyExecutorButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.ApplyExecutorButton.Name = "ApplyExecutorButton"
-            Me.ApplyExecutorButton.Size = New System.Drawing.Size(52, 22)
+            Me.ApplyExecutorButton.Size = New System.Drawing.Size(23, 22)
             Me.ApplyExecutorButton.Text = "应用(&A)"
             Me.ApplyExecutorButton.ToolTipText = "提交更改并将当前的设置应用到正在运行的服务"
             '
@@ -1080,12 +1104,12 @@
             '
             'AddDataSourceButton
             '
-            Me.AddDataSourceButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.AddDataSourceButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             Me.AddDataSourceButton.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewDataSourceMenu, Me.AddDataSourceBar0, Me.VijosDataSourceMenu})
             Me.AddDataSourceButton.Image = CType(resources.GetObject("AddDataSourceButton.Image"), System.Drawing.Image)
             Me.AddDataSourceButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.AddDataSourceButton.Name = "AddDataSourceButton"
-            Me.AddDataSourceButton.Size = New System.Drawing.Size(64, 22)
+            Me.AddDataSourceButton.Size = New System.Drawing.Size(32, 22)
             Me.AddDataSourceButton.Text = "添加(&A)"
             Me.AddDataSourceButton.ToolTipText = "添加数据源"
             '
@@ -1108,12 +1132,12 @@
             '
             'RemoveDataSourceButton
             '
-            Me.RemoveDataSourceButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.RemoveDataSourceButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             Me.RemoveDataSourceButton.Enabled = False
             Me.RemoveDataSourceButton.Image = CType(resources.GetObject("RemoveDataSourceButton.Image"), System.Drawing.Image)
             Me.RemoveDataSourceButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.RemoveDataSourceButton.Name = "RemoveDataSourceButton"
-            Me.RemoveDataSourceButton.Size = New System.Drawing.Size(52, 22)
+            Me.RemoveDataSourceButton.Size = New System.Drawing.Size(23, 22)
             Me.RemoveDataSourceButton.Text = "移除(&R)"
             Me.RemoveDataSourceButton.ToolTipText = "移除数据源"
             '
@@ -1124,12 +1148,12 @@
             '
             'ApplyDataSourceButton
             '
-            Me.ApplyDataSourceButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.ApplyDataSourceButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             Me.ApplyDataSourceButton.Enabled = False
             Me.ApplyDataSourceButton.Image = CType(resources.GetObject("ApplyDataSourceButton.Image"), System.Drawing.Image)
             Me.ApplyDataSourceButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.ApplyDataSourceButton.Name = "ApplyDataSourceButton"
-            Me.ApplyDataSourceButton.Size = New System.Drawing.Size(52, 22)
+            Me.ApplyDataSourceButton.Size = New System.Drawing.Size(23, 22)
             Me.ApplyDataSourceButton.Text = "应用(&A)"
             Me.ApplyDataSourceButton.ToolTipText = "将数据源设置立即应用到正在运行的服务"
             '
@@ -1311,5 +1335,6 @@
         Friend WithEvents NewDataSourceMenu As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents AddDataSourceBar0 As System.Windows.Forms.ToolStripSeparator
         Friend WithEvents VijosDataSourceMenu As System.Windows.Forms.ToolStripMenuItem
+        Friend WithEvents ImageList As System.Windows.Forms.ImageList
     End Class
 End Namespace

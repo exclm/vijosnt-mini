@@ -319,12 +319,28 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="Artwork\Add.png" />
+    <Content Include="Artwork\Apply.png" />
     <Content Include="Artwork\BlueV.bmp" />
     <Content Include="Artwork\BlueV.ico" />
+    <Content Include="Artwork\Clear.png" />
+    <Content Include="Artwork\Compiler.png" />
+    <Content Include="Artwork\Console.ico" />
+    <Content Include="Artwork\Console.png" />
+    <Content Include="Artwork\DataSource.png" />
+    <Content Include="Artwork\Executor.png" />
     <Content Include="Artwork\GreenV.bmp" />
     <Content Include="Artwork\GreenV.ico" />
+    <Content Include="Artwork\MoveDown.png" />
+    <Content Include="Artwork\MoveUp.png" />
     <Content Include="Artwork\RedV.bmp" />
     <Content Include="Artwork\RedV.ico" />
+    <Content Include="Artwork\Refresh.png" />
+    <Content Include="Artwork\Remove.png" />
+    <Content Include="Artwork\Report.ico" />
+    <Content Include="Artwork\Start.png" />
+    <Content Include="Artwork\Stop.png" />
+    <Content Include="Artwork\TestSuite.png" />
     <Content Include="Artwork\VijosNT.ico" />
     <Content Include="Foreground\TestReport.xslt" />
   </ItemGroup>
