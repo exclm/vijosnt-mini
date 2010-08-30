@@ -198,8 +198,13 @@ Namespace Feeding
                     End Select
                     Builder.Append("访问违规, 地址: 0x")
                     Builder.Append(Exception.ExceptionInformation(1).ToString("x8"))
+                Case ExceptionCode.EXCEPTION_INT_DIVIDE_BY_ZERO
+                    Builder.Append("整形数除数为零")
+                Case ExceptionCode.EXCEPTION_FLT_DIVIDE_BY_ZERO
+                    Builder.Append("浮点数除数为零")
+                Case ExceptionCode.EXCEPTION_STACK_OVERFLOW
+                    Builder.Append("堆栈溢出")
                 Case Else
-                    ' TODO: Make more common exceptions parsed
                     Builder.Append("异常代码: ")
                     Builder.Append(Exception.ExceptionCode.ToString())
             End Select
@@ -325,10 +330,11 @@ Namespace Feeding
                     m_AllowQueuing = False
                     m_CanExit.WaitOne()
                     m_CanExit.Close()
+                    m_DataSourcePool.Dispose()
                     m_Executor.Dispose()
-                    m_TempPathServer.Dispose()
                     m_ProcessMonitor.Stop()
                     m_WatchDog.Stop()
+                    m_TempPathServer.Dispose()
                 End If
             End If
             Me.disposedValue = True
