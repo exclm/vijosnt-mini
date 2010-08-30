@@ -277,6 +277,15 @@ Namespace Foreground
             End Try
         End Function
 
+        Public Function ReloadDataSource() As Boolean
+            Try
+                m_PipeClient.Write(ClientMessage.ReloadDataSource)
+                Return True
+            Catch ex As Exception
+                Return False
+            End Try
+        End Function
+
         Public Function FeedDataSource(ByVal DataSourceName As String) As Boolean
             Try
                 m_PipeClient.Write(ClientMessage.FeedDataSource, DataSourceName)

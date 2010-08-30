@@ -9,8 +9,7 @@
     </SchemaVersion>
     <ProjectGuid>{14264ECC-994C-4D8E-985C-CA7B57076454}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>
-    </StartupObject>
+    <StartupObject>VijosNT.EntryPoint</StartupObject>
     <RootNamespace>VijosNT</RootNamespace>
     <AssemblyName>VijosNT Mini</AssemblyName>
     <FileAlignment>512</FileAlignment>
@@ -108,7 +107,6 @@
     <Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="System.Deployment" />
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.ServiceProcess" />
@@ -123,10 +121,12 @@
     <Import Include="System.Collections.Generic" />
     <Import Include="System.ComponentModel" />
     <Import Include="System.Data" />
+    <Import Include="System.Data.SqlClient" />
     <Import Include="System.Data.SQLite" />
     <Import Include="System.Diagnostics" />
     <Import Include="System.Drawing" />
     <Import Include="System.IO" />
+    <Import Include="System.Net" />
     <Import Include="System.Reflection" />
     <Import Include="System.Runtime.InteropServices" />
     <Import Include="System.Security.AccessControl" />
@@ -157,9 +157,11 @@
     <Compile Include="Compiling\TargetInstance.vb" />
     <Compile Include="Executing\PortableExecutable.vb" />
     <Compile Include="Feeding\DataSourceBase.vb" />
+    <Compile Include="Feeding\DataSourceEntry.vb" />
     <Compile Include="Feeding\DataSourcePool.vb" />
     <Compile Include="Feeding\LocalDataSource.vb" />
     <Compile Include="Feeding\DataSourceRecord.vb" />
+    <Compile Include="Feeding\VijosDataSource.vb" />
     <Compile Include="Foreground\CompilerDetection.vb" />
     <Compile Include="Foreground\FloatingForm.Designer.vb">
       <DependentUpon>FloatingForm.vb</DependentUpon>
@@ -174,6 +176,9 @@
     <Compile Include="Foreground\TestResultForm.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="LocalDb\DataSourceClass.vb" />
+    <Compile Include="LocalDb\DataSourceConfig.vb" />
+    <Compile Include="LocalDb\DataSourceMapping.vb" />
     <Compile Include="LocalDb\Record.vb" />
     <Compile Include="LocalDb\TestSuiteClass.vb" />
     <Compile Include="LocalDb\TestSuiteConfig.vb" />
