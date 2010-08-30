@@ -109,6 +109,11 @@ Namespace Foreground
                     End If
                     AddHandler ExecutorSecurityCombo.SelectedIndexChanged, AddressOf ExecutorSecurityCombo_SelectedIndexChanged
                     RefreshSecurity()
+                Case "DataSourcePage"
+                    Using Reader As IDataReader = DataSourceMapping.GetHeaders()
+                        RefreshListView(DataSourceList, Reader, "Id", "ClassName", "Parameter")
+                    End Using
+                    DataSourceList_SelectedIndexChanged(Nothing, Nothing)
             End Select
         End Sub
 #End Region
@@ -247,7 +252,7 @@ Namespace Foreground
             With LocalSourceList.SelectedItems
                 If .Count = 0 Then _
                     Return
-                Record.Delete(.Item(0).Tag())
+                Record.Remove(.Item(0).Tag())
                 RefreshLocalRecord()
             End With
         End Sub
@@ -597,11 +602,18 @@ Namespace Foreground
         Private Sub RemoveSecurityButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles RemoveSecurityButton.Click
             With SecurityList.SelectedItems
                 If .Count <> 0 Then
-                    UntrustedEnvironments.Delete(.Item(0).Tag)
+                    UntrustedEnvironments.Remove(.Item(0).Tag)
                     RefreshSecurity()
                     ApplyExecutorButton.Enabled = True
                 End If
             End With
+        End Sub
+
+        Private Sub CheckSecurityButton_Click() Handles CheckSecurityButton.Click
+            ' TODO
+            ' start a named pipe server
+            ' collect information from each individual user
+
         End Sub
 
         Private Sub SecurityList_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles SecurityList.SelectedIndexChanged
@@ -609,9 +621,38 @@ Namespace Foreground
         End Sub
 #End Region
 
-        Private Sub NotImplementedHandler() Handles CheckSecurityButton.Click
-            MessageBox.Show("还没写代码 O(∩_∩)O", "友情提示", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Private Sub DataSourceList_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles DataSourceList.SelectedIndexChanged
+            With DataSourceList.SelectedItems
+                If .Count <> 0 Then
+                    DataSourceProperty.SelectedObject = DataSourceMapping.GetConfig(.Item(0).Tag)
+                    RemoveDataSourceButton.Enabled = True
+                Else
+                    DataSourceProperty.SelectedObject = Nothing
+                    RemoveDataSourceButton.Enabled = False
+                End If
+            End With
         End Sub
 
+        Private Sub AddDataSourceButton_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddDataSourceButton.ButtonClick
+            DataSourceMapping.Add("Vijos", String.Empty, Nothing, String.Empty, String.Empty)
+            ApplyDataSourceButton.Enabled = True
+            RefreshPage()
+        End Sub
+
+        Private Sub RemoveDataSourceButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RemoveDataSourceButton.Click
+            DataSourceMapping.Remove(DataSourceList.SelectedItems.Item(0).Tag)
+            ApplyDataSourceButton.Enabled = True
+            RefreshPage()
+        End Sub
+
+        Private Sub ApplyDataSourceButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ApplyDataSourceButton.Click
+            m_Daemon.ReloadDataSource()
+            ApplyDataSourceButton.Enabled = False
+        End Sub
+
+        Private Sub DataSourceProperty_PropertyValueChanged(ByVal s As Object, ByVal e As System.Windows.Forms.PropertyValueChangedEventArgs) Handles DataSourceProperty.PropertyValueChanged
+            ApplyDataSourceButton.Enabled = True
+            RefreshPage()
+        End Sub
     End Class
 End Namespace

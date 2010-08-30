@@ -127,7 +127,7 @@
             End Using
         End Sub
 
-        Public Shared Sub Delete(ByVal Id As Int32)
+        Public Shared Sub Remove(ByVal Id As Int32)
             Using Command As SQLiteCommand = m_DeleteOneCommand.Clone()
                 Command.Parameters.AddWithValue("@Id", Id)
                 Command.ExecuteNonQuery()

@@ -134,6 +134,16 @@
             Me.ExecutorSeperator2 = New System.Windows.Forms.ToolStripSeparator()
             Me.ApplyExecutorButton = New System.Windows.Forms.ToolStripButton()
             Me.DataSourcePage = New System.Windows.Forms.TabPage()
+            Me.DataSourceSplit = New System.Windows.Forms.SplitContainer()
+            Me.DataSourceList = New System.Windows.Forms.ListView()
+            Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.DataSourceProperty = New System.Windows.Forms.PropertyGrid()
+            Me.DataSourceToolStrip = New System.Windows.Forms.ToolStrip()
+            Me.AddDataSourceButton = New System.Windows.Forms.ToolStripSplitButton()
+            Me.RemoveDataSourceButton = New System.Windows.Forms.ToolStripButton()
+            Me.DataSourceBar0 = New System.Windows.Forms.ToolStripSeparator()
+            Me.ApplyDataSourceButton = New System.Windows.Forms.ToolStripButton()
             Me.ServiceTimer = New System.Windows.Forms.Timer(Me.components)
             Me.MenuStrip.SuspendLayout()
             Me.StatusStrip.SuspendLayout()
@@ -156,6 +166,11 @@
             Me.TestSuiteToolStrip.SuspendLayout()
             Me.ExecutorPage.SuspendLayout()
             Me.ExecutorToolStrip.SuspendLayout()
+            Me.DataSourcePage.SuspendLayout()
+            Me.DataSourceSplit.Panel1.SuspendLayout()
+            Me.DataSourceSplit.Panel2.SuspendLayout()
+            Me.DataSourceSplit.SuspendLayout()
+            Me.DataSourceToolStrip.SuspendLayout()
             Me.SuspendLayout()
             '
             'MenuStrip
@@ -996,6 +1011,8 @@
             '
             'DataSourcePage
             '
+            Me.DataSourcePage.Controls.Add(Me.DataSourceSplit)
+            Me.DataSourcePage.Controls.Add(Me.DataSourceToolStrip)
             Me.DataSourcePage.Location = New System.Drawing.Point(4, 22)
             Me.DataSourcePage.Name = "DataSourcePage"
             Me.DataSourcePage.Padding = New System.Windows.Forms.Padding(3)
@@ -1003,6 +1020,108 @@
             Me.DataSourcePage.TabIndex = 5
             Me.DataSourcePage.Text = "数据源"
             Me.DataSourcePage.UseVisualStyleBackColor = True
+            '
+            'DataSourceSplit
+            '
+            Me.DataSourceSplit.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.DataSourceSplit.Location = New System.Drawing.Point(3, 28)
+            Me.DataSourceSplit.Margin = New System.Windows.Forms.Padding(2)
+            Me.DataSourceSplit.Name = "DataSourceSplit"
+            Me.DataSourceSplit.Orientation = System.Windows.Forms.Orientation.Horizontal
+            '
+            'DataSourceSplit.Panel1
+            '
+            Me.DataSourceSplit.Panel1.Controls.Add(Me.DataSourceList)
+            '
+            'DataSourceSplit.Panel2
+            '
+            Me.DataSourceSplit.Panel2.Controls.Add(Me.DataSourceProperty)
+            Me.DataSourceSplit.Size = New System.Drawing.Size(578, 458)
+            Me.DataSourceSplit.SplitterDistance = 158
+            Me.DataSourceSplit.SplitterWidth = 3
+            Me.DataSourceSplit.TabIndex = 12
+            '
+            'DataSourceList
+            '
+            Me.DataSourceList.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2})
+            Me.DataSourceList.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.DataSourceList.FullRowSelect = True
+            Me.DataSourceList.HideSelection = False
+            Me.DataSourceList.Location = New System.Drawing.Point(0, 0)
+            Me.DataSourceList.Margin = New System.Windows.Forms.Padding(2)
+            Me.DataSourceList.MultiSelect = False
+            Me.DataSourceList.Name = "DataSourceList"
+            Me.DataSourceList.Size = New System.Drawing.Size(578, 158)
+            Me.DataSourceList.TabIndex = 1
+            Me.DataSourceList.UseCompatibleStateImageBehavior = False
+            Me.DataSourceList.View = System.Windows.Forms.View.Details
+            '
+            'ColumnHeader1
+            '
+            Me.ColumnHeader1.Text = "扩展名匹配"
+            Me.ColumnHeader1.Width = 119
+            '
+            'ColumnHeader2
+            '
+            Me.ColumnHeader2.Text = "命令行"
+            Me.ColumnHeader2.Width = 389
+            '
+            'DataSourceProperty
+            '
+            Me.DataSourceProperty.BackColor = System.Drawing.SystemColors.Window
+            Me.DataSourceProperty.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.DataSourceProperty.Location = New System.Drawing.Point(0, 0)
+            Me.DataSourceProperty.Margin = New System.Windows.Forms.Padding(2)
+            Me.DataSourceProperty.Name = "DataSourceProperty"
+            Me.DataSourceProperty.PropertySort = System.Windows.Forms.PropertySort.Categorized
+            Me.DataSourceProperty.Size = New System.Drawing.Size(578, 297)
+            Me.DataSourceProperty.TabIndex = 6
+            Me.DataSourceProperty.ToolbarVisible = False
+            '
+            'DataSourceToolStrip
+            '
+            Me.DataSourceToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AddDataSourceButton, Me.RemoveDataSourceButton, Me.DataSourceBar0, Me.ApplyDataSourceButton})
+            Me.DataSourceToolStrip.Location = New System.Drawing.Point(3, 3)
+            Me.DataSourceToolStrip.Name = "DataSourceToolStrip"
+            Me.DataSourceToolStrip.Size = New System.Drawing.Size(578, 25)
+            Me.DataSourceToolStrip.TabIndex = 11
+            '
+            'AddDataSourceButton
+            '
+            Me.AddDataSourceButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.AddDataSourceButton.Image = CType(resources.GetObject("AddDataSourceButton.Image"), System.Drawing.Image)
+            Me.AddDataSourceButton.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.AddDataSourceButton.Name = "AddDataSourceButton"
+            Me.AddDataSourceButton.Size = New System.Drawing.Size(64, 22)
+            Me.AddDataSourceButton.Text = "添加(&A)"
+            Me.AddDataSourceButton.ToolTipText = "添加数据集映射"
+            '
+            'RemoveDataSourceButton
+            '
+            Me.RemoveDataSourceButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.RemoveDataSourceButton.Enabled = False
+            Me.RemoveDataSourceButton.Image = CType(resources.GetObject("RemoveDataSourceButton.Image"), System.Drawing.Image)
+            Me.RemoveDataSourceButton.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.RemoveDataSourceButton.Name = "RemoveDataSourceButton"
+            Me.RemoveDataSourceButton.Size = New System.Drawing.Size(52, 22)
+            Me.RemoveDataSourceButton.Text = "移除(&R)"
+            Me.RemoveDataSourceButton.ToolTipText = "移除数据集映射"
+            '
+            'DataSourceBar0
+            '
+            Me.DataSourceBar0.Name = "DataSourceBar0"
+            Me.DataSourceBar0.Size = New System.Drawing.Size(6, 25)
+            '
+            'ApplyDataSourceButton
+            '
+            Me.ApplyDataSourceButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.ApplyDataSourceButton.Enabled = False
+            Me.ApplyDataSourceButton.Image = CType(resources.GetObject("ApplyDataSourceButton.Image"), System.Drawing.Image)
+            Me.ApplyDataSourceButton.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.ApplyDataSourceButton.Name = "ApplyDataSourceButton"
+            Me.ApplyDataSourceButton.Size = New System.Drawing.Size(52, 22)
+            Me.ApplyDataSourceButton.Text = "应用(&A)"
+            Me.ApplyDataSourceButton.ToolTipText = "将数据集映射设置立即应用到正在运行的服务"
             '
             'ServiceTimer
             '
@@ -1053,6 +1172,13 @@
             Me.ExecutorPage.PerformLayout()
             Me.ExecutorToolStrip.ResumeLayout(False)
             Me.ExecutorToolStrip.PerformLayout()
+            Me.DataSourcePage.ResumeLayout(False)
+            Me.DataSourcePage.PerformLayout()
+            Me.DataSourceSplit.Panel1.ResumeLayout(False)
+            Me.DataSourceSplit.Panel2.ResumeLayout(False)
+            Me.DataSourceSplit.ResumeLayout(False)
+            Me.DataSourceToolStrip.ResumeLayout(False)
+            Me.DataSourceToolStrip.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -1163,5 +1289,15 @@
         Friend WithEvents LocalRecordBar0 As System.Windows.Forms.ToolStripSeparator
         Friend WithEvents RetestRecordMenu As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents DeleteRecord As System.Windows.Forms.ToolStripMenuItem
+        Friend WithEvents DataSourceToolStrip As System.Windows.Forms.ToolStrip
+        Friend WithEvents AddDataSourceButton As System.Windows.Forms.ToolStripSplitButton
+        Friend WithEvents RemoveDataSourceButton As System.Windows.Forms.ToolStripButton
+        Friend WithEvents DataSourceBar0 As System.Windows.Forms.ToolStripSeparator
+        Friend WithEvents ApplyDataSourceButton As System.Windows.Forms.ToolStripButton
+        Friend WithEvents DataSourceSplit As System.Windows.Forms.SplitContainer
+        Friend WithEvents DataSourceList As System.Windows.Forms.ListView
+        Friend WithEvents ColumnHeader1 As System.Windows.Forms.ColumnHeader
+        Friend WithEvents ColumnHeader2 As System.Windows.Forms.ColumnHeader
+        Friend WithEvents DataSourceProperty As System.Windows.Forms.PropertyGrid
     End Class
 End Namespace

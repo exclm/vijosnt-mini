@@ -16,7 +16,6 @@ Namespace Feeding
                     Return Nothing
                 Result.FileName = Reader("FileName")
                 Result.SourceCode = Reader("SourceCode")
-                Result.Tag = Nothing
             End Using
             Return Result
         End Function

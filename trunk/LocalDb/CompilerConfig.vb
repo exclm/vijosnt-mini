@@ -46,7 +46,6 @@ Namespace LocalDb
             End Set
         End Property
 
-
         <EditorAttribute(GetType(System.Windows.Forms.Design.FileNameEditor), GetType(System.Drawing.Design.UITypeEditor)), _
         DisplayName("程序路径"), CategoryAttribute("编译器设置"), DescriptionAttribute("编译器程序的路径")> _
         Public Property ApplicationName() As String

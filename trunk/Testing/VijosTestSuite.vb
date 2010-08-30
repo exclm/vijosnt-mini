@@ -22,6 +22,9 @@
         Private m_MemoryQuota As Int64
 
         Public Sub New(ByVal Parameters As String)
+            m_Root = Nothing
+            m_MemoryQuota = 128 * 1024 * 1024
+
             For Each Parameter As String In Parameters.Split(New Char() {";"c})
                 Dim Position As Int32 = Parameter.IndexOf("="c)
                 If Position = -1 Then Continue For
@@ -34,8 +37,10 @@
                         Int64.TryParse(Value, m_MemoryQuota)
                 End Select
             Next
-            If m_Root Is Nothing Then Throw New ArgumentNullException()
-            If m_MemoryQuota = 0 Then m_MemoryQuota = 128 * 1024 * 1024
+            If m_Root Is Nothing Then _
+                Throw New ArgumentNullException("Root")
+            If m_MemoryQuota <= 0 Then _
+                Throw New ArgumentOutOfRangeException("MemoryQuota", "MemoryQuota 必须为一个正整数")
         End Sub
 
         Public Overrides Function TryLoad(ByVal Id As String) As IEnumerable(Of TestCase)

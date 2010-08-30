@@ -47,7 +47,7 @@ Namespace Feeding
             m_ProcessMonitor.Start()
             m_CompilerPool = New LocalCompilerPool(m_TempPathServer)
             m_TestSuitePool = New TestSuitePool()
-            m_DataSourcePool = New DataSourcePool()
+            m_DataSourcePool = New DataSourcePool(Me)
             m_Running = 0
             m_CanExit = New ManualResetEvent(True)
             m_AllowQueuing = True
@@ -80,19 +80,11 @@ Namespace Feeding
         End Structure
 
         Public Function Feed(ByVal Limit As Int32) As Int32
-            Dim Count As Int32 = 0
-            For Each Source As DataSourceBase In m_DataSourcePool.Sources
-                Dim Current As Int32 = Feed(Source, Limit)
-                Count += Current
-                Limit -= Current
-                If Limit = 0 Then Exit For
-            Next
-            Return Count
+            Return m_DataSourcePool.Feed(Limit)
         End Function
 
-        Public Function Feed(ByVal DataSourceName As String, ByVal Limit As Int32) As Int32
-            Dim Source As DataSourceBase = m_DataSourcePool.Get(DataSourceName)
-            Return Feed(Source, Limit)
+        Public Function Feed(ByVal IpcAnnouncement As String, ByVal Limit As Int32) As Int32
+            Return m_DataSourcePool.Feed(IpcAnnouncement, Limit)
         End Function
 
         Public Function Feed(ByVal Source As DataSourceBase, ByVal Limit As Int32) As Int32
