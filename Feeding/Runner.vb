@@ -228,7 +228,7 @@ Namespace Feeding
                 If Result.StdErrorMessage Is Nothing Then
                     Warning += ", 编译器无输出"
                 Else
-                    Warning += ", 编译器输出如下" & vbCrLf & vbCrLf & Result.StdErrorMessage
+                    Warning += ", 编译器输出如下" & vbCrLf & Result.StdErrorMessage
                 End If
             ElseIf Result.Target Is Nothing Then
                 Warning = "编译器出现未知错误"
@@ -271,7 +271,7 @@ Namespace Feeding
                     Entry.Warning = FormatException(Result.Exception.Value)
                 Else
                     If Result.StdErrorMessage IsNot Nothing Then
-                        Entry.Warning = "标准错误输出如下" & vbCrLf & vbCrLf & Result.StdErrorMessage
+                        Entry.Warning = "标准错误输出如下" & vbCrLf & Result.StdErrorMessage
                     Else
                         Entry.Warning = Nothing
                     End If

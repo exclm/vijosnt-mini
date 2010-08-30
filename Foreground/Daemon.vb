@@ -98,6 +98,8 @@ Namespace Foreground
             If m_Console Is Nothing Then
                 m_Console = New ConsoleForm(Me)
                 AddHandler m_Console.FormClosed, AddressOf OnConsoleClosed
+            ElseIf m_Console.WindowState = FormWindowState.Minimized Then
+                m_Console.Unminimize()
             End If
             m_Console.Show()
             m_Console.Activate()
