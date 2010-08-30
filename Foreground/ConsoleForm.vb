@@ -570,7 +570,6 @@ Namespace Foreground
             Dim EnableSecurity As Boolean = (ExecutorSecurityCombo.SelectedIndex = 0)
             SecurityList.Enabled = EnableSecurity
             AddSecurityButton.Enabled = EnableSecurity
-            CheckSecurityButton.Enabled = EnableSecurity
             ApplyExecutorButton.Enabled = True
         End Sub
 
