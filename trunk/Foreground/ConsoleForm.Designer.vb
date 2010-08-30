@@ -1087,23 +1087,23 @@
             Me.AddDataSourceButton.Name = "AddDataSourceButton"
             Me.AddDataSourceButton.Size = New System.Drawing.Size(64, 22)
             Me.AddDataSourceButton.Text = "添加(&A)"
-            Me.AddDataSourceButton.ToolTipText = "添加数据集映射"
+            Me.AddDataSourceButton.ToolTipText = "添加数据源"
             '
             'NewDataSourceMenu
             '
             Me.NewDataSourceMenu.Name = "NewDataSourceMenu"
-            Me.NewDataSourceMenu.Size = New System.Drawing.Size(144, 22)
+            Me.NewDataSourceMenu.Size = New System.Drawing.Size(152, 22)
             Me.NewDataSourceMenu.Text = "新数据源"
             '
             'AddDataSourceBar0
             '
             Me.AddDataSourceBar0.Name = "AddDataSourceBar0"
-            Me.AddDataSourceBar0.Size = New System.Drawing.Size(141, 6)
+            Me.AddDataSourceBar0.Size = New System.Drawing.Size(149, 6)
             '
             'VijosDataSourceMenu
             '
             Me.VijosDataSourceMenu.Name = "VijosDataSourceMenu"
-            Me.VijosDataSourceMenu.Size = New System.Drawing.Size(144, 22)
+            Me.VijosDataSourceMenu.Size = New System.Drawing.Size(152, 22)
             Me.VijosDataSourceMenu.Text = "Vijos 数据源"
             '
             'RemoveDataSourceButton
@@ -1115,7 +1115,7 @@
             Me.RemoveDataSourceButton.Name = "RemoveDataSourceButton"
             Me.RemoveDataSourceButton.Size = New System.Drawing.Size(52, 22)
             Me.RemoveDataSourceButton.Text = "移除(&R)"
-            Me.RemoveDataSourceButton.ToolTipText = "移除数据集映射"
+            Me.RemoveDataSourceButton.ToolTipText = "移除数据源"
             '
             'DataSourceBar0
             '
@@ -1131,7 +1131,7 @@
             Me.ApplyDataSourceButton.Name = "ApplyDataSourceButton"
             Me.ApplyDataSourceButton.Size = New System.Drawing.Size(52, 22)
             Me.ApplyDataSourceButton.Text = "应用(&A)"
-            Me.ApplyDataSourceButton.ToolTipText = "将数据集映射设置立即应用到正在运行的服务"
+            Me.ApplyDataSourceButton.ToolTipText = "将数据源设置立即应用到正在运行的服务"
             '
             'ServiceTimer
             '
