@@ -22,7 +22,7 @@ copy "%ProgramFiles(x86)%\SQLite.NET\bin\x64\System.Data.SQLite.dll" pub\x64 > n
 cd pub
 "%ProgramFiles%\WinRAR\Rar.exe" a -r pub.rar
 cd..
-copy pub\pub.rar
+copy pub\pub.rar > nul
 Rem rd pub /s /q
 echo All works done.
 echo.
