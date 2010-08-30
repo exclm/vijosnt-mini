@@ -1,4 +1,6 @@
-﻿Namespace Feeding
+﻿Imports VijosNT.Utility
+
+Namespace Feeding
     Friend Class VijosDataSource
         Inherits DataSourceBase
 
@@ -174,8 +176,7 @@
             End Using
 
             Dim Details As New StringBuilder()
-            Details.AppendLine("VijosNT Mini " & Assembly.GetExecutingAssembly().GetName().Version.ToString())
-            Details.AppendLine(Result.Flag.ToString() & " / " & Result.Score & " / " & (Result.TimeUsage \ 10000).ToString() & "ms / " & (Result.MemoryUsage \ 1024).ToString() & "KB")
+            Details.AppendLine("VijosNT [color=#ff8000][b]Mini[/b][/color] " & Assembly.GetExecutingAssembly().GetName().Version.ToString())
 
             If Result.Warning IsNot Nothing AndAlso Result.Warning.Length <> 0 Then
                 Details.AppendLine()
@@ -185,9 +186,26 @@
             If Result.Entries IsNot Nothing Then
                 Details.AppendLine()
                 For Each Entry As TestResultEntry In Result.Entries
-                    Details.AppendLine("Test #" & Entry.Index.ToString() & ": " & Entry.Flag.ToString() & " / " & (Entry.TimeUsage \ 10000).ToString() & "ms / " & (Entry.MemoryUsage \ 1024).ToString() & "KB")
+                    Details.Append("#" & Entry.Index.ToString("00") & ": ")
+                    If Entry.Flag = TestResultFlag.Accepted Then
+                        Details.Append("[color=#ff0000]Accepted[/color]")
+                    Else
+                        Details.Append("[color=#0000ff]" & FormatEnumString(Entry.Flag.ToString()) & "[/color]")
+                    End If
+                    Details.AppendLine(" (" & (Entry.TimeUsage \ 10000).ToString() & "ms, " & (Entry.MemoryUsage \ 1024).ToString() & "KB)")
+                    If Entry.Warning IsNot Nothing AndAlso Entry.Warning.Length <> 0 Then
+                        Details.AppendLine(Entry.Warning)
+                    End If
                 Next
             End If
+
+            Details.AppendLine()
+            If Result.Flag = TestResultFlag.Accepted Then
+                Details.Append("[color=#ff0000]Accepted[/color]")
+            Else
+                Details.Append("[color=#0000ff]" & FormatEnumString(Result.Flag.ToString()) & "[/color]")
+            End If
+            Details.AppendLine(" / " & Result.Score & " / " & (Result.TimeUsage \ 10000).ToString() & "ms / " & (Result.MemoryUsage \ 1024).ToString() & "KB")
 
             Using Connection As SqlConnection = CloneConnection(), _
                 Command0 As SqlCommand = CloneCommand(m_UpdateFinalCommand, Connection), _

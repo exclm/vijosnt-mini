@@ -8,8 +8,9 @@ Namespace Foreground
         Private m_Pages As Dictionary(Of String, TabPage)
         Private m_RootNode As TreeNode
         Private m_Service As Service
+        Private m_UnminimizedWindowState As FormWindowState
 
-#Region "Constructor"
+#Region "Members"
         Public Sub New(ByVal Daemon As Daemon)
             ' 此调用是设计器所必需的。
             InitializeComponent()
@@ -28,6 +29,10 @@ Namespace Foreground
             FloatingFormButton.Checked = m_Daemon.ShowFloating
 
             SetDoubleBuffered(LocalSourceList)
+        End Sub
+
+        Public Sub Unminimize()
+            WindowState = m_UnminimizedWindowState
         End Sub
 #End Region
 
@@ -126,7 +131,7 @@ Namespace Foreground
         End Sub
 
         Private Sub AboutMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AboutMenu.Click
-            MessageBox.Show("Hello world!", "About", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            MessageBox.Show("VijosNT Mini " & Assembly.GetExecutingAssembly().GetName().Version.ToString() & vbCrLf & "written by iceboy, twd2, bml" & vbCrLf & "http://vijosnt-mini.googlecode.com", "关于", MessageBoxButtons.OK, MessageBoxIcon.Information)
         End Sub
 
         Private Sub WikiToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles WikiToolStripMenuItem.Click
@@ -157,6 +162,12 @@ Namespace Foreground
             If e.KeyData = Keys.F5 Then
                 RefreshPage()
             End If
+        End Sub
+
+        Private Sub ConsoleForm_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Resize
+            Dim CurrentWindowState As FormWindowState = WindowState
+            If CurrentWindowState <> FormWindowState.Minimized Then _
+                m_UnminimizedWindowState = CurrentWindowState
         End Sub
 #End Region
 
@@ -193,14 +204,27 @@ Namespace Foreground
 
         Private Sub StartButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles StartButton.Click
             m_Service = m_Daemon.CreateService()
-            m_Service.Start()
+            Try
+                m_Service.Start()
+            Catch ex As Win32Exception
+                MessageBox.Show("服务启动失败, 详情请参见事件查看器。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                m_Service.Delete()
+                m_Service.Close()
+                m_Service = Nothing
+                Return
+            End Try
             m_Daemon.ServiceInstalled = True
             RefreshServiceStatus()
         End Sub
 
         Private Sub StopButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles StopButton.Click
-            m_Service.Stop()
-            m_Service.Delete()
+            Try
+                m_Service.Stop()
+                m_Service.Delete()
+            Catch ex As Win32Exception
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return
+            End Try
             m_Service.Close()
             m_Service = Nothing
             RefreshServiceStatus()
@@ -615,6 +639,7 @@ Namespace Foreground
         End Sub
 #End Region
 
+#Region "Data source page"
         Private Sub DataSourceList_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles DataSourceList.SelectedIndexChanged
             With DataSourceList.SelectedItems
                 If .Count <> 0 Then
@@ -650,9 +675,10 @@ Namespace Foreground
         End Sub
 
         Private Sub VijosDataSourceMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles VijosDataSourceMenu.Click
-            DataSourceMapping.Add("Vijos", "Server=(local)\mssql;Database=vijos;UserName=sa;Password=admin", Nothing, String.Empty, String.Empty)
+            DataSourceMapping.Add("Vijos", "Server=(local);Database=vijos;UserName=sa;Password=admin", Nothing, String.Empty, String.Empty)
             ApplyDataSourceButton.Enabled = True
             RefreshPage()
         End Sub
+#End Region
     End Class
 End Namespace

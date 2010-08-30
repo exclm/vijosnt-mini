@@ -193,5 +193,17 @@
             Dim [Property] As PropertyInfo = GetType(Control).GetProperty("DoubleBuffered", BindingFlags.NonPublic Or BindingFlags.Instance)
             [Property].SetValue(Control, True, Nothing)
         End Sub
+
+        Public Function FormatEnumString(ByVal Value As String) As String
+            Dim Builder As New StringBuilder()
+            Dim FirstCharacter As Boolean = True
+            For Each Character As Char In Value
+                If Not FirstCharacter AndAlso Char.IsUpper(Character) Then _
+                    Builder.Append(" "c)
+                Builder.Append(Character)
+                FirstCharacter = False
+            Next
+            Return Builder.ToString()
+        End Function
     End Module
 End Namespace
