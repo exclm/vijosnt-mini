@@ -207,7 +207,7 @@ Namespace Foreground
             Try
                 m_Service.Start()
             Catch ex As Win32Exception
-                MessageBox.Show("服务启动失败, 详情请参见事件查看器。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show("服务启动失败 (通常是因为设置错误), 详情请参见事件查看器。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 m_Service.Delete()
                 m_Service.Close()
                 m_Service = Nothing
