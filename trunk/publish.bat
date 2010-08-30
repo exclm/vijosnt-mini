@@ -1,4 +1,5 @@
 @echo off
+color 0a
 if not defined ProgramFiles(x86) set ProgramFiles(x86)=%ProgramFiles%
 echo VijosNT Mini Publishing Tool
 echo.
