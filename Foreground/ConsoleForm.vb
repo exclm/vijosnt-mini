@@ -68,6 +68,8 @@ Namespace Foreground
                     ApplyTestSuiteButton.PerformClick()
                 Case "ExecutorPage"
                     ApplyExecutorButton.PerformClick()
+                Case "DataSourcePage"
+                    ApplyDataSourceButton.PerformClick()
             End Select
             StatusLabel.Text = Nothing
         End Sub
@@ -609,13 +611,6 @@ Namespace Foreground
             End With
         End Sub
 
-        Private Sub CheckSecurityButton_Click() Handles CheckSecurityButton.Click
-            ' TODO
-            ' start a named pipe server
-            ' collect information from each individual user
-
-        End Sub
-
         Private Sub SecurityList_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles SecurityList.SelectedIndexChanged
             RemoveSecurityButton.Enabled = (SecurityList.SelectedItems.Count <> 0)
         End Sub
@@ -633,7 +628,7 @@ Namespace Foreground
             End With
         End Sub
 
-        Private Sub AddDataSourceButton_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddDataSourceButton.ButtonClick
+        Private Sub AddDataSourceButton_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddDataSourceButton.ButtonClick, NewDataSourceMenu.Click
             DataSourceMapping.Add("Vijos", String.Empty, Nothing, String.Empty, String.Empty)
             ApplyDataSourceButton.Enabled = True
             RefreshPage()
@@ -651,6 +646,12 @@ Namespace Foreground
         End Sub
 
         Private Sub DataSourceProperty_PropertyValueChanged(ByVal s As Object, ByVal e As System.Windows.Forms.PropertyValueChangedEventArgs) Handles DataSourceProperty.PropertyValueChanged
+            ApplyDataSourceButton.Enabled = True
+            RefreshPage()
+        End Sub
+
+        Private Sub VijosDataSourceMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles VijosDataSourceMenu.Click
+            DataSourceMapping.Add("Vijos", "Server=(local)\mssql;Database=vijos;UserName=sa;Password=admin", Nothing, String.Empty, String.Empty)
             ApplyDataSourceButton.Enabled = True
             RefreshPage()
         End Sub

@@ -130,17 +130,19 @@
             Me.ExecutorSeperator1 = New System.Windows.Forms.ToolStripSeparator()
             Me.AddSecurityButton = New System.Windows.Forms.ToolStripButton()
             Me.RemoveSecurityButton = New System.Windows.Forms.ToolStripButton()
-            Me.CheckSecurityButton = New System.Windows.Forms.ToolStripButton()
             Me.ExecutorSeperator2 = New System.Windows.Forms.ToolStripSeparator()
             Me.ApplyExecutorButton = New System.Windows.Forms.ToolStripButton()
             Me.DataSourcePage = New System.Windows.Forms.TabPage()
             Me.DataSourceSplit = New System.Windows.Forms.SplitContainer()
             Me.DataSourceList = New System.Windows.Forms.ListView()
-            Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-            Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.DataSourceClassHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.DataSourceParameterHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.DataSourceProperty = New System.Windows.Forms.PropertyGrid()
             Me.DataSourceToolStrip = New System.Windows.Forms.ToolStrip()
             Me.AddDataSourceButton = New System.Windows.Forms.ToolStripSplitButton()
+            Me.NewDataSourceMenu = New System.Windows.Forms.ToolStripMenuItem()
+            Me.AddDataSourceBar0 = New System.Windows.Forms.ToolStripSeparator()
+            Me.VijosDataSourceMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.RemoveDataSourceButton = New System.Windows.Forms.ToolStripButton()
             Me.DataSourceBar0 = New System.Windows.Forms.ToolStripSeparator()
             Me.ApplyDataSourceButton = New System.Windows.Forms.ToolStripButton()
@@ -919,7 +921,7 @@
             '
             'ExecutorToolStrip
             '
-            Me.ExecutorToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ExecutorSlotsLabel, Me.ExecutorSlotsText, Me.ExecutorSeperator0, Me.ExecutorSecurityLabel, Me.ExecutorSecurityCombo, Me.ExecutorSeperator1, Me.AddSecurityButton, Me.RemoveSecurityButton, Me.CheckSecurityButton, Me.ExecutorSeperator2, Me.ApplyExecutorButton})
+            Me.ExecutorToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ExecutorSlotsLabel, Me.ExecutorSlotsText, Me.ExecutorSeperator0, Me.ExecutorSecurityLabel, Me.ExecutorSecurityCombo, Me.ExecutorSeperator1, Me.AddSecurityButton, Me.RemoveSecurityButton, Me.ExecutorSeperator2, Me.ApplyExecutorButton})
             Me.ExecutorToolStrip.Location = New System.Drawing.Point(2, 2)
             Me.ExecutorToolStrip.Name = "ExecutorToolStrip"
             Me.ExecutorToolStrip.Size = New System.Drawing.Size(580, 25)
@@ -983,16 +985,6 @@
             Me.RemoveSecurityButton.Text = "移除(&R)"
             Me.RemoveSecurityButton.ToolTipText = "移除不可信执行环境"
             '
-            'CheckSecurityButton
-            '
-            Me.CheckSecurityButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            Me.CheckSecurityButton.Image = CType(resources.GetObject("CheckSecurityButton.Image"), System.Drawing.Image)
-            Me.CheckSecurityButton.ImageTransparentColor = System.Drawing.Color.Magenta
-            Me.CheckSecurityButton.Name = "CheckSecurityButton"
-            Me.CheckSecurityButton.Size = New System.Drawing.Size(76, 22)
-            Me.CheckSecurityButton.Text = "安全检查(&C)"
-            Me.CheckSecurityButton.ToolTipText = "对当前的设置进行基本的安全检查 (推荐)"
-            '
             'ExecutorSeperator2
             '
             Me.ExecutorSeperator2.Name = "ExecutorSeperator2"
@@ -1043,7 +1035,7 @@
             '
             'DataSourceList
             '
-            Me.DataSourceList.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2})
+            Me.DataSourceList.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.DataSourceClassHeader, Me.DataSourceParameterHeader})
             Me.DataSourceList.Dock = System.Windows.Forms.DockStyle.Fill
             Me.DataSourceList.FullRowSelect = True
             Me.DataSourceList.HideSelection = False
@@ -1056,15 +1048,15 @@
             Me.DataSourceList.UseCompatibleStateImageBehavior = False
             Me.DataSourceList.View = System.Windows.Forms.View.Details
             '
-            'ColumnHeader1
+            'DataSourceClassHeader
             '
-            Me.ColumnHeader1.Text = "扩展名匹配"
-            Me.ColumnHeader1.Width = 119
+            Me.DataSourceClassHeader.Text = "类型"
+            Me.DataSourceClassHeader.Width = 119
             '
-            'ColumnHeader2
+            'DataSourceParameterHeader
             '
-            Me.ColumnHeader2.Text = "命令行"
-            Me.ColumnHeader2.Width = 389
+            Me.DataSourceParameterHeader.Text = "参数"
+            Me.DataSourceParameterHeader.Width = 389
             '
             'DataSourceProperty
             '
@@ -1089,12 +1081,30 @@
             'AddDataSourceButton
             '
             Me.AddDataSourceButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.AddDataSourceButton.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewDataSourceMenu, Me.AddDataSourceBar0, Me.VijosDataSourceMenu})
             Me.AddDataSourceButton.Image = CType(resources.GetObject("AddDataSourceButton.Image"), System.Drawing.Image)
             Me.AddDataSourceButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.AddDataSourceButton.Name = "AddDataSourceButton"
             Me.AddDataSourceButton.Size = New System.Drawing.Size(64, 22)
             Me.AddDataSourceButton.Text = "添加(&A)"
             Me.AddDataSourceButton.ToolTipText = "添加数据集映射"
+            '
+            'NewDataSourceMenu
+            '
+            Me.NewDataSourceMenu.Name = "NewDataSourceMenu"
+            Me.NewDataSourceMenu.Size = New System.Drawing.Size(144, 22)
+            Me.NewDataSourceMenu.Text = "新数据源"
+            '
+            'AddDataSourceBar0
+            '
+            Me.AddDataSourceBar0.Name = "AddDataSourceBar0"
+            Me.AddDataSourceBar0.Size = New System.Drawing.Size(141, 6)
+            '
+            'VijosDataSourceMenu
+            '
+            Me.VijosDataSourceMenu.Name = "VijosDataSourceMenu"
+            Me.VijosDataSourceMenu.Size = New System.Drawing.Size(144, 22)
+            Me.VijosDataSourceMenu.Text = "Vijos 数据源"
             '
             'RemoveDataSourceButton
             '
@@ -1247,7 +1257,6 @@
         Friend WithEvents ExecutorSeperator1 As System.Windows.Forms.ToolStripSeparator
         Friend WithEvents AddSecurityButton As System.Windows.Forms.ToolStripButton
         Friend WithEvents RemoveSecurityButton As System.Windows.Forms.ToolStripButton
-        Friend WithEvents CheckSecurityButton As System.Windows.Forms.ToolStripButton
         Friend WithEvents SecurityList As System.Windows.Forms.ListView
         Friend WithEvents SecurityUserNameHeader As System.Windows.Forms.ColumnHeader
         Friend WithEvents SecurityPasswordHeader As System.Windows.Forms.ColumnHeader
@@ -1296,8 +1305,11 @@
         Friend WithEvents ApplyDataSourceButton As System.Windows.Forms.ToolStripButton
         Friend WithEvents DataSourceSplit As System.Windows.Forms.SplitContainer
         Friend WithEvents DataSourceList As System.Windows.Forms.ListView
-        Friend WithEvents ColumnHeader1 As System.Windows.Forms.ColumnHeader
-        Friend WithEvents ColumnHeader2 As System.Windows.Forms.ColumnHeader
+        Friend WithEvents DataSourceClassHeader As System.Windows.Forms.ColumnHeader
+        Friend WithEvents DataSourceParameterHeader As System.Windows.Forms.ColumnHeader
         Friend WithEvents DataSourceProperty As System.Windows.Forms.PropertyGrid
+        Friend WithEvents NewDataSourceMenu As System.Windows.Forms.ToolStripMenuItem
+        Friend WithEvents AddDataSourceBar0 As System.Windows.Forms.ToolStripSeparator
+        Friend WithEvents VijosDataSourceMenu As System.Windows.Forms.ToolStripMenuItem
     End Class
 End Namespace

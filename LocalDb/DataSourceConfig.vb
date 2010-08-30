@@ -58,13 +58,18 @@ Namespace LocalDb
             End Set
         End Property
 
-        <DisplayName("Http 通告地址"), CategoryAttribute("数据源设置"), DescriptionAttribute("采用 Http 方式进行通告的地址, 通过访问设定的 Uri 进行通告")> _
+        <DisplayName("Http 通告地址"), CategoryAttribute("数据源设置"), DescriptionAttribute("采用 Http 方式进行通告的地址, 通过访问设定的 Uri 进行通告, 以 http:// 开头, 不包含末尾的 /")> _
         Public Property HttpAnnouncement() As String
             Get
                 Return m_HttpAnnouncement
             End Get
 
             Set(ByVal Value As String)
+                If Value.Length <> 0 AndAlso Not Value.StartsWith("http://") Then _
+                    Throw New ArgumentException("Http 通告地址必须以 http:// 开头。", "Http 通告地址")
+                While Value.EndsWith("/")
+                    Value = Value.Substring(0, Value.Length - 1)
+                End While
                 m_HttpAnnouncement = Value
                 Commit()
             End Set
