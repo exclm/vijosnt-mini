@@ -107,12 +107,14 @@ Server=(local);Database=vijos;UserName=sa;Password=admin
 
 在 Record.Update 这一行的下面，也就是 session("RecordID")=Record("ID") 这一行的上面（虽然这句话很有问题，这也是为什么必须加到它上面），增加下面的代码。
 
-{{{    ' VijosNT Mini Announcement
+{{{
+    ' VijosNT Mini Announcement
     Dim dom
     Set dom = CreateObject("MSXML2.DOMDocument")
     dom.async = False
     dom.Load "http://127.0.0.1:3322/vijos_feed"
-    Set dom = Nothing}}}
+    Set dom = Nothing
+}}}
 
 == 启动服务 ==
 
