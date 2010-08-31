@@ -118,7 +118,7 @@ Server=(local);Database=vijos;UserName=sa;Password=admin
 
 == 启动服务 ==
 
-* 设置完毕，需要启动服务。
-* 在启动 VijosNT Mini 之前，请停止 Vijos 自带的 Vijos Tester Service。
-* 如果没有异常，启动 VijosNT Mini 之后可以正常评测。
-* 如果服务无法启动，可以从事件查看器中得到更详细的信息。
+  * 设置完毕，需要启动服务。
+  * 在启动 VijosNT Mini 之前，请停止 Vijos 自带的 Vijos Tester Service。
+  * 如果没有异常，启动 VijosNT Mini 之后可以正常评测。
+  * 如果服务无法启动，可以从事件查看器中得到更详细的信息。
