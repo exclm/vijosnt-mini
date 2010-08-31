@@ -97,7 +97,7 @@ Server=(local);Database=vijos;UserName=sa;Password=admin
 
   * Vijos 自带的评测器使用的是轮询，间隔为 500ms，这是不推荐的。轮询会降低系统性能，并且会使笔记本电脑无法进入省电模式。
   * VijosNT Mini 内置的数据源使用 Ipc 通告，这是性能最高的一种方法，具体做法为：当数据源产生新的数据时，通过连接本地 \\.\pipe\vijosnt 命名管道，发送 FeedDataSource 命令。然而，在 asp 中连接命名管道较为复杂。
-  * 推荐使用 Http 通告方式，设定一个不与其它 Web 服务冲突的通告地址（如 http://127.0.0.1:3322/vijos_feed）。
+  * 推荐使用 Http 通告方式，设定一个不与其它 Web 服务冲突的通告地址（如 [http://127.0.0.1:3322/vijos_feed]）。
 
 == Vijos 代码修改 ==
 
