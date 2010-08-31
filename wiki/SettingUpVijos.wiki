@@ -1,0 +1,122 @@
+#summary 将 VijosNT Mini 用于架设 Vijos 在线评测网站的操作指南
+#labels Phase-Deploy
+
+= 概述 =
+
+VijosNT Mini 的目标用户有两种：
+  # 参加 OI、ACM 比赛的个人用户
+  # 架设 Online Judge 网站的爱好者
+
+本文针对第二种需求进行说明，通过简单的配置将 Vijos 在线评测系统作为 VijosNT Mini 的数据源从而架设一个 Online Judge 网站。
+
+= 详细内容 =
+
+== Vijos 系统结构 ==
+
+Vijos 通常装在 C:\Vijos，目录下的 Config.xml 为设置文件。Compiler 目录下有旧版的 MinGW C/C++ 以及 16 位的 Free Pascal、Turbo Pascal 编译器，Problem 目录下为题目信息的存储（包括测试数据），Wwwroot 目录下有网页文件，其余目录和文件是我们所不关心的。
+
+=== 关于 Vijos 自带的旧版编译器的特别说明 ===
+
+VijosNT 不支持 16 位程序，因此 Vijos 自带的 16 位编译器不能在 VijosNT 中使用，而 Vijos 自带的 MinGW C/C++ 编译器版本较老，亦推荐安装新版编译器，这不会花很多时间。
+
+=== 需要进行的操作（预告） ===
+
+  * 从 Config.xml 中我们可以看到数据库的相关设置，这在稍后会被用到。
+  * 在 Problem 目录下存放着测试数据，我们会将这个目录的位置用于 VijosNT 的设置。
+  * 在 Wwwroot 目录下有 asp 文件，我们会对其进行一点小小的修改，原因稍后说明。
+
+== 编译器安装 ==
+
+Vijos 支持评测的代码类型包括 C、C++、Pascal，我们需要安装 MinGW C/C++ 和 Free Pascal 编译器。
+
+=== MinGW C/C++ 编译器 ===
+
+  * 推荐安装 TDM-GCC 编译器集合，因为它安装方便，版本新，更新快，目前最新版本为 4.5.0。
+  * 官方网站为 [http://tdm-gcc.tdragon.net/]。
+  * 32 位系统使用默认安装即可，64 位系统推荐安装 64 位编译器（安装时有选项），这可以提高性能。
+  * 默认安装目录为 C:\MinGW32 或 C:\MinGW64。
+  * 你也可以使用微软的编译器，但是请注意版本，VC6 所附带的编译器具有已知的 0day 漏洞，目前最新版本为 16.00.30319.01。
+
+=== Free Pascal 编译器 ===
+
+  * 官方网站为 [http://www.freepascal.org/]，目前的最新版本为 2.4.0。
+  * Free Pascal 支持多种处理器和操作系统平台，请选择 Intel/i386 下的 Win32, Win64 and WinCE。
+  * Free Pascal 的 64 位跨平台编译器表现貌似很怪异。
+  * 默认安装目录为 C:\FPC
+
+== VijosNT Mini 设置 ==
+
+打开控制台，如果在之前曾经启动过服务，建议先将其停止。
+
+=== 编译器映射 ===
+
+添加编译器的方法很简单，进入编译器映射界面，点击工具栏上加号右边的小向下箭头，出现下拉菜单，从中选择相应的编译器类型，VijosNT Mini 会自动对可能的安装位置进行搜索，并弹出确认提示。
+
+如果没有搜索到编译器的安装位置，会弹出一个打开文件的对话框，需要手动选择编译器的安装位置。
+
+编译器位置确定后，VijosNT Mini 会自动设置适合评测使用的编译器命令行参数。
+
+  * MinGW C 编译器默认命令行：gcc -O2 -s -o foo.exe foo.c -lm
+  * MinGW C++ 编译器默认命令行：g++ -O2 -s -o foo.exe foo.cpp -lm
+  * Free Pascal 编译器默认命令行：fpc -O2 -ofoo.exe foo.pas
+
+=== 数据集映射 ===
+
+进入数据集映射界面，点击工具栏上加号右边的小向下箭头，出现下拉菜单，选择 Vijos 格式，并设置为 Vijos 的题目信息路径（通常为 C:\Vijos\Problem）。
+
+=== 执行设置 ===
+
+进入执行设置界面，将并发数设置为 1，因为目前版本（2.4.0）的 Free Pascal 编译器在多个示例同时运行时会导致编译失败，已经确认这是 Free Pascal 编译器本身的问题。
+
+当然，如果不需要支持 Pascal（或者你的 Pascal 编译器不存在这个问题），请将并发数设置为 CPU 的个数，这样可以取得更高的评测效率。
+
+请将安全设置为启用，因为你的 Online Judge 网站允许任何人提交程序，显然如果不做权限上的限制将是十分危险的。点击工具栏上的加号，添加一组 Windows 用户名和密码用于不可信程序的执行。
+
+  * 如果并发数大于 1，则需要添加相应数量的用户名和密码。比如，你的并发数设置为 4，则需要添加 4 组不同的用户名和密码，同时运行的程序会使用不同的用户名和密码（以及桌面），这样能够最大程度地进行隔离。启用安全后，实际的并发数 = min {并发数，用户名和密码的数量}。
+  * 必须手动对添加的 Windows 用户进行权限限制，下面进行说明。
+
+对于每个安全账户：
+
+  * 通常我们为除了 C 盘之外所有硬盘的根目录设置拒绝访问。
+  * 除了文件权限，我们还需要设置用户特权，这在组策略管理器 - 本地计算机策略 - 计算机配置 - Windows 设置 - 安全设置 - 本地策略 - 用户权限分配。
+  * 在 Windows 个人版中，默认情况下是允许任何用户关闭系统的，我们需要将关闭系统特权设置为拒绝。在 Windows 服务器版中不存在这个问题。
+  * 受限的用户需要“绕过遍历检查”特权，不过这个特权这在默认情况下是授予所有用户的。
+  * 请仔细检查其它的权限设置，因为网站上提交的程序将以指定的用户在服务器上运行。如果以上建议有所疏漏欢迎报告。
+
+=== 数据源 ===
+
+进入数据源界面，点击工具栏上加号右边的小向下箭头，出现下拉菜单，选择 Vijos 数据源，会自动添加一条默认的设置。就像下面这样：
+
+Server=(local);Database=vijos;UserName=sa;Password=admin
+
+需要按照 Vijos 目录下的 Config.xml 内容进行修改，分别对应 Server、Database、UserName、Password 分别对应其中的 Data Source、Initial Catalog、UserID 和 Password。
+
+对于一个网站有多个评测机的情况，你可能希望给每个评测机指定独立的编号，并在结果页面显示出来，此时，你需要增加 TesterId 参数，将其值设定为一个正整数（默认为 1）。
+
+数据源的通告有三种方式：Ipc 通告、Http 通告和轮询。
+
+  * Vijos 自带的评测器使用的是轮询，间隔为 500ms，这是不推荐的。轮询会降低系统性能，并且会使笔记本电脑无法进入省电模式。
+  * VijosNT Mini 内置的数据源使用 Ipc 通告，这是性能最高的一种方法，具体做法为：当数据源产生新的数据时，通过连接本地 \\.\pipe\vijosnt 命名管道，发送 FeedDataSource 命令。然而，在 asp 中连接命名管道较为复杂。
+  * 推荐使用 Http 通告方式，设定一个不与其它 Web 服务冲突的通告地址（如 http://127.0.0.1:3322/vijos_feed）。
+
+== Vijos 代码修改 ==
+
+由于使用了 Http 通告方式，需要对 Vijos 代码进行少量的修改，在每次提交代码时，通过 DOMDocument 组件对 VijosNT Mini 进行通告，从而启动测评。
+
+需要修改的文件为 Problem_Upload_Submit.asp，在 Vijos 的 Wwwroot 目录下。
+
+在 Record.Update 这一行的下面，也就是 session("RecordID")=Record("ID") 这一行的上面（虽然这句话很有问题，这也是为什么必须加到它上面），增加下面的代码。
+
+{{{    ' VijosNT Mini Announcement
+    Dim dom
+    Set dom = CreateObject("MSXML2.DOMDocument")
+    dom.async = False
+    dom.Load "http://127.0.0.1:3322/vijos_feed"
+    Set dom = Nothing}}}
+
+== 启动服务 ==
+
+* 设置完毕，需要启动服务。
+* 在启动 VijosNT Mini 之前，请停止 Vijos 自带的 Vijos Tester Service。
+* 如果没有异常，启动 VijosNT Mini 之后可以正常评测。
+* 如果服务无法启动，可以从事件查看器中得到更详细的信息。
