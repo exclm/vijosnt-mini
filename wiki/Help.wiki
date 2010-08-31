@@ -1,3 +1,4 @@
+#summary VijosNT Mini 的使用帮助
 #labels Featured,Phase-Deploy
 =使用帮助=
 ==目录==
