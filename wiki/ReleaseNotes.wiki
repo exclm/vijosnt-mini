@@ -1,0 +1,20 @@
+#summary Release Notes
+#labels Phase-Support
+
+= Introduction =
+
+本文档记录了发行版本的主要变化。
+
+
+= Details =
+
+== 2.0.2.0 ==
+
+  * 发布于 2010/9/1
+  * 减轻了任务分配不均衡导致的线程阻塞问题，解决了测试点时间异常
+  * 增加了 EXCEPTION_FLT_OVERFLOW 的解析
+  * 一些代码优化
+
+== 2.0.1.0 ==
+
+  * 发布于 2010/8/30
