@@ -63,9 +63,7 @@ Namespace Executing
 
         Private Sub WorkCompleted()
             If Interlocked.Decrement(m_Remaining) = 0 Then
-                If m_Completion IsNot Nothing Then
-                    m_Completion.Invoke(m_Result)
-                End If
+                m_Completion.Invoke(m_Result)
                 MyBase.Execute()
             End If
         End Sub

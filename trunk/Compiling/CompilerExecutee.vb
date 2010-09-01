@@ -61,12 +61,7 @@ Namespace Compiling
 
         Private Sub WorkCompleted()
             If Interlocked.Decrement(m_Remaining) = 0 Then
-                Try
-                    m_Completion.Invoke(m_Result)
-                Finally
-                    If m_Result.Target IsNot Nothing Then _
-                        m_Result.Target.Dispose()
-                End Try
+                m_Completion.Invoke(m_Result)
             End If
         End Sub
     End Class
