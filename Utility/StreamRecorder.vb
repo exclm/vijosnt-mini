@@ -47,14 +47,12 @@
         End Sub
 
         Private Sub InvokeCompletion(ByVal Success As Boolean)
-            If m_Completion IsNot Nothing Then
-                Dim Result As Result
-                Result.State = m_CompletionState
-                Result.Buffer = New Byte(0 To m_Length - 1) {}
-                Buffer.BlockCopy(m_Buffer, 0, Result.Buffer, 0, m_Length)
-                Result.Success = Success
-                m_Completion.Invoke(Result)
-            End If
+            Dim Result As Result
+            Result.State = m_CompletionState
+            Result.Buffer = New Byte(0 To m_Length - 1) {}
+            Buffer.BlockCopy(m_Buffer, 0, Result.Buffer, 0, m_Length)
+            Result.Success = Success
+            m_Completion.Invoke(Result)
         End Sub
     End Class
 End Namespace

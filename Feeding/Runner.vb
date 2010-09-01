@@ -137,9 +137,7 @@ Namespace Feeding
             Context.TestResults = New SortedDictionary(Of Int32, TestResultEntry)()
 
             If Context.Compiler Is Nothing Then
-                If Context.Completion IsNot Nothing Then
-                    Context.Completion.Invoke(New TestResult(Context.CompletionState, TestResultFlag.CompilerNotFound, Nothing, 0, 0, 0, Nothing))
-                End If
+                Context.Completion.Invoke(New TestResult(Context.CompletionState, TestResultFlag.CompilerNotFound, Nothing, 0, 0, 0, Nothing))
                 If Interlocked.Decrement(m_Running) = 0 Then
                     Notifier.Invoke("RunnerStatusChanged", False)
                     m_CanExit.Set()
@@ -148,9 +146,7 @@ Namespace Feeding
             End If
 
             If Context.TestCases Is Nothing Then
-                If Context.Completion IsNot Nothing Then
-                    Context.Completion.Invoke(New TestResult(Context.CompletionState, TestResultFlag.TestSuiteNotFound, Nothing, 0, 0, 0, Nothing))
-                End If
+                Context.Completion.Invoke(New TestResult(Context.CompletionState, TestResultFlag.TestSuiteNotFound, Nothing, 0, 0, 0, Nothing))
                 If Interlocked.Decrement(m_Running) = 0 Then
                     Notifier.Invoke("RunnerStatusChanged", False)
                     m_CanExit.Set()
@@ -169,9 +165,7 @@ Namespace Feeding
                     Try
                         m_Executor.Queue(New CompilerExecutee(m_WatchDog, m_ProcessMonitor, Context.Compiler, SourceCode, AddressOf TestCompileCompletion, Context))
                     Catch ex As Exception
-                        If Context.Completion IsNot Nothing Then
-                            Context.Completion.Invoke(New TestResult(Context.CompletionState, TestResultFlag.InternalError, ex.ToString(), 0, 0, 0, Nothing))
-                        End If
+                        Context.Completion.Invoke(New TestResult(Context.CompletionState, TestResultFlag.InternalError, ex.ToString(), 0, 0, 0, Nothing))
                         If Interlocked.Decrement(m_Running) = 0 Then
                             Notifier.Invoke("RunnerStatusChanged", False)
                             m_CanExit.Set()
@@ -199,11 +193,13 @@ Namespace Feeding
                     Builder.Append("访问违规, 地址: 0x")
                     Builder.Append(Exception.ExceptionInformation(1).ToString("x8"))
                 Case ExceptionCode.EXCEPTION_INT_DIVIDE_BY_ZERO
-                    Builder.Append("整形数除数为零")
+                    Builder.Append("整形运算除数为零")
                 Case ExceptionCode.EXCEPTION_FLT_DIVIDE_BY_ZERO
-                    Builder.Append("浮点数除数为零")
+                    Builder.Append("浮点运算除数为零")
                 Case ExceptionCode.EXCEPTION_STACK_OVERFLOW
                     Builder.Append("堆栈溢出")
+                Case ExceptionCode.EXCEPTION_FLT_OVERFLOW
+                    Builder.Append("浮点运算溢出")
                 Case Else
                     Builder.Append("异常代码: ")
                     Builder.Append(Exception.ExceptionCode.ToString())
@@ -246,9 +242,7 @@ Namespace Feeding
             End If
 
             ' Compile failed
-            If Context.Completion IsNot Nothing Then
-                Context.Completion.Invoke(New TestResult(Context.CompletionState, TestResultFlag.CompileError, Warning, 0, 0, 0, Nothing))
-            End If
+            Context.Completion.Invoke(New TestResult(Context.CompletionState, TestResultFlag.CompileError, Warning, 0, 0, 0, Nothing))
             If Interlocked.Decrement(m_Running) = 0 Then
                 Notifier.Invoke("RunnerStatusChanged", False)
                 m_CanExit.Set()
@@ -310,9 +304,7 @@ Namespace Feeding
 
         Private Sub TestWorkCompleted(ByVal Context As TestContext)
             If Interlocked.Decrement(Context.Remaining) = 0 Then
-                If Context.Completion IsNot Nothing Then
-                    Context.Completion.Invoke(New TestResult(Context.CompletionState, Context.Flag, Nothing, Context.Score, Context.TimeUsage, Context.MemoryUsage, Context.TestResults.Values))
-                End If
+                Context.Completion.Invoke(New TestResult(Context.CompletionState, Context.Flag, Nothing, Context.Score, Context.TimeUsage, Context.MemoryUsage, Context.TestResults.Values))
                 If Interlocked.Decrement(m_Running) = 0 Then
                     Notifier.Invoke("RunnerStatusChanged", False)
                     m_CanExit.Set()
