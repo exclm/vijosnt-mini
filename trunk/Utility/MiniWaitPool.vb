@@ -2,7 +2,7 @@
     Friend Class MiniWaitPool
         Implements IDisposable
 
-        Public Delegate Sub WaitPoolCallback(ByVal Result As Result)
+        Public Delegate Sub Completion(ByVal Result As Result)
 
         Public Structure Result
             Public Sub New(ByVal State As Object, ByVal Timeouted As Boolean)
@@ -15,17 +15,17 @@
         End Structure
 
         Protected Structure Entry
-            Public Sub New(ByVal WaitHandle As WaitHandle, ByVal TimeoutTick As Nullable(Of Int64), ByVal Callback As WaitPoolCallback, ByVal CallbackState As Object)
+            Public Sub New(ByVal WaitHandle As WaitHandle, ByVal TimeoutTick As Nullable(Of Int64), ByVal Completion As Completion, ByVal CompletionState As Object)
                 Me.WaitHandle = WaitHandle
                 Me.TimeoutTick = TimeoutTick
-                Me.Callback = Callback
-                Me.CallbackState = CallbackState
+                Me.Completion = Completion
+                Me.CompletionState = CompletionState
             End Sub
 
             Dim WaitHandle As WaitHandle
             Dim TimeoutTick As Nullable(Of Int64)
-            Dim Callback As WaitPoolCallback
-            Dim CallbackState As Object
+            Dim Completion As Completion
+            Dim CompletionState As Object
         End Structure
 
         Protected m_SyncRoot As Object
@@ -41,7 +41,7 @@
             m_List = New List(Of Entry)
             m_Stopped = False
 
-            m_List.Add(New Entry(m_Event, Nothing, AddressOf InternalCallback, Nothing))
+            m_List.Add(New Entry(m_Event, Nothing, AddressOf InternalCompletion, Nothing))
         End Sub
 
         Public Sub Start()
@@ -55,7 +55,7 @@
             m_Event.Set()
         End Sub
 
-        Public Sub SetWait(ByVal WaitHandle As WaitHandle, ByVal TimeoutValue As Nullable(Of Int64), ByVal Callback As WaitPoolCallback, ByVal State As Object)
+        Public Sub SetWait(ByVal WaitHandle As WaitHandle, ByVal TimeoutValue As Nullable(Of Int64), ByVal Completion As Completion, ByVal State As Object)
             Dim TimeoutTick As Nullable(Of Int64)
 
             If TimeoutValue IsNot Nothing Then
@@ -65,23 +65,21 @@
             End If
 
             SyncLock m_SyncRoot
-                m_List.Add(New Entry(WaitHandle, TimeoutTick, Callback, State))
+                m_List.Add(New Entry(WaitHandle, TimeoutTick, Completion, State))
             End SyncLock
             m_Event.Set()
         End Sub
 
-        Protected Sub InternalCallback(ByVal Result As Result)
+        Protected Sub InternalCompletion(ByVal Result As Result)
             SyncLock m_SyncRoot
                 If Not m_Stopped Then
-                    m_List.Add(New Entry(m_Event, Nothing, AddressOf InternalCallback, Nothing))
+                    m_List.Add(New Entry(m_Event, Nothing, AddressOf InternalCompletion, Nothing))
                 End If
             End SyncLock
         End Sub
 
         Protected Sub DispatchEntry(ByVal Entry As Entry, ByVal Timeouted As Boolean)
-            If Entry.Callback IsNot Nothing Then
-                Entry.Callback.Invoke(New Result(Entry.CallbackState, Timeouted))
-            End If
+            Entry.Completion.Invoke(New Result(Entry.CompletionState, Timeouted))
 
             SyncLock m_SyncRoot
                 m_List.Remove(Entry)

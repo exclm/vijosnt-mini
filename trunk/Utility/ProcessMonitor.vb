@@ -4,7 +4,7 @@ Namespace Utility
     Friend Class ProcessMonitor
         Implements IDisposable
 
-        Public Delegate Sub Callback(ByVal Result As Result)
+        Public Delegate Sub Completion(ByVal Result As Result)
 
         Private m_DebugObject As DebugObject
         Private m_Thread As Thread
@@ -13,10 +13,10 @@ Namespace Utility
         Private Class Context
             Implements IDisposable
 
-            Public Sub New(ByVal Process As KernelObject, ByVal Callback As Callback, ByVal State As Object)
+            Public Sub New(ByVal Process As KernelObject, ByVal Completion As Completion, ByVal State As Object)
                 m_Process = Process
-                m_Callback = Callback
-                m_CallbackState = State
+                m_Completion = Completion
+                m_CompletionState = State
                 m_Exception = Nothing
             End Sub
 
@@ -26,15 +26,15 @@ Namespace Utility
                 End Get
             End Property
 
-            Public ReadOnly Property Callback() As Callback
+            Public ReadOnly Property Completion() As Completion
                 Get
-                    Return m_Callback
+                    Return m_Completion
                 End Get
             End Property
 
-            Public ReadOnly Property CallbackState() As Object
+            Public ReadOnly Property CompletionState() As Object
                 Get
-                    Return m_CallbackState
+                    Return m_CompletionState
                 End Get
             End Property
 
@@ -49,8 +49,8 @@ Namespace Utility
             End Property
 
             Private m_Process As KernelObject
-            Private m_Callback As Callback
-            Private m_CallbackState As Object
+            Private m_Completion As Completion
+            Private m_CompletionState As Object
             Private m_Exception As Nullable(Of EXCEPTION_RECORD)
 
 #Region "IDisposable Support"
@@ -103,14 +103,14 @@ Namespace Utility
             m_DebugObject.Close()
         End Sub
 
-        Public Sub Attach(ByVal Process As KernelObject, ByVal Callback As Callback, ByVal State As Object)
+        Public Sub Attach(ByVal Process As KernelObject, ByVal Completion As Completion, ByVal State As Object)
             m_DebugObject.Attach(Process.GetHandleUnsafe())
 
             Dim ProcessId As Int32 = GetProcessId(Process.GetHandleUnsafe())
             Win32True(ProcessId <> 0)
 
             SyncLock m_Contexts
-                m_Contexts.Add(ProcessId, New Context(Process, Callback, State))
+                m_Contexts.Add(ProcessId, New Context(Process, Completion, State))
             End SyncLock
         End Sub
 
@@ -126,7 +126,7 @@ Namespace Utility
                 Context = m_Contexts(Header.AppClientId.UniqueProcess)
                 m_Contexts.Remove(Header.AppClientId.UniqueProcess)
             End SyncLock
-            Context.Callback.Invoke(New Result(Context.CallbackState, Info.ExitStatus, Context.Exception))
+            Context.Completion.Invoke(New Result(Context.CompletionState, Info.ExitStatus, Context.Exception))
             Context.Dispose()
         End Sub
 

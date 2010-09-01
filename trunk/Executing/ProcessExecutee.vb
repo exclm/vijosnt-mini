@@ -65,7 +65,7 @@ Namespace Executing
                 End Sub)
         End Sub
 
-        Private Sub WatchDogCallback(ByVal Result As WatchDog.Result)
+        Private Sub WatchDogCompletion(ByVal Result As WatchDog.Result)
             Dim JobObject As JobObject = DirectCast(Result.State, JobObject)
             m_Result.TimeQuotaUsage = Result.QuotaUsage
             m_Result.MemoryQuotaUsage = JobObject.Limits.PeakProcessMemoryUsed
@@ -74,7 +74,7 @@ Namespace Executing
             m_Trigger.InvokeNonCritical()
         End Sub
 
-        Private Sub ProcessMonitorCallback(ByVal Result As ProcessMonitor.Result)
+        Private Sub ProcessMonitorCompletion(ByVal Result As ProcessMonitor.Result)
             m_Result.ExitStatus = Result.ExitStatus
             m_Result.Exception = Result.Exception
             m_Trigger.InvokeNonCritical()
@@ -142,8 +142,8 @@ Namespace Executing
                     End With
                 End If
 
-                m_ProcessMonitor.Attach(Suspended, AddressOf ProcessMonitorCallback, Nothing)
-                m_WatchDog.SetWatch(Suspended.Resume(), m_TimeQuota, AddressOf WatchDogCallback, JobObject)
+                m_ProcessMonitor.Attach(Suspended, AddressOf ProcessMonitorCompletion, Nothing)
+                m_WatchDog.SetWatch(Suspended.Resume(), m_TimeQuota, AddressOf WatchDogCompletion, JobObject)
             Finally
                 If m_StdInput IsNot Nothing Then _
                     m_StdInput.Close()
