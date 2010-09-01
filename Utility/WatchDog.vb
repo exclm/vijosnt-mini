@@ -4,7 +4,7 @@ Namespace Utility
     Friend Class WatchDog
         Implements IDisposable
 
-        Public Delegate Sub WatchDogCallback(ByVal Result As Result)
+        Public Delegate Sub Completion(ByVal Result As Result)
 
         Public Structure Result
             Public Sub New(ByVal State As Object, ByVal QuotaUsage As Int64)
@@ -17,17 +17,17 @@ Namespace Utility
         End Structure
 
         Protected Structure Context
-            Public Sub New(ByVal Process As ProcessEx, ByVal TimeQuota As Nullable(Of Int64), ByVal Callback As WatchDogCallback, ByVal CallbackState As Object)
+            Public Sub New(ByVal Process As ProcessEx, ByVal TimeQuota As Nullable(Of Int64), ByVal Completion As Completion, ByVal CompletionState As Object)
                 Me.Process = Process
                 Me.TimeQuota = TimeQuota
-                Me.Callback = Callback
-                Me.CallbackState = CallbackState
+                Me.Completion = Completion
+                Me.CompletionState = CompletionState
             End Sub
 
             Dim Process As ProcessEx
             Dim TimeQuota As Nullable(Of Int64)
-            Dim Callback As WatchDogCallback
-            Dim CallbackState As Object
+            Dim Completion As Completion
+            Dim CompletionState As Object
         End Structure
 
         Protected m_WaitPool As MiniWaitPool
@@ -44,13 +44,12 @@ Namespace Utility
             m_WaitPool.Stop()
         End Sub
 
-        Protected Sub SetWatchCallback(ByVal Result As MiniWaitPool.Result)
+        Protected Sub SetWatchCompletion(ByVal Result As MiniWaitPool.Result)
             Dim Context As Context = DirectCast(Result.State, Context)
 
             If Not Result.Timeouted Then
-                ' The waited process was ended, fire the callback
-                If Context.Callback IsNot Nothing Then _
-                    Context.Callback.Invoke(New Result(Context.CallbackState, Context.Process.AliveTime))
+                ' The waited process was ended, fire the completion
+                Context.Completion.Invoke(New Result(Context.CompletionState, Context.Process.AliveTime))
                 Context.Process.Close()
             Else
                 ' The waited process is still running, set watch again
@@ -63,25 +62,24 @@ Namespace Utility
 
             If Context.TimeQuota Is Nothing Then
                 ' The quota is not limited, set up the wait pool
-                m_WaitPool.SetWait(Context.Process, Nothing, AddressOf SetWatchCallback, Context)
+                m_WaitPool.SetWait(Context.Process, Nothing, AddressOf SetWatchCompletion, Context)
             ElseIf AliveTime >= Context.TimeQuota Then
-                ' The waited process exceeds the time quota, terminate it and fire the callback
+                ' The waited process exceeds the time quota, terminate it and fire the completion
                 Try
                     Context.Process.Kill(ERROR_NOT_ENOUGH_QUOTA)
                 Catch ex As Exception
                     ' eat it
                 End Try
-                If Context.Callback IsNot Nothing Then _
-                    Context.Callback.Invoke(New Result(Context.CallbackState, Context.Process.AliveTime))
+                Context.Completion.Invoke(New Result(Context.CompletionState, Context.Process.AliveTime))
                 Context.Process.Close()
             Else
                 ' There is still time quota remaining, set up the wait pool
-                m_WaitPool.SetWait(Context.Process, Context.TimeQuota - AliveTime + 50000, AddressOf SetWatchCallback, Context)
+                m_WaitPool.SetWait(Context.Process, Context.TimeQuota - AliveTime + 50000, AddressOf SetWatchCompletion, Context)
             End If
         End Sub
 
-        Public Sub SetWatch(ByVal Process As ProcessEx, ByVal TimeQuota As Nullable(Of Int64), ByVal Callback As WatchDogCallback, ByVal State As Object)
-            SetWatchInternal(New Context(Process, TimeQuota, Callback, State))
+        Public Sub SetWatch(ByVal Process As ProcessEx, ByVal TimeQuota As Nullable(Of Int64), ByVal Completion As Completion, ByVal State As Object)
+            SetWatchInternal(New Context(Process, TimeQuota, Completion, State))
         End Sub
 
 #Region "IDisposable Support"
