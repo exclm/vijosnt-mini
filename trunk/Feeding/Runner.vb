@@ -251,7 +251,7 @@ Namespace Feeding
 
         Private Sub TestExecuteCompletion(ByVal Result As TestCaseExecuteeResult)
             Dim Context As TestCaseContext = DirectCast(Result.State, TestCaseContext)
-            Dim Entry As TestResultEntry
+            Dim Entry As New TestResultEntry()
 
             Entry.Index = Result.Index
             Entry.Score = 0

@@ -1,5 +1,5 @@
 ﻿Namespace Remoting
-    Friend Enum ClientMessage
+    Friend Enum ClientMessage As Int32
         ReloadCompiler
         ReloadTestSuite
         ReloadExecutor

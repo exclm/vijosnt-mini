@@ -1,13 +1,13 @@
 ﻿Imports VijosNT.Win32
 
 Namespace Compiling
-    Friend Structure CompilerExecuteeResult
-        Dim State As Object
-        Dim Target As Target
-        Dim ExitStatus As Nullable(Of NTSTATUS)
-        Dim StdErrorMessage As String
-        Dim TimeQuotaUsage As Int64
-        Dim MemoryQuotaUsage As Int64
-        Dim Exception As Nullable(Of EXCEPTION_RECORD)
-    End Structure
+    Friend Class CompilerExecuteeResult
+        Public State As Object
+        Public Target As Target
+        Public ExitStatus As Nullable(Of NTSTATUS)
+        Public StdErrorMessage As String
+        Public TimeQuotaUsage As Int64
+        Public MemoryQuotaUsage As Int64
+        Public Exception As Nullable(Of EXCEPTION_RECORD)
+    End Class
 End Namespace

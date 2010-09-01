@@ -1,11 +1,11 @@
 ﻿Imports VijosNT.Win32
 
 Namespace Executing
-    Friend Structure ProcessExecuteeResult
-        Dim State As Object
-        Dim ExitStatus As Nullable(Of NTSTATUS)
-        Dim TimeQuotaUsage As Int64
-        Dim MemoryQuotaUsage As Int64
-        Dim Exception As Nullable(Of EXCEPTION_RECORD)
-    End Structure
+    Friend Class ProcessExecuteeResult
+        Public State As Object
+        Public ExitStatus As Nullable(Of NTSTATUS)
+        Public TimeQuotaUsage As Int64
+        Public MemoryQuotaUsage As Int64
+        Public Exception As Nullable(Of EXCEPTION_RECORD)
+    End Class
 End Namespace

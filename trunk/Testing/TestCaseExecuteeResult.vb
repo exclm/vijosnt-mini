@@ -1,14 +1,14 @@
 ﻿Imports VijosNT.Win32
 
 Namespace Testing
-    Friend Structure TestCaseExecuteeResult
-        Dim State As Object
-        Dim Index As Int32
-        Dim ExitStatus As Nullable(Of NTSTATUS)
-        Dim StdErrorMessage As String
-        Dim Score As Nullable(Of Int32)
-        Dim TimeQuotaUsage As Int64
-        Dim MemoryQuotaUsage As Int64
-        Dim Exception As Nullable(Of EXCEPTION_RECORD)
-    End Structure
+    Friend Class TestCaseExecuteeResult
+        Public State As Object
+        Public Index As Int32
+        Public ExitStatus As Nullable(Of NTSTATUS)
+        Public StdErrorMessage As String
+        Public Score As Nullable(Of Int32)
+        Public TimeQuotaUsage As Int64
+        Public MemoryQuotaUsage As Int64
+        Public Exception As Nullable(Of EXCEPTION_RECORD)
+    End Class
 End Namespace

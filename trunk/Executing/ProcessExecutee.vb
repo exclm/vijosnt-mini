@@ -18,8 +18,7 @@ Namespace Executing
         Private m_MemoryQuota As Nullable(Of Int64)
         Private m_ActiveProcessQuota As Nullable(Of Int32)
         Private m_EnableUIRestrictions As Boolean
-        Private m_Remaining As Int32
-        Private m_Completion As ProcessExecuteeCompletion
+        Private m_Trigger As MiniTrigger
         Private m_Result As ProcessExecuteeResult
 
         Protected Sub New()
@@ -57,15 +56,13 @@ Namespace Executing
             m_MemoryQuota = MemoryQuota
             m_ActiveProcessQuota = ActiveProcessQuota
             m_EnableUIRestrictions = EnableUIRestrictions
-            m_Completion = Completion
+            m_Result = New ProcessExecuteeResult()
             m_Result.State = State
-        End Sub
-
-        Private Sub WorkCompleted()
-            If Interlocked.Decrement(m_Remaining) = 0 Then
-                m_Completion.Invoke(m_Result)
-                MyBase.Execute()
-            End If
+            m_Trigger = New MiniTrigger(2, _
+                Sub()
+                    Completion.Invoke(m_Result)
+                    MyBase.Execute()
+                End Sub)
         End Sub
 
         Private Sub WatchDogCallback(ByVal Result As WatchDog.Result)
@@ -74,13 +71,13 @@ Namespace Executing
             m_Result.MemoryQuotaUsage = JobObject.Limits.PeakProcessMemoryUsed
             JobObject.Close()
             JobObject = Nothing
-            WorkCompleted()
+            m_Trigger.InvokeNonCritical()
         End Sub
 
         Private Sub ProcessMonitorCallback(ByVal Result As ProcessMonitor.Result)
             m_Result.ExitStatus = Result.ExitStatus
             m_Result.Exception = Result.Exception
-            WorkCompleted()
+            m_Trigger.InvokeNonCritical()
         End Sub
 
         Public Overrides Sub Execute()
@@ -104,8 +101,7 @@ Namespace Executing
                     If VirtualSize > m_MemoryQuota.Value Then
                         m_Result.ExitStatus = ERROR_NOT_ENOUGH_QUOTA
                         m_Result.MemoryQuotaUsage = VirtualSize
-                        m_Remaining = 1
-                        WorkCompleted()
+                        m_Trigger.InvokeNow()
                         Return
                     End If
                 End If
@@ -119,8 +115,7 @@ Namespace Executing
                         StdInputHandle, StdOutputHandle, StdErrorHandle, Environment.Token)
                 Catch ex As Exception
                     m_Result.ExitStatus = Nothing
-                    m_Remaining = 1
-                    WorkCompleted()
+                    m_Trigger.InvokeNow()
                     Return
                 End Try
 
@@ -146,8 +141,6 @@ Namespace Executing
                         .Commit()
                     End With
                 End If
-
-                m_Remaining = 2
 
                 m_ProcessMonitor.Attach(Suspended, AddressOf ProcessMonitorCallback, Nothing)
                 m_WatchDog.SetWatch(Suspended.Resume(), m_TimeQuota, AddressOf WatchDogCallback, JobObject)
