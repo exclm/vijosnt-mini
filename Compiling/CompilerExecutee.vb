@@ -7,9 +7,8 @@ Namespace Compiling
         Inherits ProcessExecutee
 
         Private m_StreamRecorder As StreamRecorder
-        Private m_Completion As CompilerExecuteeCompletion
         Private m_Result As CompilerExecuteeResult
-        Private m_Remaining As Int32
+        Private m_Trigger As MiniTrigger
 
         Public Sub New(ByVal WatchDog As WatchDog, ByVal ProcessMonitor As ProcessMonitor, ByVal Compiler As Compiler, ByVal SourceCode As Stream, ByVal Completion As CompilerExecuteeCompletion, ByVal State As Object)
             Dim CompilerInstance As CompilerInstance = Compiler.CreateInstance(SourceCode)
@@ -21,10 +20,13 @@ Namespace Compiling
                 StdErrorHandle = OutputPipe.GetWriteHandle()
             End Using
 
-            m_Completion = Completion
+            m_Result = New CompilerExecuteeResult()
             m_Result.State = State
+            m_Trigger = New MiniTrigger(1, 1, _
+                Sub()
+                    Completion.Invoke(m_Result)
+                End Sub)
 
-            m_Remaining = 2
             FinalConstruct(WatchDog, ProcessMonitor, _
                 Compiler.ApplicationName, Compiler.CommandLine, Compiler.EnvironmentVariables, CompilerInstance.WorkingDirectory, _
                 Nothing, StdOutputHandle, StdErrorHandle, Compiler.TimeQuota, Compiler.MemoryQuota, Compiler.ActiveProcessQuota, False, _
@@ -35,7 +37,7 @@ Namespace Compiling
             If Result.Buffer.Length <> 0 Then
                 m_Result.StdErrorMessage = Encoding.Default.GetString(Result.Buffer)
             End If
-            WorkCompleted()
+            m_Trigger.InvokeNonCritical()
         End Sub
 
         Private Sub ProcessExecuteeCompletion(ByVal Result As ProcessExecuteeResult)
@@ -51,18 +53,12 @@ Namespace Compiling
                     m_Result.Target = Nothing
                 End Try
             End If
-            WorkCompleted()
+            m_Trigger.InvokeCritical()
         End Sub
 
         Public Overrides Sub Execute()
             m_StreamRecorder.Start()
             MyBase.Execute()
-        End Sub
-
-        Private Sub WorkCompleted()
-            If Interlocked.Decrement(m_Remaining) = 0 Then
-                m_Completion.Invoke(m_Result)
-            End If
         End Sub
     End Class
 End Namespace

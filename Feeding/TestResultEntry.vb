@@ -1,10 +1,10 @@
 ﻿Namespace Feeding
-    Public Structure TestResultEntry
-        Dim Index As Int32
-        Dim Flag As TestResultFlag
-        Dim Score As Int32
-        Dim TimeUsage As Int64
-        Dim MemoryUsage As Int64
-        Dim Warning As String
-    End Structure
+    Friend Class TestResultEntry
+        Public Index As Int32
+        Public Flag As TestResultFlag
+        Public Score As Int32
+        Public TimeUsage As Int64
+        Public MemoryUsage As Int64
+        Public Warning As String
+    End Class
 End Namespace

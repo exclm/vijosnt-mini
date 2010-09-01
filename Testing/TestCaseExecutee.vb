@@ -8,11 +8,10 @@ Namespace Testing
         Inherits ProcessExecutee
 
         Private m_StreamRecorder As StreamRecorder
-        Private m_Remaining As Int32
-        Private m_Completion As TestCaseExecuteeCompletion
         Private m_Result As TestCaseExecuteeResult
         Private m_TargetInstance As TargetInstance
         Private m_TestCase As TestCase
+        Private m_Trigger As MiniTrigger
 
         Public Sub New(ByVal WatchDog As WatchDog, ByVal ProcessMonitor As ProcessMonitor, ByVal TargetInstance As TargetInstance, ByVal TestCase As TestCase, ByVal Completion As TestCaseExecuteeCompletion, ByVal State As Object)
             Dim StdErrorHandle As KernelObject
@@ -21,11 +20,15 @@ Namespace Testing
                 StdErrorHandle = OutputPipe.GetWriteHandle()
             End Using
 
-            m_Completion = Completion
+            m_Result = New TestCaseExecuteeResult()
             m_Result.State = State
             m_Result.Index = TestCase.Index
             m_TargetInstance = TargetInstance
             m_TestCase = TestCase
+            m_Trigger = New MiniTrigger(1, 2, _
+                Sub()
+                    Completion.Invoke(m_Result)
+                End Sub)
 
             FinalConstruct(WatchDog, ProcessMonitor, TargetInstance.ApplicationName, TargetInstance.CommandLine, TargetInstance.EnvironmentVariables, TargetInstance.WorkingDirectory, _
                 TestCase.OpenInput(), TestCase.OpenOutput(), StdErrorHandle, _
@@ -42,12 +45,12 @@ Namespace Testing
             If Result.Buffer.Length <> 0 Then
                 m_Result.StdErrorMessage = Encoding.Default.GetString(Result.Buffer)
             End If
-            WorkCompleted()
+            m_Trigger.InvokeNonCritical()
         End Sub
 
         Private Sub TestCaseCompletion(ByVal Result As TestCaseResult)
             m_Result.Score = Result.Score
-            WorkCompleted()
+            m_Trigger.InvokeNonCritical()
         End Sub
 
         Private Sub ProcessExecuteeCompletion(ByVal Result As ProcessExecuteeResult)
@@ -56,17 +59,10 @@ Namespace Testing
             m_Result.TimeQuotaUsage = Result.TimeQuotaUsage
             m_Result.MemoryQuotaUsage = Result.MemoryQuotaUsage
             m_Result.Exception = Result.Exception
-            WorkCompleted()
-        End Sub
-
-        Private Sub WorkCompleted()
-            If Interlocked.Decrement(m_Remaining) = 0 Then
-                m_Completion.Invoke(m_Result)
-            End If
+            m_Trigger.InvokeCritical()
         End Sub
 
         Public Overrides Sub Execute()
-            m_Remaining = 3
             m_TestCase.QueueJudgeWorker(AddressOf TestCaseCompletion, Nothing)
             m_StreamRecorder.Start()
             MyBase.Execute()
