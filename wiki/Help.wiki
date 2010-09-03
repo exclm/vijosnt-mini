@@ -258,8 +258,8 @@ Q:现在VijosNT Mini处于什么状况，可以使用了吗?
 
 A:现在已经可以完成测评工作，但是功能部分目前没有写完，数据源连接和安全部分没有写，也存在较多的漏洞。
 
-Q:VijosNT-Mini佛瑞图标是什么东西? 黑黑的一坨, 好像XXX一样。
+Q:VijosNT-Mini的图标是什么东西? 黑黑的一坨, 好像XXX一样。
 
-A:那是我们伟大的VijosNT-Mini作者——图灵转世的能闭着眼睛写程序的Windows 7首个安全漏洞发现者之一[http://hi.baidu.com/iceboy_ iceboy]童鞋的专用头像！严禁侮辱！违者重打50大板！
+A:那是我们伟大的VijosNT-Mini作者——图灵转世的能闭着眼睛写程序的Windows 7首个安全漏洞发现者之一[http://hi.baidu.com/iceboy_ iceboy]童鞋的专用头像! 严禁侮辱! 轻者重打50大板, 重者杀头!
 
 VijosNT Mini使用帮助 Written by BML,twd2
