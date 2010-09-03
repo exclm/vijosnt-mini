@@ -212,7 +212,7 @@ input9.txt|output9.txt|1|10|
 
 None目前没有结果，可能没有打开测评服务或等待测评。
 
-Accept测试通过，所有测试点正确。
+Accepted测试通过，所有测试点正确。
 
 WrongAnswer答案错误，至少一个测试点出现了输出错误。
 
