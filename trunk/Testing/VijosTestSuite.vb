@@ -47,7 +47,23 @@
             Try
                 Dim ProblemRoot As String = Path.Combine(m_Root, Id)
                 Dim Result As New List(Of TestCase)
-                For Each Config As Config In LoadConfig(ProblemRoot)
+                Dim Configs As IEnumerable(Of Config) = LoadConfig(ProblemRoot)
+                Dim Weight As Int32 = 0
+                Dim Index As Int32 = 0
+                Dim TotalWeight As Int32 = 0
+                For Each Config As Config In Configs
+                    Index += 1
+                    TotalWeight += Config.Weight
+                Next
+                Weight = 100
+                For Each Config As Config In Configs
+                    Index -= 1
+                    If Index = 0 Then
+                        Config.Weight = Weight
+                    Else
+                        Config.Weight = Config.Weight * 100 \ TotalWeight
+                        Weight -= Config.Weight
+                    End If
                     Result.Add(LoadTestCase(ProblemRoot, Config))
                 Next
                 Return Result
