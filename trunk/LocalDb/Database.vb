@@ -5,15 +5,10 @@ Namespace LocalDb
         Private Shared m_Connection As SQLiteConnection
 
         Shared Sub New()
-            Try
-                Dim Builder As New SQLiteConnectionStringBuilder()
-                Builder.DataSource = Path.Combine(My.Application.Info.DirectoryPath, "VijosNT.db3")
-                m_Connection = New SQLiteConnection(Builder.ToString())
-                m_Connection.Open()
-            Catch ex As Exception
-                Trace.WriteLine(ex.ToString())
-                Environment.Exit(1)
-            End Try
+            Dim Builder As New SQLiteConnectionStringBuilder()
+            Builder.DataSource = Path.Combine(My.Application.Info.DirectoryPath, "VijosNT.db3")
+            m_Connection = New SQLiteConnection(Builder.ToString())
+            m_Connection.Open()
         End Sub
 
         Public Shared Function CreateCommand(ByVal CommandText As String) As SQLiteCommand
