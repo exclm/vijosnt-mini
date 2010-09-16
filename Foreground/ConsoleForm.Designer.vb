@@ -24,11 +24,11 @@
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
-            Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
-            Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
-            Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("执行设置")
-            Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据源")
-            Dim TreeNode10 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode6, TreeNode7, TreeNode8, TreeNode9})
+            Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
+            Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
+            Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("执行设置")
+            Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据源")
+            Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2, TreeNode3, TreeNode4})
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ConsoleForm))
             Me.MenuStrip = New System.Windows.Forms.MenuStrip()
             Me.FileMenu = New System.Windows.Forms.ToolStripMenuItem()
@@ -148,6 +148,8 @@
             Me.DataSourceBar0 = New System.Windows.Forms.ToolStripSeparator()
             Me.ApplyDataSourceButton = New System.Windows.Forms.ToolStripButton()
             Me.ServiceTimer = New System.Windows.Forms.Timer(Me.components)
+            Me.FileStrip0 = New System.Windows.Forms.ToolStripSeparator()
+            Me.VacuumMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.MenuStrip.SuspendLayout()
             Me.StatusStrip.SuspendLayout()
             Me.SplitContainer.Panel1.SuspendLayout()
@@ -187,7 +189,7 @@
             '
             'FileMenu
             '
-            Me.FileMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ExitMenu})
+            Me.FileMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.VacuumMenu, Me.FileStrip0, Me.ExitMenu})
             Me.FileMenu.Name = "FileMenu"
             Me.FileMenu.Size = New System.Drawing.Size(58, 21)
             Me.FileMenu.Text = "文件(&F)"
@@ -208,41 +210,41 @@
             'WikiToolStripMenuItem
             '
             Me.WikiToolStripMenuItem.Name = "WikiToolStripMenuItem"
-            Me.WikiToolStripMenuItem.Size = New System.Drawing.Size(141, 22)
+            Me.WikiToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
             Me.WikiToolStripMenuItem.Text = "&Wiki"
             '
             'HelpStrip0
             '
             Me.HelpStrip0.Name = "HelpStrip0"
-            Me.HelpStrip0.Size = New System.Drawing.Size(138, 6)
+            Me.HelpStrip0.Size = New System.Drawing.Size(149, 6)
             '
             'HomePageMenu
             '
             Me.HomePageMenu.Name = "HomePageMenu"
-            Me.HomePageMenu.Size = New System.Drawing.Size(141, 22)
+            Me.HomePageMenu.Size = New System.Drawing.Size(152, 22)
             Me.HomePageMenu.Text = "主页(&H)"
             '
             'CheckUpdateMenu
             '
             Me.CheckUpdateMenu.Name = "CheckUpdateMenu"
-            Me.CheckUpdateMenu.Size = New System.Drawing.Size(141, 22)
+            Me.CheckUpdateMenu.Size = New System.Drawing.Size(152, 22)
             Me.CheckUpdateMenu.Text = "检查更新(&U)"
             '
             'ReportIssue
             '
             Me.ReportIssue.Name = "ReportIssue"
-            Me.ReportIssue.Size = New System.Drawing.Size(141, 22)
+            Me.ReportIssue.Size = New System.Drawing.Size(152, 22)
             Me.ReportIssue.Text = "报告问题(&R)"
             '
             'HelpStrip1
             '
             Me.HelpStrip1.Name = "HelpStrip1"
-            Me.HelpStrip1.Size = New System.Drawing.Size(138, 6)
+            Me.HelpStrip1.Size = New System.Drawing.Size(149, 6)
             '
             'AboutMenu
             '
             Me.AboutMenu.Name = "AboutMenu"
-            Me.AboutMenu.Size = New System.Drawing.Size(141, 22)
+            Me.AboutMenu.Size = New System.Drawing.Size(152, 22)
             Me.AboutMenu.Text = "关于(&A)"
             '
             'StatusStrip
@@ -286,27 +288,27 @@
             Me.NavigationTree.Location = New System.Drawing.Point(0, 0)
             Me.NavigationTree.Margin = New System.Windows.Forms.Padding(2)
             Me.NavigationTree.Name = "NavigationTree"
-            TreeNode6.ImageKey = "Compiler.png"
-            TreeNode6.Name = "Compiler"
-            TreeNode6.SelectedImageKey = "Compiler.png"
-            TreeNode6.Text = "编译器映射"
-            TreeNode7.ImageKey = "TestSuite.png"
-            TreeNode7.Name = "TestSuite"
-            TreeNode7.SelectedImageKey = "TestSuite.png"
-            TreeNode7.Text = "数据集映射"
-            TreeNode8.ImageKey = "Executor.png"
-            TreeNode8.Name = "Executor"
-            TreeNode8.SelectedImageKey = "Executor.png"
-            TreeNode8.Text = "执行设置"
-            TreeNode9.ImageKey = "DataSource.png"
-            TreeNode9.Name = "DataSource"
-            TreeNode9.SelectedImageKey = "DataSource.png"
-            TreeNode9.Text = "数据源"
-            TreeNode10.ImageKey = "Console.png"
-            TreeNode10.Name = "Root"
-            TreeNode10.SelectedImageKey = "Console.png"
-            TreeNode10.Text = "VijosNT"
-            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode10})
+            TreeNode1.ImageKey = "Compiler.png"
+            TreeNode1.Name = "Compiler"
+            TreeNode1.SelectedImageKey = "Compiler.png"
+            TreeNode1.Text = "编译器映射"
+            TreeNode2.ImageKey = "TestSuite.png"
+            TreeNode2.Name = "TestSuite"
+            TreeNode2.SelectedImageKey = "TestSuite.png"
+            TreeNode2.Text = "数据集映射"
+            TreeNode3.ImageKey = "Executor.png"
+            TreeNode3.Name = "Executor"
+            TreeNode3.SelectedImageKey = "Executor.png"
+            TreeNode3.Text = "执行设置"
+            TreeNode4.ImageKey = "DataSource.png"
+            TreeNode4.Name = "DataSource"
+            TreeNode4.SelectedImageKey = "DataSource.png"
+            TreeNode4.Text = "数据源"
+            TreeNode5.ImageKey = "Console.png"
+            TreeNode5.Name = "Root"
+            TreeNode5.SelectedImageKey = "Console.png"
+            TreeNode5.Text = "VijosNT"
+            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode5})
             Me.NavigationTree.SelectedImageIndex = 0
             Me.NavigationTree.Size = New System.Drawing.Size(189, 515)
             Me.NavigationTree.TabIndex = 0
@@ -831,24 +833,24 @@
             'NewTestSuiteMenu
             '
             Me.NewTestSuiteMenu.Name = "NewTestSuiteMenu"
-            Me.NewTestSuiteMenu.Size = New System.Drawing.Size(152, 22)
+            Me.NewTestSuiteMenu.Size = New System.Drawing.Size(148, 22)
             Me.NewTestSuiteMenu.Text = "新数据集映射"
             '
             'AddTestSuiteBar0
             '
             Me.AddTestSuiteBar0.Name = "AddTestSuiteBar0"
-            Me.AddTestSuiteBar0.Size = New System.Drawing.Size(149, 6)
+            Me.AddTestSuiteBar0.Size = New System.Drawing.Size(145, 6)
             '
             'AddAPlusBMenu
             '
             Me.AddAPlusBMenu.Name = "AddAPlusBMenu"
-            Me.AddAPlusBMenu.Size = New System.Drawing.Size(152, 22)
+            Me.AddAPlusBMenu.Size = New System.Drawing.Size(148, 22)
             Me.AddAPlusBMenu.Text = "A+B"
             '
             'AddVijosSuiteMenu
             '
             Me.AddVijosSuiteMenu.Name = "AddVijosSuiteMenu"
-            Me.AddVijosSuiteMenu.Size = New System.Drawing.Size(152, 22)
+            Me.AddVijosSuiteMenu.Size = New System.Drawing.Size(148, 22)
             Me.AddVijosSuiteMenu.Text = "Vijos 格式"
             '
             'RemoveTestSuiteButton
@@ -1116,18 +1118,18 @@
             'NewDataSourceMenu
             '
             Me.NewDataSourceMenu.Name = "NewDataSourceMenu"
-            Me.NewDataSourceMenu.Size = New System.Drawing.Size(152, 22)
+            Me.NewDataSourceMenu.Size = New System.Drawing.Size(144, 22)
             Me.NewDataSourceMenu.Text = "新数据源"
             '
             'AddDataSourceBar0
             '
             Me.AddDataSourceBar0.Name = "AddDataSourceBar0"
-            Me.AddDataSourceBar0.Size = New System.Drawing.Size(149, 6)
+            Me.AddDataSourceBar0.Size = New System.Drawing.Size(141, 6)
             '
             'VijosDataSourceMenu
             '
             Me.VijosDataSourceMenu.Name = "VijosDataSourceMenu"
-            Me.VijosDataSourceMenu.Size = New System.Drawing.Size(152, 22)
+            Me.VijosDataSourceMenu.Size = New System.Drawing.Size(144, 22)
             Me.VijosDataSourceMenu.Text = "Vijos 数据源"
             '
             'RemoveDataSourceButton
@@ -1160,6 +1162,17 @@
             'ServiceTimer
             '
             Me.ServiceTimer.Interval = 500
+            '
+            'FileStrip0
+            '
+            Me.FileStrip0.Name = "FileStrip0"
+            Me.FileStrip0.Size = New System.Drawing.Size(149, 6)
+            '
+            'VacuumMenu
+            '
+            Me.VacuumMenu.Name = "VacuumMenu"
+            Me.VacuumMenu.Size = New System.Drawing.Size(152, 22)
+            Me.VacuumMenu.Text = "压缩数据库(&V)"
             '
             'ConsoleForm
             '
@@ -1336,5 +1349,7 @@
         Friend WithEvents AddDataSourceBar0 As System.Windows.Forms.ToolStripSeparator
         Friend WithEvents VijosDataSourceMenu As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents ImageList As System.Windows.Forms.ImageList
+        Friend WithEvents VacuumMenu As System.Windows.Forms.ToolStripMenuItem
+        Friend WithEvents FileStrip0 As System.Windows.Forms.ToolStripSeparator
     End Class
 End Namespace

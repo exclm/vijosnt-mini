@@ -126,6 +126,11 @@ Namespace Foreground
 #End Region
 
 #Region "Global events"
+        Private Sub VacuumMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles VacuumMenu.Click
+            Database.Vacuum()
+            MessageBox.Show("数据库压缩完毕。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        End Sub
+
         Private Sub ExitMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ExitMenu.Click
             Close()
         End Sub
