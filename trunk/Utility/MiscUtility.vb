@@ -119,6 +119,14 @@
             End If
         End Function
 
+        Public Function DbToLocalDouble(ByVal Value As Object) As Nullable(Of Double)
+            If IsDBNull(Value) Then
+                Return Nothing
+            Else
+                Return Convert.ToDouble(Value)
+            End If
+        End Function
+
         Public Function ReadData(ByVal DataReader As IDataReader, ByVal Name As String) As Object
             If Name.StartsWith("$") Then
                 Return DbToLocalString(DataReader(Name.Substring(1)))

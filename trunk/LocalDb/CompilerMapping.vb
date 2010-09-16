@@ -10,7 +10,7 @@
 
         Shared Sub New()
             Using Command As SQLiteCommand = Database.CreateCommand( _
-                    "CREATE TABLE IF NOT EXISTS CompilerMapping (" & _
+                    "CREATE TABLE IF NOT EXISTS CompilerMapping2 (" & _
                     "Id INTEGER PRIMARY KEY AUTOINCREMENT, " & _
                     "Pattern TEXT, " & _
                     "ApplicationName TEXT, " & _
@@ -22,20 +22,24 @@
                     "SourceFileName TEXT, " & _
                     "TargetFileName TEXT, " & _
                     "TargetApplicationName TEXT, " & _
-                    "TargetCommandLine TEXT)")
+                    "TargetCommandLine TEXT, " & _
+                    "TimeOffset INTEGER, " & _
+                    "TimeFactor REAL, " & _
+                    "MemoryOffset INTEGER, " & _
+                    "MemoryFactor REAL)")
                 Command.ExecuteNonQuery()
             End Using
 
             m_SelectCommand = Database.CreateCommand( _
-                "SELECT * FROM CompilerMapping ORDER BY Id")
+                "SELECT * FROM CompilerMapping2 ORDER BY Id")
             m_SelectHeaderCommand = Database.CreateCommand( _
-                "SELECT Id, Pattern, CommandLine FROM CompilerMapping ORDER BY Id")
+                "SELECT Id, Pattern, CommandLine FROM CompilerMapping2 ORDER BY Id")
             m_SelectConfigCommand = Database.CreateCommand( _
-                "SELECT * FROM CompilerMapping WHERE Id = @Id")
+                "SELECT * FROM CompilerMapping2 WHERE Id = @Id")
             m_InsertCommand = Database.CreateCommand( _
-                "INSERT INTO CompilerMapping (Id, Pattern, ApplicationName, CommandLine, EnvironmentVariables, TimeQuota, MemoryQuota, ActiveProcessQuota, SourceFileName, TargetFileName, TargetApplicationName, TargetCommandLine) VALUES (NULL, @Pattern, @ApplicationName, @CommandLine, @EnvironmentVariables, @TimeQuota, @MemoryQuota, @ActiveProcessQuota, @SourceFileName, @TargetFileName, @TargetApplicationName, @TargetCommandLine)")
+                "INSERT INTO CompilerMapping2 (Id, Pattern, ApplicationName, CommandLine, EnvironmentVariables, TimeQuota, MemoryQuota, ActiveProcessQuota, SourceFileName, TargetFileName, TargetApplicationName, TargetCommandLine, TimeOffset, TimeFactor, MemoryOffset, MemoryFactor) VALUES (NULL, @Pattern, @ApplicationName, @CommandLine, @EnvironmentVariables, @TimeQuota, @MemoryQuota, @ActiveProcessQuota, @SourceFileName, @TargetFileName, @TargetApplicationName, @TargetCommandLine, @TimeOffset, @TimeFactor, @MemoryOffset, @MemoryFactor)")
             m_UpdateCommand = Database.CreateCommand( _
-                "UPDATE CompilerMapping SET Pattern = @Pattern, ApplicationName = @ApplicationName, CommandLine = @CommandLine, EnvironmentVariables = @EnvironmentVariables, TimeQuota = @TimeQuota, MemoryQuota = @MemoryQuota, ActiveProcessQuota = @ActiveProcessQuota, SourceFileName = @SourceFileName, TargetFileName = @TargetFileName, TargetApplicationName = @TargetApplicationName, TargetCommandLine = @TargetCommandLine WHERE Id = @Id")
+                "UPDATE CompilerMapping2 SET Pattern = @Pattern, ApplicationName = @ApplicationName, CommandLine = @CommandLine, EnvironmentVariables = @EnvironmentVariables, TimeQuota = @TimeQuota, MemoryQuota = @MemoryQuota, ActiveProcessQuota = @ActiveProcessQuota, SourceFileName = @SourceFileName, TargetFileName = @TargetFileName, TargetApplicationName = @TargetApplicationName, TargetCommandLine = @TargetCommandLine, TimeOffset = @TimeOffset, TimeFactor = @TimeFactor, MemoryOffset = @MemoryOffset, MemoryFactor = @MemoryFactor WHERE Id = @Id")
             m_DeleteCommand = Database.CreateCommand( _
                 "DELETE FROM CompilerMapping WHERE Id = @Id")
             m_UpdateIdCommand = Database.CreateCommand( _
@@ -67,7 +71,7 @@
             End Using
         End Function
 
-        Public Shared Sub Add(ByVal Pattern As String, ByVal ApplicationName As String, ByVal CommandLine As String, ByVal EnvironmentVariables As String, ByVal TimeQuota As Nullable(Of Int64), ByVal MemoryQuota As Nullable(Of Int64), ByVal ActiveProcessQuota As Nullable(Of Int32), ByVal SourceFileName As String, ByVal TargetFileName As String, ByVal TargetApplicationName As String, ByVal TargetCommandLine As String)
+        Public Shared Sub Add(ByVal Pattern As String, ByVal ApplicationName As String, ByVal CommandLine As String, ByVal EnvironmentVariables As String, ByVal TimeQuota As Nullable(Of Int64), ByVal MemoryQuota As Nullable(Of Int64), ByVal ActiveProcessQuota As Nullable(Of Int32), ByVal SourceFileName As String, ByVal TargetFileName As String, ByVal TargetApplicationName As String, ByVal TargetCommandLine As String, ByVal TimeOffset As Nullable(Of Int64), ByVal TimeFactor As Nullable(Of Double), ByVal MemoryOffset As Nullable(Of Int64), ByVal MemoryFactor As Nullable(Of Double))
             Using Command As SQLiteCommand = m_InsertCommand.Clone()
                 With Command.Parameters
                     .AddWithValue("@Pattern", Pattern)
@@ -81,6 +85,10 @@
                     .AddWithValue("@TargetFileName", TargetFileName)
                     .AddWithValue("@TargetApplicationName", TargetApplicationName)
                     .AddWithValue("@TargetCommandLine", TargetCommandLine)
+                    .AddWithValue("@TimeOffset", TimeOffset)
+                    .AddWithValue("@TimeFactor", TimeFactor)
+                    .AddWithValue("@MemoryOffset", MemoryOffset)
+                    .AddWithValue("@MemoryFactor", MemoryFactor)
                 End With
                 Command.ExecuteNonQuery()
             End Using
@@ -93,7 +101,7 @@
             End Using
         End Sub
 
-        Public Shared Sub Update(ByVal Id As Int32, ByVal Pattern As String, ByVal ApplicationName As String, ByVal CommandLine As String, ByVal EnvironmentVariables As String, ByVal TimeQuota As Nullable(Of Int64), ByVal MemoryQuota As Nullable(Of Int64), ByVal ActiveProcessQuota As Nullable(Of Int32), ByVal SourceFileName As String, ByVal TargetFileName As String, ByVal TargetApplicationName As String, ByVal TargetCommandLine As String)
+        Public Shared Sub Update(ByVal Id As Int32, ByVal Pattern As String, ByVal ApplicationName As String, ByVal CommandLine As String, ByVal EnvironmentVariables As String, ByVal TimeQuota As Nullable(Of Int64), ByVal MemoryQuota As Nullable(Of Int64), ByVal ActiveProcessQuota As Nullable(Of Int32), ByVal SourceFileName As String, ByVal TargetFileName As String, ByVal TargetApplicationName As String, ByVal TargetCommandLine As String, ByVal TimeOffset As Nullable(Of Int64), ByVal TimeFactor As Nullable(Of Double), ByVal MemoryOffset As Nullable(Of Int64), ByVal MemoryFactor As Nullable(Of Double))
             Using Command As SQLiteCommand = m_UpdateCommand.Clone()
                 With Command.Parameters
                     .AddWithValue("@Id", Id)
@@ -108,6 +116,10 @@
                     .AddWithValue("@TargetFileName", TargetFileName)
                     .AddWithValue("@TargetApplicationName", TargetApplicationName)
                     .AddWithValue("@TargetCommandLine", TargetCommandLine)
+                    .AddWithValue("@TimeOffset", TimeOffset)
+                    .AddWithValue("@TimeFactor", TimeFactor)
+                    .AddWithValue("@MemoryOffset", MemoryOffset)
+                    .AddWithValue("@MemoryFactor", MemoryFactor)
                 End With
                 Command.ExecuteNonQuery()
             End Using
