@@ -685,5 +685,16 @@ Namespace Foreground
             RefreshPage()
         End Sub
 #End Region
+
+        Private Sub Add22OJSSuiteMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Add22OJSSuiteMenu.Click
+            Using Dialog As New FolderBrowserDialog
+                Dialog.Description = "请选择包含 22OJS 格式数据集的目录"
+                If Dialog.ShowDialog() = DialogResult.OK Then
+                    TestSuiteMapping.Add("*", "22OJS", "Root=" & Dialog.SelectedPath & ";MemoryQuota=134217728")
+                    ApplyTestSuiteButton.Enabled = True
+                    RefreshPage()
+                End If
+            End Using
+        End Sub
     End Class
 End Namespace
