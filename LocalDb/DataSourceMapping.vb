@@ -30,7 +30,7 @@
             m_DeleteCommand = Database.CreateCommand( _
                 "DELETE FROM DataSourceMapping WHERE Id = @Id")
             m_UpdateCommand = Database.CreateCommand( _
-                "UPDATE DataSourceMapping SET ClassName = @ClassName, Parameter = @Parameter, PollingInterval = @PollingInterval, IpcAnnouncement = @IpcAnnouncement, HttpAnnouncement = @HttpAnnouncement")
+                "UPDATE DataSourceMapping SET ClassName = @ClassName, Parameter = @Parameter, PollingInterval = @PollingInterval, IpcAnnouncement = @IpcAnnouncement, HttpAnnouncement = @HttpAnnouncement WHERE Id = @Id")
         End Sub
 
         Public Shared Function GetAll() As IDataReader
