@@ -29,6 +29,12 @@ Namespace Compiling
             End With
         End Sub
 
+        Public Overrides ReadOnly Property Target() As Target
+            Get
+                Return m_Target
+            End Get
+        End Property
+
         Public Overrides ReadOnly Property ApplicationName() As String
             Get
                 Return m_ApplicationName

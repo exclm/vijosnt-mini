@@ -32,7 +32,11 @@ Namespace Compiling
                         Reader("SourceFileName"), _
                         Reader("TargetFileName"), _
                         Reader("TargetApplicationName"), _
-                        Reader("TargetCommandLine"))
+                        Reader("TargetCommandLine"), _
+                        DbToLocalInt64(Reader("TimeOffset")), _
+                        DbToLocalDouble(Reader("TimeFactor")), _
+                        DbToLocalInt64(Reader("MemoryOffset")), _
+                        DbToLocalDouble(Reader("MemoryFactor")))
                     Result.Add(Entry)
                 End While
             End Using
