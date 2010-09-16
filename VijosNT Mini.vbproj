@@ -162,6 +162,7 @@
     <Compile Include="Compiling\Target.vb" />
     <Compile Include="Compiling\TargetInstance.vb" />
     <Compile Include="Executing\PortableExecutable.vb" />
+    <Compile Include="Feeding\22OJSDataSource.vb" />
     <Compile Include="Feeding\DataSourceBase.vb" />
     <Compile Include="Feeding\DataSourceEntry.vb" />
     <Compile Include="Feeding\DataSourcePool.vb" />
