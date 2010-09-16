@@ -309,7 +309,7 @@ Namespace Foreground
         End Sub
 
         Private Sub AddCompilerButton_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddCompilerButton.ButtonClick, NewCompilerMenu.Click
-            CompilerMapping.Add(".*", String.Empty, String.Empty, String.Empty, 15000 * 10000, Nothing, Nothing, String.Empty, String.Empty, String.Empty, String.Empty)
+            CompilerMapping.Add(".*", String.Empty, String.Empty, String.Empty, 15000 * 10000, Nothing, Nothing, String.Empty, String.Empty, String.Empty, String.Empty, Nothing, Nothing, Nothing, Nothing)
             ApplyCompilerButton.Enabled = True
             RefreshPage()
         End Sub
@@ -357,7 +357,7 @@ Namespace Foreground
         Private Sub GccMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GccMenu.Click
             Dim Gcc As String = DetectMingw("gcc.exe")
             If Gcc IsNot Nothing Then
-                CompilerMapping.Add(".c", Gcc, "gcc -O2 -s -ofoo.exe foo.c -lm", "PATH=" & Path.GetDirectoryName(Gcc) & ";%PATH%", 15000 * 10000, Nothing, Nothing, "foo.c", "foo.exe", String.Empty, String.Empty)
+                CompilerMapping.Add(".c", Gcc, "gcc -O2 -s -ofoo.exe foo.c -lm", "PATH=" & Path.GetDirectoryName(Gcc) & ";%PATH%", 15000 * 10000, Nothing, Nothing, "foo.c", "foo.exe", String.Empty, String.Empty, Nothing, Nothing, Nothing, Nothing)
                 ApplyCompilerButton.Enabled = True
                 RefreshPage()
             End If
@@ -366,7 +366,7 @@ Namespace Foreground
         Private Sub GppMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GppMenu.Click
             Dim Gpp As String = DetectMingw("g++.exe")
             If Gpp IsNot Nothing Then
-                CompilerMapping.Add(".cpp;.cxx;.cc", Gpp, "g++ -O2 -s -ofoo.exe foo.cpp -lm", "PATH=" & Path.GetDirectoryName(Gpp) & ";%PATH%", 15000 * 10000, Nothing, Nothing, "foo.cpp", "foo.exe", String.Empty, String.Empty)
+                CompilerMapping.Add(".cpp;.cxx;.cc", Gpp, "g++ -O2 -s -ofoo.exe foo.cpp -lm", "PATH=" & Path.GetDirectoryName(Gpp) & ";%PATH%", 15000 * 10000, Nothing, Nothing, "foo.cpp", "foo.exe", String.Empty, String.Empty, Nothing, Nothing, Nothing, Nothing)
                 ApplyCompilerButton.Enabled = True
                 RefreshPage()
             End If
@@ -375,7 +375,7 @@ Namespace Foreground
         Private Sub FpcMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles FpcMenu.Click
             Dim Fpc As String = DetectFpc()
             If Fpc IsNot Nothing Then
-                CompilerMapping.Add(".pas", Fpc, "fpc -O2 -ofoo.exe foo.pas", "PATH=" & Path.GetDirectoryName(Fpc) & ";%PATH%", 15000 * 10000, Nothing, Nothing, "foo.pas", "foo.exe", String.Empty, String.Empty)
+                CompilerMapping.Add(".pas", Fpc, "fpc -O2 -ofoo.exe foo.pas", "PATH=" & Path.GetDirectoryName(Fpc) & ";%PATH%", 15000 * 10000, Nothing, Nothing, "foo.pas", "foo.exe", String.Empty, String.Empty, Nothing, Nothing, Nothing, Nothing)
                 ApplyCompilerButton.Enabled = True
                 RefreshPage()
             End If
@@ -396,7 +396,7 @@ Namespace Foreground
                         EnvironmentVariables.Add("INCLUDE=" & Include & ";" & Path.Combine(SdkPath, "Include") & ";%INCLUDE%")
                     If [Lib] IsNot Nothing Then _
                         EnvironmentVariables.Add("LIB=" & [Lib] & ";" & Path.Combine(SdkPath, "Lib") & ";%LIB%")
-                    CompilerMapping.Add(".c", ClPath, "cl /O2 /TC /Fefoo.exe foo.c", Join(EnvironmentVariables.ToArray(), "|"), 15000 * 10000, Nothing, Nothing, "foo.c", "foo.exe", String.Empty, String.Empty)
+                    CompilerMapping.Add(".c", ClPath, "cl /O2 /TC /Fefoo.exe foo.c", Join(EnvironmentVariables.ToArray(), "|"), 15000 * 10000, Nothing, Nothing, "foo.c", "foo.exe", String.Empty, String.Empty, Nothing, Nothing, Nothing, Nothing)
                     ApplyCompilerButton.Enabled = True
                     RefreshPage()
                 End If
@@ -418,7 +418,7 @@ Namespace Foreground
                         EnvironmentVariables.Add("INCLUDE=" & Include & ";" & Path.Combine(SdkPath, "Include") & ";%INCLUDE%")
                     If [Lib] IsNot Nothing Then _
                         EnvironmentVariables.Add("LIB=" & [Lib] & ";" & Path.Combine(SdkPath, "Lib") & ";%LIB%")
-                    CompilerMapping.Add(".cpp;.cxx;.cc", ClPath, "cl /O2 /TP /Fefoo.exe foo.cpp", Join(EnvironmentVariables.ToArray(), "|"), 15000 * 10000, Nothing, Nothing, "foo.cpp", "foo.exe", String.Empty, String.Empty)
+                    CompilerMapping.Add(".cpp;.cxx;.cc", ClPath, "cl /O2 /TP /Fefoo.exe foo.cpp", Join(EnvironmentVariables.ToArray(), "|"), 15000 * 10000, Nothing, Nothing, "foo.cpp", "foo.exe", String.Empty, String.Empty, Nothing, Nothing, Nothing, Nothing)
                     ApplyCompilerButton.Enabled = True
                     RefreshPage()
                 End If
@@ -428,7 +428,7 @@ Namespace Foreground
         Private Sub MscsMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MscsMenu.Click
             Dim Csc As String = DetectNetfx("csc.exe")
             If Csc IsNot Nothing Then
-                CompilerMapping.Add(".cs", Csc, "csc /debug- /optimize+ /checked- /unsafe+ /out:foo.exe foo.cs", "PATH=" & Path.GetDirectoryName(Csc) & ";%PATH%", 15000 * 10000, Nothing, Nothing, "foo.cs", "foo.exe", String.Empty, String.Empty)
+                CompilerMapping.Add(".cs", Csc, "csc /debug- /optimize+ /checked- /unsafe+ /out:foo.exe foo.cs", "PATH=" & Path.GetDirectoryName(Csc) & ";%PATH%", 15000 * 10000, Nothing, Nothing, "foo.cs", "foo.exe", String.Empty, String.Empty, Nothing, Nothing, Nothing, Nothing)
                 ApplyCompilerButton.Enabled = True
                 RefreshPage()
             End If
@@ -437,7 +437,7 @@ Namespace Foreground
         Private Sub MsvbMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MsvbMenu.Click
             Dim Vbc As String = DetectNetfx("vbc.exe")
             If Vbc IsNot Nothing Then
-                CompilerMapping.Add(".vb", Vbc, "vbc /debug- /optimize+ /removeintchecks+ /out:foo.exe foo.vb", "PATH=" & Path.GetDirectoryName(Vbc) & ";%PATH%", 15000 * 10000, Nothing, Nothing, "foo.vb", "foo.exe", String.Empty, String.Empty)
+                CompilerMapping.Add(".vb", Vbc, "vbc /debug- /optimize+ /removeintchecks+ /out:foo.exe foo.vb", "PATH=" & Path.GetDirectoryName(Vbc) & ";%PATH%", 15000 * 10000, Nothing, Nothing, "foo.vb", "foo.exe", String.Empty, String.Empty, Nothing, Nothing, Nothing, Nothing)
                 ApplyCompilerButton.Enabled = True
                 RefreshPage()
             End If
@@ -452,7 +452,7 @@ Namespace Foreground
                     Dim JavaPath = Path.GetDirectoryName(Java)
                     If JavacPath <> JavaPath Then _
                         JavacPath &= ";" & JavaPath
-                    CompilerMapping.Add(".java", Javac, "javac -g:none Main.java", "PATH=" & JavacPath & ";%PATH%", 15000 * 10000, Nothing, Nothing, "Main.java", "Main.class", Java, "java Main")
+                    CompilerMapping.Add(".java", Javac, "javac -g:none Main.java", "PATH=" & JavacPath & ";%PATH%", 15000 * 10000, Nothing, Nothing, "Main.java", "Main.class", Java, "java Main", Nothing, Nothing, Nothing, Nothing)
                     ApplyCompilerButton.Enabled = True
                     RefreshPage()
                 End If
@@ -462,7 +462,7 @@ Namespace Foreground
         Private Sub PythonMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PythonMenu.Click
             Dim Python As String = DetectPython()
             If Python IsNot Nothing Then
-                CompilerMapping.Add(".py", String.Empty, String.Empty, "PATH=" & Path.GetDirectoryName(Python) & ";%PATH%", 15000 * 10000, Nothing, Nothing, "foo.py", "foo.py", Python, "python -O foo.py")
+                CompilerMapping.Add(".py", String.Empty, String.Empty, "PATH=" & Path.GetDirectoryName(Python) & ";%PATH%", 15000 * 10000, Nothing, Nothing, "foo.py", "foo.py", Python, "python -O foo.py", Nothing, Nothing, Nothing, Nothing)
                 ApplyCompilerButton.Enabled = True
                 RefreshPage()
             End If

@@ -14,6 +14,10 @@ Namespace LocalDb
         Private m_TargetFileName As String
         Private m_TargetApplicationName As String
         Private m_TargetCommandLine As String
+        Private m_TimeOffset As Nullable(Of Int64)
+        Private m_TimeFactor As Nullable(Of Double)
+        Private m_MemoryOffset As Nullable(Of Int64)
+        Private m_MemoryFactor As Nullable(Of Double)
 
         Public Sub New(ByVal Reader As IDataReader)
             m_Id = Reader("Id")
@@ -28,10 +32,14 @@ Namespace LocalDb
             m_TargetFileName = Reader("TargetFileName")
             m_TargetApplicationName = Reader("TargetApplicationName")
             m_TargetCommandLine = Reader("TargetCommandLine")
+            m_TimeOffset = DbToLocalInt64(Reader("TimeOffset"))
+            m_TimeFactor = DbToLocalDouble(Reader("TimeFactor"))
+            m_MemoryOffset = DbToLocalInt64(Reader("MemoryOffset"))
+            m_MemoryFactor = DbToLocalDouble(Reader("MemoryFactor"))
         End Sub
 
         Private Sub Commit()
-            CompilerMapping.Update(m_Id, m_Pattern, m_ApplicationName, m_CommandLine, m_EnvironmentVariables, m_TimeQuota, m_MemoryQuota, m_ActiveProcessQuota, m_SourceFileName, m_TargetFileName, m_TargetApplicationName, m_TargetCommandLine)
+            CompilerMapping.Update(m_Id, m_Pattern, m_ApplicationName, m_CommandLine, m_EnvironmentVariables, m_TimeQuota, m_MemoryQuota, m_ActiveProcessQuota, m_SourceFileName, m_TargetFileName, m_TargetApplicationName, m_TargetCommandLine, m_TimeOffset, m_TimeFactor, m_MemoryOffset, m_MemoryFactor)
         End Sub
 
         <DisplayName("扩展名匹配"), CategoryAttribute("编译器设置"), DescriptionAttribute("用于匹配文件扩展名的字符串, 以 . 开头, 支持 ?、* 通配符, 多个匹配串使用 ; 分隔")> _
@@ -179,6 +187,70 @@ Namespace LocalDb
 
             Set(ByVal Value As String)
                 m_TargetCommandLine = Value
+                Commit()
+            End Set
+        End Property
+
+        <DisplayName("时间偏移量"), CategoryAttribute("执行设置"), DescriptionAttribute("执行时的时间偏移量, 通常设置为一个负数用于抵消程序初始化所需的时间, 以 ms 为单位, 留空表示无偏移, 默认值为空")> _
+        Public Property TimeOffset() As Nullable(Of Int32)
+            Get
+                If m_TimeOffset.HasValue Then
+                    Return m_TimeOffset.Value \ 10000
+                Else
+                    Return Nothing
+                End If
+            End Get
+
+            Set(ByVal Value As Nullable(Of Int32))
+                If Value.HasValue Then
+                    m_TimeOffset = Math.BigMul(Value.Value, 10000)
+                Else
+                    m_TimeOffset = Nothing
+                End If
+                Commit()
+            End Set
+        End Property
+
+        <DisplayName("时间配额系数"), CategoryAttribute("执行设置"), DescriptionAttribute("执行时的时间配额系数, 用于平衡不同测评机或不同语言的执行时间, 实际的时间配额等于数据集设定的时间配额乘以该系数, 留空表示无设置, 默认值为空")> _
+        Public Property TimeFactor() As Nullable(Of Double)
+            Get
+                Return m_TimeFactor
+            End Get
+
+            Set(ByVal Value As Nullable(Of Double))
+                m_TimeFactor = Value
+                Commit()
+            End Set
+        End Property
+
+        <DisplayName("内存偏移量"), CategoryAttribute("执行设置"), DescriptionAttribute("执行时的内存偏移量, 通常设置为一个负数用于抵消程序初始化所需的内存, 以 KB 为单位, 留空表示无偏移, 默认值为空")> _
+        Public Property MemoryOffset() As Nullable(Of Int32)
+            Get
+                If m_MemoryOffset.HasValue Then
+                    Return m_MemoryOffset.Value \ 1024
+                Else
+                    Return Nothing
+                End If
+            End Get
+
+            Set(ByVal Value As Nullable(Of Int32))
+                If Value.HasValue Then
+                    m_MemoryOffset = Math.BigMul(Value.Value, 1024)
+                Else
+                    m_MemoryOffset = Nothing
+                End If
+                Commit()
+            End Set
+        End Property
+
+        <DisplayName("内存配额系数"), CategoryAttribute("执行设置"), DescriptionAttribute("执行时的内存配额系数, 用于平衡不同语言的执行内存, 实际的内存配额等于数据集设定的内存配额乘以该系数, 留空表示无设置, 默认值为空")> _
+        Public Property MemoryFactor() As Nullable(Of Double)
+            Get
+                Return m_MemoryFactor
+            End Get
+
+            Set(ByVal Value As Nullable(Of Double))
+                m_MemoryFactor = Value
                 Commit()
             End Set
         End Property
