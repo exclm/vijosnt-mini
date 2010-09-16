@@ -30,9 +30,27 @@ Namespace Testing
                     Completion.Invoke(m_Result)
                 End Sub)
 
+            Dim TimeQuota As Nullable(Of Int64) = TestCase.TimeQuota
+            Dim MemoryQuota As Nullable(Of Int64) = TestCase.MemoryQuota
+
+            With TargetInstance.Target.CompilerInstance.Compiler
+                If TimeQuota.HasValue Then
+                    If .TimeFactor.HasValue Then _
+                        TimeQuota *= .TimeFactor.Value
+                    If .TimeOffset.HasValue Then _
+                        TimeQuota -= .TimeOffset.Value
+                End If
+                If MemoryQuota.HasValue Then
+                    If .MemoryFactor.HasValue Then _
+                        MemoryQuota *= .MemoryFactor.Value
+                    If .MemoryOffset.HasValue Then _
+                        MemoryQuota -= .MemoryOffset.Value
+                End If
+            End With
+
             FinalConstruct(WatchDog, ProcessMonitor, TargetInstance.ApplicationName, TargetInstance.CommandLine, TargetInstance.EnvironmentVariables, TargetInstance.WorkingDirectory, _
                 TestCase.OpenInput(), TestCase.OpenOutput(), StdErrorHandle, _
-                TestCase.TimeQuota, TestCase.MemoryQuota, 1, True, AddressOf ProcessExecuteeCompletion, Nothing)
+                TimeQuota, MemoryQuota, 1, True, AddressOf ProcessExecuteeCompletion, Nothing)
         End Sub
 
         Public Overrides ReadOnly Property RequiredEnvironment() As EnvironmentTag
@@ -54,10 +72,35 @@ Namespace Testing
         End Sub
 
         Private Sub ProcessExecuteeCompletion(ByVal Result As ProcessExecuteeResult)
+            Dim TimeQuotaUsage As Int64 = Result.TimeQuotaUsage
+            Dim MemoryQuotaUsage As Int64 = Result.MemoryQuotaUsage
+
+            With m_TargetInstance.Target.CompilerInstance.Compiler
+                If .TimeOffset.HasValue Then _
+                    TimeQuotaUsage = Math.Max(TimeQuotaUsage + .TimeOffset.Value, 0)
+                If .TimeFactor.HasValue Then
+                    Try
+                        TimeQuotaUsage /= .TimeFactor.Value
+                    Catch ex As OverflowException
+                        TimeQuotaUsage = m_TestCase.TimeQuota + 1
+                    End Try
+                End If
+                If .MemoryOffset.HasValue Then _
+                    MemoryQuotaUsage = Math.Max(TimeQuotaUsage + .MemoryOffset.Value, 0)
+                If .MemoryFactor.HasValue Then
+                    Try
+                        MemoryQuotaUsage /= .MemoryFactor.Value
+                    Catch ex As OverflowException
+                        MemoryQuotaUsage = m_TestCase.MemoryQuota + 1
+                    End Try
+                End If
+            End With
+
             m_TargetInstance.Dispose()
+
             m_Result.ExitStatus = Result.ExitStatus
-            m_Result.TimeQuotaUsage = Result.TimeQuotaUsage
-            m_Result.MemoryQuotaUsage = Result.MemoryQuotaUsage
+            m_Result.TimeQuotaUsage = TimeQuotaUsage
+            m_Result.MemoryQuotaUsage = MemoryQuotaUsage
             m_Result.Exception = Result.Exception
             m_Trigger.InvokeCritical()
         End Sub

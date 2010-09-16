@@ -2,6 +2,7 @@
     Friend MustInherit Class TargetInstance
         Implements IDisposable
 
+        Public MustOverride ReadOnly Property Target() As Target
         Public MustOverride ReadOnly Property ApplicationName() As String
         Public MustOverride ReadOnly Property CommandLine() As String
         Public MustOverride ReadOnly Property EnvironmentVariables() As IEnumerable(Of String)

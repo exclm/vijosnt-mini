@@ -15,11 +15,16 @@ Namespace Compiling
         Private m_TargetFileName As String
         Private m_TargetApplicationName As String
         Private m_TargetCommandLine As String
+        Private m_TimeOffset As Nullable(Of Int64)
+        Private m_TimeFactor As Nullable(Of Double)
+        Private m_MemoryOffset As Nullable(Of Int64)
+        Private m_MemoryFactor As Nullable(Of Double)
 
         Public Sub New(ByVal TempPathServer As TempPathServer, ByVal ApplicationName As String, ByVal CommandLine As String, ByVal EnvironmentVariables As IEnumerable(Of String), _
             ByVal TimeQuota As Nullable(Of Int64), ByVal MemoryQuota As Nullable(Of Int64), ByVal ActiveProcessQuota As Nullable(Of Int64), _
             ByVal SourceFileName As String, ByVal TargetFileName As String, _
-            ByVal TargetApplicationName As String, ByVal TargetCommandLine As String)
+            ByVal TargetApplicationName As String, ByVal TargetCommandLine As String, _
+            ByVal TimeOffset As Nullable(Of Int64), ByVal TimeFactor As Nullable(Of Double), ByVal MemoryOffset As Nullable(Of Int64), ByVal MemoryFactor As Nullable(Of Double))
 
             m_TempPathServer = TempPathServer
             m_ApplicationName = ApplicationName
@@ -32,6 +37,10 @@ Namespace Compiling
             m_TargetFileName = TargetFileName
             m_TargetApplicationName = TargetApplicationName
             m_TargetCommandLine = TargetCommandLine
+            m_TimeOffset = TimeOffset
+            m_TimeFactor = TimeFactor
+            m_MemoryOffset = MemoryOffset
+            m_MemoryFactor = MemoryFactor
         End Sub
 
         Public ReadOnly Property TempPathServer() As TempPathServer
@@ -105,6 +114,30 @@ Namespace Compiling
         Public Overrides ReadOnly Property TargetCommandLine() As String
             Get
                 Return m_TargetCommandLine
+            End Get
+        End Property
+
+        Public Overrides ReadOnly Property TimeOffset() As Nullable(Of Int64)
+            Get
+                Return m_TimeOffset
+            End Get
+        End Property
+
+        Public Overrides ReadOnly Property TimeFactor() As Nullable(Of Double)
+            Get
+                Return m_TimeFactor
+            End Get
+        End Property
+
+        Public Overrides ReadOnly Property MemoryOffset() As Nullable(Of Int64)
+            Get
+                Return m_MemoryOffset
+            End Get
+        End Property
+
+        Public Overrides ReadOnly Property MemoryFactor() As Nullable(Of Double)
+            Get
+                Return m_MemoryFactor
             End Get
         End Property
     End Class

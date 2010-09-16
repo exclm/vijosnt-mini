@@ -13,5 +13,9 @@ Namespace Compiling
         Public MustOverride ReadOnly Property TargetFileName() As String
         Public MustOverride ReadOnly Property TargetApplicationName() As String
         Public MustOverride ReadOnly Property TargetCommandLine() As String
+        Public MustOverride ReadOnly Property TimeOffset() As Nullable(Of Int64)
+        Public MustOverride ReadOnly Property TimeFactor() As Nullable(Of Double)
+        Public MustOverride ReadOnly Property MemoryOffset() As Nullable(Of Int64)
+        Public MustOverride ReadOnly Property MemoryFactor() As Nullable(Of Double)
     End Class
 End Namespace
