@@ -114,6 +114,7 @@
             Me.AddTestSuiteBar0 = New System.Windows.Forms.ToolStripSeparator()
             Me.AddAPlusBMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.AddVijosSuiteMenu = New System.Windows.Forms.ToolStripMenuItem()
+            Me.Add22OJSSuiteMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.RemoveTestSuiteButton = New System.Windows.Forms.ToolStripButton()
             Me.TestSuiteSeperator0 = New System.Windows.Forms.ToolStripSeparator()
             Me.MoveUpTestSuiteButton = New System.Windows.Forms.ToolStripButton()
@@ -150,7 +151,6 @@
             Me.DataSourceBar0 = New System.Windows.Forms.ToolStripSeparator()
             Me.ApplyDataSourceButton = New System.Windows.Forms.ToolStripButton()
             Me.ServiceTimer = New System.Windows.Forms.Timer(Me.components)
-            Me.Add22OJSSuiteMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.MenuStrip.SuspendLayout()
             Me.StatusStrip.SuspendLayout()
             Me.SplitContainer.Panel1.SuspendLayout()
@@ -184,15 +184,15 @@
             Me.MenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileMenu, Me.HelpMenu})
             Me.MenuStrip.Location = New System.Drawing.Point(0, 0)
             Me.MenuStrip.Name = "MenuStrip"
-            Me.MenuStrip.Padding = New System.Windows.Forms.Padding(5, 3, 0, 3)
-            Me.MenuStrip.Size = New System.Drawing.Size(915, 26)
+            Me.MenuStrip.Padding = New System.Windows.Forms.Padding(4, 2, 0, 2)
+            Me.MenuStrip.Size = New System.Drawing.Size(784, 25)
             Me.MenuStrip.TabIndex = 0
             '
             'FileMenu
             '
             Me.FileMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.VacuumMenu, Me.FileStrip0, Me.ExitMenu})
             Me.FileMenu.Name = "FileMenu"
-            Me.FileMenu.Size = New System.Drawing.Size(58, 20)
+            Me.FileMenu.Size = New System.Drawing.Size(58, 21)
             Me.FileMenu.Text = "文件(&F)"
             '
             'VacuumMenu
@@ -216,7 +216,7 @@
             '
             Me.HelpMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.WikiToolStripMenuItem, Me.HelpStrip0, Me.HomePageMenu, Me.CheckUpdateMenu, Me.ReportIssue, Me.HelpStrip1, Me.AboutMenu})
             Me.HelpMenu.Name = "HelpMenu"
-            Me.HelpMenu.Size = New System.Drawing.Size(61, 20)
+            Me.HelpMenu.Size = New System.Drawing.Size(61, 21)
             Me.HelpMenu.Text = "帮助(&H)"
             '
             'WikiToolStripMenuItem
@@ -262,10 +262,10 @@
             'StatusStrip
             '
             Me.StatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.StatusLabel})
-            Me.StatusStrip.Location = New System.Drawing.Point(0, 727)
+            Me.StatusStrip.Location = New System.Drawing.Point(0, 540)
             Me.StatusStrip.Name = "StatusStrip"
-            Me.StatusStrip.Padding = New System.Windows.Forms.Padding(1, 0, 12, 0)
-            Me.StatusStrip.Size = New System.Drawing.Size(915, 22)
+            Me.StatusStrip.Padding = New System.Windows.Forms.Padding(1, 0, 10, 0)
+            Me.StatusStrip.Size = New System.Drawing.Size(784, 22)
             Me.StatusStrip.TabIndex = 2
             '
             'StatusLabel
@@ -276,8 +276,8 @@
             'SplitContainer
             '
             Me.SplitContainer.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.SplitContainer.Location = New System.Drawing.Point(0, 26)
-            Me.SplitContainer.Margin = New System.Windows.Forms.Padding(2, 3, 2, 3)
+            Me.SplitContainer.Location = New System.Drawing.Point(0, 25)
+            Me.SplitContainer.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
             Me.SplitContainer.Name = "SplitContainer"
             '
             'SplitContainer.Panel1
@@ -287,8 +287,8 @@
             'SplitContainer.Panel2
             '
             Me.SplitContainer.Panel2.Controls.Add(Me.TabControl)
-            Me.SplitContainer.Size = New System.Drawing.Size(915, 701)
-            Me.SplitContainer.SplitterDistance = 220
+            Me.SplitContainer.Size = New System.Drawing.Size(784, 515)
+            Me.SplitContainer.SplitterDistance = 188
             Me.SplitContainer.SplitterWidth = 3
             Me.SplitContainer.TabIndex = 3
             '
@@ -298,7 +298,7 @@
             Me.NavigationTree.ImageIndex = 0
             Me.NavigationTree.ImageList = Me.ImageList
             Me.NavigationTree.Location = New System.Drawing.Point(0, 0)
-            Me.NavigationTree.Margin = New System.Windows.Forms.Padding(2, 3, 2, 3)
+            Me.NavigationTree.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
             Me.NavigationTree.Name = "NavigationTree"
             TreeNode6.ImageKey = "Compiler.png"
             TreeNode6.Name = "Compiler"
@@ -322,7 +322,7 @@
             TreeNode10.Text = "VijosNT"
             Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode10})
             Me.NavigationTree.SelectedImageIndex = 0
-            Me.NavigationTree.Size = New System.Drawing.Size(220, 701)
+            Me.NavigationTree.Size = New System.Drawing.Size(188, 515)
             Me.NavigationTree.TabIndex = 0
             '
             'ImageList
@@ -344,21 +344,21 @@
             Me.TabControl.Controls.Add(Me.DataSourcePage)
             Me.TabControl.Dock = System.Windows.Forms.DockStyle.Fill
             Me.TabControl.Location = New System.Drawing.Point(0, 0)
-            Me.TabControl.Margin = New System.Windows.Forms.Padding(2, 3, 2, 3)
+            Me.TabControl.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
             Me.TabControl.Name = "TabControl"
             Me.TabControl.SelectedIndex = 0
-            Me.TabControl.Size = New System.Drawing.Size(692, 701)
+            Me.TabControl.Size = New System.Drawing.Size(593, 515)
             Me.TabControl.TabIndex = 0
             '
             'RootPage
             '
             Me.RootPage.Controls.Add(Me.LocalSourceList)
             Me.RootPage.Controls.Add(Me.RootToolStrip)
-            Me.RootPage.Location = New System.Drawing.Point(4, 25)
-            Me.RootPage.Margin = New System.Windows.Forms.Padding(2, 3, 2, 3)
+            Me.RootPage.Location = New System.Drawing.Point(4, 22)
+            Me.RootPage.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
             Me.RootPage.Name = "RootPage"
-            Me.RootPage.Padding = New System.Windows.Forms.Padding(2, 3, 2, 3)
-            Me.RootPage.Size = New System.Drawing.Size(684, 672)
+            Me.RootPage.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+            Me.RootPage.Size = New System.Drawing.Size(585, 489)
             Me.RootPage.TabIndex = 0
             Me.RootPage.Text = "VijosNT"
             Me.RootPage.UseVisualStyleBackColor = True
@@ -370,11 +370,10 @@
             Me.LocalSourceList.Dock = System.Windows.Forms.DockStyle.Fill
             Me.LocalSourceList.FullRowSelect = True
             Me.LocalSourceList.HideSelection = False
-            Me.LocalSourceList.Location = New System.Drawing.Point(2, 28)
-            Me.LocalSourceList.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
+            Me.LocalSourceList.Location = New System.Drawing.Point(2, 27)
             Me.LocalSourceList.MultiSelect = False
             Me.LocalSourceList.Name = "LocalSourceList"
-            Me.LocalSourceList.Size = New System.Drawing.Size(680, 641)
+            Me.LocalSourceList.Size = New System.Drawing.Size(581, 460)
             Me.LocalSourceList.TabIndex = 4
             Me.LocalSourceList.UseCompatibleStateImageBehavior = False
             Me.LocalSourceList.View = System.Windows.Forms.View.Details
@@ -446,9 +445,9 @@
             'RootToolStrip
             '
             Me.RootToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.StartButton, Me.StopButton, Me.RootSeperator0, Me.FloatingFormLabel0, Me.FloatingFormButton, Me.FloatingFormLabel1, Me.RootSeperator1, Me.RefershLocalButton, Me.ClearLocalButton})
-            Me.RootToolStrip.Location = New System.Drawing.Point(2, 3)
+            Me.RootToolStrip.Location = New System.Drawing.Point(2, 2)
             Me.RootToolStrip.Name = "RootToolStrip"
-            Me.RootToolStrip.Size = New System.Drawing.Size(680, 25)
+            Me.RootToolStrip.Size = New System.Drawing.Size(581, 25)
             Me.RootToolStrip.TabIndex = 2
             '
             'StartButton
@@ -524,11 +523,11 @@
             '
             Me.CompilerPage.Controls.Add(Me.CompilerSplit)
             Me.CompilerPage.Controls.Add(Me.CompilerToolStrip)
-            Me.CompilerPage.Location = New System.Drawing.Point(4, 25)
-            Me.CompilerPage.Margin = New System.Windows.Forms.Padding(2, 3, 2, 3)
+            Me.CompilerPage.Location = New System.Drawing.Point(4, 22)
+            Me.CompilerPage.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
             Me.CompilerPage.Name = "CompilerPage"
-            Me.CompilerPage.Padding = New System.Windows.Forms.Padding(2, 3, 2, 3)
-            Me.CompilerPage.Size = New System.Drawing.Size(683, 658)
+            Me.CompilerPage.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+            Me.CompilerPage.Size = New System.Drawing.Size(585, 489)
             Me.CompilerPage.TabIndex = 1
             Me.CompilerPage.Text = "编译器映射"
             Me.CompilerPage.UseVisualStyleBackColor = True
@@ -536,8 +535,8 @@
             'CompilerSplit
             '
             Me.CompilerSplit.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.CompilerSplit.Location = New System.Drawing.Point(2, 28)
-            Me.CompilerSplit.Margin = New System.Windows.Forms.Padding(2, 3, 2, 3)
+            Me.CompilerSplit.Location = New System.Drawing.Point(2, 27)
+            Me.CompilerSplit.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
             Me.CompilerSplit.Name = "CompilerSplit"
             Me.CompilerSplit.Orientation = System.Windows.Forms.Orientation.Horizontal
             '
@@ -548,8 +547,9 @@
             'CompilerSplit.Panel2
             '
             Me.CompilerSplit.Panel2.Controls.Add(Me.CompilerProperty)
-            Me.CompilerSplit.Size = New System.Drawing.Size(679, 627)
-            Me.CompilerSplit.SplitterDistance = 216
+            Me.CompilerSplit.Size = New System.Drawing.Size(581, 460)
+            Me.CompilerSplit.SplitterDistance = 158
+            Me.CompilerSplit.SplitterWidth = 3
             Me.CompilerSplit.TabIndex = 8
             '
             'CompilerList
@@ -559,10 +559,10 @@
             Me.CompilerList.FullRowSelect = True
             Me.CompilerList.HideSelection = False
             Me.CompilerList.Location = New System.Drawing.Point(0, 0)
-            Me.CompilerList.Margin = New System.Windows.Forms.Padding(2, 3, 2, 3)
+            Me.CompilerList.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
             Me.CompilerList.MultiSelect = False
             Me.CompilerList.Name = "CompilerList"
-            Me.CompilerList.Size = New System.Drawing.Size(679, 216)
+            Me.CompilerList.Size = New System.Drawing.Size(581, 158)
             Me.CompilerList.TabIndex = 1
             Me.CompilerList.UseCompatibleStateImageBehavior = False
             Me.CompilerList.View = System.Windows.Forms.View.Details
@@ -582,19 +582,19 @@
             Me.CompilerProperty.BackColor = System.Drawing.SystemColors.Window
             Me.CompilerProperty.Dock = System.Windows.Forms.DockStyle.Fill
             Me.CompilerProperty.Location = New System.Drawing.Point(0, 0)
-            Me.CompilerProperty.Margin = New System.Windows.Forms.Padding(2, 3, 2, 3)
+            Me.CompilerProperty.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
             Me.CompilerProperty.Name = "CompilerProperty"
             Me.CompilerProperty.PropertySort = System.Windows.Forms.PropertySort.Categorized
-            Me.CompilerProperty.Size = New System.Drawing.Size(679, 407)
+            Me.CompilerProperty.Size = New System.Drawing.Size(581, 299)
             Me.CompilerProperty.TabIndex = 6
             Me.CompilerProperty.ToolbarVisible = False
             '
             'CompilerToolStrip
             '
             Me.CompilerToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AddCompilerButton, Me.RemoveCompilerButton, Me.CompilerSeperator0, Me.MoveUpCompilerButton, Me.MoveDownCompilerButton, Me.CompilerSeperator1, Me.ApplyCompilerButton})
-            Me.CompilerToolStrip.Location = New System.Drawing.Point(2, 3)
+            Me.CompilerToolStrip.Location = New System.Drawing.Point(2, 2)
             Me.CompilerToolStrip.Name = "CompilerToolStrip"
-            Me.CompilerToolStrip.Size = New System.Drawing.Size(679, 25)
+            Me.CompilerToolStrip.Size = New System.Drawing.Size(581, 25)
             Me.CompilerToolStrip.TabIndex = 7
             '
             'AddCompilerButton
@@ -752,11 +752,11 @@
             '
             Me.TestSuitePage.Controls.Add(Me.TestSuiteSplit)
             Me.TestSuitePage.Controls.Add(Me.TestSuiteToolStrip)
-            Me.TestSuitePage.Location = New System.Drawing.Point(4, 25)
-            Me.TestSuitePage.Margin = New System.Windows.Forms.Padding(2, 3, 2, 3)
+            Me.TestSuitePage.Location = New System.Drawing.Point(4, 22)
+            Me.TestSuitePage.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
             Me.TestSuitePage.Name = "TestSuitePage"
-            Me.TestSuitePage.Padding = New System.Windows.Forms.Padding(2, 3, 2, 3)
-            Me.TestSuitePage.Size = New System.Drawing.Size(684, 672)
+            Me.TestSuitePage.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+            Me.TestSuitePage.Size = New System.Drawing.Size(585, 489)
             Me.TestSuitePage.TabIndex = 2
             Me.TestSuitePage.Text = "数据集映射"
             Me.TestSuitePage.UseVisualStyleBackColor = True
@@ -764,8 +764,8 @@
             'TestSuiteSplit
             '
             Me.TestSuiteSplit.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.TestSuiteSplit.Location = New System.Drawing.Point(2, 28)
-            Me.TestSuiteSplit.Margin = New System.Windows.Forms.Padding(2, 3, 2, 3)
+            Me.TestSuiteSplit.Location = New System.Drawing.Point(2, 27)
+            Me.TestSuiteSplit.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
             Me.TestSuiteSplit.Name = "TestSuiteSplit"
             Me.TestSuiteSplit.Orientation = System.Windows.Forms.Orientation.Horizontal
             '
@@ -776,8 +776,9 @@
             'TestSuiteSplit.Panel2
             '
             Me.TestSuiteSplit.Panel2.Controls.Add(Me.TestSuiteProperty)
-            Me.TestSuiteSplit.Size = New System.Drawing.Size(680, 641)
-            Me.TestSuiteSplit.SplitterDistance = 221
+            Me.TestSuiteSplit.Size = New System.Drawing.Size(581, 460)
+            Me.TestSuiteSplit.SplitterDistance = 158
+            Me.TestSuiteSplit.SplitterWidth = 3
             Me.TestSuiteSplit.TabIndex = 11
             '
             'TestSuiteList
@@ -787,10 +788,10 @@
             Me.TestSuiteList.FullRowSelect = True
             Me.TestSuiteList.HideSelection = False
             Me.TestSuiteList.Location = New System.Drawing.Point(0, 0)
-            Me.TestSuiteList.Margin = New System.Windows.Forms.Padding(2, 3, 2, 3)
+            Me.TestSuiteList.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
             Me.TestSuiteList.MultiSelect = False
             Me.TestSuiteList.Name = "TestSuiteList"
-            Me.TestSuiteList.Size = New System.Drawing.Size(680, 221)
+            Me.TestSuiteList.Size = New System.Drawing.Size(581, 158)
             Me.TestSuiteList.TabIndex = 1
             Me.TestSuiteList.UseCompatibleStateImageBehavior = False
             Me.TestSuiteList.View = System.Windows.Forms.View.Details
@@ -815,19 +816,19 @@
             Me.TestSuiteProperty.BackColor = System.Drawing.SystemColors.Window
             Me.TestSuiteProperty.Dock = System.Windows.Forms.DockStyle.Fill
             Me.TestSuiteProperty.Location = New System.Drawing.Point(0, 0)
-            Me.TestSuiteProperty.Margin = New System.Windows.Forms.Padding(2, 3, 2, 3)
+            Me.TestSuiteProperty.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
             Me.TestSuiteProperty.Name = "TestSuiteProperty"
             Me.TestSuiteProperty.PropertySort = System.Windows.Forms.PropertySort.Categorized
-            Me.TestSuiteProperty.Size = New System.Drawing.Size(680, 416)
+            Me.TestSuiteProperty.Size = New System.Drawing.Size(581, 299)
             Me.TestSuiteProperty.TabIndex = 6
             Me.TestSuiteProperty.ToolbarVisible = False
             '
             'TestSuiteToolStrip
             '
             Me.TestSuiteToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AddTestSuiteButton, Me.RemoveTestSuiteButton, Me.TestSuiteSeperator0, Me.MoveUpTestSuiteButton, Me.MoveDownTestSuiteButton, Me.TestSuiteSeperator1, Me.ApplyTestSuiteButton})
-            Me.TestSuiteToolStrip.Location = New System.Drawing.Point(2, 3)
+            Me.TestSuiteToolStrip.Location = New System.Drawing.Point(2, 2)
             Me.TestSuiteToolStrip.Name = "TestSuiteToolStrip"
-            Me.TestSuiteToolStrip.Size = New System.Drawing.Size(680, 25)
+            Me.TestSuiteToolStrip.Size = New System.Drawing.Size(581, 25)
             Me.TestSuiteToolStrip.TabIndex = 10
             '
             'AddTestSuiteButton
@@ -844,25 +845,31 @@
             'NewTestSuiteMenu
             '
             Me.NewTestSuiteMenu.Name = "NewTestSuiteMenu"
-            Me.NewTestSuiteMenu.Size = New System.Drawing.Size(152, 22)
+            Me.NewTestSuiteMenu.Size = New System.Drawing.Size(148, 22)
             Me.NewTestSuiteMenu.Text = "新数据集映射"
             '
             'AddTestSuiteBar0
             '
             Me.AddTestSuiteBar0.Name = "AddTestSuiteBar0"
-            Me.AddTestSuiteBar0.Size = New System.Drawing.Size(149, 6)
+            Me.AddTestSuiteBar0.Size = New System.Drawing.Size(145, 6)
             '
             'AddAPlusBMenu
             '
             Me.AddAPlusBMenu.Name = "AddAPlusBMenu"
-            Me.AddAPlusBMenu.Size = New System.Drawing.Size(152, 22)
+            Me.AddAPlusBMenu.Size = New System.Drawing.Size(148, 22)
             Me.AddAPlusBMenu.Text = "A+B"
             '
             'AddVijosSuiteMenu
             '
             Me.AddVijosSuiteMenu.Name = "AddVijosSuiteMenu"
-            Me.AddVijosSuiteMenu.Size = New System.Drawing.Size(152, 22)
+            Me.AddVijosSuiteMenu.Size = New System.Drawing.Size(148, 22)
             Me.AddVijosSuiteMenu.Text = "Vijos 格式"
+            '
+            'Add22OJSSuiteMenu
+            '
+            Me.Add22OJSSuiteMenu.Name = "Add22OJSSuiteMenu"
+            Me.Add22OJSSuiteMenu.Size = New System.Drawing.Size(148, 22)
+            Me.Add22OJSSuiteMenu.Text = "22OJS 格式"
             '
             'RemoveTestSuiteButton
             '
@@ -922,11 +929,11 @@
             '
             Me.ExecutorPage.Controls.Add(Me.SecurityList)
             Me.ExecutorPage.Controls.Add(Me.ExecutorToolStrip)
-            Me.ExecutorPage.Location = New System.Drawing.Point(4, 25)
-            Me.ExecutorPage.Margin = New System.Windows.Forms.Padding(2, 3, 2, 3)
+            Me.ExecutorPage.Location = New System.Drawing.Point(4, 22)
+            Me.ExecutorPage.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
             Me.ExecutorPage.Name = "ExecutorPage"
-            Me.ExecutorPage.Padding = New System.Windows.Forms.Padding(2, 3, 2, 3)
-            Me.ExecutorPage.Size = New System.Drawing.Size(683, 658)
+            Me.ExecutorPage.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+            Me.ExecutorPage.Size = New System.Drawing.Size(585, 489)
             Me.ExecutorPage.TabIndex = 3
             Me.ExecutorPage.Text = "执行设置"
             Me.ExecutorPage.UseVisualStyleBackColor = True
@@ -937,11 +944,11 @@
             Me.SecurityList.Dock = System.Windows.Forms.DockStyle.Fill
             Me.SecurityList.FullRowSelect = True
             Me.SecurityList.HideSelection = False
-            Me.SecurityList.Location = New System.Drawing.Point(2, 28)
-            Me.SecurityList.Margin = New System.Windows.Forms.Padding(2, 3, 2, 3)
+            Me.SecurityList.Location = New System.Drawing.Point(2, 27)
+            Me.SecurityList.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
             Me.SecurityList.MultiSelect = False
             Me.SecurityList.Name = "SecurityList"
-            Me.SecurityList.Size = New System.Drawing.Size(679, 627)
+            Me.SecurityList.Size = New System.Drawing.Size(581, 460)
             Me.SecurityList.TabIndex = 11
             Me.SecurityList.UseCompatibleStateImageBehavior = False
             Me.SecurityList.View = System.Windows.Forms.View.Details
@@ -959,9 +966,9 @@
             'ExecutorToolStrip
             '
             Me.ExecutorToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ExecutorSlotsLabel, Me.ExecutorSlotsText, Me.ExecutorSeperator0, Me.ExecutorSecurityLabel, Me.ExecutorSecurityCombo, Me.ExecutorSeperator1, Me.AddSecurityButton, Me.RemoveSecurityButton, Me.ExecutorSeperator2, Me.ApplyExecutorButton})
-            Me.ExecutorToolStrip.Location = New System.Drawing.Point(2, 3)
+            Me.ExecutorToolStrip.Location = New System.Drawing.Point(2, 2)
             Me.ExecutorToolStrip.Name = "ExecutorToolStrip"
-            Me.ExecutorToolStrip.Size = New System.Drawing.Size(679, 25)
+            Me.ExecutorToolStrip.Size = New System.Drawing.Size(581, 25)
             Me.ExecutorToolStrip.TabIndex = 10
             '
             'ExecutorSlotsLabel
@@ -974,7 +981,7 @@
             '
             Me.ExecutorSlotsText.AutoSize = False
             Me.ExecutorSlotsText.Name = "ExecutorSlotsText"
-            Me.ExecutorSlotsText.Size = New System.Drawing.Size(34, 23)
+            Me.ExecutorSlotsText.Size = New System.Drawing.Size(30, 23)
             Me.ExecutorSlotsText.ToolTipText = "允许同时进行的任务数量, 推荐区间为 [CPU 的个数, CPU 的个数*2]"
             '
             'ExecutorSeperator0
@@ -994,7 +1001,7 @@
             Me.ExecutorSecurityCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.ExecutorSecurityCombo.Items.AddRange(New Object() {"启用", "禁用"})
             Me.ExecutorSecurityCombo.Name = "ExecutorSecurityCombo"
-            Me.ExecutorSecurityCombo.Size = New System.Drawing.Size(55, 24)
+            Me.ExecutorSecurityCombo.Size = New System.Drawing.Size(48, 25)
             Me.ExecutorSecurityCombo.ToolTipText = "启用安全会略微降低执行效率, 但可以避免评测代码对计算机造成破坏"
             '
             'ExecutorSeperator1
@@ -1042,11 +1049,10 @@
             '
             Me.DataSourcePage.Controls.Add(Me.DataSourceSplit)
             Me.DataSourcePage.Controls.Add(Me.DataSourceToolStrip)
-            Me.DataSourcePage.Location = New System.Drawing.Point(4, 25)
-            Me.DataSourcePage.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
+            Me.DataSourcePage.Location = New System.Drawing.Point(4, 22)
             Me.DataSourcePage.Name = "DataSourcePage"
-            Me.DataSourcePage.Padding = New System.Windows.Forms.Padding(3, 4, 3, 4)
-            Me.DataSourcePage.Size = New System.Drawing.Size(683, 658)
+            Me.DataSourcePage.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
+            Me.DataSourcePage.Size = New System.Drawing.Size(585, 489)
             Me.DataSourcePage.TabIndex = 5
             Me.DataSourcePage.Text = "数据源"
             Me.DataSourcePage.UseVisualStyleBackColor = True
@@ -1054,8 +1060,8 @@
             'DataSourceSplit
             '
             Me.DataSourceSplit.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.DataSourceSplit.Location = New System.Drawing.Point(3, 29)
-            Me.DataSourceSplit.Margin = New System.Windows.Forms.Padding(2, 3, 2, 3)
+            Me.DataSourceSplit.Location = New System.Drawing.Point(3, 28)
+            Me.DataSourceSplit.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
             Me.DataSourceSplit.Name = "DataSourceSplit"
             Me.DataSourceSplit.Orientation = System.Windows.Forms.Orientation.Horizontal
             '
@@ -1066,8 +1072,9 @@
             'DataSourceSplit.Panel2
             '
             Me.DataSourceSplit.Panel2.Controls.Add(Me.DataSourceProperty)
-            Me.DataSourceSplit.Size = New System.Drawing.Size(677, 625)
-            Me.DataSourceSplit.SplitterDistance = 215
+            Me.DataSourceSplit.Size = New System.Drawing.Size(579, 458)
+            Me.DataSourceSplit.SplitterDistance = 157
+            Me.DataSourceSplit.SplitterWidth = 3
             Me.DataSourceSplit.TabIndex = 12
             '
             'DataSourceList
@@ -1077,10 +1084,10 @@
             Me.DataSourceList.FullRowSelect = True
             Me.DataSourceList.HideSelection = False
             Me.DataSourceList.Location = New System.Drawing.Point(0, 0)
-            Me.DataSourceList.Margin = New System.Windows.Forms.Padding(2, 3, 2, 3)
+            Me.DataSourceList.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
             Me.DataSourceList.MultiSelect = False
             Me.DataSourceList.Name = "DataSourceList"
-            Me.DataSourceList.Size = New System.Drawing.Size(677, 215)
+            Me.DataSourceList.Size = New System.Drawing.Size(579, 157)
             Me.DataSourceList.TabIndex = 1
             Me.DataSourceList.UseCompatibleStateImageBehavior = False
             Me.DataSourceList.View = System.Windows.Forms.View.Details
@@ -1100,19 +1107,19 @@
             Me.DataSourceProperty.BackColor = System.Drawing.SystemColors.Window
             Me.DataSourceProperty.Dock = System.Windows.Forms.DockStyle.Fill
             Me.DataSourceProperty.Location = New System.Drawing.Point(0, 0)
-            Me.DataSourceProperty.Margin = New System.Windows.Forms.Padding(2, 3, 2, 3)
+            Me.DataSourceProperty.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
             Me.DataSourceProperty.Name = "DataSourceProperty"
             Me.DataSourceProperty.PropertySort = System.Windows.Forms.PropertySort.Categorized
-            Me.DataSourceProperty.Size = New System.Drawing.Size(677, 406)
+            Me.DataSourceProperty.Size = New System.Drawing.Size(579, 298)
             Me.DataSourceProperty.TabIndex = 6
             Me.DataSourceProperty.ToolbarVisible = False
             '
             'DataSourceToolStrip
             '
             Me.DataSourceToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AddDataSourceButton, Me.RemoveDataSourceButton, Me.DataSourceBar0, Me.ApplyDataSourceButton})
-            Me.DataSourceToolStrip.Location = New System.Drawing.Point(3, 4)
+            Me.DataSourceToolStrip.Location = New System.Drawing.Point(3, 3)
             Me.DataSourceToolStrip.Name = "DataSourceToolStrip"
-            Me.DataSourceToolStrip.Size = New System.Drawing.Size(677, 25)
+            Me.DataSourceToolStrip.Size = New System.Drawing.Size(579, 25)
             Me.DataSourceToolStrip.TabIndex = 11
             '
             'AddDataSourceButton
@@ -1174,24 +1181,18 @@
             '
             Me.ServiceTimer.Interval = 500
             '
-            'Add22OJSSuiteMenu
-            '
-            Me.Add22OJSSuiteMenu.Name = "Add22OJSSuiteMenu"
-            Me.Add22OJSSuiteMenu.Size = New System.Drawing.Size(152, 22)
-            Me.Add22OJSSuiteMenu.Text = "22OJS 格式"
-            '
             'ConsoleForm
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 16.0!)
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.ClientSize = New System.Drawing.Size(915, 749)
+            Me.ClientSize = New System.Drawing.Size(784, 562)
             Me.Controls.Add(Me.SplitContainer)
             Me.Controls.Add(Me.StatusStrip)
             Me.Controls.Add(Me.MenuStrip)
             Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
             Me.KeyPreview = True
             Me.MainMenuStrip = Me.MenuStrip
-            Me.Margin = New System.Windows.Forms.Padding(2, 3, 2, 3)
+            Me.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
             Me.Name = "ConsoleForm"
             Me.Text = "VijosNT 控制台"
             Me.MenuStrip.ResumeLayout(False)
