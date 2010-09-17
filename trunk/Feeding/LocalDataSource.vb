@@ -5,6 +5,10 @@ Namespace Feeding
     Friend Class LocalDataSource
         Inherits DataSourceBase
 
+        Public Sub New(ByVal [Namespace] As String)
+            MyBase.New([Namespace])
+        End Sub
+
         Public Overrides Function Take() As Nullable(Of DataSourceRecord)
             Dim Id As Nullable(Of Int32) = Record.Acquire()
             If Not Id.HasValue Then _

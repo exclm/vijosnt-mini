@@ -95,7 +95,7 @@ Namespace Feeding
                 Dim Context As FeedContext
                 Context.Source = Source
                 Context.Id = Record.Value.Id
-                If Not Queue(Record.Value.FileName, New MemoryStream(Encoding.Default.GetBytes(Record.Value.SourceCode)), AddressOf FeedCompletion, Context) Then
+                If Not Queue(Source.Namespace, Record.Value.FileName, New MemoryStream(Encoding.Default.GetBytes(Record.Value.SourceCode)), AddressOf FeedCompletion, Context) Then
                     Source.Untake(Record.Value.Id)
                     Return Index
                 End If
@@ -108,7 +108,7 @@ Namespace Feeding
             Context.Source.Untake(Context.Id, Result)
         End Sub
 
-        Public Function Queue(ByVal FileName As String, ByVal SourceCode As Stream, ByVal Completion As TestCompletion, ByVal State As Object) As Boolean
+        Public Function Queue(ByVal [Namespace] As String, ByVal FileName As String, ByVal SourceCode As Stream, ByVal Completion As TestCompletion, ByVal State As Object) As Boolean
             If Not m_AllowQueuing Then _
                 Return False
 
@@ -129,7 +129,7 @@ Namespace Feeding
             Context.Completion = Completion
             Context.CompletionState = State
             Context.Compiler = m_CompilerPool.TryGet(Path.GetExtension(FileName))
-            Context.TestCases = m_TestSuitePool.TryLoad(Path.GetFileNameWithoutExtension(FileName))
+            Context.TestCases = m_TestSuitePool.TryLoad([Namespace], Path.GetFileNameWithoutExtension(FileName))
             Context.Flag = TestResultFlag.None
             Context.Score = 0
             Context.TimeUsage = 0
