@@ -690,7 +690,7 @@ Namespace Foreground
             Using Dialog As New FolderBrowserDialog
                 Dialog.Description = "请选择包含 22OJS 格式数据集的目录"
                 If Dialog.ShowDialog() = DialogResult.OK Then
-                    TestSuiteMapping.Add("*", String.Empty, "22OJS", "Root=" & Dialog.SelectedPath & ";MemoryQuota=134217728")
+                    TestSuiteMapping.Add("*", String.Empty, "_22OJS", "Root=" & Dialog.SelectedPath & ";MemoryQuota=134217728")
                     ApplyTestSuiteButton.Enabled = True
                     RefreshPage()
                 End If
