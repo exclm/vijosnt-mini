@@ -9,26 +9,27 @@
 
         Shared Sub New()
             Using Command As SQLiteCommand = Database.CreateCommand( _
-                    "CREATE TABLE IF NOT EXISTS TestSuiteMapping (" & _
+                    "CREATE TABLE IF NOT EXISTS TestSuiteMapping2 (" & _
                     "Id INTEGER PRIMARY KEY AUTOINCREMENT, " & _
                     "Pattern TEXT, " & _
+                    "NamespacePattern TEXT, " & _
                     "ClassName TEXT, " & _
                     "Parameter TEXT)")
                 Command.ExecuteNonQuery()
             End Using
 
             m_SelectCommand = Database.CreateCommand( _
-                "SELECT * FROM TestSuiteMapping ORDER BY Id")
+                "SELECT * FROM TestSuiteMapping2 ORDER BY Id")
             m_SelectConfigCommand = Database.CreateCommand( _
-                "SELECT * FROM TestSuiteMapping WHERE Id = @Id")
+                "SELECT * FROM TestSuiteMapping2 WHERE Id = @Id")
             m_InsertCommand = Database.CreateCommand( _
-                "INSERT INTO TestSuiteMapping (Id, Pattern, ClassName, Parameter) VALUES (NULL, @Pattern, @ClassName, @Parameter)")
+                "INSERT INTO TestSuiteMapping2 (Id, Pattern, NamespacePattern, ClassName, Parameter) VALUES (NULL, @Pattern, @NamespacePattern, @ClassName, @Parameter)")
             m_UpdateCommand = Database.CreateCommand( _
-                "UPDATE TestSuiteMapping SET Pattern = @Pattern, ClassName = @ClassName, Parameter = @Parameter WHERE Id = @Id")
+                "UPDATE TestSuiteMapping2 SET Pattern = @Pattern, NamespacePattern = @NamespacePattern, ClassName = @ClassName, Parameter = @Parameter WHERE Id = @Id")
             m_DeleteCommand = Database.CreateCommand( _
-                "DELETE FROM TestSuiteMapping WHERE Id = @Id")
+                "DELETE FROM TestSuiteMapping2 WHERE Id = @Id")
             m_UpdateIdCommand = Database.CreateCommand( _
-                "UPDATE TestSuiteMapping SET Id = @Id WHERE Id = @OriginalId")
+                "UPDATE TestSuiteMapping2 SET Id = @Id WHERE Id = @OriginalId")
         End Sub
 
         Public Shared Function GetAll() As IDataReader
@@ -50,10 +51,11 @@
             End Using
         End Function
 
-        Public Shared Sub Add(ByVal Pattern As String, ByVal ClassName As String, ByVal Parameter As String)
+        Public Shared Sub Add(ByVal Pattern As String, ByVal NamespacePattern As String, ByVal ClassName As String, ByVal Parameter As String)
             Using Command As SQLiteCommand = m_InsertCommand.Clone()
                 With Command.Parameters
                     .AddWithValue("@Pattern", Pattern)
+                    .AddWithValue("@NamespacePattern", NamespacePattern)
                     .AddWithValue("@ClassName", ClassName)
                     .AddWithValue("@Parameter", Parameter)
                 End With
@@ -68,11 +70,12 @@
             End Using
         End Sub
 
-        Public Shared Sub Update(ByVal Id As Int32, ByVal Pattern As String, ByVal ClassName As String, ByVal Parameter As String)
+        Public Shared Sub Update(ByVal Id As Int32, ByVal Pattern As String, ByVal NamespacePattern As String, ByVal ClassName As String, ByVal Parameter As String)
             Using Command As SQLiteCommand = m_UpdateCommand.Clone()
                 With Command.Parameters
                     .AddWithValue("@Id", Id)
                     .AddWithValue("@Pattern", Pattern)
+                    .AddWithValue("@NamespacePattern", NamespacePattern)
                     .AddWithValue("@ClassName", ClassName)
                     .AddWithValue("@Parameter", Parameter)
                 End With

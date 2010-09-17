@@ -4,6 +4,7 @@ Namespace LocalDb
     Friend Class DataSourceConfig
         Private m_Id As Int32
         Private m_Class As DataSourceClass
+        Private m_Namespace As String
         Private m_Parameter As String
         Private m_PollingInterval As Nullable(Of Int32)
         Private m_IpcAnnouncement As String
@@ -12,6 +13,7 @@ Namespace LocalDb
         Public Sub New(ByVal Reader As IDataReader)
             m_Id = Reader("Id")
             m_Class = [Enum].Parse(GetType(DataSourceClass), Reader("ClassName"))
+            m_Namespace = Reader("Namespace")
             m_Parameter = Reader("Parameter")
             m_PollingInterval = DbToLocalInt32(Reader("PollingInterval"))
             m_IpcAnnouncement = Reader("IpcAnnouncement")
@@ -19,7 +21,7 @@ Namespace LocalDb
         End Sub
 
         Private Sub Commit()
-            DataSourceMapping.Update(m_Id, m_Class.ToString(), m_Parameter, m_PollingInterval, m_IpcAnnouncement, m_HttpAnnouncement)
+            DataSourceMapping.Update(m_Id, m_Class.ToString(), m_Namespace, m_Parameter, m_PollingInterval, m_IpcAnnouncement, m_HttpAnnouncement)
         End Sub
 
         <DisplayName("类型"), CategoryAttribute("数据源设置"), DescriptionAttribute("数据源的类型")> _
@@ -30,6 +32,18 @@ Namespace LocalDb
 
             Set(ByVal Value As DataSourceClass)
                 m_Class = Value
+                Commit()
+            End Set
+        End Property
+
+        <DisplayName("名字空间"), CategoryAttribute("数据源设置"), DescriptionAttribute("数据源所使用数据集的名字空间")> _
+        Public Property [Namespace]() As String
+            Get
+                Return m_Namespace
+            End Get
+
+            Set(ByVal Value As String)
+                m_Namespace = Value
                 Commit()
             End Set
         End Property

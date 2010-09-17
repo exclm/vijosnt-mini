@@ -99,7 +99,7 @@ Namespace Foreground
                     CompilerList_SelectedIndexChanged(Nothing, Nothing)
                 Case "TestSuitePage"
                     Using Reader As IDataReader = TestSuiteMapping.GetAll()
-                        RefreshListView(TestSuiteList, Reader, "Id", "Pattern", "ClassName", "Parameter")
+                        RefreshListView(TestSuiteList, Reader, "Id", "Pattern", "NamespacePattern", "ClassName", "Parameter")
                     End Using
                     TestSuiteList_SelectedIndexChanged(Nothing, Nothing)
                 Case "ExecutorPage"
@@ -118,7 +118,7 @@ Namespace Foreground
                     RefreshSecurity()
                 Case "DataSourcePage"
                     Using Reader As IDataReader = DataSourceMapping.GetHeaders()
-                        RefreshListView(DataSourceList, Reader, "Id", "ClassName", "Parameter")
+                        RefreshListView(DataSourceList, Reader, "Id", "ClassName", "Namespace", "Parameter")
                     End Using
                     DataSourceList_SelectedIndexChanged(Nothing, Nothing)
             End Select
@@ -489,13 +489,13 @@ Namespace Foreground
         End Sub
 
         Private Sub AddTestSuiteButton_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddTestSuiteButton.ButtonClick, NewTestSuiteMenu.Click
-            TestSuiteMapping.Add("*", "APlusB", String.Empty)
+            TestSuiteMapping.Add("*", String.Empty, "APlusB", String.Empty)
             ApplyTestSuiteButton.Enabled = True
             RefreshPage()
         End Sub
 
         Private Sub AddAPlusBMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddAPlusBMenu.Click
-            TestSuiteMapping.Add("A+B", "APlusB", String.Empty)
+            TestSuiteMapping.Add("A+B", String.Empty, "APlusB", String.Empty)
             ApplyTestSuiteButton.Enabled = True
             RefreshPage()
         End Sub
@@ -504,7 +504,7 @@ Namespace Foreground
             Using Dialog As New FolderBrowserDialog
                 Dialog.Description = "请选择包含 Vijos 格式数据集的目录"
                 If Dialog.ShowDialog() = DialogResult.OK Then
-                    TestSuiteMapping.Add("*", "Vijos", "Root=" & Dialog.SelectedPath & ";MemoryQuota=134217728")
+                    TestSuiteMapping.Add("*", String.Empty, "Vijos", "Root=" & Dialog.SelectedPath & ";MemoryQuota=134217728")
                     ApplyTestSuiteButton.Enabled = True
                     RefreshPage()
                 End If
@@ -658,7 +658,7 @@ Namespace Foreground
         End Sub
 
         Private Sub AddDataSourceButton_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddDataSourceButton.ButtonClick, NewDataSourceMenu.Click
-            DataSourceMapping.Add("Vijos", String.Empty, Nothing, String.Empty, String.Empty)
+            DataSourceMapping.Add("Vijos", String.Empty, String.Empty, Nothing, String.Empty, String.Empty)
             ApplyDataSourceButton.Enabled = True
             RefreshPage()
         End Sub
@@ -680,7 +680,7 @@ Namespace Foreground
         End Sub
 
         Private Sub VijosDataSourceMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles VijosDataSourceMenu.Click
-            DataSourceMapping.Add("Vijos", "Server=(local);Database=vijos;UserName=sa;Password=admin", Nothing, String.Empty, String.Empty)
+            DataSourceMapping.Add("Vijos", String.Empty, "Server=(local);Database=vijos;UserName=sa;Password=admin", Nothing, String.Empty, String.Empty)
             ApplyDataSourceButton.Enabled = True
             RefreshPage()
         End Sub
@@ -690,7 +690,7 @@ Namespace Foreground
             Using Dialog As New FolderBrowserDialog
                 Dialog.Description = "请选择包含 22OJS 格式数据集的目录"
                 If Dialog.ShowDialog() = DialogResult.OK Then
-                    TestSuiteMapping.Add("*", "22OJS", "Root=" & Dialog.SelectedPath & ";MemoryQuota=134217728")
+                    TestSuiteMapping.Add("*", String.Empty, "22OJS", "Root=" & Dialog.SelectedPath & ";MemoryQuota=134217728")
                     ApplyTestSuiteButton.Enabled = True
                     RefreshPage()
                 End If
