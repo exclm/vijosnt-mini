@@ -40,13 +40,13 @@ Namespace Feeding
 
         Private Function ReadDataSource(ByVal Prefixes As HttpListenerPrefixCollection) As IEnumerable(Of DataSourceEntry)
             Dim Result As New List(Of DataSourceEntry)()
-            Result.Add(New DataSourceEntry(Me, New LocalDataSource(), String.Empty, Nothing, Nothing))
+            Result.Add(New DataSourceEntry(Me, New LocalDataSource(String.Empty), String.Empty, Nothing, Nothing))
             Using Reader As IDataReader = DataSourceMapping.GetAll()
                 While Reader.Read()
                     Dim DataSource As DataSourceBase
                     Select Case Reader("ClassName")
                         Case "Vijos"
-                            DataSource = New VijosDataSource(Reader("Parameter"))
+                            DataSource = New VijosDataSource(Reader("Namespace"), Reader("Parameter"))
                         Case Else
                             EventLog.WriteEntry(My.Resources.ServiceName, "数据源加载失败" & vbCrLf & "未找到类名为 " & Reader("ClassName") & " 的数据源提供程序。", EventLogEntryType.Warning)
                             Continue While

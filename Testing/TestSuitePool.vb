@@ -19,7 +19,8 @@ Namespace Testing
             Using Reader As IDataReader = TestSuiteMapping.GetAll()
                 While Reader.Read()
                     Dim Entry As TestSuiteEntry
-                    Entry.Regex = New Regex(RegexSimpleEscape(Reader("Pattern")), RegexOptions.IgnoreCase)
+                    Entry.NamespaceRegex = New Regex(RegexSimpleEscape(Reader("NamespacePattern")), RegexOptions.IgnoreCase)
+                    Entry.IdRegex = New Regex(RegexSimpleEscape(Reader("Pattern")), RegexOptions.IgnoreCase)
                     Select Case Reader("ClassName")
                         Case "APlusB"
                             Entry.TestSuite = New APlusBTestSuite()
@@ -36,11 +37,11 @@ Namespace Testing
             Return Result
         End Function
 
-        Public Function TryLoad(ByVal Id As String) As IEnumerable(Of TestCase)
+        Public Function TryLoad(ByVal [Namespace] As String, ByVal Id As String) As IEnumerable(Of TestCase)
             Dim Entries As IEnumerable(Of TestSuiteEntry) = m_Entries
 
             For Each Entry As TestSuiteEntry In Entries
-                If Entry.Regex.IsMatch(Id) Then
+                If Entry.NamespaceRegex.IsMatch([Namespace]) AndAlso Entry.IdRegex.IsMatch(Id) Then
                     Dim Result As IEnumerable(Of TestCase) = Entry.TestSuite.TryLoad(Id)
                     If Result IsNot Nothing Then _
                         Return Result

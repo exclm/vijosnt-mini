@@ -15,7 +15,9 @@ Namespace Feeding
         Private m_UpdateProblemCommand As SqlCommand
         Private m_UpdateUserCommand As SqlCommand
 
-        Public Sub New(ByVal Parameters As String)
+        Public Sub New(ByVal [Namespace] As String, ByVal Parameters As String)
+            MyBase.New([Namespace])
+
             Dim Server As String = Nothing
             Dim Database As String = Nothing
             Dim UserName As String = Nothing
