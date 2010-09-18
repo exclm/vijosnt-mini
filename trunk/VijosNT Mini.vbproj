@@ -226,6 +226,7 @@
     <Compile Include="LocalDb\TestSuiteMapping.vb" />
     <Compile Include="LocalDb\UntrustedEnvironments.vb" />
     <Compile Include="Remoting\Session.vb" />
+    <Compile Include="Testing\22OJSTestSuite.vb" />
     <Compile Include="Testing\APlusBTestSuite.vb" />
     <Compile Include="Testing\DefaultJudger.vb" />
     <Compile Include="Testing\LocalTestCase.vb" />
