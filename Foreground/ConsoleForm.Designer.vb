@@ -63,6 +63,7 @@
             Me.LocalRecordBar0 = New System.Windows.Forms.ToolStripSeparator()
             Me.RetestRecordMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.DeleteRecord = New System.Windows.Forms.ToolStripMenuItem()
+            Me._22OJSDataSourceMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.RootToolStrip = New System.Windows.Forms.ToolStrip()
             Me.StartButton = New System.Windows.Forms.ToolStripButton()
             Me.StopButton = New System.Windows.Forms.ToolStripButton()
@@ -153,7 +154,6 @@
             Me.DataSourceBar0 = New System.Windows.Forms.ToolStripSeparator()
             Me.ApplyDataSourceButton = New System.Windows.Forms.ToolStripButton()
             Me.ServiceTimer = New System.Windows.Forms.Timer(Me.components)
-            Me._22OJSDataSourceMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.MenuStrip.SuspendLayout()
             Me.StatusStrip.SuspendLayout()
             Me.SplitContainer.Panel1.SuspendLayout()
@@ -447,6 +447,12 @@
             Me.DeleteRecord.Name = "DeleteRecord"
             Me.DeleteRecord.Size = New System.Drawing.Size(167, 22)
             Me.DeleteRecord.Text = "删除(&D)"
+            '
+            '_22OJSDataSourceMenu
+            '
+            Me._22OJSDataSourceMenu.Name = "_22OJSDataSourceMenu"
+            Me._22OJSDataSourceMenu.Size = New System.Drawing.Size(152, 22)
+            Me._22OJSDataSourceMenu.Text = "22OJS 数据源"
             '
             'RootToolStrip
             '
@@ -854,30 +860,30 @@
             'NewTestSuiteMenu
             '
             Me.NewTestSuiteMenu.Name = "NewTestSuiteMenu"
-            Me.NewTestSuiteMenu.Size = New System.Drawing.Size(152, 22)
+            Me.NewTestSuiteMenu.Size = New System.Drawing.Size(148, 22)
             Me.NewTestSuiteMenu.Text = "新数据集映射"
             '
             'AddTestSuiteBar0
             '
             Me.AddTestSuiteBar0.Name = "AddTestSuiteBar0"
-            Me.AddTestSuiteBar0.Size = New System.Drawing.Size(149, 6)
+            Me.AddTestSuiteBar0.Size = New System.Drawing.Size(145, 6)
             '
             'AddAPlusBMenu
             '
             Me.AddAPlusBMenu.Name = "AddAPlusBMenu"
-            Me.AddAPlusBMenu.Size = New System.Drawing.Size(152, 22)
+            Me.AddAPlusBMenu.Size = New System.Drawing.Size(148, 22)
             Me.AddAPlusBMenu.Text = "A+B"
             '
             'AddVijosSuiteMenu
             '
             Me.AddVijosSuiteMenu.Name = "AddVijosSuiteMenu"
-            Me.AddVijosSuiteMenu.Size = New System.Drawing.Size(152, 22)
+            Me.AddVijosSuiteMenu.Size = New System.Drawing.Size(148, 22)
             Me.AddVijosSuiteMenu.Text = "Vijos 格式"
             '
             'Add22OJSSuiteMenu
             '
             Me.Add22OJSSuiteMenu.Name = "Add22OJSSuiteMenu"
-            Me.Add22OJSSuiteMenu.Size = New System.Drawing.Size(152, 22)
+            Me.Add22OJSSuiteMenu.Size = New System.Drawing.Size(148, 22)
             Me.Add22OJSSuiteMenu.Text = "22OJS 格式"
             '
             'RemoveTestSuiteButton
@@ -1194,12 +1200,6 @@
             'ServiceTimer
             '
             Me.ServiceTimer.Interval = 500
-            '
-            '_22OJSDataSourceMenu
-            '
-            Me._22OJSDataSourceMenu.Name = "_22OJSDataSourceMenu"
-            Me._22OJSDataSourceMenu.Size = New System.Drawing.Size(152, 22)
-            Me._22OJSDataSourceMenu.Text = "22OJS 数据源"
             '
             'ConsoleForm
             '
