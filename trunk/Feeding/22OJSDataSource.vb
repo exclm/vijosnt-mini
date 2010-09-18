@@ -70,9 +70,9 @@ Namespace Feeding
             m_UpdateTakenCommand = New SqlCommand( _
                 "UPDATE rec SET zt = 'Running' WHERE ID = @Id AND zt = 'Waiting'")
             m_UpdateUntakeCommand = New SqlCommand( _
-                "UPDATE Record SET zt = 'Waiting' WHERE ID = @Id")
+                "UPDATE rec SET zt = 'Waiting' WHERE ID = @Id")
             m_UpdateFinalCommand = New SqlCommand( _
-                "UPDATE Record SET zt = @Status, data = @Details WHERE ID = @Id")
+                "UPDATE rec SET zt = @Status, data = @Details WHERE ID = @Id")
             m_UpdateUserCommand = New SqlCommand( _
                 "DECLARE @ProblemListOKPtr varbinary(16)" & vbCrLf & _
                 "UPDATE udata" & vbCrLf & _
@@ -134,8 +134,8 @@ Namespace Feeding
                 Using Reader As SqlDataReader = Command.ExecuteReader()
                     If Not Reader.Read() Then _
                         Return Nothing
-                    Result.FileName = "P" & Reader("ProblemID") & GetCompilerExtension(Reader("Compiler"))
-                    Result.SourceCode = Reader("Code")
+                    Result.FileName = "Q" & Reader("qid") & GetCompilerExtension(Reader("codem"))
+                    Result.SourceCode = Reader("code")
                 End Using
             End Using
             Return Result
