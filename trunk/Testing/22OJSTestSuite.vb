@@ -96,11 +96,16 @@
                 outf = "output" & i.ToString & ".txt"
             Loop
             Count = i
+            i = 0
+            inf = "input" & i.ToString & ".txt"
+            outf = "output" & i.ToString & ".txt"
             Dim Result As New List(Of Config)
             Do While File.Exists(Path.Combine(ProblemRoot, inf)) And File.Exists(Path.Combine(ProblemRoot, outf))
                 i += 1
                 Result.Add(New Config(i, inf, outf, _
                     Math.BigMul(Int32.Parse(TimeLimit), 10000), 100 / Count))
+                inf = "input" & i.ToString & ".txt"
+                outf = "output" & i.ToString & ".txt"
             Loop
             Return Result
 

@@ -14,6 +14,7 @@ Namespace Feeding
         Private m_UpdateFinalCommand As SqlCommand
         Private m_UpdateProblemCommand As SqlCommand
         Private m_UpdateUserCommand As SqlCommand
+        Private m_UpdateUserSubmitCommand As SqlCommand
 
         Public Sub New(ByVal [Namespace] As String, ByVal Parameters As String)
             MyBase.New([Namespace])
@@ -62,11 +63,11 @@ Namespace Feeding
             m_ConnectionString = ConnectionBuilder.ToString()
 
             m_SelectPendingCommand = New SqlCommand( _
-                "SELECT ID FROM rec WHERE zt = 'Waiting' ORDER BY ID")
+                "SELECT ID,[user] FROM rec WHERE zt = 'Waiting' ORDER BY ID")
             m_SelectCodeCommand = New SqlCommand( _
-                "SELECT qid, codem, code FROM Record WHERE ID = @Id")
+                "SELECT qid, codem, code FROM rec WHERE ID = @Id")
             m_SelectHeaderCommand = New SqlCommand( _
-                "SELECT qid, user FROM Record WHERE ID = @Id")
+                "SELECT qid, [user] FROM rec WHERE ID = @Id")
             m_UpdateTakenCommand = New SqlCommand( _
                 "UPDATE rec SET zt = 'Running' WHERE ID = @Id AND zt = 'Waiting'")
             m_UpdateUntakeCommand = New SqlCommand( _
@@ -82,6 +83,8 @@ Namespace Feeding
                 "UPDATETEXT udata.tgq @ProblemListOKPtr NULL 0 @ProblemId" & vbCrLf & _
                 "UPDATETEXT udata.tgq @ProblemListOKPtr NULL 0 ' '" & vbCrLf & _
                 "END;")
+            m_UpdateUserSubmitCommand = New SqlCommand( _
+                "UPDATE udata SET tj = tj + 1 WHERE [user] = @Id")
         End Sub
 
         Private Function CloneConnection() As SqlConnection
@@ -100,7 +103,7 @@ Namespace Feeding
             Select Case CompilerName.ToLower()
                 Case "c", "gcc"
                     Return ".c"
-                Case "cpp", "gpp", "g++"
+                Case "cpp", "gpp", "g++", "c++"
                     Return ".cpp"
                 Case Else
                     Return ".pas"
@@ -114,9 +117,12 @@ Namespace Feeding
                 Reader As SqlDataReader = Command0.ExecuteReader()
                 While Reader.Read()
                     Using Connection1 As SqlConnection = CloneConnection(), _
-                        Command1 As SqlCommand = CloneCommand(m_UpdateTakenCommand, Connection1)
+                        Command1 As SqlCommand = CloneCommand(m_UpdateTakenCommand, Connection1), _
+                         Command2 As SqlCommand = CloneCommand(m_UpdateUserSubmitCommand, Connection1)
                         Dim Id As Int32 = Reader("Id")
                         Command1.Parameters.AddWithValue("@Id", Id)
+                        Command2.Parameters.AddWithValue("@Id", Reader("user"))
+                        Command2.ExecuteNonQuery()
                         If Command1.ExecuteNonQuery() <> 0 Then
                             TakenId = Id
                             Exit While
@@ -152,7 +158,6 @@ Namespace Feeding
         Public Overloads Overrides Sub Untake(ByVal Id As Int32, ByVal Result As TestResult)
             Dim ProblemId As String
             Dim UserId As String
-
             Using Connection As SqlConnection = CloneConnection(), _
                 Command As SqlCommand = CloneCommand(m_SelectHeaderCommand, Connection)
                 Command.Parameters.AddWithValue("@Id", Id)
@@ -207,8 +212,8 @@ Namespace Feeding
 
                 With Command0.Parameters
                     .AddWithValue("@Id", Id)
-                    .AddWithValue("@Status", Result.Flag.ToString)
-                    .AddWithValue("@Details", Details.ToString())
+                    .AddWithValue("@Status", FormatEnumString(Result.Flag.ToString))
+                    .AddWithValue("@Details", Replace(Details.ToString(), vbCrLf, "<br />" & vbCrLf))
                 End With
                 Command0.ExecuteNonQuery()
 
