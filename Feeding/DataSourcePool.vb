@@ -47,6 +47,8 @@ Namespace Feeding
                     Select Case Reader("ClassName")
                         Case "Vijos"
                             DataSource = New VijosDataSource(Reader("Namespace"), Reader("Parameter"))
+                        Case "_22OJS"
+                            DataSource = New _22OJSDataSource(Reader("Namespace"), Reader("Parameter"))
                         Case Else
                             EventLog.WriteEntry(My.Resources.ServiceName, "数据源加载失败" & vbCrLf & "未找到类名为 " & Reader("ClassName") & " 的数据源提供程序。", EventLogEntryType.Warning)
                             Continue While
