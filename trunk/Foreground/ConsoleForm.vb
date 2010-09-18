@@ -511,17 +511,6 @@ Namespace Foreground
             End Using
         End Sub
 
-        Private Sub Add22OJSSuiteMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Add22OJSSuiteMenu.Click
-            Using Dialog As New FolderBrowserDialog
-                Dialog.Description = "请选择包含 22OJS 格式数据集的目录"
-                If Dialog.ShowDialog() = DialogResult.OK Then
-                    TestSuiteMapping.Add("*", String.Empty, "_22OJS", "Root=" & Dialog.SelectedPath & ";MemoryQuota=134217728")
-                    ApplyTestSuiteButton.Enabled = True
-                    RefreshPage()
-                End If
-            End Using
-        End Sub
-
         Private Sub RemoveTestSuiteButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RemoveTestSuiteButton.Click
             TestSuiteMapping.Remove(TestSuiteList.SelectedItems.Item(0).Tag)
             ApplyTestSuiteButton.Enabled = True
@@ -695,14 +684,17 @@ Namespace Foreground
             ApplyDataSourceButton.Enabled = True
             RefreshPage()
         End Sub
-
-        Private Sub _22OJSDataSourceMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _22OJSDataSourceMenu.Click
-            DataSourceMapping.Add("_22OJS", String.Empty, "Server=(local);Database=22OJS;UserName=sa;Password=admin", Nothing, String.Empty, String.Empty)
-            ApplyDataSourceButton.Enabled = True
-            RefreshPage()
-        End Sub
 #End Region
 
-
+        Private Sub Add22OJSSuiteMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Add22OJSSuiteMenu.Click
+            Using Dialog As New FolderBrowserDialog
+                Dialog.Description = "请选择包含 22OJS 格式数据集的目录"
+                If Dialog.ShowDialog() = DialogResult.OK Then
+                    TestSuiteMapping.Add("*", String.Empty, "_22OJS", "Root=" & Dialog.SelectedPath & ";MemoryQuota=134217728")
+                    ApplyTestSuiteButton.Enabled = True
+                    RefreshPage()
+                End If
+            End Using
+        End Sub
     End Class
 End Namespace
