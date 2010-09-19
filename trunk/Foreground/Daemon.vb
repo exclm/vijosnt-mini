@@ -199,8 +199,7 @@ Namespace Foreground
         End Sub
 
         Private Sub OnLocalRecordChanged()
-            Dim Invoker As New MethodInvoker(AddressOf OnLocalRecordChangedUnsafe)
-            Invoker.Invoke()
+            m_Console.Invoke(New MethodInvoker(AddressOf OnLocalRecordChangedUnsafe))
         End Sub
 
         Private Sub OnLocalRecordChangedUnsafe()
@@ -212,8 +211,7 @@ Namespace Foreground
         End Sub
 
         Public Sub RefreshLocalRecord()
-            Dim Invoker As New MethodInvoker(AddressOf RefreshLocalRecordUnsafe)
-            Invoker.Invoke()
+            m_Console.Invoke(New MethodInvoker(AddressOf RefreshLocalRecordUnsafe))
         End Sub
 
         Public Sub RefreshLocalRecordUnsafe()
