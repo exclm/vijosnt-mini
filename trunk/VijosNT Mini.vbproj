@@ -116,6 +116,7 @@
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -133,6 +134,7 @@
     <Import Include="System.Drawing" />
     <Import Include="System.IO" />
     <Import Include="System.Net" />
+    <Import Include="System.Net.Sockets" />
     <Import Include="System.Reflection" />
     <Import Include="System.Runtime.InteropServices" />
     <Import Include="System.Security.AccessControl" />
@@ -142,6 +144,7 @@
     <Import Include="System.Text.RegularExpressions" />
     <Import Include="System.Threading" />
     <Import Include="System.Timers" />
+    <Import Include="System.Web" />
     <Import Include="System.Windows.Forms" />
     <Import Include="System.Xml" />
     <Import Include="System.Xml.XPath" />
@@ -242,6 +245,7 @@
     <Compile Include="Testing\TestSuitePool.vb" />
     <Compile Include="Testing\VijosTestSuite.vb" />
     <Compile Include="Utility\AppPath.vb" />
+    <Compile Include="Utility\MiniHttpServer.vb" />
     <Compile Include="Utility\MiniThreadPool.vb" />
     <Compile Include="Utility\MiniTrigger.vb" />
     <Compile Include="Utility\MiscUtility.vb" />

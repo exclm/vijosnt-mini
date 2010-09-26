@@ -6,21 +6,21 @@ Namespace Feeding
         Implements IDisposable
 
         Private m_DataSources As IEnumerable(Of DataSourceEntry)
-        Private m_HttpListener As HttpListener
+        Private m_HttpServer As MiniHttpServer
         Private m_Runner As Runner
 
         Public Sub New(ByVal Runner As Runner)
             m_Runner = Runner
-            m_HttpListener = New HttpListener()
+            m_HttpServer = New MiniHttpServer()
             Reload()
         End Sub
 
         Public Sub Reload()
-            m_HttpListener.Stop()
-            DisposeDataSource(m_DataSources, m_HttpListener.Prefixes)
-            m_DataSources = ReadDataSource(m_HttpListener.Prefixes)
-            m_HttpListener.Start()
-            m_HttpListener.BeginGetContext(AddressOf OnContext, Nothing)
+            m_HttpServer.Stop()
+            If m_DataSources IsNot Nothing Then _
+                DisposeDataSource(m_DataSources)
+            m_DataSources = ReadDataSource()
+            m_HttpServer.Start(ReadPrefixes(m_DataSources))
         End Sub
 
         Public ReadOnly Property Runner() As Runner
@@ -29,16 +29,13 @@ Namespace Feeding
             End Get
         End Property
 
-        Private Sub DisposeDataSource(ByVal Entries As IEnumerable(Of DataSourceEntry), ByVal Prefixes As HttpListenerPrefixCollection)
-            If Entries IsNot Nothing Then
-                For Each Entry As DataSourceEntry In Entries
-                    Entry.Dispose()
-                Next
-            End If
-            Prefixes.Clear()
+        Private Sub DisposeDataSource(ByVal Entries As IEnumerable(Of DataSourceEntry))
+            For Each Entry As DataSourceEntry In Entries
+                Entry.Dispose()
+            Next
         End Sub
 
-        Private Function ReadDataSource(ByVal Prefixes As HttpListenerPrefixCollection) As IEnumerable(Of DataSourceEntry)
+        Private Function ReadDataSource() As IEnumerable(Of DataSourceEntry)
             Dim Result As New List(Of DataSourceEntry)()
             Result.Add(New DataSourceEntry(Me, New LocalDataSource(String.Empty), String.Empty, Nothing, Nothing))
             Using Reader As IDataReader = DataSourceMapping.GetAll()
@@ -56,14 +53,23 @@ Namespace Feeding
                     Dim IpcAnnouncement As String = Reader("IpcAnnouncement")
                     If IpcAnnouncement.Length = 0 Then IpcAnnouncement = Nothing
                     Dim HttpAnnouncement As String = Reader("HttpAnnouncement")
-                    If HttpAnnouncement.Length <> 0 Then
-                        Prefixes.Add(HttpAnnouncement & "/")
-                    Else
-                        HttpAnnouncement = Nothing
-                    End If
+                    If HttpAnnouncement.Length = 0 Then HttpAnnouncement = Nothing
                     Result.Add(New DataSourceEntry(Me, DataSource, IpcAnnouncement, HttpAnnouncement, DbToLocalInt32(Reader("PollingInterval"))))
                 End While
             End Using
+
+            Return Result
+        End Function
+
+        Private Function ReadPrefixes(ByVal Entries As IEnumerable(Of DataSourceEntry)) As IEnumerable(Of KeyValuePair(Of String, MiniHttpServer.Context))
+            Dim Result As New List(Of KeyValuePair(Of String, MiniHttpServer.Context))()
+
+            For Each Entry In Entries
+                Dim HttpAnnouncement = Entry.HttpAnnouncement
+                If HttpAnnouncement IsNot Nothing Then
+                    Result.Add(New KeyValuePair(Of String, MiniHttpServer.Context)(HttpAnnouncement, New MiniHttpServer.Context(AddressOf OnContext, Entry)))
+                End If
+            Next
 
             Return Result
         End Function
@@ -94,33 +100,24 @@ Namespace Feeding
             Return Count
         End Function
 
-        Private Sub OnContext(ByVal Result As IAsyncResult)
+        Private Function OnContext(ByVal State As Object, ByVal Session As MiniHttpServer.Session, ByVal Queries As SortedDictionary(Of String, String)) As Boolean
+            Dim Limit = 0
+
+            If Not Queries.ContainsKey("Limit") OrElse _
+                Not Int32.TryParse(Queries("Limit"), Limit) OrElse
+                Limit <= 0 Then _
+                Limit = Int32.MaxValue
+
+            Dim Builder = New StringBuilder()
+            Builder.AppendLine("VijosNT Mini " & Assembly.GetExecutingAssembly().GetName().Version.ToString())
+            Builder.AppendLine("Feeding " & DirectCast(State, DataSourceEntry).Feed(Limit) & " record(s)")
+
             Try
-                Dim Context As HttpListenerContext = m_HttpListener.EndGetContext(Result)
-                m_HttpListener.BeginGetContext(AddressOf OnContext, Nothing)
-                Context.Response.ContentType = "text/plain"
-                Dim UrlString As String = Context.Request.Url.ToString()
-                Dim DataSources As IEnumerable(Of DataSourceEntry) = m_DataSources
-                Dim Limit As Int32
-                If Not Int32.TryParse(Context.Request.QueryString("Limit"), Limit) OrElse
-                    Limit <= 0 Then _
-                    Limit = Int32.MaxValue
-                Dim Count As Int32 = 0
-                For Each Entry As DataSourceEntry In DataSources
-                    If Entry.MatchHttpAnnouncement(UrlString) Then
-                        Dim Current As Int32 = Entry.Feed(Limit)
-                        Count += Current
-                        Limit -= Current
-                        If Limit = 0 Then Exit For
-                    End If
-                Next
-                Using Writer As New StreamWriter(Context.Response.OutputStream)
-                    Writer.WriteLine("VijosNT Mini " & Assembly.GetExecutingAssembly().GetName().Version.ToString())
-                    Writer.WriteLine("Feeding " & Count & " record(s)")
-                End Using
+                Return Session.Write("text/plain", Builder.ToString())
             Catch ex As Exception
+                Return False
             End Try
-        End Sub
+        End Function
 
 #Region "IDisposable Support"
         Private disposedValue As Boolean ' 检测冗余的调用
@@ -129,8 +126,8 @@ Namespace Feeding
         Protected Overridable Sub Dispose(ByVal disposing As Boolean)
             If Not Me.disposedValue Then
                 If disposing Then
-                    m_HttpListener.Stop()
-                    DisposeDataSource(m_DataSources, m_HttpListener.Prefixes)
+                    m_HttpServer.Stop()
+                    DisposeDataSource(m_DataSources)
                 End If
             End If
             Me.disposedValue = True

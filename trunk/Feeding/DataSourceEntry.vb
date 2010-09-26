@@ -32,13 +32,11 @@
             End If
         End Function
 
-        Public Function MatchHttpAnnouncement(ByVal UrlString As String) As Boolean
-            If m_HttpAnnouncement Is Nothing Then
-                Return False
-            Else
-                Return UrlString.StartsWith(m_HttpAnnouncement, StringComparison.CurrentCultureIgnoreCase)
-            End If
-        End Function
+        Public ReadOnly Property HttpAnnouncement() As String
+            Get
+                Return m_HttpAnnouncement
+            End Get
+        End Property
 
         Private Sub OnTimer(ByVal sender As Object, ByVal e As ElapsedEventArgs)
             Feed(Int32.MaxValue)
