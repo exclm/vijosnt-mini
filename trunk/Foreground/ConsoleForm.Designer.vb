@@ -24,11 +24,11 @@
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
-            Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
-            Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
-            Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("执行设置")
-            Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据源")
-            Dim TreeNode10 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode6, TreeNode7, TreeNode8, TreeNode9})
+            Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("编译器映射")
+            Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据集映射")
+            Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("执行设置")
+            Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("数据源")
+            Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("VijosNT", New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2, TreeNode3, TreeNode4})
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ConsoleForm))
             Me.MenuStrip = New System.Windows.Forms.MenuStrip()
             Me.FileMenu = New System.Windows.Forms.ToolStripMenuItem()
@@ -115,7 +115,7 @@
             Me.AddTestSuiteBar0 = New System.Windows.Forms.ToolStripSeparator()
             Me.AddAPlusBMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.AddVijosSuiteMenu = New System.Windows.Forms.ToolStripMenuItem()
-            Me.Add22OJSSuiteMenu = New System.Windows.Forms.ToolStripMenuItem()
+            Me.AddFreeSuiteMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.RemoveTestSuiteButton = New System.Windows.Forms.ToolStripButton()
             Me.TestSuiteSeperator0 = New System.Windows.Forms.ToolStripSeparator()
             Me.MoveUpTestSuiteButton = New System.Windows.Forms.ToolStripButton()
@@ -149,6 +149,7 @@
             Me.NewDataSourceMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.AddDataSourceBar0 = New System.Windows.Forms.ToolStripSeparator()
             Me.VijosDataSourceMenu = New System.Windows.Forms.ToolStripMenuItem()
+            Me.VijosLocalDataSourceMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.RemoveDataSourceButton = New System.Windows.Forms.ToolStripButton()
             Me.DataSourceBar0 = New System.Windows.Forms.ToolStripSeparator()
             Me.ApplyDataSourceButton = New System.Windows.Forms.ToolStripButton()
@@ -279,7 +280,7 @@
             '
             Me.SplitContainer.Dock = System.Windows.Forms.DockStyle.Fill
             Me.SplitContainer.Location = New System.Drawing.Point(0, 25)
-            Me.SplitContainer.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+            Me.SplitContainer.Margin = New System.Windows.Forms.Padding(2)
             Me.SplitContainer.Name = "SplitContainer"
             '
             'SplitContainer.Panel1
@@ -301,29 +302,29 @@
             Me.NavigationTree.ImageIndex = 0
             Me.NavigationTree.ImageList = Me.ImageList
             Me.NavigationTree.Location = New System.Drawing.Point(0, 0)
-            Me.NavigationTree.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+            Me.NavigationTree.Margin = New System.Windows.Forms.Padding(2)
             Me.NavigationTree.Name = "NavigationTree"
-            TreeNode6.ImageKey = "Compiler.png"
-            TreeNode6.Name = "Compiler"
-            TreeNode6.SelectedImageKey = "Compiler.png"
-            TreeNode6.Text = "编译器映射"
-            TreeNode7.ImageKey = "TestSuite.png"
-            TreeNode7.Name = "TestSuite"
-            TreeNode7.SelectedImageKey = "TestSuite.png"
-            TreeNode7.Text = "数据集映射"
-            TreeNode8.ImageKey = "Executor.png"
-            TreeNode8.Name = "Executor"
-            TreeNode8.SelectedImageKey = "Executor.png"
-            TreeNode8.Text = "执行设置"
-            TreeNode9.ImageKey = "DataSource.png"
-            TreeNode9.Name = "DataSource"
-            TreeNode9.SelectedImageKey = "DataSource.png"
-            TreeNode9.Text = "数据源"
-            TreeNode10.ImageKey = "Console.png"
-            TreeNode10.Name = "Root"
-            TreeNode10.SelectedImageKey = "Console.png"
-            TreeNode10.Text = "VijosNT"
-            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode10})
+            TreeNode1.ImageKey = "Compiler.png"
+            TreeNode1.Name = "Compiler"
+            TreeNode1.SelectedImageKey = "Compiler.png"
+            TreeNode1.Text = "编译器映射"
+            TreeNode2.ImageKey = "TestSuite.png"
+            TreeNode2.Name = "TestSuite"
+            TreeNode2.SelectedImageKey = "TestSuite.png"
+            TreeNode2.Text = "数据集映射"
+            TreeNode3.ImageKey = "Executor.png"
+            TreeNode3.Name = "Executor"
+            TreeNode3.SelectedImageKey = "Executor.png"
+            TreeNode3.Text = "执行设置"
+            TreeNode4.ImageKey = "DataSource.png"
+            TreeNode4.Name = "DataSource"
+            TreeNode4.SelectedImageKey = "DataSource.png"
+            TreeNode4.Text = "数据源"
+            TreeNode5.ImageKey = "Console.png"
+            TreeNode5.Name = "Root"
+            TreeNode5.SelectedImageKey = "Console.png"
+            TreeNode5.Text = "VijosNT"
+            Me.NavigationTree.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode5})
             Me.NavigationTree.SelectedImageIndex = 0
             Me.NavigationTree.Size = New System.Drawing.Size(187, 473)
             Me.NavigationTree.TabIndex = 0
@@ -347,7 +348,7 @@
             Me.TabControl.Controls.Add(Me.DataSourcePage)
             Me.TabControl.Dock = System.Windows.Forms.DockStyle.Fill
             Me.TabControl.Location = New System.Drawing.Point(0, 0)
-            Me.TabControl.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+            Me.TabControl.Margin = New System.Windows.Forms.Padding(2)
             Me.TabControl.Name = "TabControl"
             Me.TabControl.SelectedIndex = 0
             Me.TabControl.Size = New System.Drawing.Size(594, 473)
@@ -537,7 +538,7 @@
             '
             Me.CompilerSplit.Dock = System.Windows.Forms.DockStyle.Fill
             Me.CompilerSplit.Location = New System.Drawing.Point(3, 28)
-            Me.CompilerSplit.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+            Me.CompilerSplit.Margin = New System.Windows.Forms.Padding(2)
             Me.CompilerSplit.Name = "CompilerSplit"
             Me.CompilerSplit.Orientation = System.Windows.Forms.Orientation.Horizontal
             '
@@ -560,7 +561,7 @@
             Me.CompilerList.FullRowSelect = True
             Me.CompilerList.HideSelection = False
             Me.CompilerList.Location = New System.Drawing.Point(0, 0)
-            Me.CompilerList.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+            Me.CompilerList.Margin = New System.Windows.Forms.Padding(2)
             Me.CompilerList.MultiSelect = False
             Me.CompilerList.Name = "CompilerList"
             Me.CompilerList.Size = New System.Drawing.Size(580, 142)
@@ -583,7 +584,7 @@
             Me.CompilerProperty.BackColor = System.Drawing.SystemColors.Window
             Me.CompilerProperty.Dock = System.Windows.Forms.DockStyle.Fill
             Me.CompilerProperty.Location = New System.Drawing.Point(0, 0)
-            Me.CompilerProperty.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+            Me.CompilerProperty.Margin = New System.Windows.Forms.Padding(2)
             Me.CompilerProperty.Name = "CompilerProperty"
             Me.CompilerProperty.PropertySort = System.Windows.Forms.PropertySort.Categorized
             Me.CompilerProperty.Size = New System.Drawing.Size(580, 271)
@@ -765,7 +766,7 @@
             '
             Me.TestSuiteSplit.Dock = System.Windows.Forms.DockStyle.Fill
             Me.TestSuiteSplit.Location = New System.Drawing.Point(3, 28)
-            Me.TestSuiteSplit.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+            Me.TestSuiteSplit.Margin = New System.Windows.Forms.Padding(2)
             Me.TestSuiteSplit.Name = "TestSuiteSplit"
             Me.TestSuiteSplit.Orientation = System.Windows.Forms.Orientation.Horizontal
             '
@@ -788,7 +789,7 @@
             Me.TestSuiteList.FullRowSelect = True
             Me.TestSuiteList.HideSelection = False
             Me.TestSuiteList.Location = New System.Drawing.Point(0, 0)
-            Me.TestSuiteList.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+            Me.TestSuiteList.Margin = New System.Windows.Forms.Padding(2)
             Me.TestSuiteList.MultiSelect = False
             Me.TestSuiteList.Name = "TestSuiteList"
             Me.TestSuiteList.Size = New System.Drawing.Size(580, 142)
@@ -821,7 +822,7 @@
             Me.TestSuiteProperty.BackColor = System.Drawing.SystemColors.Window
             Me.TestSuiteProperty.Dock = System.Windows.Forms.DockStyle.Fill
             Me.TestSuiteProperty.Location = New System.Drawing.Point(0, 0)
-            Me.TestSuiteProperty.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+            Me.TestSuiteProperty.Margin = New System.Windows.Forms.Padding(2)
             Me.TestSuiteProperty.Name = "TestSuiteProperty"
             Me.TestSuiteProperty.PropertySort = System.Windows.Forms.PropertySort.Categorized
             Me.TestSuiteProperty.Size = New System.Drawing.Size(580, 271)
@@ -839,7 +840,7 @@
             'AddTestSuiteButton
             '
             Me.AddTestSuiteButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-            Me.AddTestSuiteButton.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewTestSuiteMenu, Me.AddTestSuiteBar0, Me.AddAPlusBMenu, Me.AddVijosSuiteMenu, Me.Add22OJSSuiteMenu})
+            Me.AddTestSuiteButton.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewTestSuiteMenu, Me.AddTestSuiteBar0, Me.AddAPlusBMenu, Me.AddVijosSuiteMenu, Me.AddFreeSuiteMenu})
             Me.AddTestSuiteButton.Image = CType(resources.GetObject("AddTestSuiteButton.Image"), System.Drawing.Image)
             Me.AddTestSuiteButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.AddTestSuiteButton.Name = "AddTestSuiteButton"
@@ -850,31 +851,31 @@
             'NewTestSuiteMenu
             '
             Me.NewTestSuiteMenu.Name = "NewTestSuiteMenu"
-            Me.NewTestSuiteMenu.Size = New System.Drawing.Size(148, 22)
+            Me.NewTestSuiteMenu.Size = New System.Drawing.Size(152, 22)
             Me.NewTestSuiteMenu.Text = "新数据集映射"
             '
             'AddTestSuiteBar0
             '
             Me.AddTestSuiteBar0.Name = "AddTestSuiteBar0"
-            Me.AddTestSuiteBar0.Size = New System.Drawing.Size(145, 6)
+            Me.AddTestSuiteBar0.Size = New System.Drawing.Size(149, 6)
             '
             'AddAPlusBMenu
             '
             Me.AddAPlusBMenu.Name = "AddAPlusBMenu"
-            Me.AddAPlusBMenu.Size = New System.Drawing.Size(148, 22)
+            Me.AddAPlusBMenu.Size = New System.Drawing.Size(152, 22)
             Me.AddAPlusBMenu.Text = "A+B"
             '
             'AddVijosSuiteMenu
             '
             Me.AddVijosSuiteMenu.Name = "AddVijosSuiteMenu"
-            Me.AddVijosSuiteMenu.Size = New System.Drawing.Size(148, 22)
+            Me.AddVijosSuiteMenu.Size = New System.Drawing.Size(152, 22)
             Me.AddVijosSuiteMenu.Text = "Vijos 格式"
             '
-            'Add22OJSSuiteMenu
+            'AddFreeSuiteMenu
             '
-            Me.Add22OJSSuiteMenu.Name = "Add22OJSSuiteMenu"
-            Me.Add22OJSSuiteMenu.Size = New System.Drawing.Size(148, 22)
-            Me.Add22OJSSuiteMenu.Text = "22OJS 格式"
+            Me.AddFreeSuiteMenu.Name = "AddFreeSuiteMenu"
+            Me.AddFreeSuiteMenu.Size = New System.Drawing.Size(152, 22)
+            Me.AddFreeSuiteMenu.Text = "Free 格式"
             '
             'RemoveTestSuiteButton
             '
@@ -949,7 +950,7 @@
             Me.SecurityList.FullRowSelect = True
             Me.SecurityList.HideSelection = False
             Me.SecurityList.Location = New System.Drawing.Point(3, 28)
-            Me.SecurityList.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+            Me.SecurityList.Margin = New System.Windows.Forms.Padding(2)
             Me.SecurityList.MultiSelect = False
             Me.SecurityList.Name = "SecurityList"
             Me.SecurityList.Size = New System.Drawing.Size(580, 416)
@@ -1055,7 +1056,7 @@
             Me.DataSourcePage.Controls.Add(Me.DataSourceToolStrip)
             Me.DataSourcePage.Location = New System.Drawing.Point(4, 22)
             Me.DataSourcePage.Name = "DataSourcePage"
-            Me.DataSourcePage.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
+            Me.DataSourcePage.Padding = New System.Windows.Forms.Padding(3)
             Me.DataSourcePage.Size = New System.Drawing.Size(586, 447)
             Me.DataSourcePage.TabIndex = 5
             Me.DataSourcePage.Text = "数据源"
@@ -1065,7 +1066,7 @@
             '
             Me.DataSourceSplit.Dock = System.Windows.Forms.DockStyle.Fill
             Me.DataSourceSplit.Location = New System.Drawing.Point(3, 28)
-            Me.DataSourceSplit.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+            Me.DataSourceSplit.Margin = New System.Windows.Forms.Padding(2)
             Me.DataSourceSplit.Name = "DataSourceSplit"
             Me.DataSourceSplit.Orientation = System.Windows.Forms.Orientation.Horizontal
             '
@@ -1088,7 +1089,7 @@
             Me.DataSourceList.FullRowSelect = True
             Me.DataSourceList.HideSelection = False
             Me.DataSourceList.Location = New System.Drawing.Point(0, 0)
-            Me.DataSourceList.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+            Me.DataSourceList.Margin = New System.Windows.Forms.Padding(2)
             Me.DataSourceList.MultiSelect = False
             Me.DataSourceList.Name = "DataSourceList"
             Me.DataSourceList.Size = New System.Drawing.Size(580, 142)
@@ -1116,7 +1117,7 @@
             Me.DataSourceProperty.BackColor = System.Drawing.SystemColors.Window
             Me.DataSourceProperty.Dock = System.Windows.Forms.DockStyle.Fill
             Me.DataSourceProperty.Location = New System.Drawing.Point(0, 0)
-            Me.DataSourceProperty.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+            Me.DataSourceProperty.Margin = New System.Windows.Forms.Padding(2)
             Me.DataSourceProperty.Name = "DataSourceProperty"
             Me.DataSourceProperty.PropertySort = System.Windows.Forms.PropertySort.Categorized
             Me.DataSourceProperty.Size = New System.Drawing.Size(580, 271)
@@ -1134,7 +1135,7 @@
             'AddDataSourceButton
             '
             Me.AddDataSourceButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-            Me.AddDataSourceButton.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewDataSourceMenu, Me.AddDataSourceBar0, Me.VijosDataSourceMenu})
+            Me.AddDataSourceButton.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewDataSourceMenu, Me.AddDataSourceBar0, Me.VijosDataSourceMenu, Me.VijosLocalDataSourceMenu})
             Me.AddDataSourceButton.Image = CType(resources.GetObject("AddDataSourceButton.Image"), System.Drawing.Image)
             Me.AddDataSourceButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.AddDataSourceButton.Name = "AddDataSourceButton"
@@ -1145,19 +1146,25 @@
             'NewDataSourceMenu
             '
             Me.NewDataSourceMenu.Name = "NewDataSourceMenu"
-            Me.NewDataSourceMenu.Size = New System.Drawing.Size(144, 22)
+            Me.NewDataSourceMenu.Size = New System.Drawing.Size(180, 22)
             Me.NewDataSourceMenu.Text = "新数据源"
             '
             'AddDataSourceBar0
             '
             Me.AddDataSourceBar0.Name = "AddDataSourceBar0"
-            Me.AddDataSourceBar0.Size = New System.Drawing.Size(141, 6)
+            Me.AddDataSourceBar0.Size = New System.Drawing.Size(177, 6)
             '
             'VijosDataSourceMenu
             '
             Me.VijosDataSourceMenu.Name = "VijosDataSourceMenu"
-            Me.VijosDataSourceMenu.Size = New System.Drawing.Size(144, 22)
+            Me.VijosDataSourceMenu.Size = New System.Drawing.Size(180, 22)
             Me.VijosDataSourceMenu.Text = "Vijos 数据源"
+            '
+            'VijosLocalDataSourceMenu
+            '
+            Me.VijosLocalDataSourceMenu.Name = "VijosLocalDataSourceMenu"
+            Me.VijosLocalDataSourceMenu.Size = New System.Drawing.Size(180, 22)
+            Me.VijosLocalDataSourceMenu.Text = "Vijos 数据源 (本地)"
             '
             'RemoveDataSourceButton
             '
@@ -1201,7 +1208,7 @@
             Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
             Me.KeyPreview = True
             Me.MainMenuStrip = Me.MenuStrip
-            Me.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+            Me.Margin = New System.Windows.Forms.Padding(2)
             Me.Name = "ConsoleForm"
             Me.Text = "VijosNT 控制台"
             Me.MenuStrip.ResumeLayout(False)
@@ -1367,8 +1374,9 @@
         Friend WithEvents ImageList As System.Windows.Forms.ImageList
         Friend WithEvents VacuumMenu As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents FileStrip0 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents Add22OJSSuiteMenu As System.Windows.Forms.ToolStripMenuItem
+        Friend WithEvents AddFreeSuiteMenu As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents TestSuiteNamespacePatternHeader As System.Windows.Forms.ColumnHeader
         Friend WithEvents DataSourceNamespaceHeader As System.Windows.Forms.ColumnHeader
+        Friend WithEvents VijosLocalDataSourceMenu As System.Windows.Forms.ToolStripMenuItem
     End Class
 End Namespace
