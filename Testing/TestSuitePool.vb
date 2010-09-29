@@ -26,8 +26,8 @@ Namespace Testing
                             Entry.TestSuite = New APlusBTestSuite()
                         Case "Vijos"
                             Entry.TestSuite = New VijosTestSuite(Reader("Parameter"))
-                        Case "_22OJS"
-                            Entry.TestSuite = New _22OJSTestSuite(Reader("Parameter"))
+                        Case "Free"
+                            Entry.TestSuite = New FreeTestSuite(Reader("Parameter"))
                         Case Else
                             EventLog.WriteEntry(My.Resources.ServiceName, "测试数据集加载失败" & vbCrLf & "未找到类名为 " & Reader("ClassName") & " 的测试数据集容器。", EventLogEntryType.Warning)
                             Continue While

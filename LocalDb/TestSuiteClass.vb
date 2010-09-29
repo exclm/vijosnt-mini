@@ -2,6 +2,6 @@
     Friend Enum TestSuiteClass
         APlusB
         Vijos
-        _22OJS
+        Free
     End Enum
 End Namespace

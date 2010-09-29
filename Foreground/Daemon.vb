@@ -211,7 +211,12 @@ Namespace Foreground
         End Sub
 
         Public Sub RefreshLocalRecord()
-            m_Console.Invoke(New MethodInvoker(AddressOf RefreshLocalRecordUnsafe))
+            If m_Console IsNot Nothing Then
+                m_Console.Invoke(New MethodInvoker( _
+                    Sub()
+                        m_Console.RefreshLocalRecord()
+                    End Sub))
+            End If
         End Sub
 
         Public Sub RefreshLocalRecordUnsafe()

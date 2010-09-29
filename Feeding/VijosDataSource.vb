@@ -24,12 +24,25 @@ Namespace Feeding
             Dim Password As String = Nothing
             m_TesterId = 1
 
-            For Each Parameter As String In Parameters.Split(New Char() {";"c})
-                Dim Position As Int32 = Parameter.IndexOf("="c)
+            For Each Parameter In Parameters.Split(New Char() {";"c})
+                Dim Position = Parameter.IndexOf("="c)
                 If Position = -1 Then Continue For
-                Dim Key As String = Parameter.Substring(0, Position)
-                Dim Value As String = Parameter.Substring(Position + 1)
+                Dim Key = Parameter.Substring(0, Position)
+                Dim Value = Parameter.Substring(Position + 1)
                 Select Case Key.ToLower()
+                    Case "config"
+                        Using Reader = XmlReader.Create(Value)
+                            If Reader.ReadToFollowing("Config") Then
+                                If Reader.MoveToAttribute("DataName") Then _
+                                    Database = Reader.ReadContentAsString()
+                                If Reader.MoveToAttribute("DataSource") Then _
+                                    Server = Reader.ReadContentAsString()
+                                If Reader.MoveToAttribute("Password") Then _
+                                    Password = Reader.ReadContentAsString()
+                                If Reader.MoveToAttribute("User") Then _
+                                    UserName = Reader.ReadContentAsString()
+                            End If
+                        End Using
                     Case "server"
                         Server = Value
                     Case "database"
@@ -53,7 +66,7 @@ Namespace Feeding
             If m_TesterId <= 0 Then _
                 Throw New ArgumentOutOfRangeException("TesterId", "TesterId 必须为一个正整数")
 
-            Dim ConnectionBuilder As New SqlConnectionStringBuilder
+            Dim ConnectionBuilder = New SqlConnectionStringBuilder
             ConnectionBuilder.DataSource = Server
             ConnectionBuilder.InitialCatalog = Database
             ConnectionBuilder.UserID = UserName
