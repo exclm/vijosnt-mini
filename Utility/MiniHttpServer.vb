@@ -42,10 +42,10 @@
 
             Public Sub Start()
                 m_Listener.Start()
-                m_Listener.BeginAcceptTcpClient(AddressOf OnAccept, Nothing)
+                m_Listener.BeginAcceptTcpClient(AddressOf OnAccept, m_Listener)
                 If m_ListenerV6 IsNot Nothing Then
                     m_ListenerV6.Start()
-                    m_ListenerV6.BeginAcceptTcpClient(AddressOf OnAccept, Nothing)
+                    m_ListenerV6.BeginAcceptTcpClient(AddressOf OnAccept, m_ListenerV6)
                 End If
             End Sub
 
@@ -56,11 +56,10 @@
             End Sub
 
             Private Sub OnAccept(ByVal Result As IAsyncResult)
-                Dim Client = m_Listener.EndAcceptTcpClient(Result)
+                Dim Listener = DirectCast(Result.AsyncState, TcpListener)
+                Dim Client = Listener.EndAcceptTcpClient(Result)
                 Dim Session = New Session(Me, Client)
-                m_Listener.BeginAcceptTcpClient(AddressOf OnAccept, Nothing)
-                If m_ListenerV6 IsNot Nothing Then _
-                    m_ListenerV6.BeginAcceptTcpClient(AddressOf OnAccept, Nothing)
+                Listener.BeginAcceptTcpClient(AddressOf OnAccept, Listener)
             End Sub
 
             Public ReadOnly Property Server() As MiniHttpServer
