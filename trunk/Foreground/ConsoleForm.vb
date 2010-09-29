@@ -707,7 +707,12 @@ Namespace Foreground
                 End If
             End Using
         End Sub
-#End Region
 
+        Private Sub _22OJSDataSourceMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _22OJSDataSourceMenu.Click
+            DataSourceMapping.Add("_22OJS", String.Empty, "Server=(local);Database=22OJS;UserName=sa;Password=admin", Nothing, String.Empty, String.Empty)
+            ApplyDataSourceButton.Enabled = True
+            RefreshPage()
+        End Sub
+#End Region
     End Class
 End Namespace
