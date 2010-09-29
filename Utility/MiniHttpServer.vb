@@ -56,10 +56,13 @@
             End Sub
 
             Private Sub OnAccept(ByVal Result As IAsyncResult)
-                Dim Listener = DirectCast(Result.AsyncState, TcpListener)
-                Dim Client = Listener.EndAcceptTcpClient(Result)
-                Dim Session = New Session(Me, Client)
-                Listener.BeginAcceptTcpClient(AddressOf OnAccept, Listener)
+                Try
+                    Dim Listener = DirectCast(Result.AsyncState, TcpListener)
+                    Dim Client = Listener.EndAcceptTcpClient(Result)
+                    Dim Session = New Session(Me, Client)
+                    Listener.BeginAcceptTcpClient(AddressOf OnAccept, Listener)
+                Catch ex As Exception
+                End Try
             End Sub
 
             Public ReadOnly Property Server() As MiniHttpServer
