@@ -122,13 +122,13 @@ Namespace Feeding
 
         Private Function GetCompilerExtension(ByVal CompilerName As String) As String
             Select Case CompilerName.ToLower()
-                Case "c", "gcc"
+                Case "c", "gcc", ".c"
                     Return ".c"
-                Case "cpp", "gpp", "g++"
+                Case "cpp", "gpp", "g++", ".cpp"
                     Return ".cpp"
-                Case "vb.net"
+                Case "vb.net", "vb", ".vb"
                     Return ".vb"
-                Case "csharp", "c#", "cs"
+                Case "csharp", "c#", "cs", ".cs"
                     Return ".cs"
                 Case Else
                     Return ".pas"
