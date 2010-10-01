@@ -101,13 +101,17 @@
                     Case DebugState.CreateThread
                         Dim Info As CreateThreadInfo = Marshal.PtrToStructure(InfoPtr, GetType(CreateThreadInfo))
                         RaiseEvent OnCreateThread(Header, Info, ContinueStatus)
-                        NtSuccess(NtClose(Info.HandleToThread))
+                        If Info.HandleToThread <> IntPtr.Zero Then _
+                            NtSuccess(NtClose(Info.HandleToThread))
                     Case (DebugState.CreateProcess)
                         Dim Info As CreateProcessInfo = Marshal.PtrToStructure(InfoPtr, GetType(CreateProcessInfo))
                         RaiseEvent OnCreateProcess(Header, Info, ContinueStatus)
-                        NtSuccess(NtClose(Info.HandleToProcess))
-                        NtSuccess(NtClose(Info.HandleToThread))
-                        NtSuccess(NtClose(Info.NewProcess.FileHandle))
+                        If Info.HandleToProcess <> IntPtr.Zero Then _
+                            NtSuccess(NtClose(Info.HandleToProcess))
+                        If Info.HandleToThread <> IntPtr.Zero Then _
+                            NtSuccess(NtClose(Info.HandleToThread))
+                        If Info.NewProcess.FileHandle <> IntPtr.Zero Then _
+                            NtSuccess(NtClose(Info.NewProcess.FileHandle))
                     Case DebugState.ExitThread
                         Dim Info As ExitThreadInfo = Marshal.PtrToStructure(InfoPtr, GetType(ExitThreadInfo))
                         RaiseEvent OnExitThread(Header, Info, ContinueStatus)
@@ -121,7 +125,8 @@
                     Case DebugState.LoadDll
                         Dim Info As LoadDllInfo = Marshal.PtrToStructure(InfoPtr, GetType(LoadDllInfo))
                         RaiseEvent OnLoadDll(Header, Info, ContinueStatus)
-                        NtSuccess(NtClose(Info.FileHandle))
+                        If Info.FileHandle <> IntPtr.Zero Then _
+                            NtSuccess(NtClose(Info.FileHandle))
                     Case DebugState.UnloadDll
                         Dim Info As UnloadDllInfo = Marshal.PtrToStructure(InfoPtr, GetType(UnloadDllInfo))
                         RaiseEvent OnUnloadDll(Header, Info, ContinueStatus)
