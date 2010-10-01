@@ -41,6 +41,8 @@ Namespace Feeding
                                     Password = Reader.ReadContentAsString()
                                 If Reader.MoveToAttribute("User") Then _
                                     UserName = Reader.ReadContentAsString()
+                                If Reader.MoveToAttribute("TesterID") Then _
+                                    m_TesterId = Int32.Parse(Reader.ReadContentAsString())
                             End If
                         End Using
                     Case "server"
@@ -121,18 +123,18 @@ Namespace Feeding
         End Function
 
         Private Function GetCompilerExtension(ByVal CompilerName As String) As String
-            Select Case CompilerName.ToLower()
-                Case "c", "gcc", ".c"
-                    Return ".c"
-                Case "cpp", "gpp", "g++", ".cpp"
-                    Return ".cpp"
-                Case "vb.net", "vb", ".vb"
-                    Return ".vb"
-                Case "csharp", "c#", "cs", ".cs"
-                    Return ".cs"
-                Case Else
-                    Return ".pas"
-            End Select
+            If CompilerName.StartsWith(".") Then
+                Return CompilerName
+            Else
+                Select Case CompilerName.ToLower()
+                    Case "c", "gcc"
+                        Return ".c"
+                    Case "cpp", "gpp", "g++"
+                        Return ".cpp"
+                    Case Else
+                        Return ".pas"
+                End Select
+            End If
         End Function
 
         Public Overrides Function Take() As Nullable(Of DataSourceRecord)
