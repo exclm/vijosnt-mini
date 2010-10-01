@@ -51,6 +51,7 @@ Namespace Compiling
                     m_Result.Target = CompilerInstance.OpenTarget()
                 Catch ex As Exception
                     m_Result.Target = Nothing
+                    CompilerInstance.Dispose()
                 End Try
             End If
             m_Trigger.InvokeCritical()

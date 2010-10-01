@@ -237,6 +237,7 @@ Namespace Feeding
                     TestCaseContext.TestCase = TestCase
                     m_Executor.Queue(New TestCaseExecutee(m_WatchDog, m_ProcessMonitor, Result.Target.CreateInstance(), TestCase, AddressOf TestExecuteCompletion, TestCaseContext))
                 Next
+                Result.Target.Dispose()
                 TestWorkCompleted(Context)
                 Return
             End If
