@@ -20,6 +20,7 @@ Namespace Executing
         Private m_EnableUIRestrictions As Boolean
         Private m_Trigger As MiniTrigger
         Private m_Result As ProcessExecuteeResult
+        Private m_JobObject As JobObject
 
         Protected Sub New()
 
@@ -60,17 +61,16 @@ Namespace Executing
             m_Result.State = State
             m_Trigger = New MiniTrigger(2, _
                 Sub()
+                    m_JobObject.Kill(1)
+                    m_JobObject.Close()
                     Completion.Invoke(m_Result)
                     MyBase.Execute()
                 End Sub)
         End Sub
 
         Private Sub WatchDogCompletion(ByVal Result As WatchDog.Result)
-            Dim JobObject As JobObject = DirectCast(Result.State, JobObject)
             m_Result.TimeQuotaUsage = Result.QuotaUsage
-            m_Result.MemoryQuotaUsage = JobObject.Limits.PeakProcessMemoryUsed
-            JobObject.Close()
-            JobObject = Nothing
+            m_Result.MemoryQuotaUsage = m_JobObject.Limits.PeakProcessMemoryUsed
             m_Trigger.InvokeNonCritical()
         End Sub
 
@@ -119,9 +119,9 @@ Namespace Executing
                     Return
                 End Try
 
-                Dim JobObject As New JobObject()
-                JobObject.Assign(Suspended.GetHandleUnsafe())
-                With JobObject.Limits
+                m_JobObject = New JobObject()
+                m_JobObject.Assign(Suspended.GetHandleUnsafe())
+                With m_JobObject.Limits
                     .ProcessMemory = m_MemoryQuota
                     .ActiveProcess = m_ActiveProcessQuota
                     .DieOnUnhandledException = True
@@ -129,7 +129,7 @@ Namespace Executing
                 End With
 
                 If m_EnableUIRestrictions Then
-                    With JobObject.UIRestrictions
+                    With m_JobObject.UIRestrictions
                         .Handles = True
                         .ReadClipboard = True
                         .WriteClipboard = True
@@ -143,7 +143,7 @@ Namespace Executing
                 End If
 
                 m_ProcessMonitor.Attach(Suspended, AddressOf ProcessMonitorCompletion, Nothing)
-                m_WatchDog.SetWatch(Suspended.Resume(), m_TimeQuota, AddressOf WatchDogCompletion, JobObject)
+                m_WatchDog.SetWatch(Suspended.Resume(), m_TimeQuota, AddressOf WatchDogCompletion, Nothing)
             Finally
                 If m_StdInput IsNot Nothing Then _
                     m_StdInput.Close()
