@@ -126,6 +126,10 @@ Namespace Feeding
                     Return ".c"
                 Case "cpp", "gpp", "g++"
                     Return ".cpp"
+                Case "vb.net"
+                    Return ".vb"
+                Case "csharp", "c#", "cs"
+                    Return ".cs"
                 Case Else
                     Return ".pas"
             End Select
