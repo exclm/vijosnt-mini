@@ -41,9 +41,9 @@
             m_UpdateCommand = Database.CreateCommand( _
                 "UPDATE CompilerMapping2 SET Pattern = @Pattern, ApplicationName = @ApplicationName, CommandLine = @CommandLine, EnvironmentVariables = @EnvironmentVariables, TimeQuota = @TimeQuota, MemoryQuota = @MemoryQuota, ActiveProcessQuota = @ActiveProcessQuota, SourceFileName = @SourceFileName, TargetFileName = @TargetFileName, TargetApplicationName = @TargetApplicationName, TargetCommandLine = @TargetCommandLine, TimeOffset = @TimeOffset, TimeFactor = @TimeFactor, MemoryOffset = @MemoryOffset, MemoryFactor = @MemoryFactor WHERE Id = @Id")
             m_DeleteCommand = Database.CreateCommand( _
-                "DELETE FROM CompilerMapping WHERE Id = @Id")
+                "DELETE FROM CompilerMapping2 WHERE Id = @Id")
             m_UpdateIdCommand = Database.CreateCommand( _
-                "UPDATE CompilerMapping SET Id = @Id WHERE Id = @OriginalId")
+                "UPDATE CompilerMapping2 SET Id = @Id WHERE Id = @OriginalId")
         End Sub
 
         Public Shared Function GetAll() As IDataReader
