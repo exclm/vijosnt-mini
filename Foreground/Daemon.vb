@@ -50,6 +50,13 @@ Namespace Foreground
                     .Font = New Font(.Font, FontStyle.Bold)
                 End With
                 m_FloatingMenu = DirectCast(.Add("悬浮窗(&F)", Nothing, AddressOf OnFloating), ToolStripMenuItem)
+#If Config = "Debug" Then
+                .Add("启动压力测试(&S)", Nothing, _
+                     Sub()
+                         Dim StressTest As New StressTest(Me)
+                         StressTest.Show()
+                     End Sub)
+#End If
                 .Add("-")
                 .Add("退出(&X)", Nothing, AddressOf OnExit)
             End With
