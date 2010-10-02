@@ -85,13 +85,9 @@ Vijos 支持评测的代码类型包括 C、C++、Pascal，我们需要安装 Mi
 
 === 数据源 ===
 
-进入数据源界面，点击工具栏上加号右边的小向下箭头，出现下拉菜单，选择 Vijos 数据源，会自动添加一条默认的设置。就像下面这样：
+进入数据源界面，点击工具栏上加号右边的小向下箭头，出现下拉菜单，选择 Vijos 数据源 (本地)，在弹出的对话框中选择 Vijos 安装文件夹下的 Config.xml。
 
-Server=(local);Database=vijos;UserName=sa;Password=admin
-
-需要按照 Vijos 目录下的 Config.xml 内容进行修改，分别对应 Server、Database、UserName、Password 分别对应其中的 Data Source、Initial Catalog、UserID 和 Password。
-
-对于一个网站有多个评测机的情况，你可能希望给每个评测机指定独立的编号，并在结果页面显示出来，此时，你需要增加 TesterId 参数，将其值设定为一个正整数（默认为 1）。
+对于一个网站有多个评测机的情况，你可能希望给每个评测机指定独立的编号，并在结果页面显示出来，此时，你需要修改 Config.xml 中的 TesterId，将其值设定为一个正整数（默认为 1）。
 
 数据源的通告有三种方式：Ipc 通告、Http 通告和轮询。
 
