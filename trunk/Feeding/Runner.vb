@@ -89,14 +89,24 @@ Namespace Feeding
 
         Public Function Feed(ByVal Source As DataSourceBase, ByVal Limit As Int32) As Int32
             For Index = 0 To Limit - 1
-                Dim Record As Nullable(Of DataSourceRecord) = Source.Take()
+                Dim Record As Nullable(Of DataSourceRecord)
+                Try
+                    Record = Source.Take()
+                Catch ex As Exception
+                    Record = Nothing
+                    EventLog.WriteEntry(My.Resources.ServiceName, ex.ToString(), EventLogEntryType.Warning)
+                End Try
                 If Not Record.HasValue Then _
                     Return Index
                 Dim Context As FeedContext
                 Context.Source = Source
                 Context.Id = Record.Value.Id
                 If Not Queue(Source.Namespace, Record.Value.FileName, New MemoryStream(Encoding.Default.GetBytes(Record.Value.SourceCode)), AddressOf FeedCompletion, Context) Then
-                    Source.Untake(Record.Value.Id)
+                    Try
+                        Source.Untake(Record.Value.Id)
+                    Catch ex As Exception
+                        EventLog.WriteEntry(My.Resources.ServiceName, ex.ToString(), EventLogEntryType.Warning)
+                    End Try
                     Return Index
                 End If
             Next
@@ -105,7 +115,11 @@ Namespace Feeding
 
         Private Sub FeedCompletion(ByVal Result As TestResult)
             Dim Context As FeedContext = DirectCast(Result.State, FeedContext)
-            Context.Source.Untake(Context.Id, Result)
+            Try
+                Context.Source.Untake(Context.Id, Result)
+            Catch ex As Exception
+                EventLog.WriteEntry(My.Resources.ServiceName, ex.ToString(), EventLogEntryType.Warning)
+            End Try
         End Sub
 
         Public Function Queue(ByVal [Namespace] As String, ByVal FileName As String, ByVal SourceCode As Stream, ByVal Completion As TestCompletion, ByVal State As Object) As Boolean
