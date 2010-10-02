@@ -79,7 +79,7 @@
                 For Index As Int32 = 0 To Count - 1
                     Dim Arguments As String() = Split(Reader.ReadLine(), "|", 5)
                     Result.Add(New Config(Index + 1, Path.Combine("Input", Arguments(0)), Path.Combine("Output", Arguments(1)), _
-                        Math.BigMul(Int32.Parse(Arguments(2)), 10000 * 1000), Int32.Parse(Arguments(3))))
+                        Convert.ToInt64(Double.Parse(Arguments(2)) * 10000 * 1000), Int32.Parse(Arguments(3))))
                 Next
                 Return Result
             End Using
