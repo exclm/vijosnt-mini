@@ -121,6 +121,12 @@
     <Compile Include="Foreground\FloatingForm.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Foreground\StressTest.Designer.vb">
+      <DependentUpon>StressTest.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Foreground\StressTest.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Foreground\TestReport.vb" />
     <Compile Include="Foreground\TestResultForm.Designer.vb">
       <DependentUpon>TestResultForm.vb</DependentUpon>
@@ -246,6 +252,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Foreground\FloatingForm.resx">
       <DependentUpon>FloatingForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Foreground\StressTest.resx">
+      <DependentUpon>StressTest.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Foreground\TestResultForm.resx">
       <DependentUpon>TestResultForm.vb</DependentUpon>
