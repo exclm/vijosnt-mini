@@ -61,8 +61,10 @@ Namespace Executing
             m_Result.State = State
             m_Trigger = New MiniTrigger(2, _
                 Sub()
-                    m_JobObject.Kill(1)
-                    m_JobObject.Close()
+                    If m_JobObject IsNot Nothing Then
+                        m_JobObject.Kill(1)
+                        m_JobObject.Close()
+                    End If
                     Completion.Invoke(m_Result)
                     MyBase.Execute()
                 End Sub)
