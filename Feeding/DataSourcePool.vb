@@ -108,9 +108,17 @@ Namespace Feeding
                 Limit <= 0 Then _
                 Limit = Int32.MaxValue
 
+            Dim FeedCount As Int32
+            Try
+                FeedCount = DirectCast(State, DataSourceEntry).Feed(Limit)
+            Catch ex As Exception
+                EventLog.WriteEntry(My.Resources.ServiceName, ex.ToString(), EventLogEntryType.Warning)
+                Return False
+            End Try
+
             Dim Builder = New StringBuilder()
             Builder.AppendLine("VijosNT Mini " & Assembly.GetExecutingAssembly().GetName().Version.ToString())
-            Builder.AppendLine("Feeding " & DirectCast(State, DataSourceEntry).Feed(Limit) & " record(s)")
+            Builder.AppendLine("Feeding " & FeedCount.ToString() & " record(s)")
 
             Try
                 Return Session.Write("text/plain", Builder.ToString())
