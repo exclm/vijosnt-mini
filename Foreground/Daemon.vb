@@ -55,11 +55,12 @@ Namespace Foreground
                     .Font = New Font(.Font, FontStyle.Bold)
                 End With
                 With DirectCast(.Add("工具"), ToolStripMenuItem).DropDownItems
-                    .Add("启动压力测试(&S)", Nothing, _
+                    .Add("压力测试(&S)", Nothing, _
                          Sub()
                              Dim StressTest As New StressTest(Me)
                              StressTest.Show()
                          End Sub)
+
                 End With
                 m_FloatingMenu = DirectCast(.Add("悬浮窗(&F)", Nothing, _
                     Sub()
@@ -177,8 +178,25 @@ Namespace Foreground
                 If Value Then
                     m_Floating = New FloatingForm(Me)
                     m_Floating.SetBitmap(m_Bitmap)
-                    AddHandler m_Floating.FormClosing, AddressOf OnFloatingClosing
-                    AddHandler m_Floating.FormClosed, AddressOf OnFloatingClosed
+
+                    AddHandler m_Floating.FormClosing, _
+                        Sub(sender As Object, e As FormClosingEventArgs)
+                            If e.CloseReason = CloseReason.UserClosing Then
+                                Config.DisplayFloating = False
+                            End If
+                        End Sub
+
+                    AddHandler m_Floating.FormClosed, _
+                        Sub()
+                            Config.FloatingTop = m_Floating.Top
+                            Config.FloatingLeft = m_Floating.Left
+                            m_Floating = Nothing
+                            m_FloatingMenu.Checked = False
+                            If m_Console IsNot Nothing Then
+                                m_Console.FloatingFormButton.Checked = False
+                            End If
+                        End Sub
+
                     m_Floating.Show()
                 Else
                     m_Floating.Close()
@@ -190,20 +208,6 @@ Namespace Foreground
                     m_Console.FloatingFormButton.Checked = Value
             End Set
         End Property
-
-        Private Sub OnFloatingClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs)
-            If e.CloseReason = CloseReason.UserClosing Then _
-                Config.DisplayFloating = False
-        End Sub
-
-        Private Sub OnFloatingClosed(ByVal sender As Object, ByVal e As EventArgs)
-            Config.FloatingTop = m_Floating.Top
-            Config.FloatingLeft = m_Floating.Left
-            m_Floating = Nothing
-            m_FloatingMenu.Checked = False
-            If m_Console IsNot Nothing Then _
-                m_Console.FloatingFormButton.Checked = False
-        End Sub
 
         Private Sub TestService()
             Dim Service As Service = m_ServiceManager.Open(My.Resources.ServiceName)
