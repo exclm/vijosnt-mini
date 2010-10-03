@@ -5,5 +5,6 @@
         ReloadExecutor
         ReloadDataSource
         FeedDataSource
+        DirectFeed
     End Enum
 End Namespace

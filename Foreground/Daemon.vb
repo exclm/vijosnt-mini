@@ -1,10 +1,13 @@
-﻿Imports VijosNT.LocalDb
+﻿Imports VijosNT.Feeding
+Imports VijosNT.LocalDb
 Imports VijosNT.Remoting
 Imports VijosNT.Win32
 
 Namespace Foreground
     Friend Class Daemon
         Implements IDisposable
+
+        Public Delegate Sub DirectFeedCompletion(ByVal Result As TestResult)
 
         Private m_ServiceManager As ServiceManager
         Private m_LastColor As Color
@@ -16,6 +19,7 @@ Namespace Foreground
         Private m_PipeClient As PipeClient
         Private m_FloatingMenu As ToolStripMenuItem
         Private m_Floating As FloatingForm
+        Private m_PendingFeeds As Dictionary(Of Int32, DirectFeedCompletion)
 
         Public Sub New()
             CreateServiceManager()
@@ -23,7 +27,8 @@ Namespace Foreground
             CreateTimer()
             CreatePipeClient()
             CreateFloating()
-            OnServiceTimer(Nothing, Nothing)
+            OnServiceTimer()
+            m_PendingFeeds = New Dictionary(Of Int32, DirectFeedCompletion)
         End Sub
 
         Public Sub Entry()
@@ -49,16 +54,22 @@ Namespace Foreground
                 With .Add("启动控制台(&C)", Nothing, AddressOf OnConsole)
                     .Font = New Font(.Font, FontStyle.Bold)
                 End With
-                m_FloatingMenu = DirectCast(.Add("悬浮窗(&F)", Nothing, AddressOf OnFloating), ToolStripMenuItem)
-#If Config = "Debug" Then
-                .Add("启动压力测试(&S)", Nothing, _
-                     Sub()
-                         Dim StressTest As New StressTest(Me)
-                         StressTest.Show()
-                     End Sub)
-#End If
+                With DirectCast(.Add("工具"), ToolStripMenuItem).DropDownItems
+                    .Add("启动压力测试(&S)", Nothing, _
+                         Sub()
+                             Dim StressTest As New StressTest(Me)
+                             StressTest.Show()
+                         End Sub)
+                End With
+                m_FloatingMenu = DirectCast(.Add("悬浮窗(&F)", Nothing, _
+                    Sub()
+                        ShowFloating = Not ShowFloating()
+                    End Sub), ToolStripMenuItem)
                 .Add("-")
-                .Add("退出(&X)", Nothing, AddressOf OnExit)
+                .Add("退出(&X)", Nothing, _
+                     Sub()
+                         Application.Exit()
+                     End Sub)
             End With
             Return Result
         End Function
@@ -70,9 +81,45 @@ Namespace Foreground
 
         Private Sub CreatePipeClient()
             m_PipeClient = New PipeClient()
-            AddHandler m_PipeClient.RunnerStatusChanged, AddressOf OnRunnerStatusChanged
-            AddHandler m_PipeClient.LocalRecordChanged, AddressOf OnLocalRecordChanged
-            AddHandler m_PipeClient.Disconnected, AddressOf OnPipeDisconnect
+
+            AddHandler m_PipeClient.RunnerStatusChanged, _
+                Sub(Busy As Boolean)
+                    If Busy Then
+                        SetIconColor(Color.Blue)
+                    Else
+                        SetIconColor(Color.Green)
+                    End If
+                End Sub
+
+            AddHandler m_PipeClient.LocalRecordChanged, _
+                Sub()
+                    m_Console.Invoke(New MethodInvoker( _
+                        Sub()
+                            If m_Console IsNot Nothing Then
+                                m_Console.RefreshLocalRecord()
+                            Else
+                                m_NotifyIcon.ShowBalloonTip(3000, "VijosNT", "测试完毕, 点击此气泡查看测试结果", ToolTipIcon.Info)
+                            End If
+                        End Sub))
+                End Sub
+
+            AddHandler m_PipeClient.DirectFeedReply, _
+                Sub(StateId As Int32, Result As TestResult)
+                    Dim Completion As DirectFeedCompletion = Nothing
+                    SyncLock m_PendingFeeds
+                        If m_PendingFeeds.TryGetValue(StateId, Completion) Then
+                            m_PendingFeeds.Remove(StateId)
+                        End If
+                    End SyncLock
+                    If Completion IsNot Nothing Then
+                        Completion.Invoke(Result)
+                    End If
+                End Sub
+
+            AddHandler m_PipeClient.Disconnected, _
+                Sub()
+                    TestService()
+                End Sub
         End Sub
 
         Private Sub CreateFloating()
@@ -144,10 +191,6 @@ Namespace Foreground
             End Set
         End Property
 
-        Private Sub OnFloating(ByVal sender As Object, ByVal e As EventArgs)
-            ShowFloating = Not ShowFloating()
-        End Sub
-
         Private Sub OnFloatingClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs)
             If e.CloseReason = CloseReason.UserClosing Then _
                 Config.DisplayFloating = False
@@ -160,10 +203,6 @@ Namespace Foreground
             m_FloatingMenu.Checked = False
             If m_Console IsNot Nothing Then _
                 m_Console.FloatingFormButton.Checked = False
-        End Sub
-
-        Private Sub OnExit(ByVal sender As Object, ByVal e As EventArgs)
-            Application.Exit()
         End Sub
 
         Private Sub TestService()
@@ -187,33 +226,13 @@ Namespace Foreground
             Return True
         End Function
 
-        Private Sub OnServiceTimer(ByVal sender As Object, ByVal e As ElapsedEventArgs)
+        Private Sub OnServiceTimer()
             TestService()
             If TryConnect() Then
                 SetIconColor(Color.Green)
                 m_ServiceTimer.Stop()
             Else
                 SetIconColor(Color.Red)
-            End If
-        End Sub
-
-        Private Sub OnRunnerStatusChanged(ByVal Busy As Boolean)
-            If Busy Then
-                SetIconColor(Color.Blue)
-            Else
-                SetIconColor(Color.Green)
-            End If
-        End Sub
-
-        Private Sub OnLocalRecordChanged()
-            m_Console.Invoke(New MethodInvoker(AddressOf OnLocalRecordChangedUnsafe))
-        End Sub
-
-        Private Sub OnLocalRecordChangedUnsafe()
-            If m_Console IsNot Nothing Then
-                m_Console.RefreshLocalRecord()
-            Else
-                m_NotifyIcon.ShowBalloonTip(3000, "VijosNT", "测试完毕, 点击此气泡查看测试结果", ToolTipIcon.Info)
             End If
         End Sub
 
@@ -230,10 +249,6 @@ Namespace Foreground
             If m_Console IsNot Nothing Then
                 m_Console.RefreshLocalRecord()
             End If
-        End Sub
-
-        Private Sub OnPipeDisconnect()
-            TestService()
         End Sub
 
         Public Function CreateService() As Service
@@ -303,6 +318,26 @@ Namespace Foreground
                 m_PipeClient.Write(ClientMessage.FeedDataSource, DataSourceName)
                 Return True
             Catch ex As Exception
+                Return False
+            End Try
+        End Function
+
+        Public Function DirectFeed(ByVal [Namespace] As String, ByVal FileName As String, ByVal SourceCode As String, ByVal Completion As DirectFeedCompletion) As Boolean
+            Dim Random = New Random()
+            Dim StateId = Random.Next()
+
+            SyncLock m_PendingFeeds
+                While m_PendingFeeds.ContainsKey(StateId)
+                    StateId = Random.Next()
+                End While
+                m_PendingFeeds.Add(StateId, Completion)
+            End SyncLock
+
+            Try
+                m_PipeClient.Write(ClientMessage.DirectFeed, StateId, [Namespace], FileName, SourceCode)
+                Return True
+            Catch ex As Exception
+                m_PendingFeeds.Remove(StateId)
                 Return False
             End Try
         End Function
