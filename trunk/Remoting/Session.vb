@@ -59,12 +59,15 @@ Namespace Remoting
                         Writer.Write(Param)
                     Next
                 End Using
-                Dim Buffer As Byte() = Stream.ToArray()
-                m_Stream.BeginWrite(Buffer, 0, Buffer.Length, AddressOf OnWrite, Nothing)
+                WriteBuffer(Stream.ToArray())
             End Using
         End Sub
 
-        Private Sub OnWrite(ByVal Result As IAsyncResult)
+        Private Sub WriteBuffer(ByVal Buffer As Byte())
+            m_Stream.BeginWrite(Buffer, 0, Buffer.Length, AddressOf OnWriteBuffer, Nothing)
+        End Sub
+
+        Private Sub OnWriteBuffer(ByVal Result As IAsyncResult)
             Try
                 m_Stream.EndWrite(Result)
             Catch ex As Exception
@@ -87,6 +90,8 @@ Namespace Remoting
                         OnReloadDataSource()
                     Case ClientMessage.FeedDataSource
                         OnFeedDataSource(Reader.ReadString())
+                    Case ClientMessage.DirectFeed
+                        OnDirectFeed(Reader.ReadInt32(), Reader.ReadString(), Reader.ReadString(), Reader.ReadString())
                 End Select
             End Using
         End Sub
@@ -126,6 +131,48 @@ Namespace Remoting
         Private Sub OnFeedDataSource(ByVal DataSourceName As String)
             Try
                 m_Runner.Feed(DataSourceName, Int32.MaxValue)
+            Catch ex As Exception
+                ServiceUnhandledException(ex)
+            End Try
+        End Sub
+
+        Private Sub OnDirectFeed(ByVal StateId As Int32, ByVal [Namespace] As String, ByVal FileName As String, ByVal SourceCode As String)
+            Try
+                Dim SourceBuffer = Encoding.Default.GetBytes(SourceCode)
+                Dim SourceStream = New MemoryStream(SourceBuffer, False)
+                m_Runner.Queue([Namespace], FileName, SourceStream, _
+                    Sub(Result As TestResult)
+                        Using Stream As New MemoryStream()
+                            Using Writer As New BinaryWriter(Stream)
+                                Writer.Write(ServerMessage.DirectFeedReply)
+                                Writer.Write(StateId)
+                                Writer.Write(Result.Flag)
+                                If Result.Warning Is Nothing Then
+                                    Writer.Write(String.Empty)
+                                Else
+                                    Writer.Write(Result.Warning)
+                                End If
+                                Writer.Write(Result.Score)
+                                Writer.Write(Result.TimeUsage)
+                                Writer.Write(Result.MemoryUsage)
+                                If Result.Entries IsNot Nothing Then
+                                    For Each Entry As TestResultEntry In Result.Entries
+                                        Writer.Write(Entry.Index)
+                                        Writer.Write(Entry.Flag)
+                                        Writer.Write(Entry.Score)
+                                        Writer.Write(Entry.TimeUsage)
+                                        Writer.Write(Entry.MemoryUsage)
+                                        If Entry.Warning Is Nothing Then
+                                            Writer.Write(String.Empty)
+                                        Else
+                                            Writer.Write(Entry.Warning)
+                                        End If
+                                    Next
+                                End If
+                            End Using
+                            WriteBuffer(Stream.ToArray())
+                        End Using
+                    End Sub, Nothing)
             Catch ex As Exception
                 ServiceUnhandledException(ex)
             End Try

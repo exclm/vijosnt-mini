@@ -1,6 +1,11 @@
-﻿Namespace Foreground
+﻿Imports VijosNT.Feeding
+
+Namespace Foreground
     Friend Class StressTest
         Private m_Daemon As Daemon
+        Private m_Submitted As Int64
+        Private m_Accepted As Int64
+        Private m_Failed As Int64
 
         Public Sub New(ByVal Daemon As Daemon)
 
@@ -11,20 +16,36 @@
             m_Daemon = Daemon
         End Sub
 
-        Private Sub TimerUpdate(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TickPerSecond.Scroll, TockPerTick.Scroll, StartCheck.CheckedChanged
-            Dim Enabled = StartCheck.Checked
+        Private Sub TimerUpdate(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SpeedScroll.Scroll
+            Dim Enabled = (SpeedScroll.Value <> 0)
             If StressTimer.Enabled <> Enabled Then _
                 StressTimer.Enabled = Enabled
-            Dim Interval = 1000 \ TickPerSecond.Value
-            If StressTimer.Interval <> Interval Then _
-                StressTimer.Interval = Interval
+            If Enabled Then
+                Dim Interval = 3000 \ SpeedScroll.Value
+                If StressTimer.Interval <> Interval Then _
+                    StressTimer.Interval = Interval
+            End If
         End Sub
 
         Private Sub StressTimer_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles StressTimer.Tick
-            For Index = 0 To TockPerTick.Value - 1
-                LocalDb.Record.Add(FileNameText.Text, CodeText.Text)
-            Next
-            m_Daemon.FeedDataSource(String.Empty)
+            Interlocked.Increment(m_Submitted)
+            m_Daemon.DirectFeed(String.Empty, FileNameText.Text, CodeText.Text, _
+                Sub(Result As TestResult)
+                    If Result.Flag = TestResultFlag.Accepted Then
+                        Interlocked.Increment(m_Accepted)
+                    Else
+                        Interlocked.Increment(m_Failed)
+                    End If
+                    If Not IsDisposed Then
+                        BeginInvoke(New MethodInvoker(AddressOf UpdateStatus))
+                    End If
+                End Sub)
+            UpdateStatus()
+        End Sub
+
+        Private Sub UpdateStatus()
+            Dim Submitted = m_Submitted, Accepted = m_Accepted, Failed = m_Failed
+            StatusLabel.Text = "已提交: " & Submitted & ", 已通过: " & Accepted & ", 已失败: " & Failed & ", 堆积数: " & Submitted - (Accepted + Failed)
         End Sub
     End Class
 End Namespace

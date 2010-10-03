@@ -1,4 +1,5 @@
-﻿Imports VijosNT.Win32
+﻿Imports VijosNT.Feeding
+Imports VijosNT.Win32
 
 Namespace Remoting
     Friend Class PipeClient
@@ -7,6 +8,7 @@ Namespace Remoting
 
         Public Event RunnerStatusChanged(ByVal Busy As Boolean)
         Public Event LocalRecordChanged()
+        Public Event DirectFeedReply(ByVal StateId As Int32, ByVal Result As TestResult)
         Public Event Disconnected()
 
         Public Sub New()
@@ -84,6 +86,8 @@ Namespace Remoting
                         OnRunnerStatusChanged(Reader.ReadBoolean())
                     Case ServerMessage.LocalRecordChanged
                         OnLocalRecordChanged()
+                    Case ServerMessage.DirectFeedReply
+                        OnDirectFeedReply(Reader)
                 End Select
             End Using
         End Sub
@@ -94,6 +98,29 @@ Namespace Remoting
 
         Private Sub OnLocalRecordChanged()
             RaiseEvent LocalRecordChanged()
+        End Sub
+
+        Private Sub OnDirectFeedReply(ByVal Reader As BinaryReader)
+            Dim StateId = Reader.ReadInt32()
+            Dim Flag As TestResultFlag = Reader.ReadInt32()
+            Dim Warning = Reader.ReadString()
+            If Warning.Length = 0 Then Warning = Nothing
+            Dim Score = Reader.ReadInt32()
+            Dim TimeUsage = Reader.ReadInt64()
+            Dim MemoryUsage = Reader.ReadInt64()
+            Dim Entries As New List(Of TestResultEntry)
+            While Reader.PeekChar <> -1
+                Dim Entry = New TestResultEntry()
+                Entry.Index = Reader.ReadInt32()
+                Entry.Flag = Reader.ReadInt32()
+                Entry.Score = Reader.ReadInt32()
+                Entry.TimeUsage = Reader.ReadInt64()
+                Entry.MemoryUsage = Reader.ReadInt64()
+                Entry.Warning = Reader.ReadString()
+                If Entry.Warning.Length = 0 Then Entry.Warning = Nothing
+                Entries.Add(Entry)
+            End While
+            RaiseEvent DirectFeedReply(StateId, New TestResult(Nothing, Flag, Warning, Score, TimeUsage, MemoryUsage, Entries))
         End Sub
 
         Private Sub OnDisconnected()
