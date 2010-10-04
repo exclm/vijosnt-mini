@@ -21,7 +21,7 @@ Namespace Foreground
             If StressTimer.Enabled <> Enabled Then _
                 StressTimer.Enabled = Enabled
             If Enabled Then
-                Dim Interval = 3000 \ SpeedScroll.Value
+                Dim Interval = 1000 \ SpeedScroll.Value
                 If StressTimer.Interval <> Interval Then _
                     StressTimer.Interval = Interval
             End If
@@ -36,9 +36,10 @@ Namespace Foreground
                     Else
                         Interlocked.Increment(m_Failed)
                     End If
-                    If Not IsDisposed Then
+                    Try
                         BeginInvoke(New MethodInvoker(AddressOf UpdateStatus))
-                    End If
+                    Catch ex As InvalidOperationException
+                    End Try
                 End Sub)
             UpdateStatus()
         End Sub
