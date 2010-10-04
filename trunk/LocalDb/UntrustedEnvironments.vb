@@ -6,20 +6,19 @@
 
         Shared Sub New()
             Using Command As SQLiteCommand = Database.CreateCommand( _
-                    "CREATE TABLE IF NOT EXISTS UntrustedEnvironments (" & _
+                    "CREATE TABLE IF NOT EXISTS UntrustedEnvironments2 (" & _
                     "Id INTEGER PRIMARY KEY AUTOINCREMENT, " & _
-                    "DesktopName TEXT, " & _
                     "UserName TEXT, " & _
                     "Password TEXT)")
                 Command.ExecuteNonQuery()
             End Using
 
             m_SelectCommand = Database.CreateCommand( _
-                "SELECT * FROM UntrustedEnvironments")
+                "SELECT * FROM UntrustedEnvironments2")
             m_InsertCommand = Database.CreateCommand( _
-                "INSERT INTO UntrustedEnvironments (Id, DesktopName, UserName, Password) VALUES (NULL, @DesktopName, @UserName, @Password)")
+                "INSERT INTO UntrustedEnvironments2 (Id, UserName, Password) VALUES (NULL, @UserName, @Password)")
             m_DeleteCommand = Database.CreateCommand( _
-                "DELETE FROM UntrustedEnvironments WHERE Id = @Id")
+                "DELETE FROM UntrustedEnvironments2 WHERE Id = @Id")
         End Sub
 
         Public Shared Function GetAll() As IDataReader
@@ -28,10 +27,9 @@
             End Using
         End Function
 
-        Public Shared Sub Add(ByVal DesktopName As String, ByVal UserName As String, ByVal Password As String)
+        Public Shared Sub Add(ByVal UserName As String, ByVal Password As String)
             Using Command As SQLiteCommand = m_InsertCommand.Clone()
                 With Command.Parameters
-                    .AddWithValue("@DesktopName", DesktopName)
                     .AddWithValue("@UserName", UserName)
                     .AddWithValue("@Password", Password)
                 End With
