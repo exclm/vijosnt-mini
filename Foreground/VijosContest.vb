@@ -52,7 +52,7 @@ Namespace Foreground
             Private Sub SetTesting()
                 Using Connection As SqlConnection = NewConnection(), _
                     Command As New SqlCommand("UPDATE Test SET DoneNF = 0 WHERE ID = @ID", Connection)
-                    Command.Parameters.Add(New SqlParameter("ID", m_ID))
+                    Command.Parameters.Add(New SqlParameter("ID", m_Id))
                     Command.ExecuteNonQuery()
                 End Using
             End Sub
@@ -60,7 +60,7 @@ Namespace Foreground
             Private Sub SetDone()
                 Using Connection As SqlConnection = NewConnection(), _
                     Command As New SqlCommand("UPDATE Test SET DoneNF = 1 WHERE ID = @ID", Connection)
-                    Command.Parameters.Add(New SqlParameter("ID", m_ID))
+                    Command.Parameters.Add(New SqlParameter("ID", m_Id))
                     Command.ExecuteNonQuery()
                 End Using
             End Sub
@@ -92,15 +92,15 @@ Namespace Foreground
             Private m_Item As ListViewItem
             Private m_RecordList As New List(Of TestRecord)
             Private m_Contest As Contest
-            Private m_ID As Int32
+            Private m_Id As Int32
 
-            Public Sub New(ByVal Form As Form, ByVal Item As ListViewItem, ByVal Contest As Contest, ByVal ID As Int32)
+            Public Sub New(ByVal Form As Form, ByVal Item As ListViewItem, ByVal Contest As Contest, ByVal Id As Int32)
                 m_Form = Form
                 m_Item = Item
                 m_Contest = Contest
-                m_ID = ID
+                m_Id = Id
                 Contest.AddRef()
-                Contest.SetTesting(ID)
+                Contest.SetTesting(Id)
             End Sub
 
             Public Sub AddRecord(ByVal Record As TestRecord)
@@ -130,7 +130,7 @@ Namespace Foreground
                     Next
                 End SyncLock
                 Finish(TotalScore, TotalTime)
-                m_Contest.SetDone(m_ID, TotalScore, TotalTime, Builder.ToString())
+                m_Contest.SetDone(m_Id, TotalScore, TotalTime, Builder.ToString())
                 m_Contest.Release()
             End Sub
 
@@ -261,7 +261,7 @@ Namespace Foreground
         End Sub
 
         Private Sub btnTestCompiler_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTestCompiler.Click
-            Dim ProblemId = txtProblemID.Text
+            Dim ProblemId = txtProblemId.Text
 
             lvCompiler.BeginUpdate()
             Try
@@ -308,15 +308,15 @@ Namespace Foreground
                             Item.Tag = New Object()
                         Next
                         While Reader.Read()
-                            Dim ID As String = "T" & Reader.Item("ID")
+                            Dim Id As String = "T" & Reader.Item("ID")
                             Dim Title As String = Reader.Item("Name")
                             Dim DoneNF As Boolean = Reader.Item("DoneNF")
                             Dim Item As ListViewItem
-                            If lvContest.Items.ContainsKey(ID) Then
-                                Item = lvContest.Items(ID)
+                            If lvContest.Items.ContainsKey(Id) Then
+                                Item = lvContest.Items(Id)
                                 Item.Tag = Nothing
                             Else
-                                Item = lvContest.Items.Add(ID, ID, 0)
+                                Item = lvContest.Items.Add(Id, Id, 0)
                                 Item.SubItems.AddRange(New String() {"", ""})
                             End If
                             Item.SubItems(1).Text = Title
@@ -354,25 +354,25 @@ Namespace Foreground
                 MsgBox("您必须选中要测评的比赛。", MsgBoxStyle.Information)
                 Return
             End If
-            txtTestID.Text = lvContest.SelectedItems(0).Text
+            txtTestId.Text = lvContest.SelectedItems(0).Text
             tabMain.SelectedTab = tpTest
             btnDisplay_Click(sender, e)
         End Sub
 
-        Private Function GetTestID() As Boolean
-            Dim TestID As String = txtTestID.Text
-            If TestID Is Nothing OrElse TestID.Length <> 5 OrElse TestID(0) <> "T"c Then _
+        Private Function GetTestId() As Boolean
+            Dim TestId As String = txtTestId.Text
+            If TestId Is Nothing OrElse TestId.Length <> 5 OrElse TestId(0) <> "T"c Then _
                 Return False
-            For Index As Int32 = 1 To TestID.Length - 1
-                If Not "0123456789".Contains(TestID(Index)) Then _
+            For Index As Int32 = 1 To TestId.Length - 1
+                If Not "0123456789".Contains(TestId(Index)) Then _
                     Return False
             Next
-            m_TestId = TestID.Substring(1)
+            m_TestId = TestId.Substring(1)
             Return True
         End Function
 
         Private Sub btnDisplay_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDisplay.Click
-            If Not GetTestID() Then
+            If Not GetTestId() Then
                 MsgBox("测试号必须为大写字母 T 开头, 并紧随四位数字。", MsgBoxStyle.Information)
                 Return
             End If
@@ -390,13 +390,13 @@ Namespace Foreground
                     Try
                         lvTesting.Items.Clear()
                         While Reader.Read()
-                            Dim ID As Int32 = Reader.Item("ID")
+                            Dim Id As Int32 = Reader.Item("ID")
                             Dim Username As String = Reader.Item("Username")
                             Dim Score As Int32 = Reader.Item("Score")
                             Dim RunTime As Double = Reader.Item("RunTime")
                             Dim Compiler As String = Reader.Item("Compiler")
                             Dim DoneNF As Boolean = Reader.Item("DoneNF")
-                            With lvTesting.Items.Add(ID.ToString(), ID.ToString(), 0)
+                            With lvTesting.Items.Add(Id.ToString(), Id.ToString(), 0)
                                 .SubItems.Add(Username)
                                 .SubItems.Add(Score.ToString())
                                 .SubItems.Add(RunTime.ToString() & "ms")
@@ -454,76 +454,98 @@ Namespace Foreground
         End Sub
 
         Private Sub btnStart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnStart.Click
-            Static RecordID As Int32 = 0
+            Static RecordId As Int32 = 0
+            btnStart.Enabled = False
             lvTesting.BeginUpdate()
             lvRecord.BeginUpdate()
-            Try
-                Dim ct As New Contest(Int32.Parse(m_TestId), m_ConnectionString)
-                ct.AddRef()
-                Try
-                    For Each Item As ListViewItem In lvTesting.CheckedItems
-                        Dim sb As New StringBuilder
-                        sb.AppendLine("SELECT tt.UserID, u.Username, tt.Compiler, t.ProblemList")
-                        sb.AppendLine("FROM Testing tt, Test t, [User] u")
-                        sb.AppendLine("WHERE tt.ID = " & Item.Text)
-                        sb.AppendLine("AND tt.TestID = t.ID")
-                        sb.AppendLine("AND tt.UserID = u.ID")
-                        Using Connection As SqlConnection = NewConnection(), _
-                            Command As New SqlCommand(sb.ToString(), Connection), _
-                            Reader As SqlDataReader = Command.ExecuteReader()
-                            If Reader.Read() Then
-                                Item.Checked = False
-                                Dim UserID As Int32 = Reader.Item("UserID")
-                                Dim Username As String = Reader.Item("Username")
-                                Dim Compiler As String = Reader.Item("Compiler")
-                                Dim ProblemList As String() = Split(Reader.Item("ProblemList"), "|")
-                                Select Case Compiler
-                                    Case "", "FPC", "TPC"
-                                        Compiler = "FPC"
-                                    Case "GCC"
-                                        Compiler = "GCC"
-                                    Case "CPP"
-                                        Compiler = "G++"
-                                End Select
-                                Dim tu As New TestUser(Me, Item, ct, Int32.Parse(Item.Text))
-                                tu.AddRef()
-                                Try
-                                    For Each Problem As String In ProblemList
-                                        If Problem.Trim().Length <> 0 Then
-                                            RecordID += 1
-                                            Dim RecordItem As ListViewItem = lvRecord.Items.Add(RecordID.ToString())
-                                            RecordItem.SubItems.AddRange(New String() {Username, "P" & Problem, Compiler, String.Empty, String.Empty, String.Empty})
-                                            Dim tr As New TestRecord(Me, RecordItem, tu)
-                                            Try
-                                                Using Code As New StreamReader(m_VijosPath & "Upload\U" & UserID.ToString() & "\P" & Problem & ".pas")
-                                                    If m_Daemon.DirectFeed(String.Empty, "P" & Problem & VijosDataSource.GetCompilerExtension(Compiler), Code.ReadToEnd(), _
-                                                        Sub(Result As TestResult)
-                                                            tr.Finish(Result)
-                                                        End Sub) Then
-                                                    Else
-                                                        tr.Finish(New TestResult(Nothing, TestResultFlag.InternalError, "评测时发生内部错误", 0, 0, 0, Nothing))
-                                                    End If
-                                                End Using
-                                            Catch ex As FileNotFoundException
-                                                tr.Finish(New TestResult(Nothing, TestResultFlag.None, "未提交", 0, 0, 0, Nothing))
-                                            End Try
-                                        End If
-                                    Next
-                                Finally
-                                    tu.Release()
-                                End Try
-                            End If
-                        End Using
-                    Next
-                Finally
-                    ct.Release()
-                End Try
-            Catch ex As Exception
-                MsgBox(ex.ToString(), MsgBoxStyle.Critical)
-            Finally
-                lvTesting.EndUpdate()
-                lvRecord.EndUpdate()
-            End Try
+            Dim CheckedItems = lvTesting.CheckedItems
+            MiniThreadPool.Queue( _
+                Sub()
+                    Try
+                        Dim ct As New Contest(Int32.Parse(m_TestId), m_ConnectionString)
+                        ct.AddRef()
+                        Try
+                            For Each Item As ListViewItem In CheckedItems
+                                Dim Item0 = Item
+                                Using Connection As SqlConnection = NewConnection(), _
+                                    Command As New SqlCommand( _
+                                        "SELECT tt.UserID, u.Username, tt.Compiler, t.ProblemList" & vbCrLf & _
+                                        "FROM Testing tt, Test t, [User] u" & vbCrLf & _
+                                        "WHERE tt.ID = " & Item0.Text & vbCrLf & _
+                                        "AND tt.TestID = t.ID" & vbCrLf & _
+                                        "AND tt.UserID = u.ID", Connection), _
+                                    Reader As SqlDataReader = Command.ExecuteReader()
+                                    If Reader.Read() Then
+                                        Item0.Checked = False
+                                        Dim UserId As Int32 = Reader.Item("UserID")
+                                        Dim Username As String = Reader.Item("Username")
+                                        Dim Compiler As String = Reader.Item("Compiler")
+                                        Dim ProblemList As String() = Split(Reader.Item("ProblemList"), "|")
+                                        Select Case Compiler
+                                            Case "", "FPC", "TPC"
+                                                Compiler = "FPC"
+                                            Case "GCC"
+                                                Compiler = "GCC"
+                                            Case "CPP"
+                                                Compiler = "G++"
+                                        End Select
+                                        Dim ItemText As String = Nothing
+                                        Invoke(New MethodInvoker( _
+                                            Sub()
+                                                ItemText = Item0.Text
+                                            End Sub))
+                                        Dim tu As New TestUser(Me, Item0, ct, Int32.Parse(ItemText))
+                                        tu.AddRef()
+                                        Try
+                                            For Each Problem In ProblemList
+                                                Dim TrimmedProblem = Problem.Trim()
+                                                If TrimmedProblem.Length <> 0 Then
+                                                    RecordId += 1
+                                                    Dim RecordItem As ListViewItem = Nothing
+                                                    Invoke(New MethodInvoker( _
+                                                        Sub()
+                                                            RecordItem = lvRecord.Items.Add(RecordId.ToString())
+                                                            RecordItem.SubItems.AddRange(New String() {Username, "P" & TrimmedProblem, Compiler, String.Empty, String.Empty, String.Empty})
+                                                        End Sub))
+                                                    Dim tr As New TestRecord(Me, RecordItem, tu)
+                                                    Try
+                                                        Using Code As New StreamReader(m_VijosPath & "Upload\U" & UserId.ToString() & "\P" & TrimmedProblem & ".pas")
+                                                            If m_Daemon.DirectFeed(String.Empty, "P" & TrimmedProblem & VijosDataSource.GetCompilerExtension(Compiler), Code.ReadToEnd(), _
+                                                                Sub(Result As TestResult)
+                                                                    tr.Finish(Result)
+                                                                End Sub) Then
+                                                            Else
+                                                                tr.Finish(New TestResult(Nothing, TestResultFlag.InternalError, "评测时发生内部错误", 0, 0, 0, Nothing))
+                                                            End If
+                                                        End Using
+                                                    Catch ex As FileNotFoundException
+                                                        tr.Finish(New TestResult(Nothing, TestResultFlag.None, "未提交", 0, 0, 0, Nothing))
+                                                    End Try
+                                                End If
+                                            Next
+                                        Finally
+                                            tu.Release()
+                                        End Try
+                                    End If
+                                End Using
+                            Next
+                        Finally
+                            ct.Release()
+                        End Try
+                    Catch ex As Exception
+                        BeginInvoke(New MethodInvoker( _
+                            Sub()
+                                MsgBox(ex.ToString(), MsgBoxStyle.Critical)
+                            End Sub))
+                    Finally
+                        BeginInvoke(New MethodInvoker( _
+                            Sub()
+                                lvTesting.EndUpdate()
+                                lvRecord.EndUpdate()
+                                btnStart.Enabled = True
+                            End Sub))
+                    End Try
+                End Sub, Nothing)
         End Sub
 
         Private Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
