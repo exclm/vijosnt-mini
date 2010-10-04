@@ -97,7 +97,7 @@ Vijos 支持评测的代码类型包括 C、C++、Pascal，我们需要安装 Mi
 
 == Vijos 代码修改 ==
 
-由于使用了 Http 通告方式，需要对 Vijos 代码进行少量的修改，在每次提交代码时，通过 DOMDocument 组件对 VijosNT Mini 进行通告，从而启动测评。
+由于使用了 Http 通告方式，需要对 Vijos 代码进行少量的修改，在每次提交代码时，通过 XMLHTTP 组件对 VijosNT Mini 进行通告，从而启动测评。
 
 需要修改的文件为 Problem_Upload_Submit.asp，在 Vijos 的 Wwwroot 目录下。
 
@@ -105,11 +105,11 @@ Vijos 支持评测的代码类型包括 C、C++、Pascal，我们需要安装 Mi
 
 {{{
     ' VijosNT Mini Announcement
-    Dim dom
-    Set dom = CreateObject("MSXML2.DOMDocument")
-    dom.async = False
-    dom.Load "http://127.0.0.1:3322/vijos_feed"
-    Set dom = Nothing
+    Dim http
+    Set http = CreateObject("Microsoft.XMLHTTP")
+    http.open "GET", "http://127.0.0.1:3322/vijos_feed", False
+    http.send
+    Set http = Nothing
 }}}
 
 == 启动服务 ==
