@@ -1,6 +1,4 @@
-﻿Imports VijosNT.Utility
-
-Namespace Feeding
+﻿Namespace Feeding
     Friend Class VijosDataSource
         Inherits DataSourceBase
 
@@ -198,60 +196,8 @@ Namespace Feeding
 
             Dim Details As New StringBuilder()
             Details.AppendLine("VijosNT [color=#ff8000][b]Mini[/b][/color] " & Assembly.GetExecutingAssembly().GetName().Version.ToString())
-
-            If Result.Warning IsNot Nothing AndAlso Result.Warning.Length <> 0 Then
-                Details.AppendLine()
-                Details.AppendLine(Result.Warning)
-            End If
-
-            Dim TimeLimitExceeded As Boolean = False
-            Dim MemoryLimitExceeded As Boolean = False
-
-            If Result.Entries IsNot Nothing Then
-                Details.AppendLine()
-                For Each Entry As TestResultEntry In Result.Entries
-                    Details.Append("#" & Entry.Index.ToString("00") & ": ")
-                    If Entry.Flag = TestResultFlag.Accepted Then
-                        Details.Append("[color=#ff0000]Accepted[/color]")
-                    Else
-                        Details.Append("[color=#0000ff]" & FormatEnumString(Entry.Flag.ToString()) & "[/color]")
-                    End If
-                    If Entry.Flag = TestResultFlag.TimeLimitExceeded Then
-                        Details.AppendLine(" (?, " & (Entry.MemoryUsage \ 1024).ToString() & "KB)")
-                        TimeLimitExceeded = True
-                    ElseIf Entry.Flag = TestResultFlag.MemoryLimitExceeded Then
-                        Details.AppendLine(" (" & (Entry.TimeUsage \ 10000).ToString() & "ms, ?)")
-                        MemoryLimitExceeded = True
-                    Else
-                        Details.AppendLine(" (" & (Entry.TimeUsage \ 10000).ToString() & "ms, " & (Entry.MemoryUsage \ 1024).ToString() & "KB)")
-                    End If
-                    If Entry.Warning IsNot Nothing AndAlso Entry.Warning.Length <> 0 Then
-                        Details.AppendLine(Entry.Warning)
-                    End If
-                Next
-            End If
-
             Details.AppendLine()
-            If Result.Flag = TestResultFlag.Accepted Then
-                Details.Append("[color=#ff0000]Accepted[/color]")
-            Else
-                Details.Append("[color=#0000ff]" & FormatEnumString(Result.Flag.ToString()) & "[/color]")
-            End If
-            Details.Append(" / " & Result.Score & " / ")
-
-            If TimeLimitExceeded Then
-                Details.Append("? / ")
-            Else
-                Details.Append((Result.TimeUsage \ 10000).ToString() & "ms / ")
-            End If
-
-            If MemoryLimitExceeded Then
-                Details.Append("?")
-            Else
-                Details.Append((Result.MemoryUsage \ 1024).ToString() & "KB")
-            End If
-
-            Details.AppendLine()
+            Result.AppendToBuilder(Details, Markup.Ubb)
 
             Using Connection As SqlConnection = CloneConnection(), _
                 Command0 As SqlCommand = CloneCommand(m_UpdateFinalCommand, Connection), _

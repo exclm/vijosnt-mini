@@ -114,12 +114,19 @@ Namespace Foreground
                 Dim TotalScore As Int32 = 0
                 Dim TotalTime As Int32 = 0
                 Dim Index As Int32 = 0
+
+                Builder.Append("VijosNT <font color=""#ff8000""><strong>Mini</strong></font> ")
+                Builder.Append(Assembly.GetExecutingAssembly().GetName().Version.ToString())
+                Builder.Append("<br><br>")
+
                 SyncLock m_RecordList
                     For Each Record As TestRecord In m_RecordList
                         Index += 1
-                        Builder.AppendLine("Hello world")
+                        Builder.Append("第 " & Index & " 题:<br>")
+                        Record.Result.AppendToBuilder(Builder, Markup.Html)
                         TotalScore += Record.Result.Score
                         TotalTime += Record.Result.TimeUsage \ 10000
+                        Builder.Append("<br>")
                     Next
                 End SyncLock
                 Finish(TotalScore, TotalTime)
@@ -160,7 +167,10 @@ Namespace Foreground
                             m_User.Release()
 
                             With m_Item
-                                .Tag = "Hello world"
+                                Dim Builder As New StringBuilder()
+                                Result.AppendToBuilder(Builder, Markup.None)
+                                .Tag = Builder.ToString()
+                                .SubItems.Item(4).Text = Result.Flag.ToString()
                                 .SubItems.Item(5).Text = Result.Score.ToString()
                                 .SubItems.Item(6).Text = (Result.TimeUsage \ 10000).ToString() & "ms"
                                 .EnsureVisible()
@@ -237,7 +247,9 @@ Namespace Foreground
                     Try
                         BeginInvoke(New MethodInvoker( _
                              Sub()
-                                 Item.Tag = "Hello world"
+                                 Dim Builder As New StringBuilder()
+                                 Result.AppendToBuilder(Builder, Markup.None)
+                                 Item.Tag = Builder.ToString()
                                  Item.SubItems.Item(2).Text = FormatEnumString(Result.Flag.ToString())
                                  Item.SubItems.Item(3).Text = Result.Score.ToString()
                                  Item.SubItems.Item(4).Text = (Result.TimeUsage \ 10000).ToString() & "ms"
@@ -484,13 +496,16 @@ Namespace Foreground
                                             Dim tr As New TestRecord(Me, RecordItem, tu)
                                             Try
                                                 Using Code As New StreamReader(m_VijosPath & "Upload\U" & UserID.ToString() & "\P" & Problem & ".pas")
-                                                    m_Daemon.DirectFeed(String.Empty, "P" & Problem & VijosDataSource.GetCompilerExtension(Compiler), Code.ReadToEnd(), _
+                                                    If m_Daemon.DirectFeed(String.Empty, "P" & Problem & VijosDataSource.GetCompilerExtension(Compiler), Code.ReadToEnd(), _
                                                         Sub(Result As TestResult)
                                                             tr.Finish(Result)
-                                                        End Sub)
+                                                        End Sub) Then
+                                                    Else
+                                                        tr.Finish(New TestResult(Nothing, TestResultFlag.InternalError, "评测时发生内部错误", 0, 0, 0, Nothing))
+                                                    End If
                                                 End Using
-                                            Catch ex As Exception
-                                                ' TODO
+                                            Catch ex As FileNotFoundException
+                                                tr.Finish(New TestResult(Nothing, TestResultFlag.None, "未提交", 0, 0, 0, Nothing))
                                             End Try
                                         End If
                                     Next
