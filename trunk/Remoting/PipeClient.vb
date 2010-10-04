@@ -28,6 +28,7 @@ Namespace Remoting
             End If
 
             Using File As New FileEx(Name, CreateFileAccess.GENERIC_READ Or CreateFileAccess.GENERIC_WRITE, CreateFileShare.FILE_SHARE_NONE, CreateFileDisposition.OPEN_EXISTING, CreateFileFlags.FILE_FLAG_OVERLAPPED)
+                Win32True(SetNamedPipeHandleState(File.GetHandleUnsafe(), NamedPipeMode.PIPE_READMODE_MESSAGE, IntPtr.Zero, IntPtr.Zero))
                 m_Stream = New FileStream(New SafeFileHandle(File.Duplicate(), True), FileAccess.ReadWrite, 4096, True)
             End Using
 

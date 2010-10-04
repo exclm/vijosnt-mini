@@ -559,9 +559,18 @@
             ByVal NamedPipeHandle As IntPtr, _
             ByRef lpOverlapped As NativeOverlapped) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
+        Public Declare Auto Function SetNamedPipeHandleState Lib "kernel32.dll" ( _
+            ByVal NamedPipeHandle As IntPtr, _
+            ByRef Mode As NamedPipeMode, _
+            ByVal lpMaxCollectionCount As IntPtr, _
+            ByVal lpCollectDataTimeout As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
+
         Public Declare Auto Function IsWow64Process Lib "kernel32.dll" ( _
             ByVal ProcessHandle As IntPtr, _
             <MarshalAs(UnmanagedType.Bool)> ByRef Wow64Process As Boolean) As <MarshalAs(UnmanagedType.Bool)> Boolean
+
+        Public Declare Auto Sub OutputDebugString Lib "kernel32.dll" ( _
+            ByVal OutputString As String)
 
         Public Enum CreateFileAccess As Int32
             GENERIC_ALL = &H10000000
