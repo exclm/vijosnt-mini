@@ -26,14 +26,14 @@
             Me.components = New System.ComponentModel.Container()
             Me.scTest = New System.Windows.Forms.SplitContainer()
             Me.btnSelectUntested = New System.Windows.Forms.Button()
-            Me.lblTestID = New System.Windows.Forms.Label()
+            Me.lblTestId = New System.Windows.Forms.Label()
             Me.btnSelectNone = New System.Windows.Forms.Button()
-            Me.txtTestID = New System.Windows.Forms.TextBox()
+            Me.txtTestId = New System.Windows.Forms.TextBox()
             Me.btnSelectAll = New System.Windows.Forms.Button()
             Me.btnDisplay = New System.Windows.Forms.Button()
             Me.btnStart = New System.Windows.Forms.Button()
             Me.lvTesting = New System.Windows.Forms.ListView()
-            Me.chTsID = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.chTsId = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.chTsUser = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.chTsScore = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.chTsTime = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -42,7 +42,7 @@
             Me.btnClearRecord = New System.Windows.Forms.Button()
             Me.btnDisplayRecord = New System.Windows.Forms.Button()
             Me.lvRecord = New System.Windows.Forms.ListView()
-            Me.chRecID = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.chRecId = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.chRecUser = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.chRecProblem = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.chRecCompiler = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -55,19 +55,19 @@
             Me.btnClearCompiler = New System.Windows.Forms.Button()
             Me.btnDisplayCompiler = New System.Windows.Forms.Button()
             Me.lvCompiler = New System.Windows.Forms.ListView()
-            Me.chClID = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.chClId = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.chClCompiler = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.chClStatus = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.chClScore = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.chClTime = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.btnTestCompiler = New System.Windows.Forms.Button()
-            Me.txtProblemID = New System.Windows.Forms.TextBox()
-            Me.lblProblemID = New System.Windows.Forms.Label()
+            Me.txtProblemId = New System.Windows.Forms.TextBox()
+            Me.lblProblemId = New System.Windows.Forms.Label()
             Me.tpContest = New System.Windows.Forms.TabPage()
             Me.pnlContest = New System.Windows.Forms.Panel()
             Me.btnMoveTo = New System.Windows.Forms.Button()
             Me.lvContest = New System.Windows.Forms.ListView()
-            Me.chCtID = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.chCtId = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.chCtName = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.chCtDone = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.btnRefresh = New System.Windows.Forms.Button()
@@ -99,9 +99,9 @@
             'scTest.Panel1
             '
             Me.scTest.Panel1.Controls.Add(Me.btnSelectUntested)
-            Me.scTest.Panel1.Controls.Add(Me.lblTestID)
+            Me.scTest.Panel1.Controls.Add(Me.lblTestId)
             Me.scTest.Panel1.Controls.Add(Me.btnSelectNone)
-            Me.scTest.Panel1.Controls.Add(Me.txtTestID)
+            Me.scTest.Panel1.Controls.Add(Me.txtTestId)
             Me.scTest.Panel1.Controls.Add(Me.btnSelectAll)
             Me.scTest.Panel1.Controls.Add(Me.btnDisplay)
             Me.scTest.Panel1.Controls.Add(Me.btnStart)
@@ -126,14 +126,14 @@
             Me.btnSelectUntested.Text = "选中未评测用户(&U)"
             Me.btnSelectUntested.UseVisualStyleBackColor = True
             '
-            'lblTestID
+            'lblTestId
             '
-            Me.lblTestID.AutoSize = True
-            Me.lblTestID.Location = New System.Drawing.Point(14, 18)
-            Me.lblTestID.Name = "lblTestID"
-            Me.lblTestID.Size = New System.Drawing.Size(47, 12)
-            Me.lblTestID.TabIndex = 17
-            Me.lblTestID.Text = "测试号:"
+            Me.lblTestId.AutoSize = True
+            Me.lblTestId.Location = New System.Drawing.Point(14, 18)
+            Me.lblTestId.Name = "lblTestId"
+            Me.lblTestId.Size = New System.Drawing.Size(47, 12)
+            Me.lblTestId.TabIndex = 17
+            Me.lblTestId.Text = "测试号:"
             '
             'btnSelectNone
             '
@@ -145,15 +145,15 @@
             Me.btnSelectNone.Text = "全不选(&N)"
             Me.btnSelectNone.UseVisualStyleBackColor = True
             '
-            'txtTestID
+            'txtTestId
             '
-            Me.txtTestID.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Me.txtTestId.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.txtTestID.Location = New System.Drawing.Point(67, 15)
-            Me.txtTestID.Name = "txtTestID"
-            Me.txtTestID.Size = New System.Drawing.Size(348, 21)
-            Me.txtTestID.TabIndex = 18
-            Me.txtTestID.Text = "T1000"
+            Me.txtTestId.Location = New System.Drawing.Point(67, 15)
+            Me.txtTestId.Name = "txtTestId"
+            Me.txtTestId.Size = New System.Drawing.Size(348, 21)
+            Me.txtTestId.TabIndex = 18
+            Me.txtTestId.Text = "T1000"
             '
             'btnSelectAll
             '
@@ -191,7 +191,7 @@
                         Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.lvTesting.CheckBoxes = True
-            Me.lvTesting.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.chTsID, Me.chTsUser, Me.chTsScore, Me.chTsTime, Me.chTsCompiler, Me.chTsDone})
+            Me.lvTesting.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.chTsId, Me.chTsUser, Me.chTsScore, Me.chTsTime, Me.chTsCompiler, Me.chTsDone})
             Me.lvTesting.FullRowSelect = True
             Me.lvTesting.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
             Me.lvTesting.HideSelection = False
@@ -203,10 +203,10 @@
             Me.lvTesting.UseCompatibleStateImageBehavior = False
             Me.lvTesting.View = System.Windows.Forms.View.Details
             '
-            'chTsID
+            'chTsId
             '
-            Me.chTsID.Text = "ID"
-            Me.chTsID.Width = 55
+            Me.chTsId.Text = "ID"
+            Me.chTsId.Width = 55
             '
             'chTsUser
             '
@@ -258,7 +258,7 @@
             Me.lvRecord.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                         Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.lvRecord.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.chRecID, Me.chRecUser, Me.chRecProblem, Me.chRecCompiler, Me.chRecStatus, Me.chRecScore, Me.chRecTime})
+            Me.lvRecord.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.chRecId, Me.chRecUser, Me.chRecProblem, Me.chRecCompiler, Me.chRecStatus, Me.chRecScore, Me.chRecTime})
             Me.lvRecord.FullRowSelect = True
             Me.lvRecord.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
             Me.lvRecord.HideSelection = False
@@ -270,10 +270,10 @@
             Me.lvRecord.UseCompatibleStateImageBehavior = False
             Me.lvRecord.View = System.Windows.Forms.View.Details
             '
-            'chRecID
+            'chRecId
             '
-            Me.chRecID.Text = "ID"
-            Me.chRecID.Width = 49
+            Me.chRecId.Text = "ID"
+            Me.chRecId.Width = 49
             '
             'chRecUser
             '
@@ -339,8 +339,8 @@
             Me.pnlCompiler.Controls.Add(Me.btnDisplayCompiler)
             Me.pnlCompiler.Controls.Add(Me.lvCompiler)
             Me.pnlCompiler.Controls.Add(Me.btnTestCompiler)
-            Me.pnlCompiler.Controls.Add(Me.txtProblemID)
-            Me.pnlCompiler.Controls.Add(Me.lblProblemID)
+            Me.pnlCompiler.Controls.Add(Me.txtProblemId)
+            Me.pnlCompiler.Controls.Add(Me.lblProblemId)
             Me.pnlCompiler.Location = New System.Drawing.Point(6, 6)
             Me.pnlCompiler.Name = "pnlCompiler"
             Me.pnlCompiler.Size = New System.Drawing.Size(513, 430)
@@ -371,7 +371,7 @@
             Me.lvCompiler.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                         Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.lvCompiler.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.chClID, Me.chClCompiler, Me.chClStatus, Me.chClScore, Me.chClTime})
+            Me.lvCompiler.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.chClId, Me.chClCompiler, Me.chClStatus, Me.chClScore, Me.chClTime})
             Me.lvCompiler.FullRowSelect = True
             Me.lvCompiler.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
             Me.lvCompiler.HideSelection = False
@@ -383,10 +383,10 @@
             Me.lvCompiler.UseCompatibleStateImageBehavior = False
             Me.lvCompiler.View = System.Windows.Forms.View.Details
             '
-            'chClID
+            'chClId
             '
-            Me.chClID.Text = "ID"
-            Me.chClID.Width = 53
+            Me.chClId.Text = "ID"
+            Me.chClId.Width = 53
             '
             'chClCompiler
             '
@@ -418,24 +418,24 @@
             Me.btnTestCompiler.Text = "测试(&T)"
             Me.btnTestCompiler.UseVisualStyleBackColor = True
             '
-            'txtProblemID
+            'txtProblemId
             '
-            Me.txtProblemID.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Me.txtProblemId.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.txtProblemID.Location = New System.Drawing.Point(86, 18)
-            Me.txtProblemID.Name = "txtProblemID"
-            Me.txtProblemID.Size = New System.Drawing.Size(318, 21)
-            Me.txtProblemID.TabIndex = 16
-            Me.txtProblemID.Text = "P1000"
+            Me.txtProblemId.Location = New System.Drawing.Point(86, 18)
+            Me.txtProblemId.Name = "txtProblemId"
+            Me.txtProblemId.Size = New System.Drawing.Size(318, 21)
+            Me.txtProblemId.TabIndex = 16
+            Me.txtProblemId.Text = "P1000"
             '
-            'lblProblemID
+            'lblProblemId
             '
-            Me.lblProblemID.AutoSize = True
-            Me.lblProblemID.Location = New System.Drawing.Point(21, 21)
-            Me.lblProblemID.Name = "lblProblemID"
-            Me.lblProblemID.Size = New System.Drawing.Size(59, 12)
-            Me.lblProblemID.TabIndex = 15
-            Me.lblProblemID.Text = "A+B 题号:"
+            Me.lblProblemId.AutoSize = True
+            Me.lblProblemId.Location = New System.Drawing.Point(21, 21)
+            Me.lblProblemId.Name = "lblProblemId"
+            Me.lblProblemId.Size = New System.Drawing.Size(59, 12)
+            Me.lblProblemId.TabIndex = 15
+            Me.lblProblemId.Text = "A+B 题号:"
             '
             'tpContest
             '
@@ -443,7 +443,7 @@
             Me.tpContest.Location = New System.Drawing.Point(4, 22)
             Me.tpContest.Name = "tpContest"
             Me.tpContest.Padding = New System.Windows.Forms.Padding(3)
-            Me.tpContest.Size = New System.Drawing.Size(459, 414)
+            Me.tpContest.Size = New System.Drawing.Size(525, 442)
             Me.tpContest.TabIndex = 2
             Me.tpContest.Text = "比赛"
             Me.tpContest.UseVisualStyleBackColor = True
@@ -479,7 +479,7 @@
             Me.lvContest.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                         Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.lvContest.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.chCtID, Me.chCtName, Me.chCtDone})
+            Me.lvContest.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.chCtId, Me.chCtName, Me.chCtDone})
             Me.lvContest.FullRowSelect = True
             Me.lvContest.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
             Me.lvContest.HideSelection = False
@@ -492,10 +492,10 @@
             Me.lvContest.UseCompatibleStateImageBehavior = False
             Me.lvContest.View = System.Windows.Forms.View.Details
             '
-            'chCtID
+            'chCtId
             '
-            Me.chCtID.Text = "测试号"
-            Me.chCtID.Width = 67
+            Me.chCtId.Text = "测试号"
+            Me.chCtId.Width = 67
             '
             'chCtName
             '
@@ -587,14 +587,14 @@
         End Sub
         Friend WithEvents scTest As System.Windows.Forms.SplitContainer
         Friend WithEvents btnSelectUntested As System.Windows.Forms.Button
-        Friend WithEvents lblTestID As System.Windows.Forms.Label
+        Friend WithEvents lblTestId As System.Windows.Forms.Label
         Friend WithEvents btnSelectNone As System.Windows.Forms.Button
-        Friend WithEvents txtTestID As System.Windows.Forms.TextBox
+        Friend WithEvents txtTestId As System.Windows.Forms.TextBox
         Friend WithEvents btnSelectAll As System.Windows.Forms.Button
         Friend WithEvents btnDisplay As System.Windows.Forms.Button
         Friend WithEvents btnStart As System.Windows.Forms.Button
         Friend WithEvents lvTesting As System.Windows.Forms.ListView
-        Friend WithEvents chTsID As System.Windows.Forms.ColumnHeader
+        Friend WithEvents chTsId As System.Windows.Forms.ColumnHeader
         Friend WithEvents chTsUser As System.Windows.Forms.ColumnHeader
         Friend WithEvents chTsScore As System.Windows.Forms.ColumnHeader
         Friend WithEvents chTsTime As System.Windows.Forms.ColumnHeader
@@ -603,7 +603,7 @@
         Friend WithEvents btnClearRecord As System.Windows.Forms.Button
         Friend WithEvents btnDisplayRecord As System.Windows.Forms.Button
         Friend WithEvents lvRecord As System.Windows.Forms.ListView
-        Friend WithEvents chRecID As System.Windows.Forms.ColumnHeader
+        Friend WithEvents chRecId As System.Windows.Forms.ColumnHeader
         Friend WithEvents chRecUser As System.Windows.Forms.ColumnHeader
         Friend WithEvents chRecProblem As System.Windows.Forms.ColumnHeader
         Friend WithEvents chRecCompiler As System.Windows.Forms.ColumnHeader
@@ -616,19 +616,19 @@
         Friend WithEvents btnClearCompiler As System.Windows.Forms.Button
         Friend WithEvents btnDisplayCompiler As System.Windows.Forms.Button
         Friend WithEvents lvCompiler As System.Windows.Forms.ListView
-        Friend WithEvents chClID As System.Windows.Forms.ColumnHeader
+        Friend WithEvents chClId As System.Windows.Forms.ColumnHeader
         Friend WithEvents chClCompiler As System.Windows.Forms.ColumnHeader
         Friend WithEvents chClStatus As System.Windows.Forms.ColumnHeader
         Friend WithEvents chClScore As System.Windows.Forms.ColumnHeader
         Friend WithEvents chClTime As System.Windows.Forms.ColumnHeader
         Friend WithEvents btnTestCompiler As System.Windows.Forms.Button
-        Friend WithEvents txtProblemID As System.Windows.Forms.TextBox
-        Friend WithEvents lblProblemID As System.Windows.Forms.Label
+        Friend WithEvents txtProblemId As System.Windows.Forms.TextBox
+        Friend WithEvents lblProblemId As System.Windows.Forms.Label
         Friend WithEvents tpContest As System.Windows.Forms.TabPage
         Friend WithEvents pnlContest As System.Windows.Forms.Panel
         Friend WithEvents btnMoveTo As System.Windows.Forms.Button
         Friend WithEvents lvContest As System.Windows.Forms.ListView
-        Friend WithEvents chCtID As System.Windows.Forms.ColumnHeader
+        Friend WithEvents chCtId As System.Windows.Forms.ColumnHeader
         Friend WithEvents chCtName As System.Windows.Forms.ColumnHeader
         Friend WithEvents chCtDone As System.Windows.Forms.ColumnHeader
         Friend WithEvents btnRefresh As System.Windows.Forms.Button

@@ -35,7 +35,6 @@ Namespace Feeding
             If Warning IsNot Nothing AndAlso Warning.Length <> 0 Then
                 Builder.Append(Warning)
                 Builder.Append(Markups(3))
-                Builder.Append(Markups(3))
             End If
 
             Dim TimeLimitExceeded As Boolean = False
@@ -70,9 +69,9 @@ Namespace Feeding
                         Builder.Append(Markups(3))
                     End If
                 Next
+                Builder.Append(Markups(3))
             End If
 
-            Builder.Append(Markups(3))
             If Flag = TestResultFlag.Accepted Then
                 Builder.Append(Markups(0))
                 Builder.Append("Accepted")
