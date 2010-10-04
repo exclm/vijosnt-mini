@@ -634,8 +634,7 @@ Namespace Foreground
                 MessageBox.Show("登录失败, 使用错误的用户名和密码会使服务无法正常运行, 确定要继续吗?", "询问", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) = DialogResult.No Then _
                 Return
 
-            Dim RandomString As New RandomString()
-            UntrustedEnvironments.Add(RandomString.Next(16), UserName, Password)
+            UntrustedEnvironments.Add(UserName, Password)
             RefreshSecurity()
             ApplyExecutorButton.Enabled = True
         End Sub
