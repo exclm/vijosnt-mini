@@ -63,12 +63,18 @@ Namespace Foreground
 
                     .Add("Vijos 比赛评测(&T)", Nothing, _
                          Sub()
-                             Try
-                                 Dim VijosContest As New VijosContest(Me, "e:\vijos\config.xml")
-                                 VijosContest.Show()
-                             Catch ex As Exception
-                                 MessageBox.Show(ex.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                             End Try
+                             Using Dialog As New OpenFileDialog
+                                 Dialog.Title = "请选择 Vijos 设置文件 (Config.xml)"
+                                 Dialog.Filter = "Config.xml|Config.xml"
+                                 If Dialog.ShowDialog() = DialogResult.OK Then
+                                     Try
+                                         Dim VijosContest As New VijosContest(Me, Dialog.FileName)
+                                         VijosContest.Show()
+                                     Catch ex As Exception
+                                         MessageBox.Show(ex.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                                     End Try
+                                 End If
+                             End Using
                          End Sub)
                 End With
                 m_FloatingMenu = DirectCast(.Add("悬浮窗(&F)", Nothing, _
