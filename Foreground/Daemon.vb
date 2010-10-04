@@ -61,6 +61,15 @@ Namespace Foreground
                              StressTest.Show()
                          End Sub)
 
+                    .Add("Vijos 比赛评测(&T)", Nothing, _
+                         Sub()
+                             Try
+                                 Dim VijosContest As New VijosContest(Me, "e:\vijos\config.xml")
+                                 VijosContest.Show()
+                             Catch ex As Exception
+                                 MessageBox.Show(ex.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                             End Try
+                         End Sub)
                 End With
                 m_FloatingMenu = DirectCast(.Add("悬浮窗(&F)", Nothing, _
                     Sub()

@@ -134,6 +134,12 @@
     <Compile Include="Foreground\TestResultForm.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Foreground\VijosContest.Designer.vb">
+      <DependentUpon>VijosContest.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Foreground\VijosContest.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="LocalDb\DataSourceClass.vb" />
     <Compile Include="LocalDb\DataSourceConfig.vb" />
     <Compile Include="LocalDb\DataSourceMapping.vb" />
@@ -259,6 +265,9 @@
     <EmbeddedResource Include="Foreground\TestResultForm.resx">
       <DependentUpon>TestResultForm.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Foreground\VijosContest.resx">
+      <DependentUpon>VijosContest.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

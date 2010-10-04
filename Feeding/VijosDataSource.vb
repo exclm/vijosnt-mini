@@ -122,7 +122,7 @@ Namespace Feeding
             Return Result
         End Function
 
-        Private Function GetCompilerExtension(ByVal CompilerName As String) As String
+        Public Shared Function GetCompilerExtension(ByVal CompilerName As String) As String
             If CompilerName.StartsWith(".") Then
                 Return CompilerName
             Else
