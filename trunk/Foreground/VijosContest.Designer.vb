@@ -25,6 +25,8 @@
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
             Me.scTest = New System.Windows.Forms.SplitContainer()
+            Me.lblAt1 = New System.Windows.Forms.Label()
+            Me.txtNamespace1 = New System.Windows.Forms.TextBox()
             Me.btnSelectUntested = New System.Windows.Forms.Button()
             Me.lblTestId = New System.Windows.Forms.Label()
             Me.btnSelectNone = New System.Windows.Forms.Button()
@@ -52,6 +54,8 @@
             Me.tabMain = New System.Windows.Forms.TabControl()
             Me.tpCompiler = New System.Windows.Forms.TabPage()
             Me.pnlCompiler = New System.Windows.Forms.Panel()
+            Me.lblAt0 = New System.Windows.Forms.Label()
+            Me.txtNamespace0 = New System.Windows.Forms.TextBox()
             Me.btnClearCompiler = New System.Windows.Forms.Button()
             Me.btnDisplayCompiler = New System.Windows.Forms.Button()
             Me.lvCompiler = New System.Windows.Forms.ListView()
@@ -98,6 +102,8 @@
             '
             'scTest.Panel1
             '
+            Me.scTest.Panel1.Controls.Add(Me.lblAt1)
+            Me.scTest.Panel1.Controls.Add(Me.txtNamespace1)
             Me.scTest.Panel1.Controls.Add(Me.btnSelectUntested)
             Me.scTest.Panel1.Controls.Add(Me.lblTestId)
             Me.scTest.Panel1.Controls.Add(Me.btnSelectNone)
@@ -115,6 +121,22 @@
             Me.scTest.Size = New System.Drawing.Size(513, 430)
             Me.scTest.SplitterDistance = 235
             Me.scTest.TabIndex = 1
+            '
+            'lblAt1
+            '
+            Me.lblAt1.AutoSize = True
+            Me.lblAt1.Location = New System.Drawing.Point(298, 18)
+            Me.lblAt1.Name = "lblAt1"
+            Me.lblAt1.Size = New System.Drawing.Size(11, 12)
+            Me.lblAt1.TabIndex = 27
+            Me.lblAt1.Text = "@"
+            '
+            'txtNamespace1
+            '
+            Me.txtNamespace1.Location = New System.Drawing.Point(315, 15)
+            Me.txtNamespace1.Name = "txtNamespace1"
+            Me.txtNamespace1.Size = New System.Drawing.Size(100, 21)
+            Me.txtNamespace1.TabIndex = 26
             '
             'btnSelectUntested
             '
@@ -151,7 +173,7 @@
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.txtTestId.Location = New System.Drawing.Point(67, 15)
             Me.txtTestId.Name = "txtTestId"
-            Me.txtTestId.Size = New System.Drawing.Size(348, 21)
+            Me.txtTestId.Size = New System.Drawing.Size(225, 21)
             Me.txtTestId.TabIndex = 18
             Me.txtTestId.Text = "T1000"
             '
@@ -335,6 +357,8 @@
             Me.pnlCompiler.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                         Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.pnlCompiler.Controls.Add(Me.lblAt0)
+            Me.pnlCompiler.Controls.Add(Me.txtNamespace0)
             Me.pnlCompiler.Controls.Add(Me.btnClearCompiler)
             Me.pnlCompiler.Controls.Add(Me.btnDisplayCompiler)
             Me.pnlCompiler.Controls.Add(Me.lvCompiler)
@@ -345,6 +369,22 @@
             Me.pnlCompiler.Name = "pnlCompiler"
             Me.pnlCompiler.Size = New System.Drawing.Size(513, 430)
             Me.pnlCompiler.TabIndex = 0
+            '
+            'lblAt0
+            '
+            Me.lblAt0.AutoSize = True
+            Me.lblAt0.Location = New System.Drawing.Point(297, 21)
+            Me.lblAt0.Name = "lblAt0"
+            Me.lblAt0.Size = New System.Drawing.Size(11, 12)
+            Me.lblAt0.TabIndex = 22
+            Me.lblAt0.Text = "@"
+            '
+            'txtNamespace0
+            '
+            Me.txtNamespace0.Location = New System.Drawing.Point(314, 18)
+            Me.txtNamespace0.Name = "txtNamespace0"
+            Me.txtNamespace0.Size = New System.Drawing.Size(100, 21)
+            Me.txtNamespace0.TabIndex = 21
             '
             'btnClearCompiler
             '
@@ -424,7 +464,7 @@
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.txtProblemId.Location = New System.Drawing.Point(86, 18)
             Me.txtProblemId.Name = "txtProblemId"
-            Me.txtProblemId.Size = New System.Drawing.Size(318, 21)
+            Me.txtProblemId.Size = New System.Drawing.Size(205, 21)
             Me.txtProblemId.TabIndex = 16
             Me.txtProblemId.Text = "P1000"
             '
@@ -461,13 +501,13 @@
             Me.pnlContest.Controls.Add(Me.cbAutoRefresh)
             Me.pnlContest.Location = New System.Drawing.Point(6, 6)
             Me.pnlContest.Name = "pnlContest"
-            Me.pnlContest.Size = New System.Drawing.Size(447, 402)
+            Me.pnlContest.Size = New System.Drawing.Size(513, 402)
             Me.pnlContest.TabIndex = 0
             '
             'btnMoveTo
             '
             Me.btnMoveTo.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.btnMoveTo.Location = New System.Drawing.Point(355, 47)
+            Me.btnMoveTo.Location = New System.Drawing.Point(421, 47)
             Me.btnMoveTo.Name = "btnMoveTo"
             Me.btnMoveTo.Size = New System.Drawing.Size(75, 23)
             Me.btnMoveTo.TabIndex = 5
@@ -486,7 +526,7 @@
             Me.lvContest.Location = New System.Drawing.Point(16, 93)
             Me.lvContest.MultiSelect = False
             Me.lvContest.Name = "lvContest"
-            Me.lvContest.Size = New System.Drawing.Size(414, 293)
+            Me.lvContest.Size = New System.Drawing.Size(480, 293)
             Me.lvContest.Sorting = System.Windows.Forms.SortOrder.Descending
             Me.lvContest.TabIndex = 4
             Me.lvContest.UseCompatibleStateImageBehavior = False
@@ -510,7 +550,7 @@
             'btnRefresh
             '
             Me.btnRefresh.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.btnRefresh.Location = New System.Drawing.Point(355, 18)
+            Me.btnRefresh.Location = New System.Drawing.Point(421, 18)
             Me.btnRefresh.Name = "btnRefresh"
             Me.btnRefresh.Size = New System.Drawing.Size(75, 23)
             Me.btnRefresh.TabIndex = 3
@@ -637,5 +677,9 @@
         Friend WithEvents cbAutoRefresh As System.Windows.Forms.CheckBox
         Friend WithEvents tpTest As System.Windows.Forms.TabPage
         Friend WithEvents tmrAutoRefresh As System.Windows.Forms.Timer
+        Friend WithEvents lblAt0 As System.Windows.Forms.Label
+        Friend WithEvents txtNamespace0 As System.Windows.Forms.TextBox
+        Friend WithEvents lblAt1 As System.Windows.Forms.Label
+        Friend WithEvents txtNamespace1 As System.Windows.Forms.TextBox
     End Class
 End Namespace

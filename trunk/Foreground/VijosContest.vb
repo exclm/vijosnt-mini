@@ -242,7 +242,7 @@ Namespace Foreground
 
             Dim Item As ListViewItem = lvCompiler.Items.Add(m_CompilerTestId.ToString())
             Item.SubItems.AddRange(New String() {Name, String.Empty, String.Empty, String.Empty})
-            m_Daemon.DirectFeed(String.Empty, FileName, Code, _
+            If Not m_Daemon.DirectFeed(txtNamespace0.Text, FileName, Code, _
                 Sub(Result As TestResult)
                     Try
                         BeginInvoke(New MethodInvoker( _
@@ -257,7 +257,13 @@ Namespace Foreground
                              End Sub))
                     Catch ex As InvalidOperationException
                     End Try
-                End Sub)
+                End Sub) Then
+                Item.Tag = "评测时发生内部错误"
+                Item.SubItems.Item(2).Text = "Internal Error"
+                Item.SubItems.Item(3).Text = "0"
+                Item.SubItems.Item(4).Text = "0ms"
+                Item.EnsureVisible()
+            End If
         End Sub
 
         Private Sub btnTestCompiler_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTestCompiler.Click
@@ -510,7 +516,7 @@ Namespace Foreground
                                                     Dim tr As New TestRecord(Me, RecordItem, tu)
                                                     Try
                                                         Using Code As New StreamReader(m_VijosPath & "Upload\U" & UserId.ToString() & "\P" & TrimmedProblem & ".pas")
-                                                            If m_Daemon.DirectFeed(String.Empty, "P" & TrimmedProblem & VijosDataSource.GetCompilerExtension(Compiler), Code.ReadToEnd(), _
+                                                            If m_Daemon.DirectFeed(txtNamespace1.Text, "P" & TrimmedProblem & VijosDataSource.GetCompilerExtension(Compiler), Code.ReadToEnd(), _
                                                                 Sub(Result As TestResult)
                                                                     tr.Finish(Result)
                                                                 End Sub) Then
@@ -597,6 +603,16 @@ Namespace Foreground
         Private Sub tpContest_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles tpContest.Leave
             m_AutoRefresh = cbAutoRefresh.Checked
             cbAutoRefresh.Checked = False
+        End Sub
+
+        Private Sub txtNamespace0_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtNamespace0.TextChanged
+            If txtNamespace1.Text <> txtNamespace0.Text Then _
+                txtNamespace1.Text = txtNamespace0.Text
+        End Sub
+
+        Private Sub txtNamespace1_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtNamespace1.TextChanged
+            If txtNamespace0.Text <> txtNamespace1.Text Then _
+                txtNamespace0.Text = txtNamespace1.Text
         End Sub
     End Class
 End Namespace
