@@ -99,17 +99,6 @@ Namespace Feeding
             Return Result
         End Function
 
-        Private Function GetCompilerExtension(ByVal CompilerName As String) As String
-            Select Case CompilerName.ToLower()
-                Case "c", "gcc"
-                    Return ".c"
-                Case "cpp", "gpp", "g++", "c++"
-                    Return ".cpp"
-                Case Else
-                    Return ".pas"
-            End Select
-        End Function
-
         Public Overrides Function Take() As Nullable(Of DataSourceRecord)
             Dim TakenId As Nullable(Of Int32)
             Using Connection0 As SqlConnection = CloneConnection(), _
@@ -140,7 +129,7 @@ Namespace Feeding
                 Using Reader As SqlDataReader = Command.ExecuteReader()
                     If Not Reader.Read() Then _
                         Return Nothing
-                    Result.FileName = "Q" & Reader("qid") & GetCompilerExtension(Reader("codem"))
+                    Result.FileName = "Q" & Reader("qid") & VijosDataSource.GetCompilerExtension(Reader("codem"))
                     Result.SourceCode = Reader("code")
                 End Using
             End Using
