@@ -1,4 +1,4 @@
-#summary 将 VijosNT Mini 用于架设 Vijos 在线评测网站的操作指南
+#summary 将 VijosNT Mini 用于架设 22OJS 在线评测网站的操作指南
 
 = 概述 =
 
