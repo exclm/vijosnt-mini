@@ -462,8 +462,6 @@ Namespace Foreground
         Private Sub btnStart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnStart.Click
             Static RecordId As Int32 = 0
             btnStart.Enabled = False
-            lvTesting.BeginUpdate()
-            lvRecord.BeginUpdate()
             Dim CheckedItems = lvTesting.CheckedItems
             MiniThreadPool.Queue( _
                 Sub()
@@ -514,19 +512,17 @@ Namespace Foreground
                                                             RecordItem.SubItems.AddRange(New String() {Username, "P" & TrimmedProblem, Compiler, String.Empty, String.Empty, String.Empty})
                                                         End Sub))
                                                     Dim tr As New TestRecord(Me, RecordItem, tu)
-                                                    Try
-                                                        Using Code As New StreamReader(m_VijosPath & "Upload\U" & UserId.ToString() & "\P" & TrimmedProblem & ".pas")
-                                                            If m_Daemon.DirectFeed(txtNamespace1.Text, "P" & TrimmedProblem & VijosDataSource.GetCompilerExtension(Compiler), Code.ReadToEnd(), _
-                                                                Sub(Result As TestResult)
-                                                                    tr.Finish(Result)
-                                                                End Sub) Then
-                                                            Else
-                                                                tr.Finish(New TestResult(Nothing, TestResultFlag.InternalError, "评测时发生内部错误", 0, 0, 0, Nothing))
-                                                            End If
-                                                        End Using
-                                                    Catch ex As FileNotFoundException
-                                                        tr.Finish(New TestResult(Nothing, TestResultFlag.None, "未提交", 0, 0, 0, Nothing))
-                                                    End Try
+                                                    Using FinishedEvent As New ManualResetEvent(False)
+                                                        If m_Daemon.DirectFeed2(txtNamespace1.Text, "P" & TrimmedProblem & VijosDataSource.GetCompilerExtension(Compiler), m_VijosPath & "Upload\U" & UserId.ToString() & "\P" & TrimmedProblem & ".pas", _
+                                                            Sub(Result As TestResult)
+                                                                tr.Finish(Result)
+                                                                FinishedEvent.Set()
+                                                            End Sub) Then
+                                                            FinishedEvent.WaitOne()
+                                                        Else
+                                                            tr.Finish(New TestResult(Nothing, TestResultFlag.InternalError, "评测时发生内部错误", 0, 0, 0, Nothing))
+                                                        End If
+                                                    End Using
                                                 End If
                                             Next
                                         Finally
@@ -546,8 +542,6 @@ Namespace Foreground
                     Finally
                         BeginInvoke(New MethodInvoker( _
                             Sub()
-                                lvTesting.EndUpdate()
-                                lvRecord.EndUpdate()
                                 btnStart.Enabled = True
                             End Sub))
                     End Try

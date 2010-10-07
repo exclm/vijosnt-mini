@@ -361,6 +361,26 @@ Namespace Foreground
             End Try
         End Function
 
+        Public Function DirectFeed2(ByVal [Namespace] As String, ByVal FileName As String, ByVal SourceCodePath As String, ByVal Completion As DirectFeedCompletion) As Boolean
+            Dim Random = New Random()
+            Dim StateId = Random.Next()
+
+            SyncLock m_PendingFeeds
+                While m_PendingFeeds.ContainsKey(StateId)
+                    StateId = Random.Next()
+                End While
+                m_PendingFeeds.Add(StateId, Completion)
+            End SyncLock
+
+            Try
+                m_PipeClient.Write(ClientMessage.DirectFeed2, StateId, [Namespace], FileName, SourceCodePath)
+                Return True
+            Catch ex As Exception
+                m_PendingFeeds.Remove(StateId)
+                Return False
+            End Try
+        End Function
+
 #Region "IDisposable Support"
         Private disposedValue As Boolean ' 检测冗余的调用
 
