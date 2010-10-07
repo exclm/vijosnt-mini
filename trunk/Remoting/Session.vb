@@ -92,6 +92,8 @@ Namespace Remoting
                         OnFeedDataSource(Reader.ReadString())
                     Case ClientMessage.DirectFeed
                         OnDirectFeed(Reader.ReadInt32(), Reader.ReadString(), Reader.ReadString(), Reader.ReadString())
+                    Case ClientMessage.DirectFeed2
+                        OnDirectFeed2(Reader.ReadInt32(), Reader.ReadString(), Reader.ReadString(), Reader.ReadString())
                 End Select
             End Using
         End Sub
@@ -136,45 +138,59 @@ Namespace Remoting
             End Try
         End Sub
 
-        Private Sub OnDirectFeed(ByVal StateId As Int32, ByVal [Namespace] As String, ByVal FileName As String, ByVal SourceCode As String)
+        Private Sub DirectFeedSendReply(ByVal StateId As Int32, ByVal Result As TestResult)
+            Using Stream As New MemoryStream()
+                Using Writer As New BinaryWriter(Stream)
+                    Writer.Write(ServerMessage.DirectFeedReply)
+                    Writer.Write(StateId)
+                    Writer.Write(Result.Flag)
+                    If Result.Warning Is Nothing Then
+                        Writer.Write(String.Empty)
+                    Else
+                        Writer.Write(Result.Warning)
+                    End If
+                    Writer.Write(Result.Score)
+                    Writer.Write(Result.TimeUsage)
+                    Writer.Write(Result.MemoryUsage)
+                    If Result.Entries IsNot Nothing Then
+                        For Each Entry As TestResultEntry In Result.Entries
+                            Writer.Write(Entry.Index)
+                            Writer.Write(Entry.Flag)
+                            Writer.Write(Entry.Score)
+                            Writer.Write(Entry.TimeUsage)
+                            Writer.Write(Entry.MemoryUsage)
+                            If Entry.Warning Is Nothing Then
+                                Writer.Write(String.Empty)
+                            Else
+                                Writer.Write(Entry.Warning)
+                            End If
+                        Next
+                    End If
+                End Using
+                WriteBuffer(Stream.ToArray())
+            End Using
+        End Sub
+
+        Private Sub OnDirectFeedInternal(ByVal StateId As Int32, ByVal [Namespace] As String, ByVal FileName As String, ByVal SourceCodeStream As Stream)
             Try
-                Dim SourceBuffer = Encoding.Default.GetBytes(SourceCode)
-                Dim SourceStream = New MemoryStream(SourceBuffer, False)
-                m_Runner.Queue([Namespace], FileName, SourceStream, _
+                m_Runner.Queue([Namespace], FileName, SourceCodeStream, _
                     Sub(Result As TestResult)
-                        Using Stream As New MemoryStream()
-                            Using Writer As New BinaryWriter(Stream)
-                                Writer.Write(ServerMessage.DirectFeedReply)
-                                Writer.Write(StateId)
-                                Writer.Write(Result.Flag)
-                                If Result.Warning Is Nothing Then
-                                    Writer.Write(String.Empty)
-                                Else
-                                    Writer.Write(Result.Warning)
-                                End If
-                                Writer.Write(Result.Score)
-                                Writer.Write(Result.TimeUsage)
-                                Writer.Write(Result.MemoryUsage)
-                                If Result.Entries IsNot Nothing Then
-                                    For Each Entry As TestResultEntry In Result.Entries
-                                        Writer.Write(Entry.Index)
-                                        Writer.Write(Entry.Flag)
-                                        Writer.Write(Entry.Score)
-                                        Writer.Write(Entry.TimeUsage)
-                                        Writer.Write(Entry.MemoryUsage)
-                                        If Entry.Warning Is Nothing Then
-                                            Writer.Write(String.Empty)
-                                        Else
-                                            Writer.Write(Entry.Warning)
-                                        End If
-                                    Next
-                                End If
-                            End Using
-                            WriteBuffer(Stream.ToArray())
-                        End Using
+                        DirectFeedSendReply(StateId, Result)
                     End Sub, Nothing)
             Catch ex As Exception
                 ServiceUnhandledException(ex)
+            End Try
+        End Sub
+
+        Private Sub OnDirectFeed(ByVal StateId As Int32, ByVal [Namespace] As String, ByVal FileName As String, ByVal SourceCode As String)
+            OnDirectFeedInternal(StateId, [Namespace], FileName, New MemoryStream(Encoding.Default.GetBytes(SourceCode), False))
+        End Sub
+
+        Private Sub OnDirectFeed2(ByVal StateId As Int32, ByVal [Namespace] As String, ByVal FileName As String, ByVal SourceCodePath As String)
+            Try
+                OnDirectFeedInternal(StateId, [Namespace], FileName, New FileStream(SourceCodePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            Catch ex As IOException
+                DirectFeedSendReply(StateId, New TestResult(Nothing, TestResultFlag.None, "未找到提交的代码", 0, 0, 0, Nothing))
             End Try
         End Sub
 

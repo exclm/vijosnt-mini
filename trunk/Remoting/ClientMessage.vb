@@ -6,5 +6,6 @@
         ReloadDataSource
         FeedDataSource
         DirectFeed
+        DirectFeed2
     End Enum
 End Namespace
