@@ -52,20 +52,25 @@ Namespace Remoting
             End Try
         End Sub
 
-        Public Sub Write(ByVal ParamArray Params As Object())
+        Public Function Write(ByVal ParamArray Params As Object()) As Boolean
             Using Stream As New MemoryStream()
                 Using Writer As New BinaryWriter(Stream)
                     For Each Param As Object In Params
                         Writer.Write(Param)
                     Next
                 End Using
-                WriteBuffer(Stream.ToArray())
+                Return WriteBuffer(Stream.ToArray())
             End Using
-        End Sub
+        End Function
 
-        Private Sub WriteBuffer(ByVal Buffer As Byte())
-            m_Stream.BeginWrite(Buffer, 0, Buffer.Length, AddressOf OnWriteBuffer, Nothing)
-        End Sub
+        Private Function WriteBuffer(ByVal Buffer As Byte()) As Boolean
+            Try
+                m_Stream.BeginWrite(Buffer, 0, Buffer.Length, AddressOf OnWriteBuffer, Nothing)
+                Return True
+            Catch ex As Exception
+                Return False
+            End Try
+        End Function
 
         Private Sub OnWriteBuffer(ByVal Result As IAsyncResult)
             Try
