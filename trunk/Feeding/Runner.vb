@@ -20,6 +20,7 @@ Namespace Feeding
             Public MemoryUsage As Int64
             Public TestResults As SortedDictionary(Of Int32, TestResultEntry)
             Public Remaining As Int32
+            Public Warning As String
         End Class
 
         Private Class TestCaseContext
@@ -243,6 +244,7 @@ Namespace Feeding
             ElseIf Result.Target Is Nothing Then
                 Warning = "编译器出现未知错误"
             Else
+                Context.Warning = Result.StdErrorMessage
                 Context.Remaining = 1
                 For Each TestCase In Context.TestCases
                     Interlocked.Increment(Context.Remaining)
@@ -319,7 +321,7 @@ Namespace Feeding
 
         Private Sub TestWorkCompleted(ByVal Context As TestContext)
             If Interlocked.Decrement(Context.Remaining) = 0 Then
-                Context.Completion.Invoke(New TestResult(Context.CompletionState, Context.Flag, Nothing, Context.Score, Context.TimeUsage, Context.MemoryUsage, Context.TestResults.Values))
+                Context.Completion.Invoke(New TestResult(Context.CompletionState, Context.Flag, Context.Warning, Context.Score, Context.TimeUsage, Context.MemoryUsage, Context.TestResults.Values))
                 If Interlocked.Decrement(m_Running) = 0 Then
                     Notifier.Invoke("RunnerStatusChanged", False)
                     m_CanExit.Set()
