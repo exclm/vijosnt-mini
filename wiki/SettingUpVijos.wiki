@@ -1,6 +1,10 @@
 #summary 将 VijosNT Mini 用于架设 Vijos 在线评测网站的操作指南
 #labels Phase-Deploy
 
+= 目录 =
+
+<wiki:toc max_depth="3"/> 
+
 = 概述 =
 
 VijosNT Mini 的目标用户有两种：
@@ -42,7 +46,8 @@ Vijos 支持评测的代码类型包括 C、C++、Pascal，我们需要安装 Mi
   * 官方网站为 [http://www.freepascal.org/]，目前的最新版本为 2.4.0。
   * Free Pascal 支持多种处理器和操作系统平台，请选择 Intel/i386 下的 Win32, Win64 and WinCE。
   * Free Pascal 的 64 位跨平台编译器表现貌似很怪异。
-  * 默认安装目录为 C:\FPC
+  * 默认安装目录为 C:\FPC。
+  * *如果在 C:\FPC\2.4.0\bin\i386-win32 下存在 fpc.cfg 文件，请将其删除（改名）*，因为 Free Pascal 编译器存在一个 bug，读取配置文件时使用独占打开，从而导致同时运行两个编译进程可能发生错误。删除后需要将其中的部分参数转移到命令行中，将在下面给出。
 
 == VijosNT Mini 设置 ==
 
@@ -56,9 +61,15 @@ Vijos 支持评测的代码类型包括 C、C++、Pascal，我们需要安装 Mi
 
 编译器位置确定后，VijosNT Mini 会自动设置适合评测使用的编译器命令行参数。
 
-  * MinGW C 编译器默认命令行：gcc -O2 -s -o foo.exe foo.c -lm
-  * MinGW C++ 编译器默认命令行：g++ -O2 -s -o foo.exe foo.cpp -lm
-  * Free Pascal 编译器默认命令行：fpc -O2 -ofoo.exe foo.pas
+  * MinGW C 编译器默认命令行：gcc -O2 -s -Wall -o foo.exe foo.c -lm
+  * MinGW C++ 编译器默认命令行：g++ -O2 -s -Wall -o foo.exe foo.cpp -lm
+  * Free Pascal 编译器默认命令行：fpc -O2 -Xs -Sgic -vw -ofoo.exe foo.pas
+
+设置命令行参数的原则：
+
+  * 使用 O2 优化
+  * 使目标文件不包含调试信息
+  * 使标准错误输出中不包含除警告信息之外的内容
 
 === 数据集映射 ===
 
@@ -66,9 +77,7 @@ Vijos 支持评测的代码类型包括 C、C++、Pascal，我们需要安装 Mi
 
 === 执行设置 ===
 
-进入执行设置界面，将并发数设置为 1，因为目前版本（2.4.0）的 Free Pascal 编译器在多个示例同时运行时会导致编译失败，已经确认这是 Free Pascal 编译器本身的问题。
-
-当然，如果不需要支持 Pascal（或者你的 Pascal 编译器不存在这个问题），请将并发数设置为 CPU 的个数，这样可以取得更高的评测效率。
+进入执行设置界面，将并发数设置为一个合适的数值（通常为服务器 CPU 的个数）。
 
 请将安全设置为启用，因为你的 Online Judge 网站允许任何人提交程序，显然如果不做权限上的限制将是十分危险的。点击工具栏上的加号，添加一组 Windows 用户名和密码用于不可信程序的执行。
 
