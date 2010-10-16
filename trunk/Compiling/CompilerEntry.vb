@@ -1,6 +1,6 @@
 ﻿Namespace Compiling
-    Friend Structure LocalCompilerEntry
+    Friend Structure CompilerEntry
         Dim Regex As Regex
-        Dim Compiler As LocalCompiler
+        Dim Compiler As Compiler
     End Structure
 End Namespace

@@ -32,7 +32,7 @@ Namespace Feeding
         Private m_WatchDog As WatchDog
         Private m_ProcessMonitor As ProcessMonitor
         Private m_Executor As Executor
-        Private m_CompilerPool As LocalCompilerPool
+        Private m_CompilerPool As CompilerPool
         Private m_TestSuitePool As TestSuitePool
         Private m_DataSourcePool As DataSourcePool
         Private m_Running As Int32
@@ -46,7 +46,7 @@ Namespace Feeding
             m_Executor = New Executor()
             m_WatchDog.Start()
             m_ProcessMonitor.Start()
-            m_CompilerPool = New LocalCompilerPool(m_TempPathServer)
+            m_CompilerPool = New CompilerPool(m_TempPathServer)
             m_TestSuitePool = New TestSuitePool()
             m_DataSourcePool = New DataSourcePool(Me)
             m_Running = 0

@@ -2,9 +2,9 @@
 Imports VijosNT.Utility
 
 Namespace Compiling
-    Friend Class LocalCompilerPool
+    Friend Class CompilerPool
         Private m_TempPathServer As TempPathServer
-        Private m_Entries As IEnumerable(Of LocalCompilerEntry)
+        Private m_Entries As IEnumerable(Of CompilerEntry)
 
         Public Sub New(ByVal TempPathServer As TempPathServer)
             m_TempPathServer = TempPathServer
@@ -15,14 +15,14 @@ Namespace Compiling
             m_Entries = ReadEntries()
         End Sub
 
-        Private Function ReadEntries() As ICollection(Of LocalCompilerEntry)
-            Dim Result As New List(Of LocalCompilerEntry)
+        Private Function ReadEntries() As ICollection(Of CompilerEntry)
+            Dim Result As New List(Of CompilerEntry)
 
             Using Reader As IDataReader = CompilerMapping.GetAll()
                 While Reader.Read()
-                    Dim Entry As LocalCompilerEntry
+                    Dim Entry As CompilerEntry
                     Entry.Regex = New Regex(RegexSimpleEscape(Reader("Pattern")), RegexOptions.IgnoreCase)
-                    Entry.Compiler = New LocalCompiler(m_TempPathServer, _
+                    Entry.Compiler = New Compiler(m_TempPathServer, _
                         Reader("ApplicationName"), _
                         Reader("CommandLine"), _
                         ParseEnvironmentVariables(Reader("EnvironmentVariables")), _
@@ -66,10 +66,10 @@ Namespace Compiling
             Return Result
         End Function
 
-        Public Function TryGet(ByVal Text As String) As LocalCompiler
-            Dim Entries As IEnumerable(Of LocalCompilerEntry) = m_Entries
+        Public Function TryGet(ByVal Text As String) As Compiler
+            Dim Entries As IEnumerable(Of CompilerEntry) = m_Entries
 
-            For Each Entry As LocalCompilerEntry In Entries
+            For Each Entry As CompilerEntry In Entries
                 If Entry.Regex.IsMatch(Text) Then
                     Return Entry.Compiler
                 End If
