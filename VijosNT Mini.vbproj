@@ -313,6 +313,7 @@
     <Content Include="Artwork\TestSuite.png" />
     <Content Include="Artwork\VijosNT.ico" />
     <Content Include="Foreground\TestReport.xslt" />
+    <Content Include="x64 readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
