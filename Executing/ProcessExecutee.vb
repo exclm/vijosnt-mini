@@ -70,8 +70,8 @@ Namespace Executing
                 End Sub)
         End Sub
 
-        Private Sub WatchDogCompletion(ByVal Result As WatchDog.Result)
-            m_Result.TimeQuotaUsage = Result.QuotaUsage
+        Private Sub WatchDogCompletion(ByVal QuotaUsage As Int64)
+            m_Result.TimeQuotaUsage = QuotaUsage
             m_Result.MemoryQuotaUsage = m_JobObject.Limits.PeakProcessMemoryUsed
             m_Trigger.InvokeNonCritical()
         End Sub
@@ -144,8 +144,8 @@ Namespace Executing
                     End With
                 End If
 
-                m_ProcessMonitor.Attach(Suspended, AddressOf ProcessMonitorCompletion, Nothing)
-                m_WatchDog.SetWatch(Suspended.Resume(), m_TimeQuota, AddressOf WatchDogCompletion, Nothing)
+                m_ProcessMonitor.Attach(Suspended, AddressOf ProcessMonitorCompletion)
+                m_WatchDog.SetWatch(Suspended.Resume(), m_TimeQuota, AddressOf WatchDogCompletion)
             Finally
                 If m_StdInput IsNot Nothing Then _
                     m_StdInput.Close()

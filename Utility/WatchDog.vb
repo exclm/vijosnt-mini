@@ -4,30 +4,18 @@ Namespace Utility
     Friend Class WatchDog
         Implements IDisposable
 
-        Public Delegate Sub Completion(ByVal Result As Result)
-
-        Public Structure Result
-            Public Sub New(ByVal State As Object, ByVal QuotaUsage As Int64)
-                Me.State = State
-                Me.QuotaUsage = QuotaUsage
-            End Sub
-
-            Dim State As Object
-            Dim QuotaUsage As Int64
-        End Structure
+        Public Delegate Sub Completion(ByVal QuotaUsage As Int64)
 
         Protected Structure Context
-            Public Sub New(ByVal Process As ProcessEx, ByVal TimeQuota As Nullable(Of Int64), ByVal Completion As Completion, ByVal CompletionState As Object)
+            Public Sub New(ByVal Process As ProcessEx, ByVal TimeQuota As Nullable(Of Int64), ByVal Completion As Completion)
                 Me.Process = Process
                 Me.TimeQuota = TimeQuota
                 Me.Completion = Completion
-                Me.CompletionState = CompletionState
             End Sub
 
             Dim Process As ProcessEx
             Dim TimeQuota As Nullable(Of Int64)
             Dim Completion As Completion
-            Dim CompletionState As Object
         End Structure
 
         Protected m_WaitPool As MiniWaitPool
@@ -49,7 +37,7 @@ Namespace Utility
 
             If Not Result.Timeouted Then
                 ' The waited process was ended, fire the completion
-                Context.Completion.Invoke(New Result(Context.CompletionState, Context.Process.AliveTime))
+                Context.Completion.Invoke(Context.Process.AliveTime)
                 Context.Process.Close()
             Else
                 ' The waited process is still running, set watch again
@@ -70,7 +58,7 @@ Namespace Utility
                 Catch ex As Exception
                     ' eat it
                 End Try
-                Context.Completion.Invoke(New Result(Context.CompletionState, Context.Process.AliveTime))
+                Context.Completion.Invoke(Context.Process.AliveTime)
                 Context.Process.Close()
             Else
                 ' There is still time quota remaining, set up the wait pool
@@ -78,8 +66,8 @@ Namespace Utility
             End If
         End Sub
 
-        Public Sub SetWatch(ByVal Process As ProcessEx, ByVal TimeQuota As Nullable(Of Int64), ByVal Completion As Completion, ByVal State As Object)
-            SetWatchInternal(New Context(Process, TimeQuota, Completion, State))
+        Public Sub SetWatch(ByVal Process As ProcessEx, ByVal TimeQuota As Nullable(Of Int64), ByVal Completion As Completion)
+            SetWatchInternal(New Context(Process, TimeQuota, Completion))
         End Sub
 
 #Region "IDisposable Support"

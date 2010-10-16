@@ -13,10 +13,9 @@ Namespace Utility
         Private Class Context
             Implements IDisposable
 
-            Public Sub New(ByVal Process As KernelObject, ByVal Completion As Completion, ByVal State As Object)
+            Public Sub New(ByVal Process As KernelObject, ByVal Completion As Completion)
                 m_Process = Process
                 m_Completion = Completion
-                m_CompletionState = State
                 m_Exception = Nothing
             End Sub
 
@@ -32,12 +31,6 @@ Namespace Utility
                 End Get
             End Property
 
-            Public ReadOnly Property CompletionState() As Object
-                Get
-                    Return m_CompletionState
-                End Get
-            End Property
-
             Public Property Exception As Nullable(Of EXCEPTION_RECORD)
                 Get
                     Return m_Exception
@@ -50,7 +43,6 @@ Namespace Utility
 
             Private m_Process As KernelObject
             Private m_Completion As Completion
-            Private m_CompletionState As Object
             Private m_Exception As Nullable(Of EXCEPTION_RECORD)
 
 #Region "IDisposable Support"
@@ -75,17 +67,15 @@ Namespace Utility
 #End Region
         End Class
 
-        Public Structure Result
-            Public Sub New(ByVal State As Object, ByVal ExitStatus As NTSTATUS, ByVal Exception As Nullable(Of EXCEPTION_RECORD))
-                Me.State = State
+        Public Class Result
+            Public Sub New(ByVal ExitStatus As NTSTATUS, ByVal Exception As Nullable(Of EXCEPTION_RECORD))
                 Me.ExitStatus = ExitStatus
                 Me.Exception = Exception
             End Sub
 
-            Dim State As Object
-            Dim ExitStatus As NTSTATUS
-            Dim Exception As Nullable(Of EXCEPTION_RECORD)
-        End Structure
+            Public ExitStatus As NTSTATUS
+            Public Exception As Nullable(Of EXCEPTION_RECORD)
+        End Class
 
         Public Sub New()
             m_DebugObject = New DebugObject()
@@ -103,14 +93,14 @@ Namespace Utility
             m_DebugObject.Close()
         End Sub
 
-        Public Sub Attach(ByVal Process As KernelObject, ByVal Completion As Completion, ByVal State As Object)
+        Public Sub Attach(ByVal Process As KernelObject, ByVal Completion As Completion)
             m_DebugObject.Attach(Process.GetHandleUnsafe())
 
             Dim ProcessId As Int32 = GetProcessId(Process.GetHandleUnsafe())
             Win32True(ProcessId <> 0)
 
             SyncLock m_Contexts
-                m_Contexts.Add(ProcessId, New Context(Process, Completion, State))
+                m_Contexts.Add(ProcessId, New Context(Process, Completion))
             End SyncLock
         End Sub
 
@@ -126,7 +116,7 @@ Namespace Utility
                 Context = m_Contexts(Header.AppClientId.UniqueProcess)
                 m_Contexts.Remove(Header.AppClientId.UniqueProcess)
             End SyncLock
-            Context.Completion.Invoke(New Result(Context.CompletionState, Info.ExitStatus, Context.Exception))
+            Context.Completion.Invoke(New Result(Info.ExitStatus, Context.Exception))
             Context.Dispose()
         End Sub
 
