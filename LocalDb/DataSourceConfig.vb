@@ -17,7 +17,7 @@ Namespace LocalDb
         End Sub
 
         Private Sub Commit()
-            DataSourceMapping.Update(m_Id, m_Class.ToString(), m_Namespace, m_Parameter, Nothing, String.Empty, m_HttpAnnouncement)
+            DataSourceMapping.Update(m_Id, m_Class.ToString(), m_Namespace, m_Parameter, m_HttpAnnouncement)
         End Sub
 
         <DisplayName("类型"), CategoryAttribute("数据源设置"), DescriptionAttribute("数据源的类型")> _
