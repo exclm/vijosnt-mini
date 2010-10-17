@@ -658,7 +658,7 @@ Namespace Foreground
         End Sub
 
         Private Sub AddDataSourceButton_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddDataSourceButton.ButtonClick, NewDataSourceMenu.Click
-            DataSourceMapping.Add("Vijos", String.Empty, String.Empty, Nothing, String.Empty, String.Empty)
+            DataSourceMapping.Add("Vijos", String.Empty, String.Empty, String.Empty)
             ApplyDataSourceButton.Enabled = True
             RefreshPage()
         End Sub
@@ -680,7 +680,7 @@ Namespace Foreground
         End Sub
 
         Private Sub VijosDataSourceMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles VijosDataSourceMenu.Click
-            DataSourceMapping.Add("Vijos", String.Empty, "Server=(local);Database=vijos;UserName=sa;Password=admin", Nothing, String.Empty, String.Empty)
+            DataSourceMapping.Add("Vijos", String.Empty, "Server=(local);Database=vijos;UserName=sa;Password=admin", String.Empty)
             ApplyDataSourceButton.Enabled = True
             RefreshPage()
         End Sub
@@ -690,7 +690,7 @@ Namespace Foreground
                 Dialog.Title = "请选择 Vijos 设置文件 (Config.xml)"
                 Dialog.Filter = "Config.xml|Config.xml"
                 If Dialog.ShowDialog() = DialogResult.OK Then
-                    DataSourceMapping.Add("Vijos", String.Empty, "Config=" & Dialog.FileName, Nothing, String.Empty, String.Empty)
+                    DataSourceMapping.Add("Vijos", String.Empty, "Config=" & Dialog.FileName, String.Empty)
                     ApplyDataSourceButton.Enabled = True
                     RefreshPage()
                 End If
@@ -698,7 +698,7 @@ Namespace Foreground
         End Sub
 
         Private Sub _22OJSDataSourceMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _22OJSDataSourceMenu.Click
-            DataSourceMapping.Add("_22OJS", String.Empty, "Server=(local);Database=22OJS;UserName=sa;Password=admin", Nothing, String.Empty, String.Empty)
+            DataSourceMapping.Add("_22OJS", String.Empty, "Server=(local);Database=22OJS;UserName=sa;Password=admin", String.Empty)
             ApplyDataSourceButton.Enabled = True
             RefreshPage()
         End Sub
