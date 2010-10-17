@@ -6,7 +6,6 @@ Namespace Feeding
 
         Private m_TesterId As Int32
         Private m_ConnectionString As String
-        Private m_SelectPendingCommand As SqlCommand
         Private m_SelectCodeCommand As SqlCommand
         Private m_SelectHeaderCommand As SqlCommand
         Private m_UpdateTakenCommand As SqlCommand
@@ -62,8 +61,6 @@ Namespace Feeding
             ConnectionBuilder.Pooling = True
             m_ConnectionString = ConnectionBuilder.ToString()
 
-            m_SelectPendingCommand = New SqlCommand( _
-                "SELECT ID,[user] FROM rec WHERE zt = 'Waiting' ORDER BY ID")
             m_SelectCodeCommand = New SqlCommand( _
                 "SELECT qid, codem, code FROM rec WHERE ID = @Id")
             m_SelectHeaderCommand = New SqlCommand( _
@@ -100,8 +97,20 @@ Namespace Feeding
         End Function
 
         Public Overrides Function Take(ByVal Id As Int32) As DataSourceRecord
-            ' TODO: Not implemented
-            Throw New NotImplementedException()
+            Using Connection As SqlConnection = CloneConnection()
+                Using Command As SqlCommand = CloneCommand(m_UpdateTakenCommand, Connection)
+                    Command.Parameters.AddWithValue("@Id", Id)
+                    If Command.ExecuteNonQuery() = 0 Then Return Nothing
+                End Using
+                Using Command As SqlCommand = CloneCommand(m_SelectCodeCommand.Clone, Connection)
+                    Command.Parameters.AddWithValue("@Id", Id)
+                    Using Reader As SqlDataReader = Command.ExecuteReader()
+                        If Not Reader.Read() Then _
+                            Return Nothing
+                        Return New DataSourceRecord("Q" & Reader("qid") & VijosDataSource.GetCompilerExtension(Reader("codem")), Reader("code"))
+                    End Using
+                End Using
+            End Using
         End Function
 
         Public Overloads Overrides Sub Untake(ByVal Id As Int32)
