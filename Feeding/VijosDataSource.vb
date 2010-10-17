@@ -4,7 +4,6 @@
 
         Private m_TesterId As Int32
         Private m_ConnectionString As String
-        Private m_SelectPendingCommand As SqlCommand
         Private m_SelectCodeCommand As SqlCommand
         Private m_SelectHeaderCommand As SqlCommand
         Private m_UpdateTakenCommand As SqlCommand
@@ -74,8 +73,6 @@
             ConnectionBuilder.Pooling = True
             m_ConnectionString = ConnectionBuilder.ToString()
 
-            m_SelectPendingCommand = New SqlCommand( _
-                "SELECT ID FROM Record WHERE CheckNF = 0 ORDER BY ID")
             m_SelectCodeCommand = New SqlCommand( _
                 "SELECT ProblemID, Compiler, Code FROM Record WHERE ID = @Id")
             m_SelectHeaderCommand = New SqlCommand( _
@@ -135,38 +132,21 @@
             End If
         End Function
 
-        Public Overrides Function Take() As Nullable(Of DataSourceRecord)
-            Dim TakenId As Nullable(Of Int32)
-            Using Connection0 As SqlConnection = CloneConnection(), _
-                Command0 As SqlCommand = CloneCommand(m_SelectPendingCommand, Connection0), _
-                Reader As SqlDataReader = Command0.ExecuteReader()
-                While Reader.Read()
-                    Using Connection1 As SqlConnection = CloneConnection(), _
-                        Command1 As SqlCommand = CloneCommand(m_UpdateTakenCommand, Connection1)
-                        Dim Id As Int32 = Reader("Id")
-                        Command1.Parameters.AddWithValue("@Id", Id)
-                        If Command1.ExecuteNonQuery() <> 0 Then
-                            TakenId = Id
-                            Exit While
-                        End If
+        Public Overrides Function Take(ByVal Id As Int32) As DataSourceRecord
+            Using Connection As SqlConnection = CloneConnection()
+                Using Command As SqlCommand = CloneCommand(m_UpdateTakenCommand, Connection)
+                    Command.Parameters.AddWithValue("@Id", Id)
+                    If Command.ExecuteNonQuery() = 0 Then Return Nothing
+                End Using
+                Using Command As SqlCommand = CloneCommand(m_SelectCodeCommand.Clone, Connection)
+                    Command.Parameters.AddWithValue("@Id", Id)
+                    Using Reader As SqlDataReader = Command.ExecuteReader()
+                        If Not Reader.Read() Then _
+                            Return Nothing
+                        Return New DataSourceRecord("P" & Reader("ProblemID") & GetCompilerExtension(Reader("Compiler")), Reader("Code"))
                     End Using
-                End While
-            End Using
-            If Not TakenId.HasValue Then _
-                Return Nothing
-            Dim Result As DataSourceRecord
-            Result.Id = TakenId.Value
-            Using Connection As SqlConnection = CloneConnection(), _
-                Command As SqlCommand = CloneCommand(m_SelectCodeCommand.Clone, Connection)
-                Command.Parameters.AddWithValue("@Id", TakenId.Value)
-                Using Reader As SqlDataReader = Command.ExecuteReader()
-                    If Not Reader.Read() Then _
-                        Return Nothing
-                    Result.FileName = "P" & Reader("ProblemID") & GetCompilerExtension(Reader("Compiler"))
-                    Result.SourceCode = Reader("Code")
                 End Using
             End Using
-            Return Result
         End Function
 
         Public Overloads Overrides Sub Untake(ByVal Id As Int32)

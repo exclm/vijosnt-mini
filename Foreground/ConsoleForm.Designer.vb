@@ -61,7 +61,6 @@
             Me.LocalRecordMenuStrip = New System.Windows.Forms.ContextMenuStrip(Me.components)
             Me.GenerateReportMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.LocalRecordBar0 = New System.Windows.Forms.ToolStripSeparator()
-            Me.RetestRecordMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.DeleteRecord = New System.Windows.Forms.ToolStripMenuItem()
             Me.RootToolStrip = New System.Windows.Forms.ToolStrip()
             Me.StartButton = New System.Windows.Forms.ToolStripButton()
@@ -420,7 +419,7 @@
             '
             'LocalRecordMenuStrip
             '
-            Me.LocalRecordMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.GenerateReportMenu, Me.LocalRecordBar0, Me.RetestRecordMenu, Me.DeleteRecord})
+            Me.LocalRecordMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.GenerateReportMenu, Me.LocalRecordBar0, Me.DeleteRecord})
             Me.LocalRecordMenuStrip.Name = "LocalRecordMenuStrip"
             Me.LocalRecordMenuStrip.Size = New System.Drawing.Size(168, 76)
             '
@@ -435,12 +434,6 @@
             '
             Me.LocalRecordBar0.Name = "LocalRecordBar0"
             Me.LocalRecordBar0.Size = New System.Drawing.Size(164, 6)
-            '
-            'RetestRecordMenu
-            '
-            Me.RetestRecordMenu.Name = "RetestRecordMenu"
-            Me.RetestRecordMenu.Size = New System.Drawing.Size(167, 22)
-            Me.RetestRecordMenu.Text = "重新评测(&R)"
             '
             'DeleteRecord
             '
@@ -1366,7 +1359,6 @@
         Friend WithEvents LocalRecordMenuStrip As System.Windows.Forms.ContextMenuStrip
         Friend WithEvents GenerateReportMenu As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents LocalRecordBar0 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents RetestRecordMenu As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents DeleteRecord As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents DataSourceToolStrip As System.Windows.Forms.ToolStrip
         Friend WithEvents AddDataSourceButton As System.Windows.Forms.ToolStripSplitButton

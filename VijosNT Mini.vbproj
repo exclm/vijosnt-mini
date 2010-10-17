@@ -107,7 +107,6 @@
     <Compile Include="Feeding\DataSourceBase.vb" />
     <Compile Include="Feeding\DataSourceEntry.vb" />
     <Compile Include="Feeding\DataSourcePool.vb" />
-    <Compile Include="Feeding\LocalDataSource.vb" />
     <Compile Include="Feeding\DataSourceRecord.vb" />
     <Compile Include="Feeding\Markup.vb" />
     <Compile Include="Feeding\VijosDataSource.vb" />
@@ -118,7 +117,7 @@
     <Compile Include="Foreground\FloatingForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Foreground\StressTest.Designer.vb">
+    <Compile Include="Foreground\StressTest.designer.vb">
       <DependentUpon>StressTest.vb</DependentUpon>
     </Compile>
     <Compile Include="Foreground\StressTest.vb">

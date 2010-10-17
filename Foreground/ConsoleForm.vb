@@ -269,16 +269,6 @@ Namespace Foreground
             End With
         End Sub
 
-        Private Sub RetestRecordMenu_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles RetestRecordMenu.Click
-            With LocalSourceList.SelectedItems
-                If .Count = 0 Then _
-                    Return
-                Record.Retest(.Item(0).Tag())
-                m_Daemon.FeedDataSource(String.Empty)
-                RefreshLocalRecord()
-            End With
-        End Sub
-
         Private Sub DeleteRecord_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles DeleteRecord.Click
             With LocalSourceList.SelectedItems
                 If .Count = 0 Then _

@@ -16,21 +16,11 @@ Namespace Remoting
             m_Runner = Runner
             m_Stream.BeginRead(m_Buffer, 0, m_Buffer.Length, AddressOf OnRead, Nothing)
             Notifier.Register("RunnerStatusChanged", AddressOf OnRunnerStatusChanged)
-            Notifier.Register("LocalRecordChanged", AddressOf OnLocalRecordChanged)
         End Sub
 
         Private Sub OnRunnerStatusChanged(ByVal Param As Object)
             Try
                 Write(ServerMessage.RunnerStatusChanged, DirectCast(Param, Boolean))
-            Catch ex As Exception
-                OnDisconnected()
-                Me.Dispose()
-            End Try
-        End Sub
-
-        Private Sub OnLocalRecordChanged(ByVal Param As Object)
-            Try
-                Write(ServerMessage.LocalRecordChanged)
             Catch ex As Exception
                 OnDisconnected()
                 Me.Dispose()
@@ -93,8 +83,6 @@ Namespace Remoting
                         OnReloadExecutor()
                     Case ClientMessage.ReloadDataSource
                         OnReloadDataSource()
-                    Case ClientMessage.FeedDataSource
-                        OnFeedDataSource(Reader.ReadString())
                     Case ClientMessage.DirectFeed
                         OnDirectFeed(Reader.ReadInt32(), Reader.ReadString(), Reader.ReadString(), Reader.ReadString())
                     Case ClientMessage.DirectFeed2
@@ -130,14 +118,6 @@ Namespace Remoting
         Private Sub OnReloadDataSource()
             Try
                 m_Runner.ReloadDataSource()
-            Catch ex As Exception
-                ServiceUnhandledException(ex)
-            End Try
-        End Sub
-
-        Private Sub OnFeedDataSource(ByVal DataSourceName As String)
-            Try
-                m_Runner.Feed(DataSourceName, Int32.MaxValue)
             Catch ex As Exception
                 ServiceUnhandledException(ex)
             End Try
@@ -181,7 +161,7 @@ Namespace Remoting
                 m_Runner.Queue([Namespace], FileName, SourceCodeStream, _
                     Sub(Result As TestResult)
                         DirectFeedSendReply(StateId, Result)
-                    End Sub, Nothing)
+                    End Sub)
             Catch ex As Exception
                 ServiceUnhandledException(ex)
             End Try
@@ -195,13 +175,12 @@ Namespace Remoting
             Try
                 OnDirectFeedInternal(StateId, [Namespace], FileName, New FileStream(SourceCodePath, FileMode.Open, FileAccess.Read, FileShare.Read))
             Catch ex As IOException
-                DirectFeedSendReply(StateId, New TestResult(Nothing, TestResultFlag.None, "未找到提交的代码", 0, 0, 0, Nothing))
+                DirectFeedSendReply(StateId, New TestResult(TestResultFlag.None, "未找到提交的代码", 0, 0, 0, Nothing))
             End Try
         End Sub
 
         Private Sub OnDisconnected()
             Notifier.Unregister("RunnerStatusChanged", AddressOf OnRunnerStatusChanged)
-            Notifier.Unregister("LocalRecordChanged", AddressOf OnLocalRecordChanged)
         End Sub
 
 #Region "IDisposable Support"

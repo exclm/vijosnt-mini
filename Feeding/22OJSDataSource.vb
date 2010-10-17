@@ -99,41 +99,9 @@ Namespace Feeding
             Return Result
         End Function
 
-        Public Overrides Function Take() As Nullable(Of DataSourceRecord)
-            Dim TakenId As Nullable(Of Int32)
-            Using Connection0 As SqlConnection = CloneConnection(), _
-                Command0 As SqlCommand = CloneCommand(m_SelectPendingCommand, Connection0), _
-                Reader As SqlDataReader = Command0.ExecuteReader()
-                While Reader.Read()
-                    Using Connection1 As SqlConnection = CloneConnection(), _
-                        Command1 As SqlCommand = CloneCommand(m_UpdateTakenCommand, Connection1), _
-                         Command2 As SqlCommand = CloneCommand(m_UpdateUserSubmitCommand, Connection1)
-                        Dim Id As Int32 = Reader("Id")
-                        Command1.Parameters.AddWithValue("@Id", Id)
-                        Command2.Parameters.AddWithValue("@Id", Reader("user"))
-                        Command2.ExecuteNonQuery()
-                        If Command1.ExecuteNonQuery() <> 0 Then
-                            TakenId = Id
-                            Exit While
-                        End If
-                    End Using
-                End While
-            End Using
-            If Not TakenId.HasValue Then _
-                Return Nothing
-            Dim Result As DataSourceRecord
-            Result.Id = TakenId.Value
-            Using Connection As SqlConnection = CloneConnection(), _
-                Command As SqlCommand = CloneCommand(m_SelectCodeCommand.Clone, Connection)
-                Command.Parameters.AddWithValue("@Id", TakenId.Value)
-                Using Reader As SqlDataReader = Command.ExecuteReader()
-                    If Not Reader.Read() Then _
-                        Return Nothing
-                    Result.FileName = "Q" & Reader("qid") & VijosDataSource.GetCompilerExtension(Reader("codem"))
-                    Result.SourceCode = Reader("code")
-                End Using
-            End Using
-            Return Result
+        Public Overrides Function Take(ByVal Id As Int32) As DataSourceRecord
+            ' TODO: Not implemented
+            Throw New NotImplementedException()
         End Function
 
         Public Overloads Overrides Sub Untake(ByVal Id As Int32)

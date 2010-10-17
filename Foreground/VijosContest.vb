@@ -520,7 +520,7 @@ Namespace Foreground
                                                             End Sub) Then
                                                             FinishedEvent.WaitOne()
                                                         Else
-                                                            tr.Finish(New TestResult(Nothing, TestResultFlag.InternalError, "评测时发生内部错误", 0, 0, 0, Nothing))
+                                                            tr.Finish(New TestResult(TestResultFlag.InternalError, "评测时发生内部错误", 0, 0, 0, Nothing))
                                                         End If
                                                     End Using
                                                 End If
