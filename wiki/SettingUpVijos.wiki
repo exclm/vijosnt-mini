@@ -115,7 +115,7 @@ Vijos 支持评测的代码类型包括 C、C++、Pascal，我们需要安装 Mi
 {{{
 Dim http
 Set http = CreateObject("Msxml2.ServerXMLHTTP.3.0")
-http.open "GET", "http://127.0.0.1:3322/vijos_feed", False
+http.open "GET", "http://127.0.0.1:3322/vijos_feed&id=" & Record("ID"), False
 http.send
 Set http = Nothing
 }}}
