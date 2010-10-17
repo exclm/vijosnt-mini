@@ -18,11 +18,15 @@ Namespace Foreground
                         Using Reader As New StreamReader(Stream)
                             SourceCode = Reader.ReadToEnd()
                         End Using
-                        m_Daemon.DirectFeed2(String.Empty, FileName, File, _
+                        If Not m_Daemon.DirectFeed2(String.Empty, FileName, File, _
                             Sub(Result As TestResult)
                                 LocalDb.Record.Add(FileName, SourceCode, Result)
                                 m_Daemon.ShowBalloon()
-                            End Sub)
+                            End Sub) Then
+
+                            MessageBox.Show("VijosNT 服务未启动, 无法进行测评。", "错误", MessageBoxButtons.OK)
+                            Return
+                        End If
                     End If
                 End Using
             Next
