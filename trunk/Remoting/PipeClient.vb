@@ -7,7 +7,6 @@ Namespace Remoting
         Private m_Buffer As Byte()
 
         Public Event RunnerStatusChanged(ByVal Busy As Boolean)
-        Public Event LocalRecordChanged()
         Public Event DirectFeedReply(ByVal StateId As Int32, ByVal Result As TestResult)
         Public Event Disconnected()
 
@@ -85,8 +84,6 @@ Namespace Remoting
                 Select Case Message
                     Case ServerMessage.RunnerStatusChanged
                         OnRunnerStatusChanged(Reader.ReadBoolean())
-                    Case ServerMessage.LocalRecordChanged
-                        OnLocalRecordChanged()
                     Case ServerMessage.DirectFeedReply
                         OnDirectFeedReply(Reader)
                 End Select
@@ -95,10 +92,6 @@ Namespace Remoting
 
         Private Sub OnRunnerStatusChanged(ByVal Busy As Boolean)
             RaiseEvent RunnerStatusChanged(Busy)
-        End Sub
-
-        Private Sub OnLocalRecordChanged()
-            RaiseEvent LocalRecordChanged()
         End Sub
 
         Private Sub OnDirectFeedReply(ByVal Reader As BinaryReader)
@@ -121,7 +114,7 @@ Namespace Remoting
                 If Entry.Warning.Length = 0 Then Entry.Warning = Nothing
                 Entries.Add(Entry)
             End While
-            RaiseEvent DirectFeedReply(StateId, New TestResult(Nothing, Flag, Warning, Score, TimeUsage, MemoryUsage, Entries))
+            RaiseEvent DirectFeedReply(StateId, New TestResult(Flag, Warning, Score, TimeUsage, MemoryUsage, Entries))
         End Sub
 
         Private Sub OnDisconnected()

@@ -17,8 +17,6 @@ Namespace Feeding
 
         Public Sub Reload()
             m_HttpServer.Stop()
-            If m_DataSources IsNot Nothing Then _
-                DisposeDataSource(m_DataSources)
             m_DataSources = ReadDataSource()
             m_HttpServer.Start(ReadPrefixes(m_DataSources))
         End Sub
@@ -29,15 +27,8 @@ Namespace Feeding
             End Get
         End Property
 
-        Private Sub DisposeDataSource(ByVal Entries As IEnumerable(Of DataSourceEntry))
-            For Each Entry As DataSourceEntry In Entries
-                Entry.Dispose()
-            Next
-        End Sub
-
         Private Function ReadDataSource() As IEnumerable(Of DataSourceEntry)
             Dim Result As New List(Of DataSourceEntry)()
-            Result.Add(New DataSourceEntry(Me, New LocalDataSource(String.Empty), String.Empty, Nothing, Nothing))
             Using Reader As IDataReader = DataSourceMapping.GetAll()
                 While Reader.Read()
                     Dim DataSource As DataSourceBase
@@ -50,11 +41,9 @@ Namespace Feeding
                             EventLog.WriteEntry(My.Resources.ServiceName, "数据源加载失败" & vbCrLf & "未找到类名为 " & Reader("ClassName") & " 的数据源提供程序。", EventLogEntryType.Warning)
                             Continue While
                     End Select
-                    Dim IpcAnnouncement As String = Reader("IpcAnnouncement")
-                    If IpcAnnouncement.Length = 0 Then IpcAnnouncement = Nothing
                     Dim HttpAnnouncement As String = Reader("HttpAnnouncement")
                     If HttpAnnouncement.Length = 0 Then HttpAnnouncement = Nothing
-                    Result.Add(New DataSourceEntry(Me, DataSource, IpcAnnouncement, HttpAnnouncement, DbToLocalInt32(Reader("PollingInterval"))))
+                    Result.Add(New DataSourceEntry(DataSource, HttpAnnouncement))
                 End While
             End Using
 
@@ -74,57 +63,45 @@ Namespace Feeding
             Return Result
         End Function
 
-        Public Function Feed(ByVal Limit As Int32) As Int32
-            Dim Count As Int32 = 0
-            Dim DataSources As IEnumerable(Of DataSourceEntry) = m_DataSources
-            For Each Entry As DataSourceEntry In DataSources
-                Dim Current As Int32 = Entry.Feed(Limit)
-                Count += Current
-                Limit -= Current
-                If Limit = 0 Then Exit For
-            Next
-            Return Count
-        End Function
-
-        Public Function Feed(ByVal IpcAnnouncement As String, ByVal Limit As Int32) As Int32
-            Dim Count As Int32 = 0
-            Dim DataSources As IEnumerable(Of DataSourceEntry) = m_DataSources
-            For Each Entry As DataSourceEntry In DataSources
-                If Entry.MatchIpcAnnouncement(IpcAnnouncement) Then
-                    Dim Current As Int32 = Entry.Feed(Limit)
-                    Count += Current
-                    Limit -= Current
-                    If Limit = 0 Then Exit For
-                End If
-            Next
-            Return Count
-        End Function
+        Private Sub RemoteFeed(ByVal DataSource As DataSourceBase, ByVal Queries As SortedDictionary(Of String, String))
+            Dim Id = Int32.Parse(Queries("Id"))
+            Dim Record = DataSource.Take(Id)
+            If Not m_Runner.Queue(DataSource.Namespace, Record.FileName, New MemoryStream(Encoding.Default.GetBytes(Record.SourceCode)), _
+                Sub(Result As TestResult)
+                    Try
+                        DataSource.Untake(Id, Result)
+                    Catch ex As Exception
+                        ' Eat it
+                    End Try
+                End Sub) Then
+                DataSource.Untake(Id)
+            End If
+        End Sub
 
         Private Function OnContext(ByVal State As Object, ByVal Session As MiniHttpServer.Session, ByVal Queries As SortedDictionary(Of String, String)) As Boolean
-            Dim Limit = 0
-
-            If Not Queries.ContainsKey("Limit") OrElse _
-                Not Int32.TryParse(Queries("Limit"), Limit) OrElse
-                Limit <= 0 Then _
-                Limit = Int32.MaxValue
-
-            Dim FeedCount As Int32
+            Dim Succeeded = True
             Try
-                FeedCount = DirectCast(State, DataSourceEntry).Feed(Limit)
+                RemoteFeed(DirectCast(State, DataSourceEntry).DataSource, Queries)
             Catch ex As Exception
-                EventLog.WriteEntry(My.Resources.ServiceName, ex.ToString(), EventLogEntryType.Warning)
-                Return False
+                Succeeded = False
             End Try
 
-            Dim Builder = New StringBuilder()
-            Builder.AppendLine("VijosNT Mini " & Assembly.GetExecutingAssembly().GetName().Version.ToString())
-            Builder.AppendLine("Feeding " & FeedCount.ToString() & " record(s)")
+            Using Stream As New MemoryStream()
+                Using Writer As New XmlTextWriter(Stream, Encoding.UTF8)
+                    Writer.WriteStartDocument()
+                    Writer.WriteStartElement("FeedResult")
+                    Writer.WriteElementString("Version", Assembly.GetExecutingAssembly().GetName().Version.ToString())
+                    Writer.WriteElementString("Succeeded", Succeeded.ToString())
+                    Writer.WriteEndElement()
+                    Writer.WriteEndDocument()
+                End Using
 
-            Try
-                Return Session.Write("text/plain", Builder.ToString())
-            Catch ex As Exception
-                Return False
-            End Try
+                Try
+                    Return Session.Write("text/xml", Stream.ToArray())
+                Catch ex As Exception
+                    Return False
+                End Try
+            End Using
         End Function
 
 #Region "IDisposable Support"
@@ -135,7 +112,6 @@ Namespace Feeding
             If Not Me.disposedValue Then
                 If disposing Then
                     m_HttpServer.Stop()
-                    DisposeDataSource(m_DataSources)
                 End If
             End If
             Me.disposedValue = True

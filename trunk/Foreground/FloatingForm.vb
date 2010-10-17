@@ -1,4 +1,5 @@
-﻿Imports VijosNT.LocalDb
+﻿Imports VijosNT.Feeding
+Imports VijosNT.LocalDb
 Imports VijosNT.Win32
 
 Namespace Foreground
@@ -12,14 +13,19 @@ Namespace Foreground
                 Using Stream As New FileStream(File, FileMode.Open, FileAccess.Read, FileShare.Read)
                     If Stream.Length < 1048576 OrElse _
                         MessageBox.Show("文件 " & File & " 的长度超过 1MB, 确定要继续吗?", "询问", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+                        Dim FileName = Path.GetFileName(File)
+                        Dim SourceCode As String
                         Using Reader As New StreamReader(Stream)
-                            LocalDb.Record.Add(Path.GetFileName(File), Reader.ReadToEnd())
+                            SourceCode = Reader.ReadToEnd()
                         End Using
+                        m_Daemon.DirectFeed2(String.Empty, FileName, File, _
+                            Sub(Result As TestResult)
+                                LocalDb.Record.Add(FileName, SourceCode, Result)
+                                m_Daemon.ShowBalloon()
+                            End Sub)
                     End If
                 End Using
             Next
-            m_Daemon.FeedDataSource(String.Empty)
-            m_Daemon.RefreshLocalRecordUnsafe()
         End Sub
 
         Private Sub FloatingForm_DragEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles Me.DragEnter

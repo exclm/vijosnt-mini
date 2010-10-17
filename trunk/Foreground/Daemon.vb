@@ -107,18 +107,6 @@ Namespace Foreground
                     End If
                 End Sub
 
-            AddHandler m_PipeClient.LocalRecordChanged, _
-                Sub()
-                    m_Console.Invoke(New MethodInvoker( _
-                        Sub()
-                            If m_Console IsNot Nothing Then
-                                m_Console.RefreshLocalRecord()
-                            Else
-                                m_NotifyIcon.ShowBalloonTip(3000, "VijosNT", "测试完毕, 点击此气泡查看测试结果", ToolTipIcon.Info)
-                            End If
-                        End Sub))
-                End Sub
-
             AddHandler m_PipeClient.DirectFeedReply, _
                 Sub(StateId As Int32, Result As TestResult)
                     Dim Completion As DirectFeedCompletion = Nothing
@@ -270,6 +258,17 @@ Namespace Foreground
             End If
         End Sub
 
+        Public Sub ShowBalloon()
+            If m_Console IsNot Nothing Then
+                m_Console.Invoke(New MethodInvoker( _
+                    Sub()
+                        m_Console.RefreshLocalRecord()
+                    End Sub))
+            Else
+                m_NotifyIcon.ShowBalloonTip(3000, "VijosNT", "测试完毕, 点击此气泡查看测试结果", ToolTipIcon.Info)
+            End If
+        End Sub
+
         Public Function CreateService() As Service
             Return m_ServiceManager.Create(My.Resources.ServiceName, My.Resources.DisplayName, Application.ExecutablePath)
         End Function
@@ -326,15 +325,6 @@ Namespace Foreground
         Public Function ReloadDataSource() As Boolean
             Try
                 m_PipeClient.Write(ClientMessage.ReloadDataSource)
-                Return True
-            Catch ex As Exception
-                Return False
-            End Try
-        End Function
-
-        Public Function FeedDataSource(ByVal DataSourceName As String) As Boolean
-            Try
-                m_PipeClient.Write(ClientMessage.FeedDataSource, DataSourceName)
                 Return True
             Catch ex As Exception
                 Return False

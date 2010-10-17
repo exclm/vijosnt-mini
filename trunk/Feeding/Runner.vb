@@ -11,7 +11,6 @@ Namespace Feeding
 
         Private Class TestContext
             Public Completion As TestCompletion
-            Public CompletionState As Object
             Public Compiler As Compiler
             Public TestCases As IEnumerable(Of TestCase)
             Public Flag As TestResultFlag
@@ -52,7 +51,6 @@ Namespace Feeding
             m_Running = 0
             m_CanExit = New ManualResetEvent(True)
             m_AllowQueuing = True
-            Feed(Int32.MaxValue)
         End Sub
 
         Public Sub ReloadCompiler()
@@ -80,50 +78,7 @@ Namespace Feeding
             Dim Id As Int32
         End Structure
 
-        Public Function Feed(ByVal Limit As Int32) As Int32
-            Return m_DataSourcePool.Feed(Limit)
-        End Function
-
-        Public Function Feed(ByVal IpcAnnouncement As String, ByVal Limit As Int32) As Int32
-            Return m_DataSourcePool.Feed(IpcAnnouncement, Limit)
-        End Function
-
-        Public Function Feed(ByVal Source As DataSourceBase, ByVal Limit As Int32) As Int32
-            For Index = 0 To Limit - 1
-                Dim Record As Nullable(Of DataSourceRecord)
-                Try
-                    Record = Source.Take()
-                Catch ex As Exception
-                    Record = Nothing
-                    EventLog.WriteEntry(My.Resources.ServiceName, ex.ToString(), EventLogEntryType.Warning)
-                End Try
-                If Not Record.HasValue Then _
-                    Return Index
-                Dim Context As FeedContext
-                Context.Source = Source
-                Context.Id = Record.Value.Id
-                If Not Queue(Source.Namespace, Record.Value.FileName, New MemoryStream(Encoding.Default.GetBytes(Record.Value.SourceCode)), AddressOf FeedCompletion, Context) Then
-                    Try
-                        Source.Untake(Record.Value.Id)
-                    Catch ex As Exception
-                        EventLog.WriteEntry(My.Resources.ServiceName, ex.ToString(), EventLogEntryType.Warning)
-                    End Try
-                    Return Index
-                End If
-            Next
-            Return Limit
-        End Function
-
-        Private Sub FeedCompletion(ByVal Result As TestResult)
-            Dim Context As FeedContext = DirectCast(Result.State, FeedContext)
-            Try
-                Context.Source.Untake(Context.Id, Result)
-            Catch ex As Exception
-                EventLog.WriteEntry(My.Resources.ServiceName, ex.ToString(), EventLogEntryType.Warning)
-            End Try
-        End Sub
-
-        Public Function Queue(ByVal [Namespace] As String, ByVal FileName As String, ByVal SourceCode As Stream, ByVal Completion As TestCompletion, ByVal State As Object) As Boolean
+        Public Function Queue(ByVal [Namespace] As String, ByVal FileName As String, ByVal SourceCode As Stream, ByVal Completion As TestCompletion) As Boolean
             If Not m_AllowQueuing Then _
                 Return False
 
@@ -142,7 +97,6 @@ Namespace Feeding
 
             Dim Context As New TestContext()
             Context.Completion = Completion
-            Context.CompletionState = State
             Context.Compiler = m_CompilerPool.TryGet(Path.GetExtension(FileName))
             Context.TestCases = m_TestSuitePool.TryLoad([Namespace], Path.GetFileNameWithoutExtension(FileName))
             Context.Flag = TestResultFlag.None
@@ -152,7 +106,7 @@ Namespace Feeding
             Context.TestResults = New SortedDictionary(Of Int32, TestResultEntry)()
 
             If Context.Compiler Is Nothing Then
-                Context.Completion.Invoke(New TestResult(Context.CompletionState, TestResultFlag.CompilerNotFound, Nothing, 0, 0, 0, Nothing))
+                Context.Completion.Invoke(New TestResult(TestResultFlag.CompilerNotFound, Nothing, 0, 0, 0, Nothing))
                 If Interlocked.Decrement(m_Running) = 0 Then
                     Notifier.Invoke("RunnerStatusChanged", False)
                     m_CanExit.Set()
@@ -161,7 +115,7 @@ Namespace Feeding
             End If
 
             If Context.TestCases Is Nothing Then
-                Context.Completion.Invoke(New TestResult(Context.CompletionState, TestResultFlag.TestSuiteNotFound, Nothing, 0, 0, 0, Nothing))
+                Context.Completion.Invoke(New TestResult(TestResultFlag.TestSuiteNotFound, Nothing, 0, 0, 0, Nothing))
                 If Interlocked.Decrement(m_Running) = 0 Then
                     Notifier.Invoke("RunnerStatusChanged", False)
                     m_CanExit.Set()
@@ -180,7 +134,7 @@ Namespace Feeding
                     Try
                         m_Executor.Queue(New CompilerExecutee(m_WatchDog, m_ProcessMonitor, Context.Compiler, SourceCode, AddressOf TestCompileCompletion, Context))
                     Catch ex As Exception
-                        Context.Completion.Invoke(New TestResult(Context.CompletionState, TestResultFlag.InternalError, ex.ToString(), 0, 0, 0, Nothing))
+                        Context.Completion.Invoke(New TestResult(TestResultFlag.InternalError, ex.ToString(), 0, 0, 0, Nothing))
                         If Interlocked.Decrement(m_Running) = 0 Then
                             Notifier.Invoke("RunnerStatusChanged", False)
                             m_CanExit.Set()
@@ -259,7 +213,7 @@ Namespace Feeding
             End If
 
             ' Compile failed
-            Context.Completion.Invoke(New TestResult(Context.CompletionState, TestResultFlag.CompileError, Warning, 0, 0, 0, Nothing))
+            Context.Completion.Invoke(New TestResult(TestResultFlag.CompileError, Warning, 0, 0, 0, Nothing))
             If Interlocked.Decrement(m_Running) = 0 Then
                 Notifier.Invoke("RunnerStatusChanged", False)
                 m_CanExit.Set()
@@ -325,7 +279,7 @@ Namespace Feeding
 
         Private Sub TestWorkCompleted(ByVal Context As TestContext)
             If Interlocked.Decrement(Context.Remaining) = 0 Then
-                Context.Completion.Invoke(New TestResult(Context.CompletionState, Context.Flag, Context.Warning, Context.Score, Context.TimeUsage, Context.MemoryUsage, Context.TestResults.Values))
+                Context.Completion.Invoke(New TestResult(Context.Flag, Context.Warning, Context.Score, Context.TimeUsage, Context.MemoryUsage, Context.TestResults.Values))
                 If Interlocked.Decrement(m_Running) = 0 Then
                     Notifier.Invoke("RunnerStatusChanged", False)
                     m_CanExit.Set()

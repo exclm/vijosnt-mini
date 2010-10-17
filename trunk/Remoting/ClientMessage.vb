@@ -4,7 +4,7 @@
         ReloadTestSuite
         ReloadExecutor
         ReloadDataSource
-        FeedDataSource
+        Unused_FeedDataSource
         DirectFeed
         DirectFeed2
     End Enum

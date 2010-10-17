@@ -177,7 +177,8 @@
                             Case "host"
                                 Host = LineSplit(1).Trim()
                             Case "content-length"
-                                Return Write(400, False)
+                                m_KeepAlive = False
+                                Return Write(400)
                             Case "connection"
                                 For Each Param In LineSplit(1).Split(New Char() {","c})
                                     Select Case Param.Trim().ToLower()
@@ -253,15 +254,11 @@
                     Case Else
                         Throw New ArgumentException()
                 End Select
-                Return Write(Title, "text/html; charset=UTF-8", Text)
+                Return Write(Title, "text/html; charset=UTF-8", Encoding.UTF8.GetBytes(Text))
             End Function
 
-            Public Function Write(ByVal ContentType As String, ByVal Text As String) As Boolean
-                Return Write("200 OK", ContentType, Text)
-            End Function
-
-            Public Function Write(ByVal Title As String, ByVal ContentType As String, ByVal Text As String) As Boolean
-                Return Write(Title, ContentType, Encoding.UTF8.GetBytes(Text))
+            Public Function Write(ByVal ContentType As String, ByVal Buffer As Byte()) As Boolean
+                Return Write("200 OK", ContentType, Buffer)
             End Function
 
             Public Function Write(ByVal Title As String, ByVal ContentType As String, ByVal Buffer As Byte()) As Boolean

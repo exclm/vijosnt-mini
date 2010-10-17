@@ -1,7 +1,7 @@
 ﻿Namespace Remoting
     Friend Enum ServerMessage As Int32
         RunnerStatusChanged
-        LocalRecordChanged
+        Unused_LocalRecordChanged
         DirectFeedReply
     End Enum
 End Namespace
