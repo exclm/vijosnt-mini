@@ -307,13 +307,17 @@ Namespace Feeding
             Entry.MemoryUsage = Result.MemoryQuotaUsage
 
             SyncLock Context.TestContext
-                Context.TestContext.TestResults.Add(Entry.Index, Entry)
-                Context.TestContext.Score += Entry.Score
-                Context.TestContext.TimeUsage += Entry.TimeUsage
-                Context.TestContext.MemoryUsage += Entry.MemoryUsage
-                If Entry.Flag > Context.TestContext.Flag Then
-                    Context.TestContext.Flag = Entry.Flag
-                End If
+                With Context.TestContext
+                    .TestResults.Add(Entry.Index, Entry)
+                    .Score += Entry.Score
+                    If Entry.Flag = TestResultFlag.Accepted Then
+                        .TimeUsage += Entry.TimeUsage
+                        .MemoryUsage = Math.Max(.MemoryUsage, Entry.MemoryUsage)
+                    End If
+                    If Entry.Flag > .Flag Then
+                        .Flag = Entry.Flag
+                    End If
+                End With
             End SyncLock
 
             TestWorkCompleted(Context.TestContext)
