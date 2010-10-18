@@ -20,7 +20,7 @@
                 Win32True(QueryInformationJobObject(m_JobObject.GetHandleUnsafe(), JobObjectInfoClass.JobObjectExtendedLimitInformation, m_Data, Marshal.SizeOf(m_Data), Nothing))
             End Sub
 
-            Public Property ProcessTime() As Nullable(Of Int64)
+            Public Property ProcessTime() As Int64?
                 Get
                     If (m_Data.BasicLimitInformation.LimitFlags And JobObjectLimitFlags.JOB_OBJECT_LIMIT_PROCESS_TIME) <> 0 Then
                         Return m_Data.BasicLimitInformation.PerProcessUserTimeLimit
@@ -29,7 +29,7 @@
                     End If
                 End Get
 
-                Set(ByVal Value As Nullable(Of Int64))
+                Set(ByVal Value As Int64?)
                     If Value IsNot Nothing Then
                         m_Data.BasicLimitInformation.LimitFlags = m_Data.BasicLimitInformation.LimitFlags Or JobObjectLimitFlags.JOB_OBJECT_LIMIT_PROCESS_TIME
                         m_Data.BasicLimitInformation.PerProcessUserTimeLimit = Value
@@ -39,7 +39,7 @@
                 End Set
             End Property
 
-            Public Property PriorityClass() As Nullable(Of PriorityClass)
+            Public Property PriorityClass() As PriorityClass?
                 Get
                     If (m_Data.BasicLimitInformation.LimitFlags And JobObjectLimitFlags.JOB_OBJECT_LIMIT_PRIORITY_CLASS) = JobObjectLimitFlags.JOB_OBJECT_LIMIT_PRIORITY_CLASS Then
                         Return m_Data.BasicLimitInformation.PriorityClass
@@ -48,7 +48,7 @@
                     End If
                 End Get
 
-                Set(ByVal Value As Nullable(Of PriorityClass))
+                Set(ByVal Value As PriorityClass?)
                     If Value IsNot Nothing Then
                         m_Data.BasicLimitInformation.LimitFlags = m_Data.BasicLimitInformation.LimitFlags Or JobObjectLimitFlags.JOB_OBJECT_LIMIT_PRIORITY_CLASS
                         m_Data.BasicLimitInformation.PriorityClass = Value
@@ -58,7 +58,7 @@
                 End Set
             End Property
 
-            Public Property ActiveProcess() As Nullable(Of Int32)
+            Public Property ActiveProcess() As Int32?
                 Get
                     If (m_Data.BasicLimitInformation.LimitFlags And JobObjectLimitFlags.JOB_OBJECT_LIMIT_ACTIVE_PROCESS) <> 0 Then
                         Return m_Data.BasicLimitInformation.ActiveProcessLimit
@@ -67,7 +67,7 @@
                     End If
                 End Get
 
-                Set(ByVal Value As Nullable(Of Int32))
+                Set(ByVal Value As Int32?)
                     If Value IsNot Nothing Then
                         m_Data.BasicLimitInformation.LimitFlags = m_Data.BasicLimitInformation.LimitFlags Or JobObjectLimitFlags.JOB_OBJECT_LIMIT_ACTIVE_PROCESS
                         m_Data.BasicLimitInformation.ActiveProcessLimit = Value
@@ -77,7 +77,7 @@
                 End Set
             End Property
 
-            Public Property ProcessMemory() As Nullable(Of IntPtr)
+            Public Property ProcessMemory() As IntPtr?
                 Get
                     If (m_Data.BasicLimitInformation.LimitFlags And JobObjectLimitFlags.JOB_OBJECT_LIMIT_PROCESS_MEMORY) <> 0 Then
                         Return m_Data.ProcessMemoryLimit
@@ -86,7 +86,7 @@
                     End If
                 End Get
 
-                Set(ByVal Value As Nullable(Of IntPtr))
+                Set(ByVal Value As IntPtr?)
                     If Value IsNot Nothing Then
                         m_Data.BasicLimitInformation.LimitFlags = m_Data.BasicLimitInformation.LimitFlags Or JobObjectLimitFlags.JOB_OBJECT_LIMIT_PROCESS_MEMORY
                         m_Data.ProcessMemoryLimit = Value

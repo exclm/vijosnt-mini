@@ -8,10 +8,10 @@ Namespace Testing
         Protected m_Weight As Int32
         Protected m_InputString As String
         Protected m_AnswerString As String
-        Protected m_TimeQuota As Nullable(Of Int64)
-        Protected m_MemoryQuota As Nullable(Of Int64)
+        Protected m_TimeQuota As Int64?
+        Protected m_MemoryQuota As Int64?
 
-        Public Sub New(ByVal Index As Int32, ByVal Weight As Int32, ByVal InputString As String, ByVal AnswerString As String, ByVal TimeQuota As Nullable(Of Int64), ByVal MemoryQuota As Nullable(Of Int64))
+        Public Sub New(ByVal Index As Int32, ByVal Weight As Int32, ByVal InputString As String, ByVal AnswerString As String, ByVal TimeQuota As Int64?, ByVal MemoryQuota As Int64?)
             m_Index = Index
             m_Weight = Weight
             m_InputString = InputString
@@ -32,13 +32,13 @@ Namespace Testing
             End Get
         End Property
 
-        Public Overrides ReadOnly Property TimeQuota() As Nullable(Of Int64)
+        Public Overrides ReadOnly Property TimeQuota() As Int64?
             Get
                 Return m_TimeQuota
             End Get
         End Property
 
-        Public Overrides ReadOnly Property MemoryQuota() As Nullable(Of Int64)
+        Public Overrides ReadOnly Property MemoryQuota() As Int64?
             Get
                 Return m_MemoryQuota
             End Get

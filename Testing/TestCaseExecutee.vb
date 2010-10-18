@@ -30,8 +30,8 @@ Namespace Testing
                     Completion.Invoke(m_Result)
                 End Sub)
 
-            Dim TimeQuota As Nullable(Of Int64) = TestCase.TimeQuota
-            Dim MemoryQuota As Nullable(Of Int64) = TestCase.MemoryQuota
+            Dim TimeQuota As Int64? = TestCase.TimeQuota
+            Dim MemoryQuota As Int64? = TestCase.MemoryQuota
 
             With TargetInstance.Target.CompilerInstance.Compiler
                 If TimeQuota.HasValue Then

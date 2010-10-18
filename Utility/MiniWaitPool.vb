@@ -15,7 +15,7 @@
         End Structure
 
         Protected Structure Entry
-            Public Sub New(ByVal WaitHandle As WaitHandle, ByVal TimeoutTick As Nullable(Of Int64), ByVal Completion As Completion, ByVal CompletionState As Object)
+            Public Sub New(ByVal WaitHandle As WaitHandle, ByVal TimeoutTick As Int64?, ByVal Completion As Completion, ByVal CompletionState As Object)
                 Me.WaitHandle = WaitHandle
                 Me.TimeoutTick = TimeoutTick
                 Me.Completion = Completion
@@ -23,7 +23,7 @@
             End Sub
 
             Dim WaitHandle As WaitHandle
-            Dim TimeoutTick As Nullable(Of Int64)
+            Dim TimeoutTick As Int64?
             Dim Completion As Completion
             Dim CompletionState As Object
         End Structure
@@ -55,8 +55,8 @@
             m_Event.Set()
         End Sub
 
-        Public Sub SetWait(ByVal WaitHandle As WaitHandle, ByVal TimeoutValue As Nullable(Of Int64), ByVal Completion As Completion, ByVal State As Object)
-            Dim TimeoutTick As Nullable(Of Int64)
+        Public Sub SetWait(ByVal WaitHandle As WaitHandle, ByVal TimeoutValue As Int64?, ByVal Completion As Completion, ByVal State As Object)
+            Dim TimeoutTick As Int64?
 
             If TimeoutValue IsNot Nothing Then
                 TimeoutTick = Date.Now.Ticks + TimeoutValue
@@ -96,13 +96,13 @@
 
                 If Entries.Length = 0 Then Exit While
 
-                Dim TimeoutTick As Nullable(Of Int64) = Nothing
+                Dim TimeoutTick As Int64? = Nothing
                 Dim TimeoutSource As Int32 = -1
                 Dim WaitHandles As WaitHandle() = New WaitHandle(0 To Entries.Length - 1) {}
 
                 For Index As Int32 = 0 To Entries.Length - 1
                     WaitHandles(Index) = Entries(Index).WaitHandle
-                    Dim Tick As Nullable(Of Int64) = Entries(Index).TimeoutTick
+                    Dim Tick As Int64? = Entries(Index).TimeoutTick
                     If Tick IsNot Nothing AndAlso (TimeoutTick Is Nothing OrElse Tick < TimeoutTick) Then
                         TimeoutTick = Tick
                         TimeoutSource = Index

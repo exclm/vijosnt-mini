@@ -79,7 +79,7 @@
             Return Builder.ToString()
         End Function
 
-        Public Function DbToLocalInt64(ByVal Value As Object) As Nullable(Of Int64)
+        Public Function DbToLocalInt64(ByVal Value As Object) As Int64?
             If IsDBNull(Value) Then
                 Return Nothing
             Else
@@ -87,7 +87,7 @@
             End If
         End Function
 
-        Public Function DbToLocalInt32(ByVal Value As Object) As Nullable(Of Int32)
+        Public Function DbToLocalInt32(ByVal Value As Object) As Int32?
             If IsDBNull(Value) Then
                 Return Nothing
             Else
@@ -103,7 +103,7 @@
             End If
         End Function
 
-        Public Function DbToLocalDate(ByVal Value As Object) As Nullable(Of Date)
+        Public Function DbToLocalDate(ByVal Value As Object) As Date?
             If IsDBNull(Value) Then
                 Return Nothing
             Else
@@ -119,7 +119,7 @@
             End If
         End Function
 
-        Public Function DbToLocalDouble(ByVal Value As Object) As Nullable(Of Double)
+        Public Function DbToLocalDouble(ByVal Value As Object) As Double?
             If IsDBNull(Value) Then
                 Return Nothing
             Else
@@ -137,14 +137,14 @@
             ElseIf Name.StartsWith("#") Then
                 Return DbToLocalDate(DataReader(Name.Substring(1)))
             ElseIf Name.StartsWith("!") Then
-                Dim Value As Nullable(Of Int64) = DbToLocalInt64(DataReader(Name.Substring(1)))
+                Dim Value As Int64? = DbToLocalInt64(DataReader(Name.Substring(1)))
                 If Value.HasValue Then
                     Return (Value.Value \ 10000).ToString() & "ms"
                 Else
                     Return Nothing
                 End If
             ElseIf Name.StartsWith("@") Then
-                Dim Value As Nullable(Of Int64) = DbToLocalInt64(DataReader(Name.Substring(1)))
+                Dim Value As Int64? = DbToLocalInt64(DataReader(Name.Substring(1)))
                 If Value.HasValue Then
                     Return (Value.Value \ 1024).ToString() & "KB"
                 Else

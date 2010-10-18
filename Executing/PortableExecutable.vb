@@ -4,12 +4,12 @@
 
         Private m_Stream As Stream
         Private m_Stack As Stack(Of Int64)
-        Private m_DosHeader As Nullable(Of Int32)
-        Private m_NtHeader As Nullable(Of Int32)
-        Private m_IsPE32Plus As Nullable(Of Boolean)
-        Private m_NumberOfSections As Nullable(Of Int32)
-        Private m_SectionAlignment As Nullable(Of Int32)
-        Private m_VirtualSize As Nullable(Of Int64)
+        Private m_DosHeader As Int32?
+        Private m_NtHeader As Int32?
+        Private m_IsPE32Plus As Boolean?
+        Private m_NumberOfSections As Int32?
+        Private m_SectionAlignment As Int32?
+        Private m_VirtualSize As Int64?
 
         Public Sub New(ByVal ApplicationName As String)
             m_Stream = New FileStream(ApplicationName, FileMode.Open, FileAccess.Read, FileShare.Read)

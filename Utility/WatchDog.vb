@@ -7,14 +7,14 @@ Namespace Utility
         Public Delegate Sub Completion(ByVal QuotaUsage As Int64)
 
         Protected Structure Context
-            Public Sub New(ByVal Process As ProcessEx, ByVal TimeQuota As Nullable(Of Int64), ByVal Completion As Completion)
+            Public Sub New(ByVal Process As ProcessEx, ByVal TimeQuota As Int64?, ByVal Completion As Completion)
                 Me.Process = Process
                 Me.TimeQuota = TimeQuota
                 Me.Completion = Completion
             End Sub
 
             Dim Process As ProcessEx
-            Dim TimeQuota As Nullable(Of Int64)
+            Dim TimeQuota As Int64?
             Dim Completion As Completion
         End Structure
 
@@ -66,7 +66,7 @@ Namespace Utility
             End If
         End Sub
 
-        Public Sub SetWatch(ByVal Process As ProcessEx, ByVal TimeQuota As Nullable(Of Int64), ByVal Completion As Completion)
+        Public Sub SetWatch(ByVal Process As ProcessEx, ByVal TimeQuota As Int64?, ByVal Completion As Completion)
             SetWatchInternal(New Context(Process, TimeQuota, Completion))
         End Sub
 

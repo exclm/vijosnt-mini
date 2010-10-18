@@ -7,17 +7,17 @@ Namespace LocalDb
         Private m_ApplicationName As String
         Private m_CommandLine As String
         Private m_EnvironmentVariables As String
-        Private m_TimeQuota As Nullable(Of Int64)
-        Private m_MemoryQuota As Nullable(Of Int64)
-        Private m_ActiveProcessQuota As Nullable(Of Int32)
+        Private m_TimeQuota As Int64?
+        Private m_MemoryQuota As Int64?
+        Private m_ActiveProcessQuota As Int32?
         Private m_SourceFileName As String
         Private m_TargetFileName As String
         Private m_TargetApplicationName As String
         Private m_TargetCommandLine As String
-        Private m_TimeOffset As Nullable(Of Int64)
-        Private m_TimeFactor As Nullable(Of Double)
-        Private m_MemoryOffset As Nullable(Of Int64)
-        Private m_MemoryFactor As Nullable(Of Double)
+        Private m_TimeOffset As Int64?
+        Private m_TimeFactor As Double?
+        Private m_MemoryOffset As Int64?
+        Private m_MemoryFactor As Double?
 
         Public Sub New(ByVal Reader As IDataReader)
             m_Id = Reader("Id")
@@ -92,7 +92,7 @@ Namespace LocalDb
         End Property
 
         <DisplayName("时间配额"), CategoryAttribute("编译器设置"), DescriptionAttribute("编译器的时间配额, 以 ms 为单位, 留空表示不限制, 默认值为 15000")> _
-        Public Property TimeQuota() As Nullable(Of Int32)
+        Public Property TimeQuota() As Int32?
             Get
                 If m_TimeQuota.HasValue Then
                     Return m_TimeQuota.Value \ 10000
@@ -101,7 +101,7 @@ Namespace LocalDb
                 End If
             End Get
 
-            Set(ByVal Value As Nullable(Of Int32))
+            Set(ByVal Value As Int32?)
                 If Value.HasValue Then
                     m_TimeQuota = Math.BigMul(Value.Value, 10000)
                 Else
@@ -112,7 +112,7 @@ Namespace LocalDb
         End Property
 
         <DisplayName("内存配额"), CategoryAttribute("编译器设置"), DescriptionAttribute("编译器的内存配额, 以 KB 为单位, 留空表示不限制, 默认值为空")> _
-        Public Property MemoryQuota() As Nullable(Of Int32)
+        Public Property MemoryQuota() As Int32?
             Get
                 If m_MemoryQuota.HasValue Then
                     Return m_MemoryQuota.Value \ 1024
@@ -121,7 +121,7 @@ Namespace LocalDb
                 End If
             End Get
 
-            Set(ByVal Value As Nullable(Of Int32))
+            Set(ByVal Value As Int32?)
                 If Value.HasValue Then
                     m_MemoryQuota = Math.BigMul(Value.Value, 1024)
                 Else
@@ -132,12 +132,12 @@ Namespace LocalDb
         End Property
 
         <DisplayName("活动进程数配额"), CategoryAttribute("编译器设置"), DescriptionAttribute("编译器的活动进程数配额, 留空表示不限制, 默认值为空")> _
-        Public Property ActiveProcessQuota() As Nullable(Of Int32)
+        Public Property ActiveProcessQuota() As Int32?
             Get
                 Return m_ActiveProcessQuota
             End Get
 
-            Set(ByVal Value As Nullable(Of Int32))
+            Set(ByVal Value As Int32?)
                 m_ActiveProcessQuota = Value
                 Commit()
             End Set
@@ -192,7 +192,7 @@ Namespace LocalDb
         End Property
 
         <DisplayName("时间偏移量"), CategoryAttribute("执行设置"), DescriptionAttribute("执行时的时间偏移量, 通常设置为一个负数用于抵消程序初始化所需的时间, 以 ms 为单位, 留空表示无偏移, 默认值为空")> _
-        Public Property TimeOffset() As Nullable(Of Int32)
+        Public Property TimeOffset() As Int32?
             Get
                 If m_TimeOffset.HasValue Then
                     Return m_TimeOffset.Value \ 10000
@@ -201,7 +201,7 @@ Namespace LocalDb
                 End If
             End Get
 
-            Set(ByVal Value As Nullable(Of Int32))
+            Set(ByVal Value As Int32?)
                 If Value.HasValue Then
                     m_TimeOffset = Math.BigMul(Value.Value, 10000)
                 Else
@@ -212,19 +212,19 @@ Namespace LocalDb
         End Property
 
         <DisplayName("时间配额系数"), CategoryAttribute("执行设置"), DescriptionAttribute("执行时的时间配额系数, 用于平衡不同测评机或不同语言的执行时间, 实际的时间配额等于数据集设定的时间配额乘以该系数, 留空表示无设置, 默认值为空")> _
-        Public Property TimeFactor() As Nullable(Of Double)
+        Public Property TimeFactor() As Double?
             Get
                 Return m_TimeFactor
             End Get
 
-            Set(ByVal Value As Nullable(Of Double))
+            Set(ByVal Value As Double?)
                 m_TimeFactor = Value
                 Commit()
             End Set
         End Property
 
         <DisplayName("内存偏移量"), CategoryAttribute("执行设置"), DescriptionAttribute("执行时的内存偏移量, 通常设置为一个负数用于抵消程序初始化所需的内存, 以 KB 为单位, 留空表示无偏移, 默认值为空")> _
-        Public Property MemoryOffset() As Nullable(Of Int32)
+        Public Property MemoryOffset() As Int32?
             Get
                 If m_MemoryOffset.HasValue Then
                     Return m_MemoryOffset.Value \ 1024
@@ -233,7 +233,7 @@ Namespace LocalDb
                 End If
             End Get
 
-            Set(ByVal Value As Nullable(Of Int32))
+            Set(ByVal Value As Int32?)
                 If Value.HasValue Then
                     m_MemoryOffset = Math.BigMul(Value.Value, 1024)
                 Else
@@ -244,12 +244,12 @@ Namespace LocalDb
         End Property
 
         <DisplayName("内存配额系数"), CategoryAttribute("执行设置"), DescriptionAttribute("执行时的内存配额系数, 用于平衡不同语言的执行内存, 实际的内存配额等于数据集设定的内存配额乘以该系数, 留空表示无设置, 默认值为空")> _
-        Public Property MemoryFactor() As Nullable(Of Double)
+        Public Property MemoryFactor() As Double?
             Get
                 Return m_MemoryFactor
             End Get
 
-            Set(ByVal Value As Nullable(Of Double))
+            Set(ByVal Value As Double?)
                 m_MemoryFactor = Value
                 Commit()
             End Set
