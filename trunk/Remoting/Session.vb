@@ -1,5 +1,4 @@
 ﻿Imports VijosNT.Feeding
-Imports VijosNT.Notification
 Imports VijosNT.Utility
 
 Namespace Remoting
@@ -15,12 +14,12 @@ Namespace Remoting
             m_Buffer = New Byte(0 To 4095) {}
             m_Runner = Runner
             m_Stream.BeginRead(m_Buffer, 0, m_Buffer.Length, AddressOf OnRead, Nothing)
-            Notifier.Register("RunnerStatusChanged", AddressOf OnRunnerStatusChanged)
+            AddHandler m_Runner.RunnerStatusChanged, AddressOf OnRunnerStatusChanged
         End Sub
 
-        Private Sub OnRunnerStatusChanged(ByVal Param As Object)
+        Private Sub OnRunnerStatusChanged(ByVal Running As Boolean)
             Try
-                Write(ServerMessage.RunnerStatusChanged, DirectCast(Param, Boolean))
+                Write(ServerMessage.RunnerStatusChanged, Running)
             Catch ex As Exception
                 OnDisconnected()
                 Me.Dispose()
@@ -180,7 +179,7 @@ Namespace Remoting
         End Sub
 
         Private Sub OnDisconnected()
-            Notifier.Unregister("RunnerStatusChanged", AddressOf OnRunnerStatusChanged)
+            RemoveHandler m_Runner.RunnerStatusChanged, AddressOf OnRunnerStatusChanged
         End Sub
 
 #Region "IDisposable Support"

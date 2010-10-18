@@ -1,6 +1,5 @@
 ﻿Imports VijosNT.Compiling
 Imports VijosNT.Executing
-Imports VijosNT.Notification
 Imports VijosNT.Testing
 Imports VijosNT.Utility
 Imports VijosNT.Win32
@@ -84,12 +83,12 @@ Namespace Feeding
 
             m_CanExit.Reset()
             If Interlocked.Increment(m_Running) = 1 Then
-                Notifier.Invoke("RunnerStatusChanged", True)
+                RaiseEvent RunnerStatusChanged(True)
             End If
 
             If Not m_AllowQueuing Then
                 If Interlocked.Decrement(m_Running) = 0 Then
-                    Notifier.Invoke("RunnerStatusChanged", False)
+                    RaiseEvent RunnerStatusChanged(False)
                     m_CanExit.Set()
                 End If
                 Return False
@@ -108,7 +107,7 @@ Namespace Feeding
             If Context.Compiler Is Nothing Then
                 Context.Completion.Invoke(New TestResult(TestResultFlag.CompilerNotFound, Nothing, 0, 0, 0, Nothing))
                 If Interlocked.Decrement(m_Running) = 0 Then
-                    Notifier.Invoke("RunnerStatusChanged", False)
+                    RaiseEvent RunnerStatusChanged(False)
                     m_CanExit.Set()
                 End If
                 Return True
@@ -117,7 +116,7 @@ Namespace Feeding
             If Context.TestCases Is Nothing Then
                 Context.Completion.Invoke(New TestResult(TestResultFlag.TestSuiteNotFound, Nothing, 0, 0, 0, Nothing))
                 If Interlocked.Decrement(m_Running) = 0 Then
-                    Notifier.Invoke("RunnerStatusChanged", False)
+                    RaiseEvent RunnerStatusChanged(False)
                     m_CanExit.Set()
                 End If
                 Return True
@@ -136,7 +135,7 @@ Namespace Feeding
                     Catch ex As Exception
                         Context.Completion.Invoke(New TestResult(TestResultFlag.InternalError, ex.ToString(), 0, 0, 0, Nothing))
                         If Interlocked.Decrement(m_Running) = 0 Then
-                            Notifier.Invoke("RunnerStatusChanged", False)
+                            RaiseEvent RunnerStatusChanged(False)
                             m_CanExit.Set()
                         End If
                         Return True
@@ -215,7 +214,7 @@ Namespace Feeding
             ' Compile failed
             Context.Completion.Invoke(New TestResult(TestResultFlag.CompileError, Warning, 0, 0, 0, Nothing))
             If Interlocked.Decrement(m_Running) = 0 Then
-                Notifier.Invoke("RunnerStatusChanged", False)
+                RaiseEvent RunnerStatusChanged(False)
                 m_CanExit.Set()
             End If
         End Sub
@@ -281,11 +280,13 @@ Namespace Feeding
             If Interlocked.Decrement(Context.Remaining) = 0 Then
                 Context.Completion.Invoke(New TestResult(Context.Flag, Context.Warning, Context.Score, Context.TimeUsage, Context.MemoryUsage, Context.TestResults.Values))
                 If Interlocked.Decrement(m_Running) = 0 Then
-                    Notifier.Invoke("RunnerStatusChanged", False)
+                    RaiseEvent RunnerStatusChanged(False)
                     m_CanExit.Set()
                 End If
             End If
         End Sub
+
+        Public Event RunnerStatusChanged(ByVal Running As Boolean)
 
 #Region "IDisposable Support"
         Private disposedValue As Boolean ' 检测冗余的调用
