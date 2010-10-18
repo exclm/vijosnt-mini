@@ -4,19 +4,33 @@
 
         Private m_Stream As Stream
         Private m_Stack As Stack(Of Int64)
+        Private m_DosHeader As Nullable(Of Int32)
+        Private m_NtHeader As Nullable(Of Int32)
+        Private m_IsPE32Plus As Nullable(Of Boolean)
+        Private m_NumberOfSections As Nullable(Of Int32)
+        Private m_SectionAlignment As Nullable(Of Int32)
+        Private m_VirtualSize As Nullable(Of Int64)
 
         Public Sub New(ByVal ApplicationName As String)
             m_Stream = New FileStream(ApplicationName, FileMode.Open, FileAccess.Read, FileShare.Read)
             m_Stack = New Stack(Of Int64)()
+            m_DosHeader = Nothing
+            m_NtHeader = Nothing
+            m_IsPE32Plus = Nothing
+            m_NumberOfSections = Nothing
+            m_SectionAlignment = Nothing
+            m_VirtualSize = Nothing
         End Sub
 
         Public ReadOnly Property DosHeader() As Int32
             Get
+                If m_DosHeader.HasValue Then Return m_DosHeader.Value
                 Push()
                 Try
                     SeekAbsolute(0)
                     If ReadInt16() <> &H5A4DS Then _
                         Throw New Exception("not a valid PE file")
+                    m_DosHeader = 0
                     Return 0
                 Finally
                     Pop()
@@ -26,6 +40,7 @@
 
         Public ReadOnly Property NtHeader() As Int32
             Get
+                If m_NtHeader.HasValue Then Return m_NtHeader.Value
                 Push()
                 Try
                     SeekAbsolute(DosHeader)
@@ -34,6 +49,7 @@
                     SeekAbsolute(Result)
                     If ReadInt32() <> &H4550 Then _
                         Throw New Exception("not a valid PE file")
+                    m_NtHeader = Result
                     Return Result
                 Finally
                     Pop()
@@ -43,6 +59,7 @@
 
         Public ReadOnly Property IsPE32Plus() As Boolean
             Get
+                If m_IsPE32Plus.HasValue Then Return m_IsPE32Plus.Value
                 Push()
                 Try
                     SeekAbsolute(NtHeader)
@@ -53,8 +70,10 @@
                     SeekRelative(&H2)
                     Dim Magic As Int16 = ReadInt16()
                     If Machine = &H8664S AndAlso SizeOfOptionalHeader = &HF0S AndAlso Magic = &H20BS Then
+                        m_IsPE32Plus = True
                         Return True
                     ElseIf Machine = &H14CS AndAlso SizeOfOptionalHeader = &HE0S AndAlso Magic = &H10BS Then
+                        m_IsPE32Plus = False
                         Return False
                     Else
                         Throw New Exception("unknown PE type")
@@ -67,11 +86,14 @@
 
         Public ReadOnly Property NumberOfSections() As Int32
             Get
+                If m_NumberOfSections.HasValue Then Return m_NumberOfSections.Value
                 Push()
                 Try
                     SeekAbsolute(NtHeader)
                     SeekRelative(&H6)
-                    Return ReadInt16()
+                    Dim Result As Int32 = ReadInt16()
+                    m_NumberOfSections = Result
+                    Return Result
                 Finally
                     Pop()
                 End Try
@@ -80,11 +102,14 @@
 
         Public ReadOnly Property SectionAlignment() As Int32
             Get
+                If m_SectionAlignment.HasValue Then Return m_SectionAlignment.Value
                 Push()
                 Try
                     ' PE32 and PE32+ share the same offset
                     SeekAbsolute(NtHeader + &H38)
-                    Return ReadInt32()
+                    Dim Result As Int32 = ReadInt32()
+                    m_SectionAlignment = Result
+                    Return Result
                 Finally
                     Pop()
                 End Try
@@ -141,11 +166,12 @@
 
         Public ReadOnly Property VirtualSize() As Int64
             Get
-                Dim Sections As Int32 = NumberOfSections
+                If m_VirtualSize.HasValue Then Return m_VirtualSize.Value
                 Dim Result As Int64 = 0
-                For Index As Int32 = 0 To Sections - 1
+                For Index As Int32 = 0 To NumberOfSections - 1
                     Result += SectionVirtualSizeAligned(Index)
                 Next
+                m_VirtualSize = Result
                 Return Result
             End Get
         End Property
