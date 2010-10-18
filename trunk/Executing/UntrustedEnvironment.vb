@@ -19,6 +19,7 @@ Namespace Executing
             m_Token = New Token(UserName, Password)
 
             Dim Sid As Byte() = m_Token.GetSid()
+            m_WindowStation.RemoveAceBySid(Sid)
             m_WindowStation.AddAllowedAce(Sid, New UserObject.AllowedAce(0, UserObject.AceMask.GenericRead Or UserObject.AceMask.GenericWrite Or UserObject.AceMask.GenericExecute))
             m_Desktop.AddAllowedAce(Sid, New UserObject.AllowedAce(0, UserObject.AceMask.GenericRead Or UserObject.AceMask.GenericWrite Or UserObject.AceMask.GenericExecute))
         End Sub
