@@ -142,8 +142,6 @@
     <Compile Include="LocalDb\Record.vb" />
     <Compile Include="LocalDb\TestSuiteClass.vb" />
     <Compile Include="LocalDb\TestSuiteConfig.vb" />
-    <Compile Include="Notification\Notifier.vb" />
-    <Compile Include="Notification\NotifyHandler.vb" />
     <Compile Include="Remoting\ClientMessage.vb" />
     <Compile Include="Remoting\PipeClient.vb" />
     <Compile Include="Remoting\PipeServer.vb" />
