@@ -31,13 +31,13 @@ Namespace Testing
             End Get
         End Property
 
-        Public Overridable ReadOnly Property TimeQuota() As Nullable(Of Int64)
+        Public Overridable ReadOnly Property TimeQuota() As Int64?
             Get
                 Return Nothing
             End Get
         End Property
 
-        Public Overridable ReadOnly Property MemoryQuota() As Nullable(Of Int64)
+        Public Overridable ReadOnly Property MemoryQuota() As Int64?
             Get
                 Return Nothing
             End Get

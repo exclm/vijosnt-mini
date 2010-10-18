@@ -71,7 +71,7 @@
             End Using
         End Function
 
-        Public Shared Sub Add(ByVal Pattern As String, ByVal ApplicationName As String, ByVal CommandLine As String, ByVal EnvironmentVariables As String, ByVal TimeQuota As Nullable(Of Int64), ByVal MemoryQuota As Nullable(Of Int64), ByVal ActiveProcessQuota As Nullable(Of Int32), ByVal SourceFileName As String, ByVal TargetFileName As String, ByVal TargetApplicationName As String, ByVal TargetCommandLine As String, ByVal TimeOffset As Nullable(Of Int64), ByVal TimeFactor As Nullable(Of Double), ByVal MemoryOffset As Nullable(Of Int64), ByVal MemoryFactor As Nullable(Of Double))
+        Public Shared Sub Add(ByVal Pattern As String, ByVal ApplicationName As String, ByVal CommandLine As String, ByVal EnvironmentVariables As String, ByVal TimeQuota As Int64?, ByVal MemoryQuota As Int64?, ByVal ActiveProcessQuota As Int32?, ByVal SourceFileName As String, ByVal TargetFileName As String, ByVal TargetApplicationName As String, ByVal TargetCommandLine As String, ByVal TimeOffset As Int64?, ByVal TimeFactor As Double?, ByVal MemoryOffset As Int64?, ByVal MemoryFactor As Double?)
             Using Command As SQLiteCommand = m_InsertCommand.Clone()
                 With Command.Parameters
                     .AddWithValue("@Pattern", Pattern)
@@ -101,7 +101,7 @@
             End Using
         End Sub
 
-        Public Shared Sub Update(ByVal Id As Int32, ByVal Pattern As String, ByVal ApplicationName As String, ByVal CommandLine As String, ByVal EnvironmentVariables As String, ByVal TimeQuota As Nullable(Of Int64), ByVal MemoryQuota As Nullable(Of Int64), ByVal ActiveProcessQuota As Nullable(Of Int32), ByVal SourceFileName As String, ByVal TargetFileName As String, ByVal TargetApplicationName As String, ByVal TargetCommandLine As String, ByVal TimeOffset As Nullable(Of Int64), ByVal TimeFactor As Nullable(Of Double), ByVal MemoryOffset As Nullable(Of Int64), ByVal MemoryFactor As Nullable(Of Double))
+        Public Shared Sub Update(ByVal Id As Int32, ByVal Pattern As String, ByVal ApplicationName As String, ByVal CommandLine As String, ByVal EnvironmentVariables As String, ByVal TimeQuota As Int64?, ByVal MemoryQuota As Int64?, ByVal ActiveProcessQuota As Int32?, ByVal SourceFileName As String, ByVal TargetFileName As String, ByVal TargetApplicationName As String, ByVal TargetCommandLine As String, ByVal TimeOffset As Int64?, ByVal TimeFactor As Double?, ByVal MemoryOffset As Int64?, ByVal MemoryFactor As Double?)
             Using Command As SQLiteCommand = m_UpdateCommand.Clone()
                 With Command.Parameters
                     .AddWithValue("@Id", Id)

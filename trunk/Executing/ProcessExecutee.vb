@@ -14,9 +14,9 @@ Namespace Executing
         Private m_StdInput As KernelObject
         Private m_StdOutput As KernelObject
         Private m_StdError As KernelObject
-        Private m_TimeQuota As Nullable(Of Int64)
-        Private m_MemoryQuota As Nullable(Of Int64)
-        Private m_ActiveProcessQuota As Nullable(Of Int32)
+        Private m_TimeQuota As Int64?
+        Private m_MemoryQuota As Int64?
+        Private m_ActiveProcessQuota As Int32?
         Private m_EnableUIRestrictions As Boolean
         Private m_Trigger As MiniTrigger
         Private m_Result As ProcessExecuteeResult
@@ -30,8 +30,8 @@ Namespace Executing
             ByVal ApplicationName As String, ByVal CommandLine As String, _
             ByVal EnvironmentVariables As IEnumerable(Of String), ByVal CurrentDirectory As String, _
             ByVal StdInput As KernelObject, ByVal StdOutput As KernelObject, ByVal StdError As KernelObject, _
-            ByVal TimeQuota As Nullable(Of Int64), ByVal MemoryQuota As Nullable(Of Int64), _
-            ByVal ActiveProcessQuota As Nullable(Of Int32), ByVal EnableUIRestrictions As Boolean, _
+            ByVal TimeQuota As Int64?, ByVal MemoryQuota As Int64?, _
+            ByVal ActiveProcessQuota As Int32?, ByVal EnableUIRestrictions As Boolean, _
             ByVal Completion As ProcessExecuteeCompletion, ByVal State As Object)
             FinalConstruct(WatchDog, ProcessMonitor, ApplicationName, CommandLine, EnvironmentVariables, CurrentDirectory, StdInput, StdOutput, StdError, TimeQuota, MemoryQuota, ActiveProcessQuota, EnableUIRestrictions, Completion, State)
         End Sub
@@ -40,8 +40,8 @@ Namespace Executing
             ByVal ApplicationName As String, ByVal CommandLine As String, _
             ByVal EnvironmentVariables As IEnumerable(Of String), ByVal CurrentDirectory As String, _
             ByVal StdInput As KernelObject, ByVal StdOutput As KernelObject, ByVal StdError As KernelObject, _
-            ByVal TimeQuota As Nullable(Of Int64), ByVal MemoryQuota As Nullable(Of Int64), _
-            ByVal ActiveProcessQuota As Nullable(Of Int32), ByVal EnableUIRestrictions As Boolean, _
+            ByVal TimeQuota As Int64?, ByVal MemoryQuota As Int64?, _
+            ByVal ActiveProcessQuota As Int32?, ByVal EnableUIRestrictions As Boolean, _
             ByVal Completion As ProcessExecuteeCompletion, ByVal State As Object)
 
             m_WatchDog = WatchDog

@@ -31,19 +31,19 @@ Namespace Utility
                 End Get
             End Property
 
-            Public Property Exception As Nullable(Of EXCEPTION_RECORD)
+            Public Property Exception As EXCEPTION_RECORD?
                 Get
                     Return m_Exception
                 End Get
 
-                Set(ByVal Value As Nullable(Of EXCEPTION_RECORD))
+                Set(ByVal Value As EXCEPTION_RECORD?)
                     m_Exception = Value
                 End Set
             End Property
 
             Private m_Process As KernelObject
             Private m_Completion As Completion
-            Private m_Exception As Nullable(Of EXCEPTION_RECORD)
+            Private m_Exception As EXCEPTION_RECORD?
 
 #Region "IDisposable Support"
             Private disposedValue As Boolean ' 检测冗余的调用
@@ -68,13 +68,13 @@ Namespace Utility
         End Class
 
         Public Class Result
-            Public Sub New(ByVal ExitStatus As NTSTATUS, ByVal Exception As Nullable(Of EXCEPTION_RECORD))
+            Public Sub New(ByVal ExitStatus As NTSTATUS, ByVal Exception As EXCEPTION_RECORD?)
                 Me.ExitStatus = ExitStatus
                 Me.Exception = Exception
             End Sub
 
             Public ExitStatus As NTSTATUS
-            Public Exception As Nullable(Of EXCEPTION_RECORD)
+            Public Exception As EXCEPTION_RECORD?
         End Class
 
         Public Sub New()
