@@ -16,10 +16,6 @@ Namespace Executing
             End Set
         End Property
 
-        Public Sub Untake()
-            Me.Pool.Untake(Me)
-        End Sub
-
         Public Overridable Sub GiveAccess(ByVal DirectoryName As String)
             ' Do nothing
         End Sub

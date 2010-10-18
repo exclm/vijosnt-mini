@@ -22,7 +22,7 @@ Namespace Executing
         End Property
 
         Public Overridable Sub Execute()
-            Environment.Untake()
+            Environment.Pool.Untake(Environment)
         End Sub
     End Class
 End Namespace

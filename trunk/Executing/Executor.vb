@@ -1,5 +1,4 @@
 ﻿Imports VijosNT.LocalDb
-Imports VijosNT.Utility
 
 Namespace Executing
     Friend Class Executor
@@ -35,10 +34,9 @@ Namespace Executing
 
         Private Function GetUntrustedEnvironments() As IEnumerable(Of UntrustedEnvironment)
             Dim Result As New List(Of UntrustedEnvironment)
-            Dim RandomString As New RandomString()
             Using Reader As IDataReader = UntrustedEnvironments.GetAll()
                 While Reader.Read()
-                    Result.Add(New UntrustedEnvironment(RandomString.Next(16), Reader("UserName"), Reader("Password")))
+                    Result.Add(New UntrustedEnvironment(Reader("UserName"), Reader("Password")))
                 End While
             End Using
             Return Result
