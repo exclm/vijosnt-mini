@@ -1,4 +1,5 @@
-﻿Imports VijosNT.Win32
+﻿Imports VijosNT.Utility
+Imports VijosNT.Win32
 
 Namespace Executing
     Friend Class UntrustedEnvironment
@@ -10,9 +11,10 @@ Namespace Executing
         Private m_UserName As String
         Private m_Token As Token
 
-        Public Sub New(ByVal DesktopName As String, ByVal UserName As String, ByVal Password As String)
+        Public Sub New(ByVal UserName As String, ByVal Password As String)
+            Dim RandomString As New RandomString()
             m_WindowStation = New WindowStation()
-            m_Desktop = New Desktop(DesktopName)
+            m_Desktop = New Desktop(RandomString.Next(16))
             m_UserName = UserName
             m_Token = New Token(UserName, Password)
 
