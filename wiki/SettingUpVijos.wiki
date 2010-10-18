@@ -106,7 +106,7 @@ Vijos 支持评测的代码类型包括 C、C++、Pascal，我们需要安装 Mi
 
 需要修改的文件为 Problem_Upload_Submit.asp，在 Vijos 的 Wwwroot 目录下。
 
-在 Record.Update 这一行的下面，也就是 session("RecordID")=Record("ID") 这一行的上面（虽然这句话很有问题，这也是为什么必须加到它上面），增加下面的代码。
+在 Record.Update 这一行的下面，也就是 session("RecordID")=Record("ID") 这一行的上面，增加下面的代码。
 
 {{{
 Dim http
