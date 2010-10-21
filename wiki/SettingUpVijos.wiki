@@ -45,7 +45,6 @@ Vijos 支持评测的代码类型包括 C、C++、Pascal，我们需要安装 Mi
 
   * 官方网站为 [http://www.freepascal.org/]，目前的最新版本为 2.4.0。
   * Free Pascal 支持多种处理器和操作系统平台，请选择 Intel/i386 下的 Win32, Win64 and WinCE。
-  * Free Pascal 的 64 位跨平台编译器表现貌似很怪异。
   * 默认安装目录为 C:\FPC。
   * *如果在 C:\FPC\2.4.0\bin\i386-win32 下存在 fpc.cfg 文件，请将其删除（改名）*，因为 Free Pascal 编译器存在一个 bug，读取配置文件时使用独占打开，从而导致同时运行两个编译进程可能发生错误。删除后需要将其中的部分参数转移到命令行中，将在下面给出。
 
@@ -102,7 +101,7 @@ Vijos 支持评测的代码类型包括 C、C++、Pascal，我们需要安装 Mi
 
 == Vijos 代码修改 ==
 
-由于使用了 Http 通告方式，需要对 Vijos 代码进行少量的修改，在每次提交代码时，通过 XMLHTTP 组件对 VijosNT Mini 进行通告，从而启动测评。
+由于使用了 Http 通告方式，需要对 Vijos 代码进行少量的修改，在每次提交代码时，通过 ServerXMLHTTP 组件对 VijosNT Mini 进行通告，从而启动测评。
 
 需要修改的文件为 Problem_Upload_Submit.asp，在 Vijos 的 Wwwroot 目录下。
 
