@@ -103,7 +103,7 @@ ret=GetHttpPage("http://" & serverip & "/TEST" & ID)
 {{{
 Dim http
 Set http = CreateObject("Msxml2.ServerXMLHTTP.3.0")
-http.open "GET", "http://127.0.0.1:3322/ttojs_feed", False
+http.open "GET", "http://127.0.0.1:3322/ttojs_feed?id=" & ID, False
 http.send
 Set http = Nothing
 }}}
