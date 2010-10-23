@@ -380,6 +380,9 @@
                 Dim IPAddress As IPAddress = Nothing
                 If IPAddress.TryParse(Host, IPAddress) Then
                     Host = String.Empty
+                ElseIf Host = "*" Then
+                    Host = String.Empty
+                    IPAddress = IPAddress.Any
                 Else
                     IPAddress = IPAddress.Any
                 End If
