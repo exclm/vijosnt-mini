@@ -86,22 +86,21 @@ Namespace Feeding
                 Succeeded = False
             End Try
 
-            Using Stream As New MemoryStream()
-                Using Writer As New XmlTextWriter(Stream, Encoding.UTF8)
-                    Writer.WriteStartDocument()
-                    Writer.WriteStartElement("FeedResult")
-                    Writer.WriteElementString("Version", Assembly.GetExecutingAssembly().GetName().Version.ToString())
-                    Writer.WriteElementString("Succeeded", Succeeded.ToString())
-                    Writer.WriteEndElement()
-                    Writer.WriteEndDocument()
-                End Using
+            Dim Builder As New StringBuilder()
+            Builder.Append("VijosNT Mini ")
+            Builder.AppendLine(Assembly.GetExecutingAssembly().GetName().Version.ToString())
+            Builder.Append("Feed result: ")
+            If Succeeded Then
+                Builder.AppendLine("succeeded")
+            Else
+                Builder.AppendLine("failed")
+            End If
 
-                Try
-                    Return Session.Write("text/xml", Stream.ToArray())
-                Catch ex As Exception
-                    Return False
-                End Try
-            End Using
+            Try
+                Return Session.Write("text/plain; charset=UTF-8", Encoding.UTF8.GetBytes(Builder.ToString()))
+            Catch ex As Exception
+                Return False
+            End Try
         End Function
 
 #Region "IDisposable Support"
