@@ -18,9 +18,8 @@ Namespace Executing
         Private m_MemoryQuota As Int64?
         Private m_ActiveProcessQuota As Int32?
         Private m_EnableUIRestrictions As Boolean
-        Private m_Trigger As MiniTrigger
-        Private m_Result As ProcessExecuteeResult
-        Private m_JobObject As JobObject
+        Private m_Completion As ProcessExecuteeCompletion
+        Private m_CompletionState As Object
 
         Protected Sub New()
 
@@ -57,32 +56,22 @@ Namespace Executing
             m_MemoryQuota = MemoryQuota
             m_ActiveProcessQuota = ActiveProcessQuota
             m_EnableUIRestrictions = EnableUIRestrictions
-            m_Result = New ProcessExecuteeResult()
-            m_Result.State = State
-            m_Trigger = New MiniTrigger(2, _
-                Sub()
-                    If m_JobObject IsNot Nothing Then
-                        m_JobObject.Kill(1)
-                        m_JobObject.Close()
-                    End If
-                    Completion.Invoke(m_Result)
-                    MyBase.Execute()
-                End Sub)
-        End Sub
-
-        Private Sub WatchDogCompletion(ByVal QuotaUsage As Int64)
-            m_Result.TimeQuotaUsage = QuotaUsage
-            m_Result.MemoryQuotaUsage = m_JobObject.Limits.PeakProcessMemoryUsed
-            m_Trigger.InvokeNonCritical()
-        End Sub
-
-        Private Sub ProcessMonitorCompletion(ByVal Result As ProcessMonitor.Result)
-            m_Result.ExitStatus = Result.ExitStatus
-            m_Result.Exception = Result.Exception
-            m_Trigger.InvokeNonCritical()
+            m_Completion = Completion
+            m_CompletionState = State
         End Sub
 
         Public Overrides Sub Execute()
+            Dim JobObject = New JobObject()
+            Dim Result = New ProcessExecuteeResult()
+            Dim Trigger = New MiniTrigger(2, _
+                Sub()
+                    JobObject.Kill(1)
+                    JobObject.Close()
+                    Result.State = m_CompletionState
+                    m_Completion.Invoke(Result)
+                    MyBase.Execute()
+                End Sub)
+
             Dim StdInputHandle As IntPtr = IntPtr.Zero
             Dim StdOutputHandle As IntPtr = IntPtr.Zero
             Dim StdErrorHandle As IntPtr = IntPtr.Zero
@@ -101,9 +90,9 @@ Namespace Executing
                         VirtualSize = Executable.VirtualSize
                     End Using
                     If VirtualSize > m_MemoryQuota.Value Then
-                        m_Result.ExitStatus = ERROR_NOT_ENOUGH_QUOTA
-                        m_Result.MemoryQuotaUsage = VirtualSize
-                        m_Trigger.InvokeNow()
+                        Result.ExitStatus = ERROR_NOT_ENOUGH_QUOTA
+                        Result.MemoryQuotaUsage = VirtualSize
+                        Trigger.InvokeNow()
                         Return
                     End If
                 End If
@@ -116,14 +105,13 @@ Namespace Executing
                         m_ApplicationName, m_CommandLine, m_EnvironmentVariables, m_CurrentDirectory, Environment.DesktopName, _
                         StdInputHandle, StdOutputHandle, StdErrorHandle, Environment.Token)
                 Catch ex As Exception
-                    m_Result.ExitStatus = Nothing
-                    m_Trigger.InvokeNow()
+                    Result.ExitStatus = Nothing
+                    Trigger.InvokeNow()
                     Return
                 End Try
 
-                m_JobObject = New JobObject()
-                m_JobObject.Assign(Suspended.GetHandleUnsafe())
-                With m_JobObject.Limits
+                JobObject.Assign(Suspended.GetHandleUnsafe())
+                With JobObject.Limits
                     .ProcessMemory = m_MemoryQuota
                     .ActiveProcess = m_ActiveProcessQuota
                     .DieOnUnhandledException = True
@@ -131,7 +119,7 @@ Namespace Executing
                 End With
 
                 If m_EnableUIRestrictions Then
-                    With m_JobObject.UIRestrictions
+                    With JobObject.UIRestrictions
                         .Handles = True
                         .ReadClipboard = True
                         .WriteClipboard = True
@@ -144,8 +132,19 @@ Namespace Executing
                     End With
                 End If
 
-                m_ProcessMonitor.Attach(Suspended, AddressOf ProcessMonitorCompletion)
-                m_WatchDog.SetWatch(Suspended.Resume(), m_TimeQuota, AddressOf WatchDogCompletion)
+                m_ProcessMonitor.Attach(Suspended, _
+                    Sub(ExitResult As ProcessMonitor.Result)
+                        Result.ExitStatus = ExitResult.ExitStatus
+                        Result.Exception = ExitResult.Exception
+                        Trigger.InvokeNonCritical()
+                    End Sub)
+
+                m_WatchDog.SetWatch(Suspended.Resume(), m_TimeQuota, _
+                    Sub(TimeQuotaUsage As Int64, MemoryQuotaUsage As Int64)
+                        Result.TimeQuotaUsage = TimeQuotaUsage
+                        Result.MemoryQuotaUsage = MemoryQuotaUsage
+                        Trigger.InvokeNonCritical()
+                    End Sub)
             Finally
                 If m_StdInput IsNot Nothing Then _
                     m_StdInput.Close()

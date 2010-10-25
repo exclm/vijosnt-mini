@@ -944,6 +944,26 @@
         End Function
 #End Region
 
+#Region "psapi.dll"
+        Public Declare Auto Function GetProcessMemoryInfo Lib "psapi.dll" ( _
+            ByVal ProcessHandle As IntPtr, _
+            ByRef psmemCounters As PROCESS_MEMORY_COUNTERS, _
+            ByVal cb As Int32) As <MarshalAs(UnmanagedType.Bool)> Boolean
+
+        Public Structure PROCESS_MEMORY_COUNTERS
+            Dim cb As Int32
+            Dim PageFaultCount As Int32
+            Dim PeakWorkingSetSize As IntPtr
+            Dim WorkingSetSize As IntPtr
+            Dim QuotaPeakPagedPoolUsage As IntPtr
+            Dim QuotaPagedPoolUsage As IntPtr
+            Dim QuotaPeakNonPagedPoolUsage As IntPtr
+            Dim QuotaNonPagedPoolUsage As IntPtr
+            Dim PagefileUsage As IntPtr
+            Dim PeakPagefileUsage As IntPtr
+        End Structure
+#End Region
+
         Public Const INVALID_HANDLE_VALUE As Int32 = -1
         Public Const ERROR_INSUFFICIENT_BUFFER As Int32 = 122
         Public Const ERROR_PIPE_CONNECTED As Int32 = 535

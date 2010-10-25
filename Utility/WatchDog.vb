@@ -4,7 +4,7 @@ Namespace Utility
     Friend Class WatchDog
         Implements IDisposable
 
-        Public Delegate Sub Completion(ByVal QuotaUsage As Int64)
+        Public Delegate Sub Completion(ByVal TimeQuotaUsage As Int64, ByVal MemoryQuotaUsage As Int64)
 
         Protected Structure Context
             Public Sub New(ByVal Process As ProcessEx, ByVal TimeQuota As Int64?, ByVal Completion As Completion)
@@ -37,8 +37,10 @@ Namespace Utility
 
             If Not Result.Timeouted Then
                 ' The waited process was ended, fire the completion
-                Context.Completion.Invoke(Context.Process.AliveTime)
-                Context.Process.Close()
+                With Context.Process
+                    Context.Completion.Invoke(.AliveTime, .PeakMemoryUsage)
+                    .Close()
+                End With
             Else
                 ' The waited process is still running, set watch again
                 SetWatchInternal(Context)
@@ -58,8 +60,10 @@ Namespace Utility
                 Catch ex As Exception
                     ' eat it
                 End Try
-                Context.Completion.Invoke(Context.Process.AliveTime)
-                Context.Process.Close()
+                With Context.Process
+                    Context.Completion.Invoke(.AliveTime, .PeakMemoryUsage)
+                    .Close()
+                End With
             Else
                 ' There is still time quota remaining, set up the wait pool
                 m_WaitPool.SetWait(Context.Process, Context.TimeQuota - AliveTime + 50000, AddressOf SetWatchCompletion, Context)
