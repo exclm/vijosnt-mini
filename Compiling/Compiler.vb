@@ -2,7 +2,6 @@
 
 Namespace Compiling
     Friend Class Compiler
-        Private m_TempPathServer As TempPathServer
         Private m_ApplicationName As String
         Private m_CommandLine As String
         Private m_EnvironmentVariables As IEnumerable(Of String)
@@ -18,13 +17,12 @@ Namespace Compiling
         Private m_MemoryOffset As Int64?
         Private m_MemoryFactor As Double?
 
-        Public Sub New(ByVal TempPathServer As TempPathServer, ByVal ApplicationName As String, ByVal CommandLine As String, ByVal EnvironmentVariables As IEnumerable(Of String), _
+        Public Sub New(ByVal ApplicationName As String, ByVal CommandLine As String, ByVal EnvironmentVariables As IEnumerable(Of String), _
             ByVal TimeQuota As Int64?, ByVal MemoryQuota As Int64?, ByVal ActiveProcessQuota As Int64?, _
             ByVal SourceFileName As String, ByVal TargetFileName As String, _
             ByVal TargetApplicationName As String, ByVal TargetCommandLine As String, _
             ByVal TimeOffset As Int64?, ByVal TimeFactor As Double?, ByVal MemoryOffset As Int64?, ByVal MemoryFactor As Double?)
 
-            m_TempPathServer = TempPathServer
             m_ApplicationName = ApplicationName
             m_CommandLine = CommandLine
             m_EnvironmentVariables = EnvironmentVariables
@@ -41,14 +39,8 @@ Namespace Compiling
             m_MemoryFactor = MemoryFactor
         End Sub
 
-        Public ReadOnly Property TempPathServer() As TempPathServer
-            Get
-                Return m_TempPathServer
-            End Get
-        End Property
-
         Public Function CreateInstance(ByVal SourceCode As Stream) As CompilerInstance
-            Dim TempPath As TempPath = m_TempPathServer.CreateTempPath()
+            Dim TempPath As TempPath = TempPathServer.Singleton.CreateTempPath()
             Using SourceFile As New FileStream(TempPath.Combine(m_SourceFileName), FileMode.CreateNew, FileAccess.Write, FileShare.None)
                 BufferedCopy(SourceCode, SourceFile)
             End Using
