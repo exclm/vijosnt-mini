@@ -144,6 +144,15 @@
             End Get
         End Property
 
+        Public ReadOnly Property PeakMemoryUsage() As Int64
+            Get
+                Dim mc As New PROCESS_MEMORY_COUNTERS()
+                mc.cb = Marshal.SizeOf(mc)
+                Win32True(GetProcessMemoryInfo(GetHandleUnsafe(), mc, mc.cb))
+                Return mc.PeakPagefileUsage.ToInt64()
+            End Get
+        End Property
+
         Public ReadOnly Property ExitCode() As Int32
             Get
                 Dim Result As Int32
