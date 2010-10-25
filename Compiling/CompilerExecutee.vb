@@ -6,59 +6,63 @@ Namespace Compiling
     Friend Class CompilerExecutee
         Inherits ProcessExecutee
 
-        Private m_StreamRecorder As StreamRecorder
-        Private m_Result As CompilerExecuteeResult
-        Private m_Trigger As MiniTrigger
+        Private m_Compiler As Compiler
+        Private m_SourceCode As Stream
+        Private m_Completion As CompilerExecuteeCompletion
+        Private m_CompletionState As Object
 
         Public Sub New(ByVal WatchDog As WatchDog, ByVal ProcessMonitor As ProcessMonitor, ByVal Compiler As Compiler, ByVal SourceCode As Stream, ByVal Completion As CompilerExecuteeCompletion, ByVal State As Object)
-            Dim CompilerInstance As CompilerInstance = Compiler.CreateInstance(SourceCode)
-            Dim StdOutputHandle As KernelObject
-            Dim StdErrorHandle As KernelObject
-            Using OutputPipe As New Pipe()
-                m_StreamRecorder = New StreamRecorder(OutputPipe.GetReadStream(), 4096, AddressOf StdErrorCompletion, Nothing)
-                StdOutputHandle = OutputPipe.GetWriteHandle()
-                StdErrorHandle = OutputPipe.GetWriteHandle()
-            End Using
+            MyBase.New(WatchDog, ProcessMonitor, Compiler.ApplicationName, _
+                Compiler.CommandLine, Compiler.EnvironmentVariables, Nothing, _
+                Compiler.TimeQuota, Compiler.MemoryQuota, _
+                Compiler.ActiveProcessQuota, False)
 
-            m_Result = New CompilerExecuteeResult()
-            m_Result.State = State
-            m_Trigger = New MiniTrigger(1, 1, _
-                Sub()
-                    Completion.Invoke(m_Result)
-                End Sub)
-
-            FinalConstruct(WatchDog, ProcessMonitor, _
-                Compiler.ApplicationName, Compiler.CommandLine, Compiler.EnvironmentVariables, CompilerInstance.WorkingDirectory, _
-                Nothing, StdOutputHandle, StdErrorHandle, Compiler.TimeQuota, Compiler.MemoryQuota, Compiler.ActiveProcessQuota, False, _
-                AddressOf ProcessExecuteeCompletion, CompilerInstance)
-        End Sub
-
-        Private Sub StdErrorCompletion(ByVal Result As StreamRecorder.Result)
-            If Result.Buffer.Length <> 0 Then
-                m_Result.StdErrorMessage = Encoding.Default.GetString(Result.Buffer)
-            End If
-            m_Trigger.InvokeNonCritical()
-        End Sub
-
-        Private Sub ProcessExecuteeCompletion(ByVal Result As ProcessExecuteeResult)
-            Dim CompilerInstance As CompilerInstance = DirectCast(Result.State, CompilerInstance)
-            m_Result.ExitStatus = Result.ExitStatus
-            m_Result.TimeQuotaUsage = Result.TimeQuotaUsage
-            m_Result.MemoryQuotaUsage = Result.MemoryQuotaUsage
-            m_Result.Exception = Result.Exception
-            If Result.ExitStatus IsNot Nothing And m_Result.Exception Is Nothing Then
-                Try
-                    m_Result.Target = CompilerInstance.OpenTarget()
-                Catch ex As Exception
-                    m_Result.Target = Nothing
-                    CompilerInstance.Dispose()
-                End Try
-            End If
-            m_Trigger.InvokeCritical()
+            m_Compiler = Compiler
+            m_SourceCode = SourceCode
+            m_Completion = Completion
+            m_CompletionState = State
         End Sub
 
         Public Overrides Sub Execute()
-            m_StreamRecorder.Start()
+            Dim CompilerInstance As CompilerInstance = m_Compiler.CreateInstance(m_SourceCode)
+            Dim Result = New CompilerExecuteeResult()
+            Dim Trigger = New MiniTrigger(1, 1, _
+                Sub()
+                    Result.State = m_CompletionState
+                    m_Completion.Invoke(Result)
+                End Sub)
+
+            MyBase.Completion = _
+                Sub(ExecuteeResult As ProcessExecuteeResult)
+                    Result.ExitStatus = ExecuteeResult.ExitStatus
+                    Result.TimeQuotaUsage = ExecuteeResult.TimeQuotaUsage
+                    Result.MemoryQuotaUsage = ExecuteeResult.MemoryQuotaUsage
+                    Result.Exception = ExecuteeResult.Exception
+                    If ExecuteeResult.ExitStatus IsNot Nothing And Result.Exception Is Nothing Then
+                        Try
+                            Result.Target = CompilerInstance.OpenTarget()
+                        Catch ex As Exception
+                            Result.Target = Nothing
+                            CompilerInstance.Dispose()
+                        End Try
+                    End If
+                    Trigger.InvokeCritical()
+                End Sub
+
+            MyBase.CurrentDirectory = CompilerInstance.WorkingDirectory
+            Using OutputPipe As New Pipe()
+                Dim StreamRecorder = New StreamRecorder(OutputPipe.GetReadStream(), 4096, _
+                    Sub(StreamResult As StreamRecorder.Result)
+                        If StreamResult.Buffer.Length <> 0 Then
+                            Result.StdErrorMessage = Encoding.Default.GetString(StreamResult.Buffer)
+                        End If
+                        Trigger.InvokeNonCritical()
+                    End Sub, Nothing)
+                MyBase.StdOutput = OutputPipe.GetWriteHandle()
+                MyBase.StdError = OutputPipe.GetWriteHandle()
+                StreamRecorder.Start()
+            End Using
+
             MyBase.Execute()
         End Sub
     End Class
