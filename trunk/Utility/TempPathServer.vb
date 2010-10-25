@@ -2,6 +2,16 @@
     Friend Class TempPathServer
         Implements IDisposable
 
+        Private Shared s_Instance As TempPathServer
+
+        Shared Sub New()
+            s_Instance = New TempPathServer()
+        End Sub
+
+        Public Shared Function Singleton() As TempPathServer
+            Return s_Instance
+        End Function
+
         Private Const m_SleepTime As Int32 = 30 * 1000
         Private Const m_TempPathLength As Int32 = 16
 
@@ -11,7 +21,7 @@
         Private m_CleanupThread As Thread
         Private m_RandomString As RandomString
 
-        Public Sub New()
+        Private Sub New()
             m_SyncRoot = New Object()
             Dim AppPath As New AppPath()
             m_Root = AppPath.GetDirectoryInfo().CreateSubdirectory("Temp")

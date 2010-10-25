@@ -3,11 +3,19 @@ Imports VijosNT.Utility
 
 Namespace Compiling
     Friend Class CompilerPool
-        Private m_TempPathServer As TempPathServer
+        Private Shared s_Instance As CompilerPool
+
+        Shared Sub New()
+            s_Instance = New CompilerPool()
+        End Sub
+
+        Public Shared Function Singleton() As CompilerPool
+            Return s_Instance
+        End Function
+
         Private m_Entries As IEnumerable(Of CompilerEntry)
 
-        Public Sub New(ByVal TempPathServer As TempPathServer)
-            m_TempPathServer = TempPathServer
+        Private Sub New()
             Reload()
         End Sub
 
@@ -22,7 +30,7 @@ Namespace Compiling
                 While Reader.Read()
                     Dim Entry As CompilerEntry
                     Entry.Regex = New Regex(RegexSimpleEscape(Reader("Pattern")), RegexOptions.IgnoreCase)
-                    Entry.Compiler = New Compiler(m_TempPathServer, _
+                    Entry.Compiler = New Compiler( _
                         Reader("ApplicationName"), _
                         Reader("CommandLine"), _
                         ParseEnvironmentVariables(Reader("EnvironmentVariables")), _

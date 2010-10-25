@@ -7,14 +7,12 @@ Namespace Remoting
 
         Private m_Stream As Stream
         Private m_Buffer As Byte()
-        Private m_Runner As Runner
 
-        Public Sub New(ByVal Stream As Stream, ByVal Runner As Runner)
+        Public Sub New(ByVal Stream As Stream)
             m_Stream = Stream
             m_Buffer = New Byte(0 To 4095) {}
-            m_Runner = Runner
             m_Stream.BeginRead(m_Buffer, 0, m_Buffer.Length, AddressOf OnRead, Nothing)
-            AddHandler m_Runner.RunnerStatusChanged, AddressOf OnRunnerStatusChanged
+            AddHandler Runner.Singleton.RunnerStatusChanged, AddressOf OnRunnerStatusChanged
         End Sub
 
         Private Sub OnRunnerStatusChanged(ByVal Running As Boolean)
@@ -92,7 +90,7 @@ Namespace Remoting
 
         Private Sub OnReloadCompiler()
             Try
-                m_Runner.ReloadCompiler()
+                Runner.Singleton.ReloadCompiler()
             Catch ex As Exception
                 ServiceUnhandledException(ex)
             End Try
@@ -100,7 +98,7 @@ Namespace Remoting
 
         Private Sub OnReloadTestSuite()
             Try
-                m_Runner.ReloadTestSuite()
+                Runner.Singleton.ReloadTestSuite()
             Catch ex As Exception
                 ServiceUnhandledException(ex)
             End Try
@@ -108,7 +106,7 @@ Namespace Remoting
 
         Private Sub OnReloadExecutor()
             Try
-                m_Runner.ReloadExecutor()
+                Runner.Singleton.ReloadExecutor()
             Catch ex As Exception
                 ServiceUnhandledException(ex)
             End Try
@@ -116,7 +114,7 @@ Namespace Remoting
 
         Private Sub OnReloadDataSource()
             Try
-                m_Runner.ReloadDataSource()
+                Runner.Singleton.ReloadDataSource()
             Catch ex As Exception
                 ServiceUnhandledException(ex)
             End Try
@@ -157,7 +155,7 @@ Namespace Remoting
 
         Private Sub OnDirectFeedInternal(ByVal StateId As Int32, ByVal [Namespace] As String, ByVal FileName As String, ByVal SourceCodeStream As Stream)
             Try
-                m_Runner.Queue([Namespace], FileName, SourceCodeStream, _
+                Runner.Singleton.Queue([Namespace], FileName, SourceCodeStream, _
                     Sub(Result As TestResult)
                         DirectFeedSendReply(StateId, Result)
                     End Sub)
@@ -179,7 +177,7 @@ Namespace Remoting
         End Sub
 
         Private Sub OnDisconnected()
-            RemoveHandler m_Runner.RunnerStatusChanged, AddressOf OnRunnerStatusChanged
+            RemoveHandler Runner.Singleton.RunnerStatusChanged, AddressOf OnRunnerStatusChanged
         End Sub
 
 #Region "IDisposable Support"

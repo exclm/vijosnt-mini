@@ -8,6 +8,16 @@ Namespace Feeding
     Friend Class Runner
         Implements IDisposable
 
+        Private Shared s_Instance As Runner
+
+        Shared Sub New()
+            s_Instance = New Runner()
+        End Sub
+
+        Public Shared Function Singleton() As Runner
+            Return s_Instance
+        End Function
+
         Private Class TestContext
             Public Completion As TestCompletion
             Public Compiler As Compiler
@@ -26,25 +36,23 @@ Namespace Feeding
             Public TestCase As TestCase
         End Class
 
-        Private m_TempPathServer As TempPathServer
         Private m_WatchDog As WatchDog
         Private m_ProcessMonitor As ProcessMonitor
         Private m_Executor As Executor
-        Private m_CompilerPool As CompilerPool
         Private m_TestSuitePool As TestSuitePool
         Private m_DataSourcePool As DataSourcePool
         Private m_Running As Int32
         Private m_CanExit As ManualResetEvent
         Private m_AllowQueuing As Boolean
 
-        Public Sub New()
+        Private Sub New()
             m_WatchDog = New WatchDog()
             m_ProcessMonitor = New ProcessMonitor()
-            m_TempPathServer = New TempPathServer()
+            TempPathServer.Singleton()
             m_Executor = New Executor()
             m_WatchDog.Start()
             m_ProcessMonitor.Start()
-            m_CompilerPool = New CompilerPool(m_TempPathServer)
+            CompilerPool.Singleton()
             m_TestSuitePool = New TestSuitePool()
             m_DataSourcePool = New DataSourcePool(Me)
             m_Running = 0
@@ -53,7 +61,7 @@ Namespace Feeding
         End Sub
 
         Public Sub ReloadCompiler()
-            m_CompilerPool.Reload()
+            CompilerPool.Singleton.Reload()
         End Sub
 
         Public Sub ReloadTestSuite()
@@ -96,7 +104,7 @@ Namespace Feeding
 
             Dim Context As New TestContext()
             Context.Completion = Completion
-            Context.Compiler = m_CompilerPool.TryGet(Path.GetExtension(FileName))
+            Context.Compiler = CompilerPool.Singleton.TryGet(Path.GetExtension(FileName))
             Context.TestCases = m_TestSuitePool.TryLoad([Namespace], Path.GetFileNameWithoutExtension(FileName))
             Context.Flag = TestResultFlag.None
             Context.Score = 0
@@ -302,7 +310,7 @@ Namespace Feeding
                     m_Executor.Dispose()
                     m_ProcessMonitor.Stop()
                     m_WatchDog.Stop()
-                    m_TempPathServer.Dispose()
+                    TempPathServer.Singleton.Dispose()
                 End If
             End If
             Me.disposedValue = True

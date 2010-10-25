@@ -6,14 +6,13 @@ Namespace Background
     Friend Class Service
         Inherits ServiceBase
 
-        Private m_Runner As Runner
         Private m_Server As PipeServer
 
         Public Sub New()
             AutoLog = False
             ServiceName = My.Resources.ServiceName
-            m_Runner = New Runner()
-            m_Server = New PipeServer(m_Runner)
+            Runner.Singleton()
+            m_Server = New PipeServer()
         End Sub
 
         Protected Overrides Sub OnStart(ByVal args() As String)
@@ -28,7 +27,7 @@ Namespace Background
         End Sub
 
         Protected Overrides Sub OnStop()
-            m_Runner.Dispose()
+            Runner.Singleton.Dispose()
             EventLog.WriteEntry("服务已成功停止。")
         End Sub
     End Class
