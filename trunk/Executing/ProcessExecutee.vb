@@ -19,29 +19,12 @@ Namespace Executing
         Private m_ActiveProcessQuota As Int32?
         Private m_EnableUIRestrictions As Boolean
         Private m_Completion As ProcessExecuteeCompletion
-        Private m_CompletionState As Object
 
-        Protected Sub New()
-
-        End Sub
-
-        Public Sub New(ByVal WatchDog As WatchDog, ByVal ProcessMonitor As ProcessMonitor, _
+        Protected Sub New(ByVal WatchDog As WatchDog, ByVal ProcessMonitor As ProcessMonitor, _
             ByVal ApplicationName As String, ByVal CommandLine As String, _
             ByVal EnvironmentVariables As IEnumerable(Of String), ByVal CurrentDirectory As String, _
-            ByVal StdInput As KernelObject, ByVal StdOutput As KernelObject, ByVal StdError As KernelObject, _
             ByVal TimeQuota As Int64?, ByVal MemoryQuota As Int64?, _
-            ByVal ActiveProcessQuota As Int32?, ByVal EnableUIRestrictions As Boolean, _
-            ByVal Completion As ProcessExecuteeCompletion, ByVal State As Object)
-            FinalConstruct(WatchDog, ProcessMonitor, ApplicationName, CommandLine, EnvironmentVariables, CurrentDirectory, StdInput, StdOutput, StdError, TimeQuota, MemoryQuota, ActiveProcessQuota, EnableUIRestrictions, Completion, State)
-        End Sub
-
-        Protected Sub FinalConstruct(ByVal WatchDog As WatchDog, ByVal ProcessMonitor As ProcessMonitor, _
-            ByVal ApplicationName As String, ByVal CommandLine As String, _
-            ByVal EnvironmentVariables As IEnumerable(Of String), ByVal CurrentDirectory As String, _
-            ByVal StdInput As KernelObject, ByVal StdOutput As KernelObject, ByVal StdError As KernelObject, _
-            ByVal TimeQuota As Int64?, ByVal MemoryQuota As Int64?, _
-            ByVal ActiveProcessQuota As Int32?, ByVal EnableUIRestrictions As Boolean, _
-            ByVal Completion As ProcessExecuteeCompletion, ByVal State As Object)
+            ByVal ActiveProcessQuota As Int32?, ByVal EnableUIRestrictions As Boolean)
 
             m_WatchDog = WatchDog
             m_ProcessMonitor = ProcessMonitor
@@ -49,16 +32,81 @@ Namespace Executing
             m_CommandLine = CommandLine
             m_EnvironmentVariables = EnvironmentVariables
             m_CurrentDirectory = CurrentDirectory
-            m_StdInput = StdInput
-            m_StdOutput = StdOutput
-            m_StdError = StdError
             m_TimeQuota = TimeQuota
             m_MemoryQuota = MemoryQuota
             m_ActiveProcessQuota = ActiveProcessQuota
             m_EnableUIRestrictions = EnableUIRestrictions
-            m_Completion = Completion
-            m_CompletionState = State
         End Sub
+
+        Protected Property CurrentDirectory() As String
+            Get
+                Return m_CurrentDirectory
+            End Get
+
+            Set(ByVal Value As String)
+                m_CurrentDirectory = Value
+            End Set
+        End Property
+
+        Protected Property StdInput() As KernelObject
+            Get
+                Return m_StdInput
+            End Get
+
+            Set(ByVal Value As KernelObject)
+                m_StdInput = Value
+            End Set
+        End Property
+
+        Protected Property StdOutput() As KernelObject
+            Get
+                Return m_StdOutput
+            End Get
+
+            Set(ByVal Value As KernelObject)
+                m_StdOutput = Value
+            End Set
+        End Property
+
+        Protected Property StdError() As KernelObject
+            Get
+                Return m_StdError
+            End Get
+
+            Set(ByVal Value As KernelObject)
+                m_StdError = Value
+            End Set
+        End Property
+
+        Protected Property TimeQuota() As Int64?
+            Get
+                Return m_TimeQuota
+            End Get
+
+            Set(ByVal Value As Int64?)
+                m_TimeQuota = Value
+            End Set
+        End Property
+
+        Protected Property MemoryQuota() As Int64?
+            Get
+                Return m_MemoryQuota
+            End Get
+
+            Set(ByVal Value As Int64?)
+                m_MemoryQuota = Value
+            End Set
+        End Property
+
+        Protected Property Completion() As ProcessExecuteeCompletion
+            Get
+                Return m_Completion
+            End Get
+
+            Set(ByVal Value As ProcessExecuteeCompletion)
+                m_Completion = Value
+            End Set
+        End Property
 
         Public Overrides Sub Execute()
             Dim JobObject = New JobObject()
@@ -67,7 +115,6 @@ Namespace Executing
                 Sub()
                     JobObject.Kill(1)
                     JobObject.Close()
-                    Result.State = m_CompletionState
                     m_Completion.Invoke(Result)
                     MyBase.Execute()
                 End Sub)

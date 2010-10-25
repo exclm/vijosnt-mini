@@ -2,7 +2,6 @@
 
 Namespace Executing
     Friend Class ProcessExecuteeResult
-        Public State As Object
         Public ExitStatus As NTSTATUS?
         Public TimeQuotaUsage As Int64
         Public MemoryQuotaUsage As Int64

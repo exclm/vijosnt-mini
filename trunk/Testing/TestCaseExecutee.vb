@@ -7,33 +7,33 @@ Namespace Testing
     Friend Class TestCaseExecutee
         Inherits ProcessExecutee
 
-        Private m_StreamRecorder As StreamRecorder
-        Private m_Result As TestCaseExecuteeResult
         Private m_TargetInstance As TargetInstance
         Private m_TestCase As TestCase
-        Private m_Trigger As MiniTrigger
+        Private m_Completion As TestCaseExecuteeCompletion
+        Private m_CompletionState As Object
 
         Public Sub New(ByVal WatchDog As WatchDog, ByVal ProcessMonitor As ProcessMonitor, ByVal TargetInstance As TargetInstance, ByVal TestCase As TestCase, ByVal Completion As TestCaseExecuteeCompletion, ByVal State As Object)
-            Dim StdErrorHandle As KernelObject
-            Using OutputPipe As New Pipe()
-                m_StreamRecorder = New StreamRecorder(OutputPipe.GetReadStream(), 4096, AddressOf StdErrorCompletion, Nothing)
-                StdErrorHandle = OutputPipe.GetWriteHandle()
-            End Using
+            MyBase.New(WatchDog, ProcessMonitor, TargetInstance.ApplicationName, _
+                TargetInstance.CommandLine, TargetInstance.EnvironmentVariables, _
+                TargetInstance.WorkingDirectory, Nothing, Nothing, 1, True)
 
-            m_Result = New TestCaseExecuteeResult()
-            m_Result.State = State
-            m_Result.Index = TestCase.Index
             m_TargetInstance = TargetInstance
             m_TestCase = TestCase
-            m_Trigger = New MiniTrigger(1, 2, _
-                Sub()
-                    Completion.Invoke(m_Result)
-                End Sub)
+            m_Completion = Completion
+            m_CompletionState = State
+        End Sub
 
-            Dim TimeQuota As Int64? = TestCase.TimeQuota
-            Dim MemoryQuota As Int64? = TestCase.MemoryQuota
+        Public Overrides ReadOnly Property RequiredEnvironment() As EnvironmentTag
+            Get
+                Return EnvironmentTag.Untrusted
+            End Get
+        End Property
 
-            With TargetInstance.Target.CompilerInstance.Compiler
+        Public Overrides Sub Execute()
+            Dim TimeQuota As Int64? = m_TestCase.TimeQuota
+            Dim MemoryQuota As Int64? = m_TestCase.MemoryQuota
+
+            With m_TargetInstance.Target.CompilerInstance.Compiler
                 If TimeQuota.HasValue Then
                     If .TimeFactor.HasValue Then _
                         TimeQuota *= .TimeFactor.Value
@@ -48,66 +48,78 @@ Namespace Testing
                 End If
             End With
 
-            FinalConstruct(WatchDog, ProcessMonitor, TargetInstance.ApplicationName, TargetInstance.CommandLine, TargetInstance.EnvironmentVariables, TargetInstance.WorkingDirectory, _
-                TestCase.OpenInput(), TestCase.OpenOutput(), StdErrorHandle, _
-                TimeQuota, MemoryQuota, 1, True, AddressOf ProcessExecuteeCompletion, Nothing)
-        End Sub
+            MyBase.TimeQuota = TimeQuota
+            MyBase.MemoryQuota = MemoryQuota
 
-        Public Overrides ReadOnly Property RequiredEnvironment() As EnvironmentTag
-            Get
-                Return EnvironmentTag.Untrusted
-            End Get
-        End Property
+            Dim Result = New TestCaseExecuteeResult()
+            Result.Index = m_TestCase.Index
 
-        Private Sub StdErrorCompletion(ByVal Result As StreamRecorder.Result)
-            If Result.Buffer.Length <> 0 Then
-                m_Result.StdErrorMessage = Encoding.Default.GetString(Result.Buffer)
-            End If
-            m_Trigger.InvokeNonCritical()
-        End Sub
+            Dim Trigger = New MiniTrigger(1, 2, _
+                Sub()
+                    Result.State = m_CompletionState
+                    m_Completion.Invoke(Result)
+                End Sub)
 
-        Private Sub TestCaseCompletion(ByVal Result As TestCaseResult)
-            m_Result.Score = Result.Score
-            m_Trigger.InvokeNonCritical()
-        End Sub
+            MyBase.Completion = _
+                Sub(ExecuteeResult As ProcessExecuteeResult)
+                    Dim TimeQuotaUsage As Int64 = ExecuteeResult.TimeQuotaUsage
+                    Dim MemoryQuotaUsage As Int64 = ExecuteeResult.MemoryQuotaUsage
 
-        Private Sub ProcessExecuteeCompletion(ByVal Result As ProcessExecuteeResult)
-            Dim TimeQuotaUsage As Int64 = Result.TimeQuotaUsage
-            Dim MemoryQuotaUsage As Int64 = Result.MemoryQuotaUsage
+                    With m_TargetInstance.Target.CompilerInstance.Compiler
+                        If .TimeOffset.HasValue Then
+                            TimeQuotaUsage = Math.Max(TimeQuotaUsage + .TimeOffset.Value, 0)
+                        End If
+                        If .TimeFactor.HasValue Then
+                            Try
+                                TimeQuotaUsage /= .TimeFactor.Value
+                            Catch ex As OverflowException
+                                TimeQuotaUsage = m_TestCase.TimeQuota + 1
+                            End Try
+                        End If
+                        If .MemoryOffset.HasValue Then
+                            MemoryQuotaUsage = Math.Max(TimeQuotaUsage + .MemoryOffset.Value, 0)
+                        End If
+                        If .MemoryFactor.HasValue Then
+                            Try
+                                MemoryQuotaUsage /= .MemoryFactor.Value
+                            Catch ex As OverflowException
+                                MemoryQuotaUsage = m_TestCase.MemoryQuota + 1
+                            End Try
+                        End If
+                    End With
 
-            With m_TargetInstance.Target.CompilerInstance.Compiler
-                If .TimeOffset.HasValue Then _
-                    TimeQuotaUsage = Math.Max(TimeQuotaUsage + .TimeOffset.Value, 0)
-                If .TimeFactor.HasValue Then
-                    Try
-                        TimeQuotaUsage /= .TimeFactor.Value
-                    Catch ex As OverflowException
-                        TimeQuotaUsage = m_TestCase.TimeQuota + 1
-                    End Try
-                End If
-                If .MemoryOffset.HasValue Then _
-                    MemoryQuotaUsage = Math.Max(TimeQuotaUsage + .MemoryOffset.Value, 0)
-                If .MemoryFactor.HasValue Then
-                    Try
-                        MemoryQuotaUsage /= .MemoryFactor.Value
-                    Catch ex As OverflowException
-                        MemoryQuotaUsage = m_TestCase.MemoryQuota + 1
-                    End Try
-                End If
-            End With
+                    m_TargetInstance.Dispose()
 
-            m_TargetInstance.Dispose()
+                    Result.ExitStatus = ExecuteeResult.ExitStatus
+                    Result.TimeQuotaUsage = TimeQuotaUsage
+                    Result.MemoryQuotaUsage = MemoryQuotaUsage
+                    Result.Exception = ExecuteeResult.Exception
+                    Trigger.InvokeCritical()
+                End Sub
 
-            m_Result.ExitStatus = Result.ExitStatus
-            m_Result.TimeQuotaUsage = TimeQuotaUsage
-            m_Result.MemoryQuotaUsage = MemoryQuotaUsage
-            m_Result.Exception = Result.Exception
-            m_Trigger.InvokeCritical()
-        End Sub
+            ' Open test case I/O
+            MyBase.StdInput = m_TestCase.OpenInput()
+            MyBase.StdOutput = m_TestCase.OpenOutput()
 
-        Public Overrides Sub Execute()
-            m_TestCase.QueueJudgeWorker(AddressOf TestCaseCompletion, Nothing)
-            m_StreamRecorder.Start()
+            ' Start recording stderr
+            Using OutputPipe As New Pipe()
+                Dim StreamRecorder = New StreamRecorder(OutputPipe.GetReadStream(), 4096, _
+                    Sub(StreamResult As StreamRecorder.Result)
+                        If StreamResult.Buffer.Length <> 0 Then
+                            Result.StdErrorMessage = Encoding.Default.GetString(StreamResult.Buffer)
+                        End If
+                        Trigger.InvokeNonCritical()
+                    End Sub, Nothing)
+                MyBase.StdError = OutputPipe.GetWriteHandle()
+                StreamRecorder.Start()
+            End Using
+
+            ' Start judging
+            m_TestCase.QueueJudgeWorker( _
+                Sub(TestCaseResult As TestCaseResult)
+                    Result.Score = TestCaseResult.Score
+                    Trigger.InvokeNonCritical()
+                End Sub, Nothing)
             MyBase.Execute()
         End Sub
     End Class
