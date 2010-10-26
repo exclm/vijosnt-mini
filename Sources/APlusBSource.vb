@@ -7,10 +7,6 @@ Namespace Sources
         Private Const DefaultTimeQuota As Int64 = 1000 * 10000
         Private Const DefaultMemoryQuota As Int64 = 128 * 1024 * 1024
 
-        Public Sub New(ByVal [Namespace] As String)
-            MyBase.New([Namespace])
-        End Sub
-
         Public Overrides Function TryLoad(ByVal Id As String) As IEnumerable(Of TestCase)
             If Id.ToUpper() <> "A+B" Then _
                 Return Nothing

@@ -32,24 +32,24 @@ Namespace Sources
 
                 Using Reader As IDataReader = SourceMapping.GetAll()
                     While Reader.Read()
-                        Dim [Namespace] As String = Reader("Namespace")
                         Dim Source As Source
                         Select Case Reader("ClassName")
                             Case "APlusB"
-                                Source = New APlusBSource([Namespace])
+                                Source = New APlusBSource()
                             Case "Vijos"
-                                Source = New VijosSource([Namespace], Reader("Parameter"))
+                                Source = New VijosSource(Reader("Parameter"))
                             Case "Free"
-                                Source = New FreeSource([Namespace], Reader("Parameter"))
+                                Source = New FreeSource(Reader("Parameter"))
                             Case "_22OJS"
-                                Source = New _22OJSSource([Namespace], Reader("Parameter"))
+                                Source = New _22OJSSource(Reader("Parameter"))
                             Case Else
                                 EventLog.WriteEntry(My.Resources.ServiceName, "数据源加载失败" & vbCrLf & "未找到类名为 " & Reader("ClassName") & " 的数据源提供程序。", EventLogEntryType.Warning)
                                 Continue While
                         End Select
-                        If Not Namespaces.ContainsKey([Namespace]) Then _
-                            Namespaces.Add([Namespace], New List(Of Source))
-                        Namespaces([Namespace]).Add(Source)
+                        Source.Namespace = Reader("Namespace")
+                        If Not Namespaces.ContainsKey(Source.Namespace) Then _
+                            Namespaces.Add(Source.Namespace, New List(Of Source))
+                        Namespaces(Source.Namespace).Add(Source)
                         Dim HttpAnnouncement As String = Reader("HttpAnnouncement")
                         If HttpAnnouncement.Length <> 0 Then _
                             Prefixes.Add(New KeyValuePair(Of String, MiniHttpServer.Context)(HttpAnnouncement, New MiniHttpServer.Context(AddressOf OnContext, Source)))
