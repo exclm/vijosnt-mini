@@ -115,6 +115,9 @@
             Me.VijosSourceMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.RemoveSourceButton = New System.Windows.Forms.ToolStripButton()
             Me.SourceBar0 = New System.Windows.Forms.ToolStripSeparator()
+            Me.MoveUpSourceButton = New System.Windows.Forms.ToolStripButton()
+            Me.MoveDownSourceButton = New System.Windows.Forms.ToolStripButton()
+            Me.SourceBar1 = New System.Windows.Forms.ToolStripSeparator()
             Me.ApplySourceButton = New System.Windows.Forms.ToolStripButton()
             Me.ExecutorPage = New System.Windows.Forms.TabPage()
             Me.SecurityList = New System.Windows.Forms.ListView()
@@ -133,9 +136,7 @@
             Me.ApplyExecutorButton = New System.Windows.Forms.ToolStripButton()
             Me.ServiceTimer = New System.Windows.Forms.Timer(Me.components)
             Me.miniToolStrip = New System.Windows.Forms.ToolStrip()
-            Me.MoveUpSourceButton = New System.Windows.Forms.ToolStripButton()
-            Me.MoveDownSourceButton = New System.Windows.Forms.ToolStripButton()
-            Me.SourceBar1 = New System.Windows.Forms.ToolStripSeparator()
+            Me._22OJSSourceMenu = New System.Windows.Forms.ToolStripMenuItem()
             Me.MenuStrip.SuspendLayout()
             Me.StatusStrip.SuspendLayout()
             Me.SplitContainer.Panel1.SuspendLayout()
@@ -800,7 +801,7 @@
             'AddSourceButton
             '
             Me.AddSourceButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-            Me.AddSourceButton.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewSourceMenu, Me.AddSourceBar0, Me.APlusBSourceMenu, Me.FreeSourceMenu, Me.VijosSourceMenu})
+            Me.AddSourceButton.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewSourceMenu, Me.AddSourceBar0, Me.APlusBSourceMenu, Me.FreeSourceMenu, Me.VijosSourceMenu, Me._22OJSSourceMenu})
             Me.AddSourceButton.Image = CType(resources.GetObject("AddSourceButton.Image"), System.Drawing.Image)
             Me.AddSourceButton.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.AddSourceButton.Name = "AddSourceButton"
@@ -811,31 +812,31 @@
             'NewSourceMenu
             '
             Me.NewSourceMenu.Name = "NewSourceMenu"
-            Me.NewSourceMenu.Size = New System.Drawing.Size(148, 22)
+            Me.NewSourceMenu.Size = New System.Drawing.Size(152, 22)
             Me.NewSourceMenu.Text = "新数据源"
             '
             'AddSourceBar0
             '
             Me.AddSourceBar0.Name = "AddSourceBar0"
-            Me.AddSourceBar0.Size = New System.Drawing.Size(145, 6)
+            Me.AddSourceBar0.Size = New System.Drawing.Size(149, 6)
             '
             'APlusBSourceMenu
             '
             Me.APlusBSourceMenu.Name = "APlusBSourceMenu"
-            Me.APlusBSourceMenu.Size = New System.Drawing.Size(148, 22)
+            Me.APlusBSourceMenu.Size = New System.Drawing.Size(152, 22)
             Me.APlusBSourceMenu.Text = "A+B"
             '
             'FreeSourceMenu
             '
             Me.FreeSourceMenu.Name = "FreeSourceMenu"
-            Me.FreeSourceMenu.Size = New System.Drawing.Size(148, 22)
+            Me.FreeSourceMenu.Size = New System.Drawing.Size(152, 22)
             Me.FreeSourceMenu.Text = "一般测试数据"
             '
             'VijosSourceMenu
             '
             Me.VijosSourceMenu.Name = "VijosSourceMenu"
-            Me.VijosSourceMenu.Size = New System.Drawing.Size(148, 22)
-            Me.VijosSourceMenu.Text = "Vijos 数据源"
+            Me.VijosSourceMenu.Size = New System.Drawing.Size(152, 22)
+            Me.VijosSourceMenu.Text = "Vijos 站点"
             '
             'RemoveSourceButton
             '
@@ -852,6 +853,33 @@
             '
             Me.SourceBar0.Name = "SourceBar0"
             Me.SourceBar0.Size = New System.Drawing.Size(6, 25)
+            '
+            'MoveUpSourceButton
+            '
+            Me.MoveUpSourceButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            Me.MoveUpSourceButton.Enabled = False
+            Me.MoveUpSourceButton.Image = CType(resources.GetObject("MoveUpSourceButton.Image"), System.Drawing.Image)
+            Me.MoveUpSourceButton.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.MoveUpSourceButton.Name = "MoveUpSourceButton"
+            Me.MoveUpSourceButton.Size = New System.Drawing.Size(23, 22)
+            Me.MoveUpSourceButton.Text = "上移(&U)"
+            Me.MoveUpSourceButton.ToolTipText = "向上移动编译器映射"
+            '
+            'MoveDownSourceButton
+            '
+            Me.MoveDownSourceButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            Me.MoveDownSourceButton.Enabled = False
+            Me.MoveDownSourceButton.Image = CType(resources.GetObject("MoveDownSourceButton.Image"), System.Drawing.Image)
+            Me.MoveDownSourceButton.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.MoveDownSourceButton.Name = "MoveDownSourceButton"
+            Me.MoveDownSourceButton.Size = New System.Drawing.Size(23, 22)
+            Me.MoveDownSourceButton.Text = "下移(&D)"
+            Me.MoveDownSourceButton.ToolTipText = "向下移动编译器映射"
+            '
+            'SourceBar1
+            '
+            Me.SourceBar1.Name = "SourceBar1"
+            Me.SourceBar1.Size = New System.Drawing.Size(6, 25)
             '
             'ApplySourceButton
             '
@@ -998,32 +1026,11 @@
             Me.miniToolStrip.Size = New System.Drawing.Size(581, 25)
             Me.miniToolStrip.TabIndex = 11
             '
-            'MoveUpSourceButton
+            '_22OJSSourceMenu
             '
-            Me.MoveUpSourceButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-            Me.MoveUpSourceButton.Enabled = False
-            Me.MoveUpSourceButton.Image = CType(resources.GetObject("MoveUpSourceButton.Image"), System.Drawing.Image)
-            Me.MoveUpSourceButton.ImageTransparentColor = System.Drawing.Color.Magenta
-            Me.MoveUpSourceButton.Name = "MoveUpSourceButton"
-            Me.MoveUpSourceButton.Size = New System.Drawing.Size(23, 22)
-            Me.MoveUpSourceButton.Text = "上移(&U)"
-            Me.MoveUpSourceButton.ToolTipText = "向上移动编译器映射"
-            '
-            'MoveDownSourceButton
-            '
-            Me.MoveDownSourceButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-            Me.MoveDownSourceButton.Enabled = False
-            Me.MoveDownSourceButton.Image = CType(resources.GetObject("MoveDownSourceButton.Image"), System.Drawing.Image)
-            Me.MoveDownSourceButton.ImageTransparentColor = System.Drawing.Color.Magenta
-            Me.MoveDownSourceButton.Name = "MoveDownSourceButton"
-            Me.MoveDownSourceButton.Size = New System.Drawing.Size(23, 22)
-            Me.MoveDownSourceButton.Text = "下移(&D)"
-            Me.MoveDownSourceButton.ToolTipText = "向下移动编译器映射"
-            '
-            'SourceBar1
-            '
-            Me.SourceBar1.Name = "SourceBar1"
-            Me.SourceBar1.Size = New System.Drawing.Size(6, 25)
+            Me._22OJSSourceMenu.Name = "_22OJSSourceMenu"
+            Me._22OJSSourceMenu.Size = New System.Drawing.Size(152, 22)
+            Me._22OJSSourceMenu.Text = "22OJS 站点"
             '
             'ConsoleForm
             '
@@ -1182,5 +1189,6 @@
         Friend WithEvents MoveUpSourceButton As System.Windows.Forms.ToolStripButton
         Friend WithEvents MoveDownSourceButton As System.Windows.Forms.ToolStripButton
         Friend WithEvents SourceBar1 As System.Windows.Forms.ToolStripSeparator
+        Friend WithEvents _22OJSSourceMenu As System.Windows.Forms.ToolStripMenuItem
     End Class
 End Namespace

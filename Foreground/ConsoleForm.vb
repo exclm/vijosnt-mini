@@ -635,6 +635,12 @@ Namespace Foreground
                 End If
             End Using
         End Sub
+
+        Private Sub _22OJSSourceMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _22OJSSourceMenu.Click
+            SourceMapping.Add("_22OJS", String.Empty, "Server=(local);Database=22OJS;UserName=sa;Password=admin", String.Empty)
+            ApplySourceButton.Enabled = True
+            RefreshPage()
+        End Sub
 #End Region
 
     End Class

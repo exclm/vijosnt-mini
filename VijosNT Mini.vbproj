@@ -162,7 +162,9 @@
     <Compile Include="LocalDb\Database.vb" />
     <Compile Include="LocalDb\UntrustedEnvironments.vb" />
     <Compile Include="Remoting\Session.vb" />
+    <Compile Include="Sources\22OJSSource.vb" />
     <Compile Include="Sources\APlusBSource.vb" />
+    <Compile Include="Sources\FreeSource.vb" />
     <Compile Include="Sources\Source.vb" />
     <Compile Include="Sources\SourcePool.vb" />
     <Compile Include="Sources\SourceRecord.vb" />
