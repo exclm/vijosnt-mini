@@ -1,32 +1,32 @@
 ﻿Imports VijosNT.Utility
 
 Namespace LocalDb
-    Friend Class DataSourceConfig
+    Friend Class SourceConfig
         Private m_Id As Int32
-        Private m_Class As DataSourceClass
+        Private m_Class As SourceClass
         Private m_Namespace As String
         Private m_Parameter As String
         Private m_HttpAnnouncement As String
 
         Public Sub New(ByVal Reader As IDataReader)
             m_Id = Reader("Id")
-            m_Class = [Enum].Parse(GetType(DataSourceClass), Reader("ClassName"))
+            m_Class = [Enum].Parse(GetType(SourceClass), Reader("ClassName"))
             m_Namespace = Reader("Namespace")
             m_Parameter = Reader("Parameter")
             m_HttpAnnouncement = Reader("HttpAnnouncement")
         End Sub
 
         Private Sub Commit()
-            DataSourceMapping.Update(m_Id, m_Class.ToString(), m_Namespace, m_Parameter, m_HttpAnnouncement)
+            SourceMapping.Update(m_Id, m_Class.ToString(), m_Namespace, m_Parameter, m_HttpAnnouncement)
         End Sub
 
         <DisplayName("类型"), CategoryAttribute("数据源设置"), DescriptionAttribute("数据源的类型")> _
-        Public Property [Class]() As DataSourceClass
+        Public Property [Class]() As SourceClass
             Get
                 Return m_Class
             End Get
 
-            Set(ByVal Value As DataSourceClass)
+            Set(ByVal Value As SourceClass)
                 m_Class = Value
                 Commit()
             End Set

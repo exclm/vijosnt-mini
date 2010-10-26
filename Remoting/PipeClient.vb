@@ -1,4 +1,4 @@
-﻿Imports VijosNT.Feeding
+﻿Imports VijosNT.Testing
 Imports VijosNT.Win32
 
 Namespace Remoting

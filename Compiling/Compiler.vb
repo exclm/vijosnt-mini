@@ -40,7 +40,7 @@ Namespace Compiling
         End Sub
 
         Public Function CreateInstance(ByVal SourceCode As Stream) As CompilerInstance
-            Dim TempPath As TempPath = TempPathServer.Singleton.CreateTempPath()
+            Dim TempPath As TempPath = TempPathServer.Singleton().CreateTempPath()
             Using SourceFile As New FileStream(TempPath.Combine(m_SourceFileName), FileMode.CreateNew, FileAccess.Write, FileShare.None)
                 BufferedCopy(SourceCode, SourceFile)
             End Using

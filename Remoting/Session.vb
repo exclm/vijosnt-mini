@@ -1,4 +1,4 @@
-﻿Imports VijosNT.Feeding
+﻿Imports VijosNT.Testing
 Imports VijosNT.Utility
 
 Namespace Remoting
@@ -12,7 +12,7 @@ Namespace Remoting
             m_Stream = Stream
             m_Buffer = New Byte(0 To 4095) {}
             m_Stream.BeginRead(m_Buffer, 0, m_Buffer.Length, AddressOf OnRead, Nothing)
-            AddHandler Runner.Singleton.RunnerStatusChanged, AddressOf OnRunnerStatusChanged
+            AddHandler Runner.Singleton().RunnerStatusChanged, AddressOf OnRunnerStatusChanged
         End Sub
 
         Private Sub OnRunnerStatusChanged(ByVal Running As Boolean)
@@ -74,12 +74,10 @@ Namespace Remoting
                 Select Case Message
                     Case ClientMessage.ReloadCompiler
                         OnReloadCompiler()
-                    Case ClientMessage.ReloadTestSuite
-                        OnReloadTestSuite()
+                    Case ClientMessage.ReloadSource
+                        OnReloadSource()
                     Case ClientMessage.ReloadExecutor
                         OnReloadExecutor()
-                    Case ClientMessage.ReloadDataSource
-                        OnReloadDataSource()
                     Case ClientMessage.DirectFeed
                         OnDirectFeed(Reader.ReadInt32(), Reader.ReadString(), Reader.ReadString(), Reader.ReadString())
                     Case ClientMessage.DirectFeed2
@@ -90,15 +88,15 @@ Namespace Remoting
 
         Private Sub OnReloadCompiler()
             Try
-                Runner.Singleton.ReloadCompiler()
+                Runner.Singleton().ReloadCompiler()
             Catch ex As Exception
                 ServiceUnhandledException(ex)
             End Try
         End Sub
 
-        Private Sub OnReloadTestSuite()
+        Private Sub OnReloadSource()
             Try
-                Runner.Singleton.ReloadTestSuite()
+                Runner.Singleton().ReloadSource()
             Catch ex As Exception
                 ServiceUnhandledException(ex)
             End Try
@@ -106,15 +104,7 @@ Namespace Remoting
 
         Private Sub OnReloadExecutor()
             Try
-                Runner.Singleton.ReloadExecutor()
-            Catch ex As Exception
-                ServiceUnhandledException(ex)
-            End Try
-        End Sub
-
-        Private Sub OnReloadDataSource()
-            Try
-                Runner.Singleton.ReloadDataSource()
+                Runner.Singleton().ReloadExecutor()
             Catch ex As Exception
                 ServiceUnhandledException(ex)
             End Try
@@ -155,7 +145,7 @@ Namespace Remoting
 
         Private Sub OnDirectFeedInternal(ByVal StateId As Int32, ByVal [Namespace] As String, ByVal FileName As String, ByVal SourceCodeStream As Stream)
             Try
-                Runner.Singleton.Queue([Namespace], FileName, SourceCodeStream, _
+                Runner.Singleton().Queue([Namespace], FileName, SourceCodeStream, _
                     Sub(Result As TestResult)
                         DirectFeedSendReply(StateId, Result)
                     End Sub)
@@ -177,7 +167,7 @@ Namespace Remoting
         End Sub
 
         Private Sub OnDisconnected()
-            RemoveHandler Runner.Singleton.RunnerStatusChanged, AddressOf OnRunnerStatusChanged
+            RemoveHandler Runner.Singleton().RunnerStatusChanged, AddressOf OnRunnerStatusChanged
         End Sub
 
 #Region "IDisposable Support"

@@ -1,4 +1,4 @@
-﻿Namespace Feeding
+﻿Namespace Testing
     Public Enum TestResultFlag As Int32
         None
         Accepted

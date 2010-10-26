@@ -4,6 +4,16 @@ Namespace Utility
     Friend Class ProcessMonitor
         Implements IDisposable
 
+        Private Shared s_Instance As ProcessMonitor
+
+        Shared Sub New()
+            s_Instance = New ProcessMonitor()
+        End Sub
+
+        Public Shared Function Singleton() As ProcessMonitor
+            Return s_Instance
+        End Function
+
         Public Delegate Sub Completion(ByVal Result As Result)
 
         Private m_DebugObject As DebugObject
@@ -77,7 +87,7 @@ Namespace Utility
             Public Exception As EXCEPTION_RECORD?
         End Class
 
-        Public Sub New()
+        Private Sub New()
             m_DebugObject = New DebugObject()
             AddHandler m_DebugObject.OnExitProcess, AddressOf ExitProcessHandler
             AddHandler m_DebugObject.OnException, AddressOf ExceptionHandler

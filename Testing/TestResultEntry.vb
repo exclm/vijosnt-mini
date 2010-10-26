@@ -1,4 +1,4 @@
-﻿Namespace Feeding
+﻿Namespace Testing
     Friend Class TestResultEntry
         Public Index As Int32
         Public Flag As TestResultFlag

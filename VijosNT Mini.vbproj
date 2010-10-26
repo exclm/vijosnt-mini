@@ -103,13 +103,6 @@
     <Compile Include="Compiling\Target.vb" />
     <Compile Include="Compiling\TargetInstance.vb" />
     <Compile Include="Executing\PortableExecutable.vb" />
-    <Compile Include="Feeding\22OJSDataSource.vb" />
-    <Compile Include="Feeding\DataSourceBase.vb" />
-    <Compile Include="Feeding\DataSourceEntry.vb" />
-    <Compile Include="Feeding\DataSourcePool.vb" />
-    <Compile Include="Feeding\DataSourceRecord.vb" />
-    <Compile Include="Feeding\Markup.vb" />
-    <Compile Include="Feeding\VijosDataSource.vb" />
     <Compile Include="Foreground\CompilerDetection.vb" />
     <Compile Include="Foreground\FloatingForm.Designer.vb">
       <DependentUpon>FloatingForm.vb</DependentUpon>
@@ -136,20 +129,13 @@
     <Compile Include="Foreground\VijosContest.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LocalDb\DataSourceClass.vb" />
-    <Compile Include="LocalDb\DataSourceConfig.vb" />
-    <Compile Include="LocalDb\DataSourceMapping.vb" />
     <Compile Include="LocalDb\Record.vb" />
-    <Compile Include="LocalDb\TestSuiteClass.vb" />
-    <Compile Include="LocalDb\TestSuiteConfig.vb" />
+    <Compile Include="LocalDb\SourceClass.vb" />
+    <Compile Include="LocalDb\SourceConfig.vb" />
+    <Compile Include="LocalDb\SourceMapping.vb" />
     <Compile Include="Remoting\ClientMessage.vb" />
     <Compile Include="Remoting\PipeClient.vb" />
     <Compile Include="Remoting\PipeServer.vb" />
-    <Compile Include="Feeding\Runner.vb" />
-    <Compile Include="Feeding\TestCompletion.vb" />
-    <Compile Include="Feeding\TestResult.vb" />
-    <Compile Include="Feeding\TestResultEntry.vb" />
-    <Compile Include="Feeding\TestResultFlag.vb" />
     <Compile Include="EntryPoint.vb" />
     <Compile Include="Executing\EnvironmentTag.vb" />
     <Compile Include="Executing\Executee.vb" />
@@ -174,13 +160,17 @@
     <Compile Include="LocalDb\CompilerMapping.vb" />
     <Compile Include="LocalDb\Config.vb" />
     <Compile Include="LocalDb\Database.vb" />
-    <Compile Include="LocalDb\TestSuiteMapping.vb" />
     <Compile Include="LocalDb\UntrustedEnvironments.vb" />
     <Compile Include="Remoting\Session.vb" />
-    <Compile Include="Testing\FreeTestSuite.vb" />
-    <Compile Include="Testing\APlusBTestSuite.vb" />
+    <Compile Include="Sources\APlusBSource.vb" />
+    <Compile Include="Sources\Source.vb" />
+    <Compile Include="Sources\SourcePool.vb" />
+    <Compile Include="Sources\SourceRecord.vb" />
+    <Compile Include="Sources\VijosSource.vb" />
     <Compile Include="Testing\DefaultJudger.vb" />
     <Compile Include="Testing\LocalTestCase.vb" />
+    <Compile Include="Testing\Markup.vb" />
+    <Compile Include="Testing\Runner.vb" />
     <Compile Include="Testing\StringTestCase.vb" />
     <Compile Include="Testing\TestCase.vb" />
     <Compile Include="Testing\TestCaseCompletion.vb" />
@@ -188,10 +178,10 @@
     <Compile Include="Testing\TestCaseExecuteeCompletion.vb" />
     <Compile Include="Testing\TestCaseExecuteeResult.vb" />
     <Compile Include="Testing\TestCaseResult.vb" />
-    <Compile Include="Testing\TestSuite.vb" />
-    <Compile Include="Testing\TestSuiteEntry.vb" />
-    <Compile Include="Testing\TestSuitePool.vb" />
-    <Compile Include="Testing\VijosTestSuite.vb" />
+    <Compile Include="Testing\TestCompletion.vb" />
+    <Compile Include="Testing\TestResult.vb" />
+    <Compile Include="Testing\TestResultEntry.vb" />
+    <Compile Include="Testing\TestResultFlag.vb" />
     <Compile Include="Utility\AppPath.vb" />
     <Compile Include="Utility\MiniHttpServer.vb" />
     <Compile Include="Utility\MiniThreadPool.vb" />
@@ -294,7 +284,7 @@
     <Content Include="Artwork\Compiler.png" />
     <Content Include="Artwork\Console.ico" />
     <Content Include="Artwork\Console.png" />
-    <Content Include="Artwork\DataSource.png" />
+    <Content Include="Artwork\Source.png" />
     <Content Include="Artwork\Executor.png" />
     <Content Include="Artwork\GreenV.bmp" />
     <Content Include="Artwork\GreenV.ico" />
@@ -307,7 +297,6 @@
     <Content Include="Artwork\Report.ico" />
     <Content Include="Artwork\Start.png" />
     <Content Include="Artwork\Stop.png" />
-    <Content Include="Artwork\TestSuite.png" />
     <Content Include="Artwork\VijosNT.ico" />
     <Content Include="Foreground\TestReport.xslt" />
     <Content Include="x64 readme.txt" />

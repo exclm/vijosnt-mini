@@ -5,8 +5,6 @@ Namespace Executing
     Friend Class ProcessExecutee
         Inherits Executee
 
-        Private m_WatchDog As WatchDog
-        Private m_ProcessMonitor As ProcessMonitor
         Private m_ApplicationName As String
         Private m_CommandLine As String
         Private m_EnvironmentVariables As IEnumerable(Of String)
@@ -20,14 +18,11 @@ Namespace Executing
         Private m_EnableUIRestrictions As Boolean
         Private m_Completion As ProcessExecuteeCompletion
 
-        Protected Sub New(ByVal WatchDog As WatchDog, ByVal ProcessMonitor As ProcessMonitor, _
-            ByVal ApplicationName As String, ByVal CommandLine As String, _
+        Protected Sub New(ByVal ApplicationName As String, ByVal CommandLine As String, _
             ByVal EnvironmentVariables As IEnumerable(Of String), ByVal CurrentDirectory As String, _
             ByVal TimeQuota As Int64?, ByVal MemoryQuota As Int64?, _
             ByVal ActiveProcessQuota As Int32?, ByVal EnableUIRestrictions As Boolean)
 
-            m_WatchDog = WatchDog
-            m_ProcessMonitor = ProcessMonitor
             m_ApplicationName = ApplicationName
             m_CommandLine = CommandLine
             m_EnvironmentVariables = EnvironmentVariables
@@ -179,14 +174,14 @@ Namespace Executing
                     End With
                 End If
 
-                m_ProcessMonitor.Attach(Suspended, _
+                ProcessMonitor.Singleton().Attach(Suspended, _
                     Sub(ExitResult As ProcessMonitor.Result)
                         Result.ExitStatus = ExitResult.ExitStatus
                         Result.Exception = ExitResult.Exception
                         Trigger.InvokeNonCritical()
                     End Sub)
 
-                m_WatchDog.SetWatch(Suspended.Resume(), m_TimeQuota, _
+                WatchDog.Singleton().SetWatch(Suspended.Resume(), m_TimeQuota, _
                     Sub(TimeQuotaUsage As Int64, MemoryQuotaUsage As Int64)
                         Result.TimeQuotaUsage = TimeQuotaUsage
                         Result.MemoryQuotaUsage = MemoryQuotaUsage

@@ -1,4 +1,4 @@
-﻿Imports VijosNT.Feeding
+﻿Imports VijosNT.Testing
 Imports VijosNT.LocalDb
 Imports VijosNT.Win32
 
@@ -24,7 +24,7 @@ Namespace Foreground
                                 m_Daemon.ShowBalloon()
                             End Sub) Then
 
-                            MessageBox.Show("VijosNT 服务未启动, 无法进行测评。", "错误", MessageBoxButtons.OK)
+                            MessageBox.Show("VijosNT 服务未启动, 无法进行测评。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error)
                             Return
                         End If
                     End If

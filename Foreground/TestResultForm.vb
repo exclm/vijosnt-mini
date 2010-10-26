@@ -1,5 +1,5 @@
 ﻿Namespace Foreground
-    Public Class TestResultForm
+    Friend Class TestResultForm
         Private Shared m_Xslt As XslCompiledTransform
 
         Shared Sub New()

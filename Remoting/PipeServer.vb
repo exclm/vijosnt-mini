@@ -1,11 +1,20 @@
-﻿Imports VijosNT.Feeding
-Imports VijosNT.Win32
+﻿Imports VijosNT.Win32
 
 Namespace Remoting
     Friend Class PipeServer
+        Private Shared s_Instance As PipeServer
+
+        Shared Sub New()
+            s_Instance = New PipeServer()
+        End Sub
+
+        Public Shared Function Singleton() As PipeServer
+            Return s_Instance
+        End Function
+
         Private m_Thread As Thread
 
-        Public Sub New()
+        Private Sub New()
             m_Thread = New Thread(AddressOf ThreadEntry)
             m_Thread.IsBackground = True
             m_Thread.Start()

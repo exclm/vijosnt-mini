@@ -4,8 +4,8 @@
         Private Shared m_SelectHeaderCommand As SQLiteCommand
         Private Shared m_SelectConfigCommand As SQLiteCommand
         Private Shared m_InsertCommand As SQLiteCommand
-        Private Shared m_UpdateCommand As SQLiteCommand
         Private Shared m_DeleteCommand As SQLiteCommand
+        Private Shared m_UpdateCommand As SQLiteCommand
         Private Shared m_UpdateIdCommand As SQLiteCommand
 
         Shared Sub New()
@@ -38,10 +38,10 @@
                 "SELECT * FROM CompilerMapping2 WHERE Id = @Id")
             m_InsertCommand = Database.CreateCommand( _
                 "INSERT INTO CompilerMapping2 (Id, Pattern, ApplicationName, CommandLine, EnvironmentVariables, TimeQuota, MemoryQuota, ActiveProcessQuota, SourceFileName, TargetFileName, TargetApplicationName, TargetCommandLine, TimeOffset, TimeFactor, MemoryOffset, MemoryFactor) VALUES (NULL, @Pattern, @ApplicationName, @CommandLine, @EnvironmentVariables, @TimeQuota, @MemoryQuota, @ActiveProcessQuota, @SourceFileName, @TargetFileName, @TargetApplicationName, @TargetCommandLine, @TimeOffset, @TimeFactor, @MemoryOffset, @MemoryFactor)")
-            m_UpdateCommand = Database.CreateCommand( _
-                "UPDATE CompilerMapping2 SET Pattern = @Pattern, ApplicationName = @ApplicationName, CommandLine = @CommandLine, EnvironmentVariables = @EnvironmentVariables, TimeQuota = @TimeQuota, MemoryQuota = @MemoryQuota, ActiveProcessQuota = @ActiveProcessQuota, SourceFileName = @SourceFileName, TargetFileName = @TargetFileName, TargetApplicationName = @TargetApplicationName, TargetCommandLine = @TargetCommandLine, TimeOffset = @TimeOffset, TimeFactor = @TimeFactor, MemoryOffset = @MemoryOffset, MemoryFactor = @MemoryFactor WHERE Id = @Id")
             m_DeleteCommand = Database.CreateCommand( _
                 "DELETE FROM CompilerMapping2 WHERE Id = @Id")
+            m_UpdateCommand = Database.CreateCommand( _
+                "UPDATE CompilerMapping2 SET Pattern = @Pattern, ApplicationName = @ApplicationName, CommandLine = @CommandLine, EnvironmentVariables = @EnvironmentVariables, TimeQuota = @TimeQuota, MemoryQuota = @MemoryQuota, ActiveProcessQuota = @ActiveProcessQuota, SourceFileName = @SourceFileName, TargetFileName = @TargetFileName, TargetApplicationName = @TargetApplicationName, TargetCommandLine = @TargetCommandLine, TimeOffset = @TimeOffset, TimeFactor = @TimeFactor, MemoryOffset = @MemoryOffset, MemoryFactor = @MemoryFactor WHERE Id = @Id")
             m_UpdateIdCommand = Database.CreateCommand( _
                 "UPDATE CompilerMapping2 SET Id = @Id WHERE Id = @OriginalId")
         End Sub

@@ -1,5 +1,15 @@
 ﻿Namespace Utility
     Friend Class MiniHttpServer
+        Private Shared s_Instance As MiniHttpServer
+
+        Shared Sub New()
+            s_Instance = New MiniHttpServer()
+        End Sub
+
+        Public Shared Function Singleton() As MiniHttpServer
+            Return s_Instance
+        End Function
+
         Public Delegate Function RequestCallback(ByVal State As Object, ByVal Session As Session, ByVal Queries As SortedDictionary(Of String, String)) As Boolean
 
         Public Class Context
@@ -315,7 +325,7 @@
         Private m_SyncRoot As Object
         Private m_Contexts As IEnumerable(Of Listener)
 
-        Public Sub New()
+        Private Sub New()
             m_SyncRoot = New Object()
         End Sub
 

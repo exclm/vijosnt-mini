@@ -11,11 +11,10 @@ Namespace Compiling
         Private m_Completion As CompilerExecuteeCompletion
         Private m_CompletionState As Object
 
-        Public Sub New(ByVal WatchDog As WatchDog, ByVal ProcessMonitor As ProcessMonitor, ByVal Compiler As Compiler, ByVal SourceCode As Stream, ByVal Completion As CompilerExecuteeCompletion, ByVal State As Object)
-            MyBase.New(WatchDog, ProcessMonitor, Compiler.ApplicationName, _
-                Compiler.CommandLine, Compiler.EnvironmentVariables, Nothing, _
-                Compiler.TimeQuota, Compiler.MemoryQuota, _
-                Compiler.ActiveProcessQuota, False)
+        Public Sub New(ByVal Compiler As Compiler, ByVal SourceCode As Stream, ByVal Completion As CompilerExecuteeCompletion, ByVal State As Object)
+            MyBase.New(Compiler.ApplicationName, Compiler.CommandLine, _
+                Compiler.EnvironmentVariables, Nothing, Compiler.TimeQuota, _
+                Compiler.MemoryQuota, Compiler.ActiveProcessQuota, False)
 
             m_Compiler = Compiler
             m_SourceCode = SourceCode

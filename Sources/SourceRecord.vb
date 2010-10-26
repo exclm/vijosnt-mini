@@ -1,5 +1,5 @@
-﻿Namespace Feeding
-    Friend Class DataSourceRecord
+﻿Namespace Sources
+    Friend Class SourceRecord
         Public Sub New(ByVal FileName As String, ByVal SourceCode As String)
             Me.FileName = FileName
             Me.SourceCode = SourceCode

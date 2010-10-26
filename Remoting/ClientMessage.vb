@@ -1,10 +1,8 @@
 ﻿Namespace Remoting
     Friend Enum ClientMessage As Int32
         ReloadCompiler
-        ReloadTestSuite
+        ReloadSource
         ReloadExecutor
-        ReloadDataSource
-        Unused_FeedDataSource
         DirectFeed
         DirectFeed2
     End Enum

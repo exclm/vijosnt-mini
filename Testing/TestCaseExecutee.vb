@@ -12,10 +12,10 @@ Namespace Testing
         Private m_Completion As TestCaseExecuteeCompletion
         Private m_CompletionState As Object
 
-        Public Sub New(ByVal WatchDog As WatchDog, ByVal ProcessMonitor As ProcessMonitor, ByVal TargetInstance As TargetInstance, ByVal TestCase As TestCase, ByVal Completion As TestCaseExecuteeCompletion, ByVal State As Object)
-            MyBase.New(WatchDog, ProcessMonitor, TargetInstance.ApplicationName, _
-                TargetInstance.CommandLine, TargetInstance.EnvironmentVariables, _
-                TargetInstance.WorkingDirectory, Nothing, Nothing, 1, True)
+        Public Sub New(ByVal TargetInstance As TargetInstance, ByVal TestCase As TestCase, ByVal Completion As TestCaseExecuteeCompletion, ByVal State As Object)
+            MyBase.New(TargetInstance.ApplicationName, TargetInstance.CommandLine, _
+                TargetInstance.EnvironmentVariables, TargetInstance.WorkingDirectory, _
+                Nothing, Nothing, 1, True)
 
             m_TargetInstance = TargetInstance
             m_TestCase = TestCase
