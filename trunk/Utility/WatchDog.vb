@@ -4,6 +4,16 @@ Namespace Utility
     Friend Class WatchDog
         Implements IDisposable
 
+        Private Shared s_Instance As WatchDog
+
+        Shared Sub New()
+            s_Instance = New WatchDog()
+        End Sub
+
+        Public Shared Function Singleton() As WatchDog
+            Return s_Instance
+        End Function
+
         Public Delegate Sub Completion(ByVal TimeQuotaUsage As Int64, ByVal MemoryQuotaUsage As Int64)
 
         Protected Structure Context
@@ -20,7 +30,7 @@ Namespace Utility
 
         Protected m_WaitPool As MiniWaitPool
 
-        Public Sub New()
+        Private Sub New()
             m_WaitPool = New MiniWaitPool()
         End Sub
 

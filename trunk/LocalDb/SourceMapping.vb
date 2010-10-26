@@ -1,15 +1,16 @@
 ﻿Namespace LocalDb
-    Friend Class DataSourceMapping
+    Friend Class SourceMapping
         Private Shared m_SelectCommand As SQLiteCommand
         Private Shared m_SelectHeaderCommand As SQLiteCommand
         Private Shared m_SelectConfigCommand As SQLiteCommand
         Private Shared m_InsertCommand As SQLiteCommand
         Private Shared m_DeleteCommand As SQLiteCommand
         Private Shared m_UpdateCommand As SQLiteCommand
+        Private Shared m_UpdateIdCommand As SQLiteCommand
 
         Shared Sub New()
             Using Command As SQLiteCommand = Database.CreateCommand( _
-                "CREATE TABLE IF NOT EXISTS DataSourceMapping3 (" & _
+                "CREATE TABLE IF NOT EXISTS SourceMapping (" & _
                 "Id INTEGER PRIMARY KEY AUTOINCREMENT, " & _
                 "ClassName TEXT, " & _
                 "Namespace TEXT, " & _
@@ -19,17 +20,19 @@
             End Using
 
             m_SelectCommand = Database.CreateCommand( _
-                "SELECT * FROM DataSourceMapping3")
+                "SELECT * FROM SourceMapping")
             m_SelectHeaderCommand = Database.CreateCommand( _
-                "SELECT Id, ClassName, Namespace, Parameter FROM DataSourceMapping3")
+                "SELECT Id, ClassName, Namespace, Parameter FROM SourceMapping")
             m_SelectConfigCommand = Database.CreateCommand( _
-                "SELECT * FROM DataSourceMapping3 WHERE Id = @Id")
+                "SELECT * FROM SourceMapping WHERE Id = @Id")
             m_InsertCommand = Database.CreateCommand( _
-                "INSERT INTO DataSourceMapping3 (Id, ClassName, Namespace, Parameter, HttpAnnouncement) VALUES (NULL, @ClassName, @Namespace, @Parameter, @HttpAnnouncement)")
+                "INSERT INTO SourceMapping (Id, ClassName, Namespace, Parameter, HttpAnnouncement) VALUES (NULL, @ClassName, @Namespace, @Parameter, @HttpAnnouncement)")
             m_DeleteCommand = Database.CreateCommand( _
-                "DELETE FROM DataSourceMapping3 WHERE Id = @Id")
+                "DELETE FROM SourceMapping WHERE Id = @Id")
             m_UpdateCommand = Database.CreateCommand( _
-                "UPDATE DataSourceMapping3 SET ClassName = @ClassName, Namespace = @Namespace, Parameter = @Parameter, HttpAnnouncement = @HttpAnnouncement WHERE Id = @Id")
+                "UPDATE SourceMapping SET ClassName = @ClassName, Namespace = @Namespace, Parameter = @Parameter, HttpAnnouncement = @HttpAnnouncement WHERE Id = @Id")
+            m_UpdateIdCommand = Database.CreateCommand( _
+                "UPDATE CompilerMapping2 SET Id = @Id WHERE Id = @OriginalId")
         End Sub
 
         Public Shared Function GetAll() As IDataReader
@@ -38,12 +41,12 @@
             End Using
         End Function
 
-        Public Shared Function GetConfig(ByVal Id As Int32) As DataSourceConfig
+        Public Shared Function GetConfig(ByVal Id As Int32) As SourceConfig
             Using Command As SQLiteCommand = m_SelectConfigCommand.Clone()
                 Command.Parameters.AddWithValue("@Id", Id)
                 Using Reader As IDataReader = Command.ExecuteReader()
                     If Reader.Read() Then
-                        Return New DataSourceConfig(Reader)
+                        Return New SourceConfig(Reader)
                     Else
                         Return Nothing
                     End If
@@ -88,6 +91,34 @@
                     .AddWithValue("@HttpAnnouncement", HttpAnnouncement)
                 End With
                 Command.ExecuteNonQuery()
+            End Using
+        End Sub
+
+        Public Shared Sub Swap(ByVal Id0 As Int32, ByVal Id1 As Int32)
+            Using Command0 As SQLiteCommand = m_UpdateIdCommand.Clone(), _
+                Command1 As SQLiteCommand = m_UpdateIdCommand.Clone(), _
+                Command2 As SQLiteCommand = m_UpdateIdCommand.Clone(), _
+                Transaction As SQLiteTransaction = Database.CreateTransaction()
+
+                Command0.Transaction = Transaction
+                Command1.Transaction = Transaction
+                Command2.Transaction = Transaction
+                With Command0.Parameters
+                    .AddWithValue("Id", 0)
+                    .AddWithValue("OriginalId", Id0)
+                End With
+                With Command1.Parameters
+                    .AddWithValue("Id", Id0)
+                    .AddWithValue("OriginalId", Id1)
+                End With
+                With Command2.Parameters
+                    .AddWithValue("Id", Id1)
+                    .AddWithValue("OriginalId", 0)
+                End With
+                Command0.ExecuteNonQuery()
+                Command1.ExecuteNonQuery()
+                Command2.ExecuteNonQuery()
+                Transaction.Commit()
             End Using
         End Sub
     End Class

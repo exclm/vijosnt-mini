@@ -1,4 +1,4 @@
-﻿Imports VijosNT.Feeding
+﻿Imports VijosNT.Testing
 
 Namespace Foreground
     Friend Class StressTest

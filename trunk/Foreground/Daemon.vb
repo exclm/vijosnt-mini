@@ -1,6 +1,6 @@
-﻿Imports VijosNT.Feeding
-Imports VijosNT.LocalDb
+﻿Imports VijosNT.LocalDb
 Imports VijosNT.Remoting
+Imports VijosNT.Testing
 Imports VijosNT.Win32
 
 Namespace Foreground
@@ -304,9 +304,9 @@ Namespace Foreground
             End Try
         End Function
 
-        Public Function ReloadTestSuite() As Boolean
+        Public Function ReloadSource() As Boolean
             Try
-                m_PipeClient.Write(ClientMessage.ReloadTestSuite)
+                m_PipeClient.Write(ClientMessage.ReloadSource)
                 Return True
             Catch ex As Exception
                 Return False
@@ -316,15 +316,6 @@ Namespace Foreground
         Public Function ReloadExecutor() As Boolean
             Try
                 m_PipeClient.Write(ClientMessage.ReloadExecutor)
-                Return True
-            Catch ex As Exception
-                Return False
-            End Try
-        End Function
-
-        Public Function ReloadDataSource() As Boolean
-            Try
-                m_PipeClient.Write(ClientMessage.ReloadDataSource)
                 Return True
             Catch ex As Exception
                 Return False

@@ -1,4 +1,5 @@
-﻿Imports VijosNT.Feeding
+﻿Imports VijosNT.Sources
+Imports VijosNT.Testing
 Imports VijosNT.Utility
 
 Namespace Foreground
@@ -513,7 +514,7 @@ Namespace Foreground
                                                         End Sub))
                                                     Dim tr As New TestRecord(Me, RecordItem, tu)
                                                     Using FinishedEvent As New ManualResetEvent(False)
-                                                        If m_Daemon.DirectFeed2(txtNamespace1.Text, "P" & TrimmedProblem & VijosDataSource.GetCompilerExtension(Compiler), m_VijosPath & "Upload\U" & UserId.ToString() & "\P" & TrimmedProblem & ".pas", _
+                                                        If m_Daemon.DirectFeed2(txtNamespace1.Text, "P" & TrimmedProblem & VijosSource.GetCompilerExtension(Compiler), m_VijosPath & "Upload\U" & UserId.ToString() & "\P" & TrimmedProblem & ".pas", _
                                                             Sub(Result As TestResult)
                                                                 tr.Finish(Result)
                                                                 FinishedEvent.Set()

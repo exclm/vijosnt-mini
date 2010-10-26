@@ -20,7 +20,7 @@ Namespace Compiling
 
         Public Function CreateInstance() As TargetInstance
             Dim Compiler As Compiler = m_CompilerInstance.Compiler
-            Dim TempPath As TempPath = TempPathServer.Singleton.CreateTempPath()
+            Dim TempPath As TempPath = TempPathServer.Singleton().CreateTempPath()
             Using DestinationStream As New FileStream(TempPath.Combine(Compiler.TargetFileName), FileMode.CreateNew, FileAccess.Write, FileShare.None)
                 BufferedCopySeek0(m_TargetStream, DestinationStream)
             End Using

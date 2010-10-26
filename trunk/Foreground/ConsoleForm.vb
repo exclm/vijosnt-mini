@@ -69,12 +69,10 @@ Namespace Foreground
                     End If
                 Case "CompilerPage"
                     ApplyCompilerButton.PerformClick()
-                Case "TestSuitePage"
-                    ApplyTestSuiteButton.PerformClick()
+                Case "SourcePage"
+                    ApplySourceButton.PerformClick()
                 Case "ExecutorPage"
                     ApplyExecutorButton.PerformClick()
-                Case "DataSourcePage"
-                    ApplyDataSourceButton.PerformClick()
             End Select
             StatusLabel.Text = Nothing
         End Sub
@@ -97,11 +95,11 @@ Namespace Foreground
                         RefreshListView(CompilerList, Reader, "Id", "Pattern", "CommandLine")
                     End Using
                     CompilerList_SelectedIndexChanged(Nothing, Nothing)
-                Case "TestSuitePage"
-                    Using Reader As IDataReader = TestSuiteMapping.GetAll()
-                        RefreshListView(TestSuiteList, Reader, "Id", "Pattern", "NamespacePattern", "ClassName", "Parameter")
+                Case "SourcePage"
+                    Using Reader As IDataReader = SourceMapping.GetHeaders()
+                        RefreshListView(SourceList, Reader, "Id", "ClassName", "Namespace", "Parameter")
                     End Using
-                    TestSuiteList_SelectedIndexChanged(Nothing, Nothing)
+                    SourceList_SelectedIndexChanged(Nothing, Nothing)
                 Case "ExecutorPage"
                     RemoveHandler ExecutorSlotsText.TextChanged, AddressOf ExecutorSlotsText_TextChanged
                     ExecutorSlotsText.Text = Config.ExecutorSlots
@@ -116,11 +114,6 @@ Namespace Foreground
                     End If
                     AddHandler ExecutorSecurityCombo.SelectedIndexChanged, AddressOf ExecutorSecurityCombo_SelectedIndexChanged
                     RefreshSecurity()
-                Case "DataSourcePage"
-                    Using Reader As IDataReader = DataSourceMapping.GetHeaders()
-                        RefreshListView(DataSourceList, Reader, "Id", "ClassName", "Namespace", "Parameter")
-                    End Using
-                    DataSourceList_SelectedIndexChanged(Nothing, Nothing)
             End Select
         End Sub
 #End Region
@@ -459,100 +452,6 @@ Namespace Foreground
         End Sub
 #End Region
 
-#Region "Test suite page"
-        Private Sub TestSuiteList_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TestSuiteList.SelectedIndexChanged
-            With TestSuiteList.SelectedItems
-                If .Count <> 0 Then
-                    TestSuiteProperty.SelectedObject = TestSuiteMapping.GetConfig(.Item(0).Tag)
-                    RemoveTestSuiteButton.Enabled = True
-                    With .Item(0)
-                        MoveUpTestSuiteButton.Enabled = .Index <> 0
-                        MoveDownTestSuiteButton.Enabled = .Index <> TestSuiteList.Items.Count - 1
-                    End With
-                Else
-                    TestSuiteProperty.SelectedObject = Nothing
-                    RemoveTestSuiteButton.Enabled = False
-                    MoveUpTestSuiteButton.Enabled = False
-                    MoveDownTestSuiteButton.Enabled = False
-                End If
-            End With
-        End Sub
-
-        Private Sub AddTestSuiteButton_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddTestSuiteButton.ButtonClick, NewTestSuiteMenu.Click
-            TestSuiteMapping.Add("*", String.Empty, "APlusB", String.Empty)
-            ApplyTestSuiteButton.Enabled = True
-            RefreshPage()
-        End Sub
-
-        Private Sub AddAPlusBMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddAPlusBMenu.Click
-            TestSuiteMapping.Add("A+B", String.Empty, "APlusB", String.Empty)
-            ApplyTestSuiteButton.Enabled = True
-            RefreshPage()
-        End Sub
-
-        Private Sub AddVijosSuiteMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddVijosSuiteMenu.Click
-            Using Dialog As New FolderBrowserDialog
-                Dialog.Description = "请选择包含 Vijos 格式数据集的目录"
-                If Dialog.ShowDialog() = DialogResult.OK Then
-                    TestSuiteMapping.Add("*", String.Empty, "Vijos", "Root=" & Dialog.SelectedPath & ";MemoryQuota=134217728")
-                    ApplyTestSuiteButton.Enabled = True
-                    RefreshPage()
-                End If
-            End Using
-        End Sub
-
-        Private Sub AddFreeSuiteMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddFreeSuiteMenu.Click
-            Using Dialog As New FolderBrowserDialog
-                Dialog.Description = "请选择包含 Free 格式数据集的目录"
-                If Dialog.ShowDialog() = DialogResult.OK Then
-                    TestSuiteMapping.Add("*", String.Empty, "Free", "Root=" & Dialog.SelectedPath & ";TimeQuota=10000000;MemoryQuota=134217728")
-                    ApplyTestSuiteButton.Enabled = True
-                    RefreshPage()
-                End If
-            End Using
-        End Sub
-
-        Private Sub RemoveTestSuiteButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RemoveTestSuiteButton.Click
-            TestSuiteMapping.Remove(TestSuiteList.SelectedItems.Item(0).Tag)
-            ApplyTestSuiteButton.Enabled = True
-            RefreshPage()
-        End Sub
-
-        Private Sub MoveUpTestSuiteButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MoveUpTestSuiteButton.Click
-            With TestSuiteList.SelectedItems.Item(0)
-                Dim Id As Int32 = .Tag
-                With TestSuiteList.Items(.Index - 1)
-                    TestSuiteMapping.Swap(Id, .Tag)
-                    .Selected = True
-                End With
-            End With
-            ApplyTestSuiteButton.Enabled = True
-            RefreshPage()
-        End Sub
-
-        Private Sub MoveDownTestSuiteButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MoveDownTestSuiteButton.Click
-            With TestSuiteList.SelectedItems.Item(0)
-                Dim Id As Int32 = .Tag
-                With TestSuiteList.Items(.Index + 1)
-                    TestSuiteMapping.Swap(Id, .Tag)
-                    .Selected = True
-                End With
-            End With
-            ApplyTestSuiteButton.Enabled = True
-            RefreshPage()
-        End Sub
-
-        Private Sub ApplyTestSuiteButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ApplyTestSuiteButton.Click
-            m_Daemon.ReloadTestSuite()
-            ApplyTestSuiteButton.Enabled = False
-        End Sub
-
-        Private Sub TestSuiteProperty_PropertyValueChanged(ByVal s As Object, ByVal e As System.Windows.Forms.PropertyValueChangedEventArgs) Handles TestSuiteProperty.PropertyValueChanged
-            ApplyTestSuiteButton.Enabled = True
-            RefreshPage()
-        End Sub
-#End Region
-
 #Region "Executor page"
         Private Sub ExecutorSlotsText_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ExecutorSlotsText.TextChanged
             ApplyExecutorButton.Enabled = True
@@ -644,64 +543,99 @@ Namespace Foreground
         End Sub
 #End Region
 
-#Region "Data source page"
-        Private Sub DataSourceList_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles DataSourceList.SelectedIndexChanged
-            With DataSourceList.SelectedItems
+#Region "Source page"
+        Private Sub SourceList_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles SourceList.SelectedIndexChanged
+            With SourceList.SelectedItems
                 If .Count <> 0 Then
-                    DataSourceProperty.SelectedObject = DataSourceMapping.GetConfig(.Item(0).Tag)
-                    RemoveDataSourceButton.Enabled = True
+                    SourceProperty.SelectedObject = SourceMapping.GetConfig(.Item(0).Tag)
+                    RemoveSourceButton.Enabled = True
+                    With .Item(0)
+                        MoveUpSourceButton.Enabled = .Index <> 0
+                        MoveDownSourceButton.Enabled = .Index <> SourceList.Items.Count - 1
+                    End With
                 Else
-                    DataSourceProperty.SelectedObject = Nothing
-                    RemoveDataSourceButton.Enabled = False
+                    SourceProperty.SelectedObject = Nothing
+                    RemoveSourceButton.Enabled = False
+                    MoveUpSourceButton.Enabled = False
+                    MoveDownSourceButton.Enabled = False
                 End If
             End With
         End Sub
 
-        Private Sub AddDataSourceButton_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddDataSourceButton.ButtonClick, NewDataSourceMenu.Click
-            DataSourceMapping.Add("Vijos", String.Empty, String.Empty, String.Empty)
-            ApplyDataSourceButton.Enabled = True
+        Private Sub AddSourceButton_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddSourceButton.ButtonClick, NewSourceMenu.Click
+            SourceMapping.Add("Vijos", String.Empty, String.Empty, String.Empty)
+            ApplySourceButton.Enabled = True
             RefreshPage()
         End Sub
 
-        Private Sub RemoveDataSourceButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RemoveDataSourceButton.Click
-            DataSourceMapping.Remove(DataSourceList.SelectedItems.Item(0).Tag)
-            ApplyDataSourceButton.Enabled = True
+        Private Sub RemoveSourceButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RemoveSourceButton.Click
+            SourceMapping.Remove(SourceList.SelectedItems.Item(0).Tag)
+            ApplySourceButton.Enabled = True
             RefreshPage()
         End Sub
 
-        Private Sub ApplyDataSourceButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ApplyDataSourceButton.Click
-            m_Daemon.ReloadDataSource()
-            ApplyDataSourceButton.Enabled = False
-        End Sub
-
-        Private Sub DataSourceProperty_PropertyValueChanged(ByVal s As Object, ByVal e As System.Windows.Forms.PropertyValueChangedEventArgs) Handles DataSourceProperty.PropertyValueChanged
-            ApplyDataSourceButton.Enabled = True
+        Private Sub MoveUpSourceButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MoveUpSourceButton.Click
+            With SourceList.SelectedItems.Item(0)
+                Dim Id As Int32 = .Tag
+                With SourceList.Items(.Index - 1)
+                    SourceMapping.Swap(Id, .Tag)
+                    .Selected = True
+                End With
+            End With
+            ApplySourceButton.Enabled = True
             RefreshPage()
         End Sub
 
-        Private Sub VijosDataSourceMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles VijosDataSourceMenu.Click
-            DataSourceMapping.Add("Vijos", String.Empty, "Server=(local);Database=vijos;UserName=sa;Password=admin", String.Empty)
-            ApplyDataSourceButton.Enabled = True
+        Private Sub MoveDownSourceButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MoveDownSourceButton.Click
+            With SourceList.SelectedItems.Item(0)
+                Dim Id As Int32 = .Tag
+                With SourceList.Items(.Index + 1)
+                    SourceMapping.Swap(Id, .Tag)
+                    .Selected = True
+                End With
+            End With
+            ApplySourceButton.Enabled = True
             RefreshPage()
         End Sub
 
-        Private Sub VijosLocalDataSourceMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles VijosLocalDataSourceMenu.Click
-            Using Dialog As New OpenFileDialog
-                Dialog.Title = "请选择 Vijos 设置文件 (Config.xml)"
-                Dialog.Filter = "Config.xml|Config.xml"
+        Private Sub ApplySourceButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ApplySourceButton.Click
+            m_Daemon.ReloadSource()
+            ApplySourceButton.Enabled = False
+        End Sub
+
+        Private Sub SourceProperty_PropertyValueChanged(ByVal s As Object, ByVal e As System.Windows.Forms.PropertyValueChangedEventArgs) Handles SourceProperty.PropertyValueChanged
+            ApplySourceButton.Enabled = True
+            RefreshPage()
+        End Sub
+
+        Private Sub APlusBSourceMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles APlusBSourceMenu.Click
+            SourceMapping.Add("APlusB", String.Empty, String.Empty, String.Empty)
+            ApplySourceButton.Enabled = True
+            RefreshPage()
+        End Sub
+
+        Private Sub FreeSourceMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles FreeSourceMenu.Click
+            Using Dialog As New FolderBrowserDialog()
+                Dialog.Description = "请选择包含测试数据的目录"
                 If Dialog.ShowDialog() = DialogResult.OK Then
-                    DataSourceMapping.Add("Vijos", String.Empty, "Config=" & Dialog.FileName, String.Empty)
-                    ApplyDataSourceButton.Enabled = True
+                    SourceMapping.Add("Free", String.Empty, "Root=" & Dialog.SelectedPath, String.Empty)
+                    ApplySourceButton.Enabled = True
                     RefreshPage()
                 End If
             End Using
         End Sub
 
-        Private Sub _22OJSDataSourceMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _22OJSDataSourceMenu.Click
-            DataSourceMapping.Add("_22OJS", String.Empty, "Server=(local);Database=22OJS;UserName=sa;Password=admin", String.Empty)
-            ApplyDataSourceButton.Enabled = True
-            RefreshPage()
+        Private Sub VijosSourceMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles VijosSourceMenu.Click
+            Using Dialog As New FolderBrowserDialog()
+                Dialog.Description = "请选择 Vijos 根目录 (包含 Config.xml)"
+                If Dialog.ShowDialog() = DialogResult.OK Then
+                    SourceMapping.Add("Vijos", String.Empty, "Root=" & Dialog.SelectedPath, String.Empty)
+                    ApplySourceButton.Enabled = True
+                    RefreshPage()
+                End If
+            End Using
         End Sub
 #End Region
+
     End Class
 End Namespace

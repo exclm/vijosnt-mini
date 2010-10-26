@@ -1,6 +1,6 @@
 ﻿Imports VijosNT.Utility
 
-Namespace Feeding
+Namespace Testing
     Friend Class TestResult
         Public Sub New(ByVal Flag As TestResultFlag, ByVal Warning As String, ByVal Score As Int32, ByVal TimeUsage As Int64, ByVal MemoryUsage As Int64, ByVal Entries As IEnumerable(Of TestResultEntry))
             Me.Flag = Flag

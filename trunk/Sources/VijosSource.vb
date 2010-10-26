@@ -1,9 +1,29 @@
-﻿Namespace Feeding
-    Friend Class VijosDataSource
-        Inherits DataSourceBase
+﻿Imports VijosNT.Testing
 
-        Private m_TesterId As Int32
+Namespace Sources
+    Friend Class VijosSource
+        Inherits Source
+
+        Private Class Config
+            Public Sub New(ByVal Index As Int32, ByVal InputFileName As String, ByVal AnswerFileName As String, ByVal TimeQuota As Int64, ByVal Weight As Int32)
+                Me.Index = Index
+                Me.InputFileName = InputFileName
+                Me.AnswerFileName = AnswerFileName
+                Me.TimeQuota = TimeQuota
+                Me.Weight = Weight
+            End Sub
+
+            Public Index As Int32
+            Public InputFileName As String
+            Public AnswerFileName As String
+            Public TimeQuota As Int64
+            Public Weight As Int32
+        End Class
+
+        Private m_ProblemRoot As String
+        Private m_MemoryQuota As Int64
         Private m_ConnectionString As String
+        Private m_TesterId As Int32
         Private m_SelectCodeCommand As SqlCommand
         Private m_SelectHeaderCommand As SqlCommand
         Private m_UpdateTakenCommand As SqlCommand
@@ -19,6 +39,9 @@
             Dim Database As String = Nothing
             Dim UserName As String = Nothing
             Dim Password As String = Nothing
+
+            m_ProblemRoot = Nothing
+            m_MemoryQuota = 128 * 1024 * 1024
             m_TesterId = 1
 
             For Each Parameter In Parameters.Split(New Char() {";"c})
@@ -27,8 +50,8 @@
                 Dim Key = Parameter.Substring(0, Position)
                 Dim Value = Parameter.Substring(Position + 1)
                 Select Case Key.ToLower()
-                    Case "config"
-                        Using Reader = XmlReader.Create(Value)
+                    Case "root"
+                        Using Reader = XmlReader.Create(Path.Combine(Value, "Config.xml"))
                             If Reader.ReadToFollowing("Config") Then
                                 If Reader.MoveToAttribute("DataName") Then _
                                     Database = Reader.ReadContentAsString()
@@ -42,16 +65,9 @@
                                     m_TesterId = Int32.Parse(Reader.ReadContentAsString())
                             End If
                         End Using
-                    Case "server"
-                        Server = Value
-                    Case "database"
-                        Database = Value
-                    Case "username"
-                        UserName = Value
-                    Case "password"
-                        Password = Value
-                    Case "testerid"
-                        m_TesterId = Int32.Parse(Value)
+                        m_ProblemRoot = Path.Combine(Value, "Problem")
+                    Case "memoryquota"
+                        Int64.TryParse(Value, m_MemoryQuota)
                 End Select
             Next
             If Server Is Nothing Then _
@@ -64,6 +80,10 @@
                 Throw New ArgumentNullException("Password")
             If m_TesterId <= 0 Then _
                 Throw New ArgumentOutOfRangeException("TesterId", "TesterId 必须为一个正整数")
+            If m_ProblemRoot Is Nothing Then _
+                Throw New ArgumentNullException("Root")
+            If m_MemoryQuota <= 0 Then _
+                Throw New ArgumentOutOfRangeException("MemoryQuota", "MemoryQuota 必须为一个正整数")
 
             Dim ConnectionBuilder = New SqlConnectionStringBuilder
             ConnectionBuilder.DataSource = Server
@@ -105,6 +125,52 @@
                 "END;")
         End Sub
 
+        Public Overrides Function TryLoad(ByVal Id As String) As IEnumerable(Of TestCase)
+            Try
+                Dim ProblemRoot As String = Path.Combine(m_ProblemRoot, Id)
+                Dim Result As New List(Of TestCase)
+                Dim Configs As IEnumerable(Of Config) = LoadConfig(ProblemRoot)
+                Dim Weight As Int32 = 0
+                Dim Index As Int32 = 0
+                Dim TotalWeight As Int32 = 0
+                For Each Config As Config In Configs
+                    Index += 1
+                    TotalWeight += Config.Weight
+                Next
+                Weight = 100
+                For Each Config As Config In Configs
+                    Index -= 1
+                    If Index = 0 Then
+                        Config.Weight = Weight
+                    Else
+                        Config.Weight = Config.Weight * 100 \ TotalWeight
+                        Weight -= Config.Weight
+                    End If
+                    Result.Add(LoadTestCase(ProblemRoot, Config))
+                Next
+                Return Result
+            Catch ex As Exception
+                Return Nothing
+            End Try
+        End Function
+
+        Private Function LoadConfig(ByVal ProblemRoot As String) As IEnumerable(Of Config)
+            Using Reader As New StreamReader(Path.Combine(ProblemRoot, "Config.ini"))
+                Dim Count As Int32 = Int32.Parse(Reader.ReadLine())
+                Dim Result As New List(Of Config)
+                For Index As Int32 = 0 To Count - 1
+                    Dim Arguments As String() = Split(Reader.ReadLine(), "|", 5)
+                    Result.Add(New Config(Index + 1, Path.Combine("Input", Arguments(0)), Path.Combine("Output", Arguments(1)), _
+                        Convert.ToInt64(Double.Parse(Arguments(2)) * 10000 * 1000), Int32.Parse(Arguments(3))))
+                Next
+                Return Result
+            End Using
+        End Function
+
+        Private Function LoadTestCase(ByVal ProblemRoot As String, ByVal Config As Config) As TestCase
+            Return New LocalTestCase(Config.Index, Config.Weight, Path.Combine(ProblemRoot, Config.InputFileName), Path.Combine(ProblemRoot, Config.AnswerFileName), Config.TimeQuota, m_MemoryQuota)
+        End Function
+
         Private Function CloneConnection() As SqlConnection
             Dim Result As New SqlConnection(m_ConnectionString)
             Result.Open()
@@ -132,7 +198,7 @@
             End If
         End Function
 
-        Public Overrides Function Take(ByVal Id As Int32) As DataSourceRecord
+        Public Overrides Function Take(ByVal Id As Int32) As SourceRecord
             Using Connection As SqlConnection = CloneConnection()
                 Using Command As SqlCommand = CloneCommand(m_UpdateTakenCommand, Connection)
                     Command.Parameters.AddWithValue("@Id", Id)
@@ -143,7 +209,7 @@
                     Using Reader As SqlDataReader = Command.ExecuteReader()
                         If Not Reader.Read() Then _
                             Return Nothing
-                        Return New DataSourceRecord("P" & Reader("ProblemID") & GetCompilerExtension(Reader("Compiler")), Reader("Code"))
+                        Return New SourceRecord("P" & Reader("ProblemID") & GetCompilerExtension(Reader("Compiler")), Reader("Code"))
                     End Using
                 End Using
             End Using

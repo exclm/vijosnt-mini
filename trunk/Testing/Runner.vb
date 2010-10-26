@@ -1,10 +1,10 @@
 ﻿Imports VijosNT.Compiling
 Imports VijosNT.Executing
-Imports VijosNT.Testing
+Imports VijosNT.Sources
 Imports VijosNT.Utility
 Imports VijosNT.Win32
 
-Namespace Feeding
+Namespace Testing
     Friend Class Runner
         Implements IDisposable
 
@@ -36,36 +36,29 @@ Namespace Feeding
             Public TestCase As TestCase
         End Class
 
-        Private m_WatchDog As WatchDog
-        Private m_ProcessMonitor As ProcessMonitor
         Private m_Executor As Executor
-        Private m_TestSuitePool As TestSuitePool
-        Private m_DataSourcePool As DataSourcePool
         Private m_Running As Int32
         Private m_CanExit As ManualResetEvent
         Private m_AllowQueuing As Boolean
 
         Private Sub New()
-            m_WatchDog = New WatchDog()
-            m_ProcessMonitor = New ProcessMonitor()
             TempPathServer.Singleton()
             m_Executor = New Executor()
-            m_WatchDog.Start()
-            m_ProcessMonitor.Start()
+            WatchDog.Singleton().Start()
+            ProcessMonitor.Singleton().Start()
             CompilerPool.Singleton()
-            m_TestSuitePool = New TestSuitePool()
-            m_DataSourcePool = New DataSourcePool(Me)
+            SourcePool.Singleton()
             m_Running = 0
             m_CanExit = New ManualResetEvent(True)
             m_AllowQueuing = True
         End Sub
 
         Public Sub ReloadCompiler()
-            CompilerPool.Singleton.Reload()
+            CompilerPool.Singleton().Reload()
         End Sub
 
-        Public Sub ReloadTestSuite()
-            m_TestSuitePool.Reload()
+        Public Sub ReloadSource()
+            SourcePool.Singleton().Reload()
         End Sub
 
         Public Sub ReloadExecutor()
@@ -76,12 +69,8 @@ Namespace Feeding
             m_AllowQueuing = True
         End Sub
 
-        Public Sub ReloadDataSource()
-            m_DataSourcePool.Reload()
-        End Sub
-
         Private Structure FeedContext
-            Dim Source As DataSourceBase
+            Dim Source As Source
             Dim Id As Int32
         End Structure
 
@@ -104,8 +93,8 @@ Namespace Feeding
 
             Dim Context As New TestContext()
             Context.Completion = Completion
-            Context.Compiler = CompilerPool.Singleton.TryGet(Path.GetExtension(FileName))
-            Context.TestCases = m_TestSuitePool.TryLoad([Namespace], Path.GetFileNameWithoutExtension(FileName))
+            Context.Compiler = CompilerPool.Singleton().TryGet(Path.GetExtension(FileName))
+            Context.TestCases = SourcePool.Singleton().TryLoad([Namespace], Path.GetFileNameWithoutExtension(FileName))
             Context.Flag = TestResultFlag.None
             Context.Score = 0
             Context.TimeUsage = 0
@@ -139,7 +128,7 @@ Namespace Feeding
                     TestCompileCompletion(Result)
                 Else
                     Try
-                        m_Executor.Queue(New CompilerExecutee(m_WatchDog, m_ProcessMonitor, Context.Compiler, SourceCode, AddressOf TestCompileCompletion, Context))
+                        m_Executor.Queue(New CompilerExecutee(Context.Compiler, SourceCode, AddressOf TestCompileCompletion, Context))
                     Catch ex As Exception
                         Context.Completion.Invoke(New TestResult(TestResultFlag.InternalError, ex.ToString(), 0, 0, 0, Nothing))
                         If Interlocked.Decrement(m_Running) = 0 Then
@@ -212,7 +201,7 @@ Namespace Feeding
                     Dim TestCaseContext As New TestCaseContext()
                     TestCaseContext.TestContext = Context
                     TestCaseContext.TestCase = TestCase
-                    m_Executor.Queue(New TestCaseExecutee(m_WatchDog, m_ProcessMonitor, Result.Target.CreateInstance(), TestCase, AddressOf TestExecuteCompletion, TestCaseContext))
+                    m_Executor.Queue(New TestCaseExecutee(Result.Target.CreateInstance(), TestCase, AddressOf TestExecuteCompletion, TestCaseContext))
                 Next
                 Result.Target.Dispose()
                 TestWorkCompleted(Context)
@@ -306,11 +295,11 @@ Namespace Feeding
                     m_AllowQueuing = False
                     m_CanExit.WaitOne()
                     m_CanExit.Close()
-                    m_DataSourcePool.Dispose()
+                    SourcePool.Singleton().Dispose()
                     m_Executor.Dispose()
-                    m_ProcessMonitor.Stop()
-                    m_WatchDog.Stop()
-                    TempPathServer.Singleton.Dispose()
+                    ProcessMonitor.Singleton().Stop()
+                    WatchDog.Singleton().Stop()
+                    TempPathServer.Singleton().Dispose()
                 End If
             End If
             Me.disposedValue = True

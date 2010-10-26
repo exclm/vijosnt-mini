@@ -1,18 +1,16 @@
-﻿Imports VijosNT.Feeding
-Imports VijosNT.LocalDb
+﻿Imports VijosNT.LocalDb
 Imports VijosNT.Remoting
+Imports VijosNT.Testing
 
 Namespace Background
     Friend Class Service
         Inherits ServiceBase
 
-        Private m_Server As PipeServer
-
         Public Sub New()
             AutoLog = False
             ServiceName = My.Resources.ServiceName
             Runner.Singleton()
-            m_Server = New PipeServer()
+            PipeServer.Singleton()
         End Sub
 
         Protected Overrides Sub OnStart(ByVal args() As String)
@@ -27,7 +25,7 @@ Namespace Background
         End Sub
 
         Protected Overrides Sub OnStop()
-            Runner.Singleton.Dispose()
+            Runner.Singleton().Dispose()
             EventLog.WriteEntry("服务已成功停止。")
         End Sub
     End Class
