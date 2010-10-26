@@ -16,9 +16,7 @@ Namespace Sources
         Private m_UpdateUserCommand As SqlCommand
         Private m_UpdateUserSubmitCommand As SqlCommand
 
-        Public Sub New(ByVal [Namespace] As String, ByVal Parameters As String)
-            MyBase.New([Namespace])
-
+        Public Sub New(ByVal Parameters As String)
             Dim Server As String = Nothing
             Dim Database As String = Nothing
             Dim UserName As String = Nothing

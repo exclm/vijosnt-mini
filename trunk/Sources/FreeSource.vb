@@ -8,9 +8,7 @@ Namespace Sources
         Private m_TimeQuota As Int64
         Private m_MemoryQuota As Int64
 
-        Public Sub New(ByVal [Namespace] As String, ByVal Parameters As String)
-            MyBase.New([Namespace])
-
+        Public Sub New(ByVal Parameters As String)
             m_Root = Nothing
             m_TimeQuota = 1000 * 10000
             m_MemoryQuota = 128 * 1024 * 1024

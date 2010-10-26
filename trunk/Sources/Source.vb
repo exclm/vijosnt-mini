@@ -4,14 +4,14 @@ Namespace Sources
     Friend Class Source
         Private m_Namespace As String
 
-        Public Sub New(ByVal [Namespace] As String)
-            m_Namespace = [Namespace]
-        End Sub
-
-        Public ReadOnly Property [Namespace] As String
+        Public Property [Namespace] As String
             Get
                 Return m_Namespace
             End Get
+
+            Set(ByVal Value As String)
+                m_Namespace = [Namespace]
+            End Set
         End Property
 
         Public Overridable Function Take(ByVal Id As Int32) As SourceRecord
