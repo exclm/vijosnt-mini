@@ -96,7 +96,13 @@
             Private m_Automaton As Int32
             Private m_KeepAlive As Boolean
 
+            Private Sub Close()
+                RemoveHandler MiniHttpServer.Singleton().OnStop, AddressOf Close
+                m_Client.Close()
+            End Sub
+
             Public Sub New(ByVal Listener As Listener, ByVal Client As TcpClient)
+                AddHandler MiniHttpServer.Singleton().OnStop, AddressOf Close
                 m_Listener = Listener
                 m_Client = Client
                 m_Buffer = New Byte(0 To 4095) {}
@@ -107,7 +113,7 @@
                 Try
                     NetworkStream.BeginRead(m_Buffer, 0, m_Buffer.Length, AddressOf OnRead, Nothing)
                 Catch ex As Exception
-                    m_Client.Close()
+                    Close()
                 End Try
             End Sub
 
@@ -117,7 +123,7 @@
 
                     If Length = 0 Then
                         NetworkStream.Close()
-                        m_Client.Close()
+                        Close()
                         Return
                     End If
 
@@ -149,7 +155,7 @@
 
                     NetworkStream.BeginRead(m_Buffer, 0, m_Buffer.Length, AddressOf OnRead, m_Buffer)
                 Catch ex As Exception
-                    m_Client.Close()
+                    Close()
                 End Try
             End Sub
 
@@ -307,7 +313,7 @@
                     Dim Buffer = DirectCast(Result.AsyncState, Byte())
                     NetworkStream.BeginWrite(Buffer, 0, Buffer.Length, AddressOf OnWrite1, Nothing)
                 Catch ex As Exception
-                    m_Client.Close()
+                    Close()
                 End Try
             End Sub
 
@@ -317,10 +323,12 @@
                     NetworkStream.EndWrite(Result)
                     If Not m_KeepAlive Then NetworkStream.Close()
                 Catch ex As Exception
-                    m_Client.Close()
+                    Close()
                 End Try
             End Sub
         End Class
+
+        Public Event OnStop()
 
         Private m_SyncRoot As Object
         Private m_Contexts As IEnumerable(Of Listener)
@@ -336,6 +344,7 @@
                 Next
                 m_Contexts = Nothing
             End If
+            RaiseEvent OnStop()
         End Sub
 
         Public Sub Start(ByVal Prefixes As IEnumerable(Of KeyValuePair(Of String, Context)))

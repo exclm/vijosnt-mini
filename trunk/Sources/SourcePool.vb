@@ -39,6 +39,10 @@ Namespace Sources
                                 Source = New APlusBSource([Namespace])
                             Case "Vijos"
                                 Source = New VijosSource([Namespace], Reader("Parameter"))
+                            Case "Free"
+                                Source = New FreeSource([Namespace], Reader("Parameter"))
+                            Case "_22OJS"
+                                Source = New _22OJSSource([Namespace], Reader("Parameter"))
                             Case Else
                                 EventLog.WriteEntry(My.Resources.ServiceName, "数据源加载失败" & vbCrLf & "未找到类名为 " & Reader("ClassName") & " 的数据源提供程序。", EventLogEntryType.Warning)
                                 Continue While
