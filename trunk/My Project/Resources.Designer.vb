@@ -134,15 +134,18 @@ Namespace My.Resources
         '''&lt;xsl:stylesheet version=&quot;1.0&quot; xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot;&gt;
         '''  &lt;xsl:output method=&quot;html&quot; /&gt;
         '''
-        '''  &lt;xsl:template match=&quot;/&quot;&gt;
+        '''  &lt;xsl:template match=&quot;/TestResult&quot;&gt;
         '''    &lt;html&gt;
-        '''      &lt;body&gt;
-        '''        &lt;h2&gt;Hello world!&lt;/h2&gt;
-        '''      &lt;/body&gt;
-        '''    &lt;/html&gt;
-        '''  &lt;/xsl:template&gt;
-        '''&lt;/xsl:stylesheet&gt;
-        ''' 的本地化字符串。
+        '''      &lt;head&gt;
+        '''        &lt;style type=&quot;text/css&quot;&gt;
+        '''          &lt;xsl:text disable-output-escaping=&quot;yes&quot;&gt; 
+        '''            &lt;![CDATA[
+        '''.code *{
+        '''	font-size:12px !important;
+        '''	text-decoration:none !important;
+        '''	font-variant:none !important;
+        '''	font-family:Consolas,Monaco,&quot;Lucida Console&quot; !important;
+        '''	font-style:normal  [字符串的其余部分被截断]&quot;; 的本地化字符串。
         '''</summary>
         Friend ReadOnly Property TestReport() As String
             Get

@@ -4,13 +4,13 @@ Namespace Sources
     Friend Class Source
         Private m_Namespace As String
 
-        Public Property [Namespace] As String
+        Public Property [Namespace]() As String
             Get
                 Return m_Namespace
             End Get
 
             Set(ByVal Value As String)
-                m_Namespace = [Namespace]
+                m_Namespace = Value
             End Set
         End Property
 
