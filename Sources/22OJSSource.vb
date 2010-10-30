@@ -15,6 +15,8 @@ Namespace Sources
         Private m_UpdateProblemCommand As SqlCommand
         Private m_UpdateUserCommand As SqlCommand
         Private m_UpdateUserSubmitCommand As SqlCommand
+        Private m_QuestionPath As String
+        Private Source As New FreeSource("root=" & m_QuestionPath)
 
         Public Sub New(ByVal Parameters As String)
             Dim Server As String = Nothing
@@ -39,8 +41,11 @@ Namespace Sources
                         Password = Value
                     Case "testerid"
                         m_TesterId = Int32.Parse(Value)
+                    Case "root"
+                        m_QuestionPath = Value
                 End Select
             Next
+            Source = New FreeSource("root=" & m_QuestionPath)
             If Server Is Nothing Then _
                 Throw New ArgumentNullException("Server")
             If Database Is Nothing Then _
@@ -194,5 +199,13 @@ Namespace Sources
                 Transaction.Commit()
             End Using
         End Sub
+
+        Public Overrides Function TryLoad(ByVal Id As String) As IEnumerable(Of TestCase)
+            Try
+                Return Source.TryLoad(Id)
+            Catch ex As Exception
+                Return Nothing
+            End Try
+        End Function
     End Class
 End Namespace
