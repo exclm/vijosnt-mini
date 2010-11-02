@@ -188,7 +188,7 @@ Namespace Sources
                 Select Case CompilerName.ToLower()
                     Case "c", "gcc"
                         Return ".c"
-                    Case "cpp", "gpp", "g++"
+                    Case "cpp", "gpp", "g++", "c++"
                         Return ".cpp"
                     Case Else
                         Return ".pas"
