@@ -16,7 +16,7 @@ Namespace Sources
         Private m_UpdateUserCommand As SqlCommand
         Private m_UpdateUserSubmitCommand As SqlCommand
         Private m_QuestionPath As String
-        Private Source As New FreeSource("root=" & m_QuestionPath)
+        Private Source As Source
 
         Public Sub New(ByVal Parameters As String)
             Dim Server As String = Nothing
@@ -45,7 +45,7 @@ Namespace Sources
                         m_QuestionPath = Value
                 End Select
             Next
-            Source = New FreeSource("root=" & m_QuestionPath)
+            Source = New FreeSource("Root=" & m_QuestionPath)
             If Server Is Nothing Then _
                 Throw New ArgumentNullException("Server")
             If Database Is Nothing Then _
