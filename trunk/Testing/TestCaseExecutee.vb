@@ -98,7 +98,6 @@ Namespace Testing
                 End Sub
 
             Try
-                Throw New Exception()
                 MyBase.StdInput = m_TestCase.OpenInput()
             Catch ex As Exception
                 MyBase.StdInput = Nothing
