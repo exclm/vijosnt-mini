@@ -97,9 +97,18 @@ Namespace Testing
                     Trigger.InvokeCritical()
                 End Sub
 
-            ' Open test case I/O
-            MyBase.StdInput = m_TestCase.OpenInput()
-            MyBase.StdOutput = m_TestCase.OpenOutput()
+            Try
+                Throw New Exception()
+                MyBase.StdInput = m_TestCase.OpenInput()
+            Catch ex As Exception
+                MyBase.StdInput = Nothing
+            End Try
+
+            Try
+                MyBase.StdOutput = m_TestCase.OpenOutput()
+            Catch ex As Exception
+                MyBase.StdOutput = Nothing
+            End Try
 
             ' Start recording stderr
             Using OutputPipe As New Pipe()
