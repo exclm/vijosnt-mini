@@ -97,17 +97,8 @@ Namespace Testing
                     Trigger.InvokeCritical()
                 End Sub
 
-            Try
-                MyBase.StdInput = m_TestCase.OpenInput()
-            Catch ex As Exception
-                MyBase.StdInput = Nothing
-            End Try
-
-            Try
-                MyBase.StdOutput = m_TestCase.OpenOutput()
-            Catch ex As Exception
-                MyBase.StdOutput = Nothing
-            End Try
+            MyBase.StdInput = m_TestCase.OpenInput()
+            MyBase.StdOutput = m_TestCase.OpenOutput()
 
             ' Start recording stderr
             Using OutputPipe As New Pipe()
