@@ -45,11 +45,19 @@ Namespace Testing
         End Property
 
         Public Overrides Function OpenInput() As Win32.KernelObject
-            Return New FileEx(m_InputFileName, CreateFileAccess.GENERIC_READ, CreateFileShare.FILE_SHARE_READ, CreateFileDisposition.OPEN_EXISTING, CreateFileFlags.FILE_FLAG_SEQUENTIAL_SCAN)
+            Try
+                Return New FileEx(m_InputFileName, CreateFileAccess.GENERIC_READ, CreateFileShare.FILE_SHARE_READ, CreateFileDisposition.OPEN_EXISTING, CreateFileFlags.FILE_FLAG_SEQUENTIAL_SCAN)
+            Catch ex As Exception
+                Return New FileEx("nul", CreateFileAccess.GENERIC_READ, CreateFileShare.FILE_SHARE_READ, CreateFileDisposition.OPEN_EXISTING, CreateFileFlags.FILE_FLAG_SEQUENTIAL_SCAN)
+            End Try
         End Function
 
         Protected Overrides Function OpenAnswer() As Win32.KernelObject
-            Return New FileEx(m_AnswerFileName, CreateFileAccess.GENERIC_READ, CreateFileShare.FILE_SHARE_READ, CreateFileDisposition.OPEN_EXISTING, CreateFileFlags.FILE_FLAG_SEQUENTIAL_SCAN)
+            Try
+                Return New FileEx(m_AnswerFileName, CreateFileAccess.GENERIC_READ, CreateFileShare.FILE_SHARE_READ, CreateFileDisposition.OPEN_EXISTING, CreateFileFlags.FILE_FLAG_SEQUENTIAL_SCAN)
+            Catch ex As Exception
+                Return New FileEx("nul", CreateFileAccess.GENERIC_READ, CreateFileShare.FILE_SHARE_READ, CreateFileDisposition.OPEN_EXISTING, CreateFileFlags.FILE_FLAG_SEQUENTIAL_SCAN)
+            End Try
         End Function
     End Class
 End Namespace
