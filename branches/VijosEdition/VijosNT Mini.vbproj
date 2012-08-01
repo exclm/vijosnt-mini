@@ -1,0 +1,322 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>
+    </SchemaVersion>
+    <ProjectGuid>{14264ECC-994C-4D8E-985C-CA7B57076454}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>VijosNT.EntryPoint</StartupObject>
+    <RootNamespace>VijosNT</RootNamespace>
+    <AssemblyName>VijosNT Mini</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>WindowsFormsWithCustomSubMain</MyType>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>bin\Any CPU\Debug\</OutputPath>
+    <NoWarn>41999,42016,42017,42018,42019,42032,42036</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>bin\Any CPU\Release\</OutputPath>
+    <NoWarn>41999,42016,42017,42018,42019,42032,42036</NoWarn>
+    <RemoveIntegerChecks>true</RemoveIntegerChecks>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Artwork\VijosNT.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MySql.Data, Version=6.3.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\MySQL\MySQL Connector Net 6.3.5\Assemblies\v2.0\MySql.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="Microsoft.Win32.SafeHandles" />
+    <Import Include="MySql.Data.MySqlClient" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.ComponentModel" />
+    <Import Include="System.Data" />
+    <Import Include="System.Data.SqlClient" />
+    <Import Include="System.Data.SQLite" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.IO" />
+    <Import Include="System.Net" />
+    <Import Include="System.Net.Sockets" />
+    <Import Include="System.Reflection" />
+    <Import Include="System.Runtime.InteropServices" />
+    <Import Include="System.Security.AccessControl" />
+    <Import Include="System.Security.Principal" />
+    <Import Include="System.ServiceProcess" />
+    <Import Include="System.Text" />
+    <Import Include="System.Text.RegularExpressions" />
+    <Import Include="System.Threading" />
+    <Import Include="System.Timers" />
+    <Import Include="System.Web" />
+    <Import Include="System.Windows.Forms" />
+    <Import Include="System.Xml" />
+    <Import Include="System.Xml.XPath" />
+    <Import Include="System.Xml.Xsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Compiling\CompilerExecutee.vb" />
+    <Compile Include="Compiling\CompilerExecuteeCompletion.vb" />
+    <Compile Include="Compiling\CompilerExecuteeResult.vb" />
+    <Compile Include="Compiling\Compiler.vb" />
+    <Compile Include="Compiling\CompilerEntry.vb" />
+    <Compile Include="Compiling\CompilerInstance.vb" />
+    <Compile Include="Compiling\CompilerPool.vb" />
+    <Compile Include="Compiling\Target.vb" />
+    <Compile Include="Compiling\TargetInstance.vb" />
+    <Compile Include="Executing\PortableExecutable.vb" />
+    <Compile Include="Foreground\CompilerDetection.vb" />
+    <Compile Include="Foreground\FloatingForm.Designer.vb">
+      <DependentUpon>FloatingForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Foreground\FloatingForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Foreground\StressTest.designer.vb">
+      <DependentUpon>StressTest.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Foreground\StressTest.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Foreground\TestReport.vb" />
+    <Compile Include="Foreground\TestResultForm.Designer.vb">
+      <DependentUpon>TestResultForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Foreground\TestResultForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Foreground\VijosContest.Designer.vb">
+      <DependentUpon>VijosContest.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Foreground\VijosContest.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LocalDb\Record.vb" />
+    <Compile Include="LocalDb\SourceClass.vb" />
+    <Compile Include="LocalDb\SourceConfig.vb" />
+    <Compile Include="LocalDb\SourceMapping.vb" />
+    <Compile Include="Remoting\ClientMessage.vb" />
+    <Compile Include="Remoting\PipeClient.vb" />
+    <Compile Include="Remoting\PipeServer.vb" />
+    <Compile Include="EntryPoint.vb" />
+    <Compile Include="Executing\EnvironmentTag.vb" />
+    <Compile Include="Executing\Executee.vb" />
+    <Compile Include="Executing\Executor.vb" />
+    <Compile Include="Executing\EnvironmentBase.vb" />
+    <Compile Include="Executing\EnvironmentPoolBase.vb" />
+    <Compile Include="Executing\ProcessExecutee.vb" />
+    <Compile Include="Executing\ProcessExecuteeCompletion.vb" />
+    <Compile Include="Executing\ProcessExecuteeResult.vb" />
+    <Compile Include="Executing\TrustedEnvironment.vb" />
+    <Compile Include="Executing\TrustedEnvironmentPool.vb" />
+    <Compile Include="Executing\UntrustedEnvironment.vb" />
+    <Compile Include="Executing\UntrustedEnvironmentPool.vb" />
+    <Compile Include="LocalDb\CompilerConfig.vb" />
+    <Compile Include="Foreground\ConsoleForm.Designer.vb">
+      <DependentUpon>ConsoleForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Foreground\ConsoleForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Foreground\Daemon.vb" />
+    <Compile Include="LocalDb\CompilerMapping.vb" />
+    <Compile Include="LocalDb\Config.vb" />
+    <Compile Include="LocalDb\Database.vb" />
+    <Compile Include="LocalDb\UntrustedEnvironments.vb" />
+    <Compile Include="Remoting\Session.vb" />
+    <Compile Include="Sources\22OJSSource.vb" />
+    <Compile Include="Sources\APlusBSource.vb" />
+    <Compile Include="Sources\FreeSource.vb" />
+    <Compile Include="Sources\Source.vb" />
+    <Compile Include="Sources\SourcePool.vb" />
+    <Compile Include="Sources\SourceRecord.vb" />
+    <Compile Include="Sources\VijosSource.vb" />
+    <Compile Include="Sources\YajoSource.vb" />
+    <Compile Include="Testing\DefaultJudger.vb" />
+    <Compile Include="Testing\LocalTestCase.vb" />
+    <Compile Include="Testing\Markup.vb" />
+    <Compile Include="Testing\Runner.vb" />
+    <Compile Include="Testing\StringTestCase.vb" />
+    <Compile Include="Testing\TestCase.vb" />
+    <Compile Include="Testing\TestCaseCompletion.vb" />
+    <Compile Include="Testing\TestCaseExecutee.vb" />
+    <Compile Include="Testing\TestCaseExecuteeCompletion.vb" />
+    <Compile Include="Testing\TestCaseExecuteeResult.vb" />
+    <Compile Include="Testing\TestCaseResult.vb" />
+    <Compile Include="Testing\TestCompletion.vb" />
+    <Compile Include="Testing\TestResult.vb" />
+    <Compile Include="Testing\TestResultEntry.vb" />
+    <Compile Include="Testing\TestResultFlag.vb" />
+    <Compile Include="Utility\AppPath.vb" />
+    <Compile Include="Utility\MiniHttpServer.vb" />
+    <Compile Include="Utility\MiniThreadPool.vb" />
+    <Compile Include="Utility\MiniTrigger.vb" />
+    <Compile Include="Utility\MiscUtility.vb" />
+    <Compile Include="Utility\ProcessMonitor.vb" />
+    <Compile Include="Utility\PathEx.vb" />
+    <Compile Include="Utility\MiniWaitPool.vb" />
+    <Compile Include="Utility\StreamRecorder.vb" />
+    <Compile Include="Utility\WatchDog.vb" />
+    <Compile Include="Win32\DebugObject.vb" />
+    <Compile Include="Win32\Desktop.vb" />
+    <Compile Include="Win32\FileEx.vb" />
+    <Compile Include="Win32\KernelObject.vb" />
+    <Compile Include="Win32\JobObject.vb" />
+    <Compile Include="Win32\NamedPipe.vb" />
+    <Compile Include="Win32\Service.vb" />
+    <Compile Include="Win32\ServiceManager.vb" />
+    <Compile Include="Win32\ServiceObject.vb" />
+    <Compile Include="Win32\Token.vb" />
+    <Compile Include="Win32\Pipe.vb" />
+    <Compile Include="Win32\ProcessEx.vb" />
+    <Compile Include="Win32\UserObject.vb" />
+    <Compile Include="Win32\Win32Misc.vb" />
+    <Compile Include="Win32\WindowStation.vb" />
+    <Compile Include="Background\Service.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Utility\TempPath.vb" />
+    <Compile Include="Utility\TempPathServer.vb" />
+    <Compile Include="Win32\NativeMethods.vb" />
+    <Compile Include="Utility\RandomString.vb" />
+    <Compile Include="Utility\StreamPipe.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Background\Service.resx">
+      <DependentUpon>Service.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Foreground\ConsoleForm.resx">
+      <DependentUpon>ConsoleForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Foreground\FloatingForm.resx">
+      <DependentUpon>FloatingForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Foreground\StressTest.resx">
+      <DependentUpon>StressTest.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Foreground\TestResultForm.resx">
+      <DependentUpon>TestResultForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Foreground\VijosContest.resx">
+      <DependentUpon>VijosContest.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\app.manifest" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="publish.bat" />
+    <Compile Include="Remoting\ServerMessage.vb" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Artwork\Add.png" />
+    <Content Include="Artwork\Apply.png" />
+    <Content Include="Artwork\BlueV.bmp" />
+    <Content Include="Artwork\BlueV.ico" />
+    <Content Include="Artwork\Clear.png" />
+    <Content Include="Artwork\Compiler.png" />
+    <Content Include="Artwork\Console.ico" />
+    <Content Include="Artwork\Console.png" />
+    <Content Include="Artwork\Source.png" />
+    <Content Include="Artwork\Executor.png" />
+    <Content Include="Artwork\GreenV.bmp" />
+    <Content Include="Artwork\GreenV.ico" />
+    <Content Include="Artwork\MoveDown.png" />
+    <Content Include="Artwork\MoveUp.png" />
+    <Content Include="Artwork\RedV.bmp" />
+    <Content Include="Artwork\RedV.ico" />
+    <Content Include="Artwork\Refresh.png" />
+    <Content Include="Artwork\Remove.png" />
+    <Content Include="Artwork\Report.ico" />
+    <Content Include="Artwork\Start.png" />
+    <Content Include="Artwork\Stop.png" />
+    <Content Include="Artwork\VijosNT.ico" />
+    <Content Include="Foreground\TestReport.xslt" />
+    <Content Include="x64 readme.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
