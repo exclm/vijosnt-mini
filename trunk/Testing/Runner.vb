@@ -158,7 +158,7 @@ Namespace Testing
                     Builder.Append("访问违规, 地址: 0x")
                     Builder.Append(Exception.ExceptionInformation(1).ToString("x8"))
                 Case ExceptionCode.EXCEPTION_INT_DIVIDE_BY_ZERO
-                    Builder.Append("整形运算除数为零")
+                    Builder.Append("整型运算除数为零")
                 Case ExceptionCode.EXCEPTION_FLT_DIVIDE_BY_ZERO
                     Builder.Append("浮点运算除数为零")
                 Case ExceptionCode.EXCEPTION_STACK_OVERFLOW
